@@ -7,7 +7,6 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
-import com.ozcoin.cookiepang.common.EXTRA_BUNDLE
 import com.ozcoin.cookiepang.utils.Event
 import timber.log.Timber
 
@@ -27,7 +26,7 @@ abstract class BaseActivity<T : ViewDataBinding>: AppCompatActivity() {
 
     override fun onConfigurationChanged(newConfig: Configuration) {
         super.onConfigurationChanged(newConfig)
-
+        Timber.d("called")
         val nightMode = newConfig.uiMode and Configuration.UI_MODE_NIGHT_MASK
         when (nightMode) {
             Configuration.UI_MODE_NIGHT_NO -> {
@@ -65,4 +64,10 @@ abstract class BaseActivity<T : ViewDataBinding>: AppCompatActivity() {
     private fun handleFinishActivity(event: Event.FinishComponent.Activity) {
         finish()
     }
+
+    override fun finish() {
+        super.finish()
+        overridePendingTransition(0, 0)
+    }
+
 }
