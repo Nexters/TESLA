@@ -4,7 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ozcoin.cookiepang.base.BaseViewModel
 
-class MainVm : BaseViewModel() {
+class MainActivityViewModel : BaseViewModel() {
 
     private val _useTitleBar = MutableLiveData<Boolean>().also { it.value = false }
     val useTitleBar : LiveData<Boolean>

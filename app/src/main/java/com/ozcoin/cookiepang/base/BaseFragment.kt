@@ -4,12 +4,14 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.utils.Event
 import timber.log.Timber
 
@@ -29,6 +31,12 @@ abstract class BaseFragment<T: ViewDataBinding> : Fragment() {
         binding.lifecycleOwner = this
 
         return binding.root
+    }
+
+    protected fun animSlideUpContents() {
+        with(binding.root) {
+            startAnimation(AnimationUtils.loadAnimation(requireContext(), R.anim.slide_in_up))
+        }
     }
 
     protected fun handleEvent(event: Event) {

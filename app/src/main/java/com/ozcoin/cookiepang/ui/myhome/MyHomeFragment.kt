@@ -24,6 +24,7 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
 
         initView()
         initListener()
+        init()
     }
 
 
@@ -33,6 +34,10 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
 
     private fun initListener() {
 //        setPickerListener()
+    }
+
+    private fun init() {
+        animSlideUpContents()
     }
 
 //    private fun setPicker() {
