@@ -10,8 +10,8 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val viewModelModule = module {
-    viewModel {
-        MainActivityViewModel()
+    viewModel { (state: SavedStateHandle) ->
+        MainActivityViewModel(state)
     }
     viewModel {
         SplashActivityViewModel(
@@ -27,6 +27,6 @@ val viewModelModule = module {
         SelectCategoryFragmentViewModel()
     }
     viewModel {
-        (state: SavedStateHandle) -> HomeFragmentViewModel(state)
+        HomeFragmentViewModel()
     }
 }

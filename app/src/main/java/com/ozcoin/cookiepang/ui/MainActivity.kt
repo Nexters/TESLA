@@ -12,12 +12,13 @@ import androidx.navigation.ui.setupWithNavController
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseActivity
 import com.ozcoin.cookiepang.databinding.ActivityMainBinding
+import org.koin.androidx.viewmodel.ext.android.stateViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
-    private val mainVm by viewModel<MainActivityViewModel>()
+    private val mainVm by stateViewModel<MainActivityViewModel>()
     private lateinit var navController: NavController
 
     override fun getLayoutRes(): Int {
