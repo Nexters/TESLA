@@ -14,7 +14,9 @@ val repositoryModule = module {
     }
 
     factory<UserRegRepository> {
-        UserRegRepositoryImpl()
+        UserRegRepositoryImpl(
+            userRegLocalDataSource = get()
+        )
     }
 
 }

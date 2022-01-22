@@ -56,20 +56,20 @@
     <!-- toolbar style  -->
     <style name="ToolbarStyle.Dark" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
         <item name="titleTextAppearance">@style/cpToolbarTitleTextStyle</item>
-        <item name="subtitleTextAppearance">@style/cpToolbarSubTitleTextStyle</item>
     </style>
 
     <!--  toolbar title style  -->
     <style name="cpToolbarTitleTextStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="fontFamily">@font/font_pretendard</item>
-        <item name="android:textSize">18dp</item>
+        <item name="android:textSize">20dp</item>
+        <item name="android:textColor">@android:color/black</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <!--  toolbar sub title style  -->
     <style name="cpToolbarSubTitleTextStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
         <item name="fontFamily">@font/font_pretendard</item>
-        <item name="android:textColor">@android:color/black</item>
+        <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">14dp</item>
     </style>
 

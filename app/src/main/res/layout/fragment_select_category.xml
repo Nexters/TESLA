@@ -3,7 +3,13 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <variable
+                name="userName"
+                type="java.lang.String" />
 
+        <variable
+                name="viewModel"
+                type="com.ozcoin.cookiepang.ui.selectcategory.SelectCategoryFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -26,7 +32,7 @@
 
         <TextView
                 android:id="@+id/tv_title"
-                android:text="XX님,\n가입이 완료되었습니다."
+                android:text='@{String.format("%s님,\n가입이 완료되었습니다", userName)}'
                 android:textStyle="bold"
                 android:textColor="@android:color/black"
                 android:textSize="20dp"
@@ -56,6 +62,7 @@
         <Button
                 android:id="@+id/btn_next"
                 android:text="다음"
+                android:onClick="@{() -> viewModel.clickNext()}"
                 app:layout_constraintLeft_toLeftOf="@id/gl_contents_left"
                 app:layout_constraintRight_toRightOf="@id/gl_contents_right"
                 app:layout_constraintBottom_toBottomOf="parent"

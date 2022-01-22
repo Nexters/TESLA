@@ -21,6 +21,16 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
+        <action
+                android:id="@+id/action_main"
+                app:destination="@id/main_dest"
+                app:popUpTo="@id/splash_dest"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment
@@ -30,7 +40,7 @@
             android:label="LoginFragment" >
 
         <action
-                android:id="@+id/action_login_dest_to_selectCategoryFragment"
+                android:id="@+id/action_select_category"
                 app:destination="@id/selectCategory_dest"
                 app:popUpTo="@id/login_dest"
                 app:popUpToInclusive="true"
@@ -52,6 +62,22 @@
                 android:defaultValue="오지코인"
                 app:argType="string" />
 
+        <action
+                android:id="@+id/action_main"
+                app:destination="@id/main_dest"
+                app:popUpTo="@id/nav_splash"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
+
+    <activity
+            android:id="@+id/main_dest"
+            android:name="com.ozcoin.cookiepang.ui.MainActivity"
+            tools:layout="@layout/activity_main"
+            android:label="MainActivity" />
 
 </navigation>
