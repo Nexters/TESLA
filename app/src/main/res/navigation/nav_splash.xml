@@ -27,6 +27,31 @@
             android:id="@+id/login_dest"
             android:name="com.ozcoin.cookiepang.ui.login.LoginFragment"
             tools:layout="@layout/fragment_login"
-            android:label="LoginFragment" />
+            android:label="LoginFragment" >
+
+        <action
+                android:id="@+id/action_login_dest_to_selectCategoryFragment"
+                app:destination="@id/selectCategory_dest"
+                app:popUpTo="@id/login_dest"
+                app:popUpToInclusive="true"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+
+    <fragment
+            android:id="@+id/selectCategory_dest"
+            android:name="com.ozcoin.cookiepang.ui.selectcategory.SelectCategoryFragment"
+            tools:layout="@layout/fragment_select_category"
+            android:label="SelectCategoryFragment" >
+
+        <argument
+                android:name="userName"
+                android:defaultValue="오지코인"
+                app:argType="string" />
+
+    </fragment>
 
 </navigation>

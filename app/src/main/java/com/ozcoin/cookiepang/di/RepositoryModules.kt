@@ -12,6 +12,7 @@ val repositoryModule = module {
             themeModeLocalDataSource = get()
         )
     }
+
     factory<UserRegRepository> {
         UserRegRepositoryImpl()
     }
