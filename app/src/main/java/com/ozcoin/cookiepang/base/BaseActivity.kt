@@ -7,6 +7,11 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
+import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.utils.Event
 import timber.log.Timber
 
@@ -19,9 +24,22 @@ abstract class BaseActivity<T : ViewDataBinding>: AppCompatActivity() {
     @LayoutRes
     protected abstract fun getLayoutRes() : Int
 
+    protected abstract fun initView()
+
+    protected abstract  fun initListener()
+
+    protected abstract fun initObserve()
+
+    protected abstract fun init()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding.lifecycleOwner = this
+
+        initView()
+        initObserve()
+        initListener()
+        init()
     }
 
     override fun onConfigurationChanged(newConfig: Configuration) {

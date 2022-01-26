@@ -1,9 +1,6 @@
 package com.ozcoin.cookiepang.ui
 
-import android.os.Bundle
 import android.view.Menu
-import android.view.View
-import android.view.animation.AnimationUtils
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -13,7 +10,6 @@ import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseActivity
 import com.ozcoin.cookiepang.databinding.ActivityMainBinding
 import org.koin.androidx.viewmodel.ext.android.stateViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
 class MainActivity : BaseActivity<ActivityMainBinding>() {
@@ -25,16 +21,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         return R.layout.activity_main
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        initView()
-        initObserve()
-        initListener()
-        init()
-    }
-
-    private fun initView() {
+    override fun initView() {
         with(binding) {
             viewModel = mainVm
             navController =
@@ -51,9 +38,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
-    private fun initListener() {
+    override fun initListener() {
         setNavDestinationListener()
-
     }
 
     private fun setNavDestinationListener() {
@@ -66,11 +52,11 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    private fun initObserve() {
+    override fun initObserve() {
 
     }
 
-    private fun init() {
+    override fun init() {
 
     }
 
