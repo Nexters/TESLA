@@ -2,8 +2,8 @@ package com.ozcoin.cookiepang.ui.login
 
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
-import com.ozcoin.cookiepang.data.user.User
-import com.ozcoin.cookiepang.repo.user.UserRegRepository
+import com.ozcoin.cookiepang.domain.user.User
+import com.ozcoin.cookiepang.domain.user.UserRegRepository
 import kotlinx.coroutines.launch
 
 class LoginFragmentViewModel(

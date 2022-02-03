@@ -1,6 +1,4 @@
-package com.ozcoin.cookiepang.repo
-
-import com.ozcoin.cookiepang.model.ThemeMode
+package com.ozcoin.cookiepang.domain.thememode
 
 /**
  * 시스템 설정 - 다크 모드

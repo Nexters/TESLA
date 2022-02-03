@@ -1,17 +1,16 @@
 package com.ozcoin.cookiepang.data.user
 
-import com.ozcoin.cookiepang.provider.SharedPrefProvider
+import com.ozcoin.cookiepang.data.provider.SharedPrefProvider
 
 class UserRegLocalDataSource(
     private val sharedPrefProvider: SharedPrefProvider
 ) {
-
-    fun getUser(): User {
+    fun getUser(): UserEntity {
         val userName = sharedPrefProvider.getUserName() ?: "null"
-        return User(userName)
+        return UserEntity(userName)
     }
 
-    fun regUser(user: User) {
+    fun regUser(user: UserEntity) {
         sharedPrefProvider.setUserName(userName = user.name)
     }
 

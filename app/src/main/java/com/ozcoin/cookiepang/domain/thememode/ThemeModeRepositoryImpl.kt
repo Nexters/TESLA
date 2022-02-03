@@ -1,15 +1,16 @@
-package com.ozcoin.cookiepang.repo
+package com.ozcoin.cookiepang.domain.thememode
 
 import androidx.appcompat.app.AppCompatDelegate
-import com.ozcoin.cookiepang.data.ThemeModeLocalDataSource
-import com.ozcoin.cookiepang.model.ThemeMode
+import com.ozcoin.cookiepang.data.thememode.ThemeModeLocalDataSource
+import com.ozcoin.cookiepang.data.thememode.toData
+import com.ozcoin.cookiepang.data.thememode.toDomain
 
 class ThemeModeRepositoryImpl(
     private val themeModeLocalDataSource: ThemeModeLocalDataSource
 ) : ThemeModeRepository {
 
     override fun getThemeMode(): ThemeMode {
-        return themeModeLocalDataSource.getThemeMode()
+        return themeModeLocalDataSource.getThemeMode().toDomain()
     }
 
     override fun setThemeMode(themeMode: ThemeMode) {
@@ -23,6 +24,6 @@ class ThemeModeRepositoryImpl(
     }
 
     override fun saveUserSetting(themeMode: ThemeMode) {
-        themeModeLocalDataSource.setThemeMode(themeMode)
+        themeModeLocalDataSource.setThemeMode(themeMode.toData())
     }
 }

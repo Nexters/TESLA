@@ -1,11 +1,11 @@
-package com.ozcoin.cookiepang.provider
+package com.ozcoin.cookiepang.data.provider
 
 import android.content.Context
 import com.ozcoin.cookiepang.common.PREF_STORE_APP_SETTING
 import com.ozcoin.cookiepang.common.PREF_STORE_USER
 import com.ozcoin.cookiepang.common.PREF_THEME_MODE
 import com.ozcoin.cookiepang.common.PREF_USER_NAME
-import com.ozcoin.cookiepang.model.ThemeMode
+import com.ozcoin.cookiepang.data.thememode.ThemeModeEntity
 
 class SharedPrefProvider(
     context: Context
@@ -16,7 +16,7 @@ class SharedPrefProvider(
     private val userPref = context.getSharedPreferences(PREF_STORE_USER, Context.MODE_PRIVATE)
     private val userPrefEdit = userPref.edit()
 
-    fun getThemeMode(): String? = appSettingPref.getString(PREF_THEME_MODE, ThemeMode.DEFAULT.name)
+    fun getThemeMode(): String? = appSettingPref.getString(PREF_THEME_MODE, ThemeModeEntity.DEFAULT.name)
 
     fun setThemeMode(themeMode: String) {
         appSettingPrefEdit.putString(PREF_THEME_MODE, themeMode).commit()

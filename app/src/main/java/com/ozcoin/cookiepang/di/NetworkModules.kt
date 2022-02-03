@@ -1,6 +1,6 @@
 package com.ozcoin.cookiepang.di
 
-import com.ozcoin.cookiepang.request.ApiService
+import com.ozcoin.cookiepang.data.request.ApiService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.dsl.module

@@ -1,6 +1,6 @@
 package com.ozcoin.cookiepang.di
 
-import com.ozcoin.cookiepang.data.ThemeModeLocalDataSource
+import com.ozcoin.cookiepang.data.thememode.ThemeModeLocalDataSource
 import com.ozcoin.cookiepang.data.user.UserRegLocalDataSource
 import org.koin.dsl.module
 

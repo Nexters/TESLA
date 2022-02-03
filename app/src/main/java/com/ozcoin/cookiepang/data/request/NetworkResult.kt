@@ -1,4 +1,4 @@
-package com.ozcoin.cookiepang.request
+package com.ozcoin.cookiepang.data.request
 
 sealed class NetworkResult<out T : Any> {
     data class Success<out T : Any>(val response: T) : NetworkResult<T>()

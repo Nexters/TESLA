@@ -1,6 +1,4 @@
-package com.ozcoin.cookiepang.repo.user
-
-import com.ozcoin.cookiepang.data.user.User
+package com.ozcoin.cookiepang.domain.user
 
 interface UserRegRepository {
 

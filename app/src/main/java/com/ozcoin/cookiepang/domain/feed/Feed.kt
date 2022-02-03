@@ -1,4 +1,4 @@
-package com.ozcoin.cookiepang.data.feed
+package com.ozcoin.cookiepang.domain.feed
 
 data class Feed(
     val question: String,

@@ -1,19 +1,20 @@
-package com.ozcoin.cookiepang.repo.user
+package com.ozcoin.cookiepang.domain.user
 
-import com.ozcoin.cookiepang.data.user.User
 import com.ozcoin.cookiepang.data.user.UserRegLocalDataSource
+import com.ozcoin.cookiepang.data.user.toData
+import com.ozcoin.cookiepang.data.user.toDomain
 
 class UserRegRepositoryImpl(
     private val userRegLocalDataSource: UserRegLocalDataSource
 ) : UserRegRepository {
 
     override suspend fun regUser(user: User): Boolean {
-        userRegLocalDataSource.regUser(user)
+        userRegLocalDataSource.regUser(user.toData())
         return true
     }
 
     override suspend fun getRegUser(): User {
-        return userRegLocalDataSource.getUser()
+        return userRegLocalDataSource.getUser().toDomain()
     }
 
     override fun isUserReg(): Boolean {

@@ -1,9 +1,9 @@
 package com.ozcoin.cookiepang.di
 
-import com.ozcoin.cookiepang.repo.ThemeModeRepository
-import com.ozcoin.cookiepang.repo.ThemeModeRepositoryImpl
-import com.ozcoin.cookiepang.repo.user.UserRegRepository
-import com.ozcoin.cookiepang.repo.user.UserRegRepositoryImpl
+import com.ozcoin.cookiepang.domain.thememode.ThemeModeRepository
+import com.ozcoin.cookiepang.domain.thememode.ThemeModeRepositoryImpl
+import com.ozcoin.cookiepang.domain.user.UserRegRepository
+import com.ozcoin.cookiepang.domain.user.UserRegRepositoryImpl
 import org.koin.dsl.module
 
 val repositoryModule = module {

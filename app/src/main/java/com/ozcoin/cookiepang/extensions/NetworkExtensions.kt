@@ -1,6 +1,6 @@
 package com.ozcoin.cookiepang.extensions
 
-import com.ozcoin.cookiepang.request.NetworkResult
+import com.ozcoin.cookiepang.data.request.NetworkResult
 import retrofit2.Response
 
 suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>): NetworkResult<T> {
