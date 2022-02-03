@@ -2,6 +2,8 @@
 buildscript {
 
     ext {
+        androidxCoreVersion = "1.7.0"
+        materialVersion = "1.4.0"
         kotlinVersion = '1.6.10'
         appCompatVersion = "1.4.0"
         constraintLayoutVersion = "2.1.2"
@@ -9,7 +11,13 @@ buildscript {
         lifecycleVersion = "2.4.0"
         coroutinesVersion = "1.5.0"
         retrofitVersion = '2.9.0'
+        okhttpLoggingVersion = "4.9.2"
         navigationVersion = "2.3.5"
+        timberVersion = "4.7.1"
+
+        espressoCoreVersion = "3.4.0"
+        kotestVersion = "4.3.2"
+        mockkVersion = "1.12.2"
     }
 
     repositories {
