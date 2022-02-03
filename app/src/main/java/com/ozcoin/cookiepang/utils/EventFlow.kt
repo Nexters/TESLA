@@ -16,9 +16,9 @@ interface EventFlow<out T> : Flow<T> {
 interface MutableEventFlow<T> : EventFlow<T>, FlowCollector<T>
 
 @Suppress("FunctionName")
-fun <T> MutableEventFlow(replay: Int = EventFlow.DEFAULT_REPLAY) : MutableEventFlow<T> = EventFlowImpl(replay)
+fun <T> MutableEventFlow(replay: Int = EventFlow.DEFAULT_REPLAY): MutableEventFlow<T> = EventFlowImpl(replay)
 
-fun <T> MutableEventFlow<T>.asEventFlow() : EventFlow<T> = ReadOnlyEventFlow(this)
+fun <T> MutableEventFlow<T>.asEventFlow(): EventFlow<T> = ReadOnlyEventFlow(this)
 
 private class ReadOnlyEventFlow<T>(flow: EventFlow<T>) : EventFlow<T> by flow
 
@@ -38,7 +38,6 @@ private class EventFlowImpl<T>(replay: Int) : MutableEventFlow<T> {
     override suspend fun emit(value: T) {
         flow.emit(EventFlowSlot(value))
     }
-
 }
 
 private class EventFlowSlot<T>(val value: T) {

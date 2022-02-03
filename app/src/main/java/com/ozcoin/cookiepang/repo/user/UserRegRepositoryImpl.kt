@@ -5,7 +5,7 @@ import com.ozcoin.cookiepang.data.user.UserRegLocalDataSource
 
 class UserRegRepositoryImpl(
     private val userRegLocalDataSource: UserRegLocalDataSource
-): UserRegRepository {
+) : UserRegRepository {
 
     override suspend fun regUser(user: User): Boolean {
         userRegLocalDataSource.regUser(user)

@@ -1,7 +1,11 @@
 package com.ozcoin.cookiepang
 
 import android.app.Application
-import com.ozcoin.cookiepang.di.*
+import com.ozcoin.cookiepang.di.dataSourceModule
+import com.ozcoin.cookiepang.di.networkModule
+import com.ozcoin.cookiepang.di.providerModule
+import com.ozcoin.cookiepang.di.repositoryModule
+import com.ozcoin.cookiepang.di.viewModelModule
 import com.ozcoin.cookiepang.model.ThemeMode
 import com.ozcoin.cookiepang.repo.ThemeModeRepository
 import org.koin.android.ext.android.inject
@@ -34,5 +38,4 @@ class MyApplication : Application() {
 
         themeModeRepository.setThemeMode(ThemeMode.LIGHT)
     }
-
 }

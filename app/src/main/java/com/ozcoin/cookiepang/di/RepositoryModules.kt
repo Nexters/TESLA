@@ -18,5 +18,4 @@ val repositoryModule = module {
             userRegLocalDataSource = get()
         )
     }
-
 }

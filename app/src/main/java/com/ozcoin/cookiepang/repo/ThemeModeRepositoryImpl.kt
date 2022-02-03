@@ -6,14 +6,14 @@ import com.ozcoin.cookiepang.model.ThemeMode
 
 class ThemeModeRepositoryImpl(
     private val themeModeLocalDataSource: ThemeModeLocalDataSource
-): ThemeModeRepository {
+) : ThemeModeRepository {
 
     override fun getThemeMode(): ThemeMode {
         return themeModeLocalDataSource.getThemeMode()
     }
 
     override fun setThemeMode(themeMode: ThemeMode) {
-        val mode = when(themeMode) {
+        val mode = when (themeMode) {
             ThemeMode.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
             ThemeMode.DARK -> AppCompatDelegate.MODE_NIGHT_YES
             ThemeMode.DEFAULT -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
@@ -25,5 +25,4 @@ class ThemeModeRepositoryImpl(
     override fun saveUserSetting(themeMode: ThemeMode) {
         themeModeLocalDataSource.setThemeMode(themeMode)
     }
-
 }

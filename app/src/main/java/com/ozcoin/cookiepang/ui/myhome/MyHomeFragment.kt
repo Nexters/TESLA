@@ -2,13 +2,6 @@ package com.ozcoin.cookiepang.ui.myhome
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
-import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
-import com.igalata.bubblepicker.BubblePickerListener
-import com.igalata.bubblepicker.adapter.BubblePickerAdapter
-import com.igalata.bubblepicker.model.BubbleGradient
-import com.igalata.bubblepicker.model.PickerItem
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentMyHomeBinding
@@ -26,7 +19,6 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
         initListener()
         init()
     }
-
 
     private fun initView() {
 //        setPicker()
@@ -88,5 +80,4 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
 //        super.onPause()
 //        binding.pickerCookie.onPause()
 //    }
-
 }

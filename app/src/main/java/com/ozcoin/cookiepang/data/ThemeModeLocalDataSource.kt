@@ -3,7 +3,6 @@ package com.ozcoin.cookiepang.data
 import com.ozcoin.cookiepang.model.ThemeMode
 import com.ozcoin.cookiepang.provider.SharedPrefProvider
 
-
 class ThemeModeLocalDataSource(
     private val sharedPrefProvider: SharedPrefProvider
 ) {
@@ -15,5 +14,4 @@ class ThemeModeLocalDataSource(
     fun setThemeMode(themeMode: ThemeMode) {
         sharedPrefProvider.setThemeMode(themeMode.name)
     }
-
 }

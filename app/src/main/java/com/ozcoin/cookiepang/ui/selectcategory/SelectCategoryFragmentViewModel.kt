@@ -2,7 +2,7 @@ package com.ozcoin.cookiepang.ui.selectcategory
 
 import com.ozcoin.cookiepang.base.BaseViewModel
 
-class SelectCategoryFragmentViewModel: BaseViewModel() {
+class SelectCategoryFragmentViewModel : BaseViewModel() {
 
     var finishActivity: (() -> Unit)? = null
 
@@ -18,5 +18,4 @@ class SelectCategoryFragmentViewModel: BaseViewModel() {
         navigateToMain()
         finishActivity()
     }
-
 }

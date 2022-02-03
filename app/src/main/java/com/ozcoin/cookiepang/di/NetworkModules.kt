@@ -15,7 +15,7 @@ val networkModule = module {
 
 private const val baseUrl = ""
 
-private val okHttpClient : OkHttpClient
+private val okHttpClient: OkHttpClient
     get() = OkHttpClient.Builder()
         .addInterceptor(
             HttpLoggingInterceptor().apply {

@@ -26,6 +26,5 @@ class SharedPrefProvider(
         userPrefEdit.putString(PREF_USER_NAME, userName).commit()
     }
 
-    fun getUserName() : String? = userPref.getString(PREF_USER_NAME, "")
-
+    fun getUserName(): String? = userPref.getString(PREF_USER_NAME, "")
 }

@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 abstract class BaseViewModel : ViewModel() {
 
     protected val _eventFlow = MutableEventFlow<Event>()
-    val eventFlow : EventFlow<Event>
+    val eventFlow: EventFlow<Event>
         get() = _eventFlow.asEventFlow()
 
     protected fun navigateTo(action: NavDirections) {
@@ -22,5 +22,4 @@ abstract class BaseViewModel : ViewModel() {
             )
         }
     }
-
 }

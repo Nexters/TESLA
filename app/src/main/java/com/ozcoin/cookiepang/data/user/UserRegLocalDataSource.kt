@@ -18,5 +18,4 @@ class UserRegLocalDataSource(
     fun isUserReg(): Boolean {
         return !sharedPrefProvider.getUserName().isNullOrBlank()
     }
-
 }

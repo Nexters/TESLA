@@ -3,6 +3,7 @@ plugins {
     id 'kotlin-android'
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
+    id "org.jlleitschuh.gradle.ktlint" version "10.2.1"
 }
 
 android {
@@ -36,6 +37,22 @@ android {
     }
     packagingOptions {
         exclude  'META-INF/rxjava.properties'
+    }
+
+    task copyGitHooks(type: Copy) {
+        from("${rootDir}/config/git-hooks/") {
+            include '**/*'
+            rename '(.*)', '$1'
+        }
+        into "${rootDir}/.git/hooks"
+    }
+
+    task installGitHooks(type: Exec) {
+        group 'git hooks'
+        workingDir rootDir
+        commandLine 'chmod'
+        args '-R', '+x', '.git/hooks/'
+        dependsOn copyGitHooks
     }
 }
 

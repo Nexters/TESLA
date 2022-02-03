@@ -1,12 +1,15 @@
 package com.ozcoin.cookiepang.ui.custom
 
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.Path
+import android.graphics.Point
 import android.util.AttributeSet
 import androidx.core.content.ContextCompat
-import android.graphics.*
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ozcoin.cookiepang.R
-
 
 class CustomBottomNavigationView : BottomNavigationView {
     private var mPath: Path = Path()

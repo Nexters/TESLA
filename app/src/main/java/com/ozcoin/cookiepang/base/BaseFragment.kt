@@ -15,12 +15,12 @@ import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.utils.Event
 import timber.log.Timber
 
-abstract class BaseFragment<T: ViewDataBinding> : Fragment() {
+abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     @LayoutRes
-    protected abstract fun getLayoutRes() : Int
+    protected abstract fun getLayoutRes(): Int
 
-    protected lateinit var binding : T
+    protected lateinit var binding: T
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,20 +40,20 @@ abstract class BaseFragment<T: ViewDataBinding> : Fragment() {
     }
 
     protected fun handleEvent(event: Event) {
-        when(event) {
+        when (event) {
             is Event.Nav -> {
-                when(event) {
+                when (event) {
                     is Event.Nav.To -> {
                         handleNavTo(event.action)
                     }
                 }
             }
+            else -> {}
         }
     }
 
-    private fun handleNavTo(action : NavDirections) {
+    private fun handleNavTo(action: NavDirections) {
         Timber.d("navigate to : ${action.javaClass.simpleName}")
         findNavController().navigate(action)
     }
-
 }

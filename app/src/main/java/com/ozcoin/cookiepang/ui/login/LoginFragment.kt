@@ -6,13 +6,11 @@ import androidx.lifecycle.lifecycleScope
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentLoginBinding
-import com.ozcoin.cookiepang.ui.splash.SplashActivityViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class LoginFragment: BaseFragment<FragmentLoginBinding>() {
+class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     private val loginFragmentViewModel by viewModel<LoginFragmentViewModel>()
 
@@ -38,6 +36,4 @@ class LoginFragment: BaseFragment<FragmentLoginBinding>() {
             loginFragmentViewModel.eventFlow.collect { handleEvent(it) }
         }
     }
-
-
 }

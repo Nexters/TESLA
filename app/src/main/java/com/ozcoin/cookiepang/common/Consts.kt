@@ -2,7 +2,6 @@ package com.ozcoin.cookiepang.common
 
 const val EXTRA_BUNDLE = "EXTRA_BUNDLE"
 
-
 /*
     SharedPreferences
  */

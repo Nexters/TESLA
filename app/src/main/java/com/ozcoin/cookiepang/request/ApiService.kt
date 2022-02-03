@@ -1,5 +1,3 @@
 package com.ozcoin.cookiepang.request
 
-interface ApiService {
-
-}
+interface ApiService

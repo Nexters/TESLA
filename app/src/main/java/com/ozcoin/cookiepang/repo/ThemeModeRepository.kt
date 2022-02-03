@@ -7,10 +7,9 @@ import com.ozcoin.cookiepang.model.ThemeMode
  */
 interface ThemeModeRepository {
 
-    fun getThemeMode() : ThemeMode
+    fun getThemeMode(): ThemeMode
 
     fun setThemeMode(themeMode: ThemeMode)
 
     fun saveUserSetting(themeMode: ThemeMode)
-
 }

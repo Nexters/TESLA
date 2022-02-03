@@ -15,5 +15,4 @@ sealed class Event {
     sealed class Nav : Event() {
         class To(val action: NavDirections) : Nav()
     }
-
 }

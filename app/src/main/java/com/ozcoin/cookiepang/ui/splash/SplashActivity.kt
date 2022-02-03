@@ -62,5 +62,4 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
 
     override fun init() {
     }
-
 }

@@ -8,7 +8,7 @@ import kotlinx.coroutines.launch
 
 class SplashActivityViewModel(
     private val userRegRepository: UserRegRepository
-): BaseViewModel() {
+) : BaseViewModel() {
 
     fun isUserReg() = userRegRepository.isUserReg()
 
@@ -19,6 +19,4 @@ class SplashActivityViewModel(
             )
         }
     }
-
-
 }

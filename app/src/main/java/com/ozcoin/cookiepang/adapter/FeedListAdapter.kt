@@ -6,9 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ozcoin.cookiepang.adapter.viewholder.FLAViewHolder
 import com.ozcoin.cookiepang.databinding.ItemFeedBinding
 
-class FeedListAdapter: RecyclerView.Adapter<FLAViewHolder>() {
-
-
+class FeedListAdapter : RecyclerView.Adapter<FLAViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FLAViewHolder {
         val binding = ItemFeedBinding.inflate(LayoutInflater.from(parent.context), parent, false)
@@ -23,7 +21,5 @@ class FeedListAdapter: RecyclerView.Adapter<FLAViewHolder>() {
     }
 
     fun updateList() {
-
     }
-
 }

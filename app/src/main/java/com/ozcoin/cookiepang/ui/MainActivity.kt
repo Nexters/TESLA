@@ -53,14 +53,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun initObserve() {
-
     }
 
     override fun init() {
-
     }
-
-
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.menu_main_title_bar, menu)

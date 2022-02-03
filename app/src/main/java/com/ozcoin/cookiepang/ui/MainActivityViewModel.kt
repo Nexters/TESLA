@@ -5,7 +5,4 @@ import com.ozcoin.cookiepang.base.BaseViewModel
 
 class MainActivityViewModel(
     val savedStateHandle: SavedStateHandle
-) : BaseViewModel() {
-
-
-}
+) : BaseViewModel()

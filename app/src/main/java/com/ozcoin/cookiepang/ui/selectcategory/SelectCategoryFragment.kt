@@ -13,7 +13,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
-class SelectCategoryFragment: BaseFragment<FragmentSelectCategoryBinding>() {
+class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
 
     private val splashActivityViewModel by sharedViewModel<SplashActivityViewModel>()
     private val selectCategoryFragmentViewModel by viewModel<SelectCategoryFragmentViewModel>()
@@ -32,7 +32,7 @@ class SelectCategoryFragment: BaseFragment<FragmentSelectCategoryBinding>() {
 
     private fun initView() {
         with(binding) {
-            val args : SelectCategoryFragmentArgs by navArgs()
+            val args: SelectCategoryFragmentArgs by navArgs()
             userName = args.userName
             viewModel = selectCategoryFragmentViewModel
         }
@@ -47,5 +47,4 @@ class SelectCategoryFragment: BaseFragment<FragmentSelectCategoryBinding>() {
     private fun init() {
         selectCategoryFragmentViewModel.finishActivity = splashActivityViewModel::finishActivity
     }
-
 }
