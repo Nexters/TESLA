@@ -11,6 +11,7 @@ buildscript {
         lifecycleVersion = "2.4.0"
         coroutinesVersion = "1.5.0"
         retrofitVersion = '2.9.0'
+        retrofitKotlinConverterVersion = '0.8.0'
         okhttpLoggingVersion = "4.9.2"
         navigationVersion = "2.3.5"
         timberVersion = "4.7.1"
