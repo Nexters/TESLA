@@ -11,3 +11,4 @@ const val PREF_THEME_MODE = "pref_theme_mode"
 
 const val PREF_STORE_USER = "pref_store_user"
 const val PREF_USER_NAME = "pref_user_name"
+const val PREF_USER_ADDRESS = "pref_user_address"

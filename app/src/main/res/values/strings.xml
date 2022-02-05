@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CookiePang</string>
+
+    <string name="scheme_klip_auth">cookiepang</string>
+    <string name="host_klip_auth_success">auth_success</string>
+    <string name="host_klip_auth_fail">auth_fail</string>
+
 </resources>

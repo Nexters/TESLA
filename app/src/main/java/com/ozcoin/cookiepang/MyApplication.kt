@@ -5,6 +5,7 @@ import com.ozcoin.cookiepang.di.dataSourceModule
 import com.ozcoin.cookiepang.di.networkModule
 import com.ozcoin.cookiepang.di.providerModule
 import com.ozcoin.cookiepang.di.repositoryModule
+import com.ozcoin.cookiepang.di.useCaseModule
 import com.ozcoin.cookiepang.di.viewModelModule
 import com.ozcoin.cookiepang.domain.thememode.ThemeMode
 import com.ozcoin.cookiepang.domain.thememode.ThemeModeUseCase
@@ -31,7 +32,8 @@ class MyApplication : Application() {
                     viewModelModule,
                     repositoryModule,
                     dataSourceModule,
-                    providerModule
+                    providerModule,
+                    useCaseModule
                 )
             )
         }

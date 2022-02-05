@@ -4,6 +4,7 @@ import android.content.Context
 import com.ozcoin.cookiepang.common.PREF_STORE_APP_SETTING
 import com.ozcoin.cookiepang.common.PREF_STORE_USER
 import com.ozcoin.cookiepang.common.PREF_THEME_MODE
+import com.ozcoin.cookiepang.common.PREF_USER_ADDRESS
 import com.ozcoin.cookiepang.common.PREF_USER_NAME
 import com.ozcoin.cookiepang.data.thememode.ThemeModeEntity
 
@@ -27,4 +28,10 @@ class SharedPrefProvider(
     }
 
     fun getUserName(): String? = userPref.getString(PREF_USER_NAME, "")
+
+    fun setUserAddress(userAddress: String) {
+        userPrefEdit.putString(PREF_USER_ADDRESS, userAddress).commit()
+    }
+
+    fun getUserAddress(): String? = userPref.getString(PREF_USER_ADDRESS, "")
 }
