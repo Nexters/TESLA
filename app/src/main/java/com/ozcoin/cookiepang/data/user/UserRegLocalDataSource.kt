@@ -1,8 +1,9 @@
 package com.ozcoin.cookiepang.data.user
 
 import com.ozcoin.cookiepang.data.provider.SharedPrefProvider
+import javax.inject.Inject
 
-class UserRegLocalDataSource(
+class UserRegLocalDataSource @Inject constructor(
     private val sharedPrefProvider: SharedPrefProvider
 ) {
     fun getUser(): UserEntity {

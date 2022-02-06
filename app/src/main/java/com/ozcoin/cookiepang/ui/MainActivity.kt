@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.ui
 
 import android.view.Menu
+import androidx.activity.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
@@ -9,12 +10,13 @@ import androidx.navigation.ui.setupWithNavController
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseActivity
 import com.ozcoin.cookiepang.databinding.ActivityMainBinding
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 
+@AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
-    private val mainVm by stateViewModel<MainActivityViewModel>()
+    private val mainVm by viewModels<MainActivityViewModel>()
     private lateinit var navController: NavController
 
     override fun getLayoutRes(): Int {

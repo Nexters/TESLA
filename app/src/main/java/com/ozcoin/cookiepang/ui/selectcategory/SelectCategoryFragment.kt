@@ -2,6 +2,8 @@ package com.ozcoin.cookiepang.ui.selectcategory
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.ozcoin.cookiepang.R
@@ -10,13 +12,11 @@ import com.ozcoin.cookiepang.databinding.FragmentSelectCategoryBinding
 import com.ozcoin.cookiepang.ui.splash.SplashActivityViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
 
-    private val splashActivityViewModel by sharedViewModel<SplashActivityViewModel>()
-    private val selectCategoryFragmentViewModel by viewModel<SelectCategoryFragmentViewModel>()
+    private val splashActivityViewModel by activityViewModels<SplashActivityViewModel>()
+    private val selectCategoryFragmentViewModel by viewModels<SelectCategoryFragmentViewModel>()
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_select_category
