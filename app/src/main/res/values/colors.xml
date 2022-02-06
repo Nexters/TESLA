@@ -8,13 +8,27 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-    <!--  bubble ui mock  -->
-    <color name="blueStart">#4EFFF3</color>
-    <color name="blueEnd">#0ca6f9</color>
-    <color name="purpleStart">#a369ff</color>
-    <color name="purpleEnd">#0e56ff</color>
-    <color name="roseStart">#FF6A00</color>
-    <color name="roseEnd">#ef0276</color>
-    <color name="greenStart">#a7f56e</color>
-    <color name="greenEnd">#11c612</color>
+    <color name="gray_00">#000000</color>
+    <color name="gray_10_bg1">#010115</color>
+    <color name="gray_20_bg2_sur1">#1A1C2C</color>
+    <color name="gray_30_sur2_bg2">#262B3F</color>
+    <color name="gray_40_t4_ic2_br1">#3E465B</color>
+    <color name="gray_50_t3_ic1">#949BAC</color>
+    <color name="gray_60_t2">#000000</color>
+    <color name="gray_70">#D6D9DE</color>
+    <color name="gray_80">#E4E5E9</color>
+    <color name="gray_90_t1">#F1F1F5</color>
+    <color name="gray_100">#FFFFFF</color>
+
+    <color name="error30">#EA4D4D</color>
+
+    <color name="sub_01">#3E6DFE</color>
+    <color name="sub_01_50">#803E6DFE</color>
+    <color name="sub_02">#E44AEB</color>
+    <color name="sub_02_op50">#80E44AEB</color>
+    <color name="sub_03">#6231CD</color>
+    <color name="sub_05">#806231CD</color>
+    <color name="sub_04">#FF6833</color>
+    <color name="sub_04_50">#80FF6833</color>
+
 </resources>

@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.base
 
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +28,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false)
+        val localInflater = inflater.cloneInContext(ContextThemeWrapper(requireActivity(), R.style.Theme_CookiePang))
+        binding = DataBindingUtil.inflate(localInflater, getLayoutRes(), container, false)
         binding.lifecycleOwner = this
 
         return binding.root
