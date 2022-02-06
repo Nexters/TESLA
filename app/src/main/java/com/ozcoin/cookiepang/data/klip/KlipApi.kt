@@ -53,13 +53,13 @@ abstract class KlipApi(
 
     protected lateinit var klipRequest: KlipRequest
 
-    protected abstract fun getResult(callback: (Boolean) -> Unit)
+    abstract fun getResult(callback: (Boolean) -> Unit)
 
     protected fun prepare() {
         klip.prepare(klipRequest, bAppInfo, prepareCallback)
     }
 
-    protected fun request() {
+    fun request() {
         klip.request(requestKey)
     }
 }

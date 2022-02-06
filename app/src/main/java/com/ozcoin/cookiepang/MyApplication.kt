@@ -8,7 +8,7 @@ import com.ozcoin.cookiepang.di.repositoryModule
 import com.ozcoin.cookiepang.di.useCaseModule
 import com.ozcoin.cookiepang.di.viewModelModule
 import com.ozcoin.cookiepang.domain.thememode.ThemeMode
-import com.ozcoin.cookiepang.domain.thememode.ThemeModeUseCase
+import com.ozcoin.cookiepang.domain.thememode.ThemeModeRepository
 import org.koin.android.ext.android.inject
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
@@ -16,7 +16,7 @@ import timber.log.Timber
 
 class MyApplication : Application() {
 
-    private val themeModeUseCase by inject<ThemeModeUseCase>()
+    private val themeModeRepository by inject<ThemeModeRepository>()
 
     override fun onCreate() {
         super.onCreate()
@@ -38,6 +38,6 @@ class MyApplication : Application() {
             )
         }
 
-        themeModeUseCase.setThemeMode(ThemeMode.LIGHT)
+        themeModeRepository.setThemeMode(ThemeMode.LIGHT)
     }
 }
