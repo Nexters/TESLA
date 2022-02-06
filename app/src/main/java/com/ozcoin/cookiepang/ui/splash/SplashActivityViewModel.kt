@@ -4,9 +4,12 @@ import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.domain.user.UserRegRepository
 import com.ozcoin.cookiepang.utils.Event
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class SplashActivityViewModel(
+@HiltViewModel
+class SplashActivityViewModel @Inject constructor(
     private val userRegRepository: UserRegRepository
 ) : BaseViewModel() {
 

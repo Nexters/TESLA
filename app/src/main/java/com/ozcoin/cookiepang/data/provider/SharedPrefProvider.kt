@@ -6,8 +6,9 @@ import com.ozcoin.cookiepang.common.PREF_STORE_USER
 import com.ozcoin.cookiepang.common.PREF_THEME_MODE
 import com.ozcoin.cookiepang.common.PREF_USER_NAME
 import com.ozcoin.cookiepang.data.thememode.ThemeModeEntity
+import javax.inject.Inject
 
-class SharedPrefProvider(
+class SharedPrefProvider @Inject constructor(
     context: Context
 ) {
     private val appSettingPref = context.getSharedPreferences(PREF_STORE_APP_SETTING, Context.MODE_PRIVATE)

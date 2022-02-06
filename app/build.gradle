@@ -4,6 +4,7 @@ plugins {
     id 'kotlin-kapt'
     id 'androidx.navigation.safeargs.kotlin'
     id "org.jlleitschuh.gradle.ktlint" version "10.2.1"
+    id 'dagger.hilt.android.plugin'
 }
 
 android {
@@ -16,7 +17,7 @@ android {
         versionCode 1
         versionName "1.0"
 
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner "com.ozcoin.cookiepang.HiltTestRunner"
     }
 
     testOptions {
@@ -75,11 +76,6 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$rootProject.lifecycleVersion"
     implementation "androidx.lifecycle:lifecycle-runtime-ktx:$rootProject.lifecycleVersion"
 
-    // di - koin
-    implementation "org.koin:koin-core:$rootProject.koinVersion"
-    implementation "org.koin:koin-android:$rootProject.koinVersion"
-    implementation "org.koin:koin-androidx-viewmodel:$rootProject.koinVersion"
-
     // coroutines
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$rootProject.coroutinesVersion"
 
@@ -104,4 +100,17 @@ dependencies {
     testImplementation "io.kotest:kotest-assertions-core:$rootProject.kotestVersion"
 
     testImplementation "io.mockk:mockk:$rootProject.mockkVersion"
+
+    // hilt
+    implementation "com.google.dagger:hilt-android:$rootProject.hiltVersion"
+    kapt "com.google.dagger:hilt-android-compiler:$rootProject.hiltVersion"
+
+    androidTestImplementation "com.google.dagger:hilt-android-testing:$rootProject.hiltVersion"
+    kaptAndroidTest "com.google.dagger:hilt-android-compiler:$rootProject.hiltVersion"
+
+    androidTestImplementation "junit:junit:$rootProject.junitVersion"
+    androidTestImplementation "androidx.test:core-ktx:$rootProject.androidTestCoreKtxVersion"
+    androidTestImplementation "androidx.test.ext:junit-ktx:$rootProject.junitKtxVersion"
+    androidTestImplementation "androidx.test:rules:$rootProject.androidTestRulesVersion"
+    androidTestImplementation "androidx.test.espresso:espresso-core:$rootProject.espressoCoreVersion"
 }

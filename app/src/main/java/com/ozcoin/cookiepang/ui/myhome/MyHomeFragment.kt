@@ -5,7 +5,9 @@ import android.view.View
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentMyHomeBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
 
     override fun getLayoutRes(): Int {

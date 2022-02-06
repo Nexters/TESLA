@@ -4,8 +4,9 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.ozcoin.cookiepang.data.thememode.ThemeModeLocalDataSource
 import com.ozcoin.cookiepang.data.thememode.toData
 import com.ozcoin.cookiepang.data.thememode.toDomain
+import javax.inject.Inject
 
-class ThemeModeRepositoryImpl(
+class ThemeModeRepositoryImpl @Inject constructor(
     private val themeModeLocalDataSource: ThemeModeLocalDataSource
 ) : ThemeModeRepository {
 

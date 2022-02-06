@@ -2,6 +2,8 @@ package com.ozcoin.cookiepang.ui.home
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ozcoin.cookiepang.R
@@ -10,9 +12,9 @@ import com.ozcoin.cookiepang.adapter.FeedListAdapter
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentHomeBinding
 import com.ozcoin.cookiepang.ui.MainActivityViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.stateViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     companion object {
@@ -21,8 +23,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         private const val KEY_VIEW_STATE_FEED_LIST = "KEY_VIEW_STATE_FEED_LIST"
     }
 
-    private val mainActivityViewModel by sharedViewModel<MainActivityViewModel>()
-    private val homeFragmentViewModel by stateViewModel<HomeFragmentViewModel>()
+    private val mainActivityViewModel by activityViewModels<MainActivityViewModel>()
+    private val homeFragmentViewModel by viewModels<HomeFragmentViewModel>()
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_home

@@ -3,8 +3,9 @@ package com.ozcoin.cookiepang.domain.user
 import com.ozcoin.cookiepang.data.user.UserRegLocalDataSource
 import com.ozcoin.cookiepang.data.user.toData
 import com.ozcoin.cookiepang.data.user.toDomain
+import javax.inject.Inject
 
-class UserRegRepositoryImpl(
+class UserRegRepositoryImpl @Inject constructor(
     private val userRegLocalDataSource: UserRegLocalDataSource
 ) : UserRegRepository {
 
