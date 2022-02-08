@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:custom="http://schemas.android.com/apk/res-auto"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
@@ -34,9 +35,9 @@
             app:layout_constraintBottom_toTopOf="@id/tv_title_description"
             app:layout_constraintVertical_bias="0" />
 
-        <TextView
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
             android:id="@+id/tv_title_description"
-            style="@style/TextAppearance.body_01_medium"
+            style="@style/TextAppearance.body_02_regular"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"

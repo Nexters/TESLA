@@ -11,8 +11,7 @@
         <item name="colorOnSecondary">@color/black</item>
 
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@android:color/white</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">#00011C</item>
 
         <item name="android:windowBackground">@drawable/bg_gradient_basic_black</item>
 

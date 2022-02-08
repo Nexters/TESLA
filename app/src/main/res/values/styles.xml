@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <style name="Base.TextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
         <item name="fontFamily">@font/font_pretendard</item>
-        <item name="android:letterSpacing">0.02</item>
-        <item name="android:lineSpacingMultiplier">1.6</item>
+        <item name="android:letterSpacing">0.002</item>
+        <item name="android:lineSpacingMultiplier">1.60</item>
     </style>
 
     <style name="Base.ButtonFontStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
@@ -124,6 +125,7 @@
     <style name="TextAppearance.body_02_regular" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">14sp</item>
+        <item name="setLineHeight">22sp</item>
     </style>
 
     <style name="TextAppearance.caption_bold" parent="Base.TextViewFontStyle">
