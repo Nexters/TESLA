@@ -31,12 +31,12 @@ class SplashActivity @Inject constructor() : BaseActivity<ActivitySplashBinding>
                 delay(1000)
             }
 
-//            if (splashActivityViewModel.isUserReg()) {
-//                navController.navigate(SplashFragmentDirections.actionMain())
-//                finish()
-//            } else {
-//                navController.navigate(SplashFragmentDirections.actionLogin())
-//            }
+            if (splashActivityViewModel.isUserReg()) {
+                navController.navigate(SplashFragmentDirections.actionMain())
+                finish()
+            } else {
+                navController.navigate(SplashFragmentDirections.actionLogin())
+            }
         }
     }
 

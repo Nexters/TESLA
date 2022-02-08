@@ -5,6 +5,7 @@
         <item name="fontFamily">@font/font_pretendard</item>
         <item name="android:letterSpacing">0.002</item>
         <item name="android:lineSpacingMultiplier">1.60</item>
+        <item name="android:textColor">@color/gray_90_t1</item>
     </style>
 
     <style name="Base.ButtonFontStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
@@ -53,73 +54,94 @@
     <style name="TextAppearance.head_01_bold" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">32sp</item>
+        <item name="setLineHeight">51sp</item>
     </style>
 
     <style name="TextAppearance.head_01_regular" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">32sp</item>
+        <item name="setLineHeight">51sp</item>
     </style>
 
     <style name="TextAppearance.head_02_bold" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">24sp</item>
+        <item name="setLineHeight">38sp</item>
     </style>
 
     <style name="TextAppearance.head_02_regular" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">24sp</item>
+        <item name="setLineHeight">38sp</item>
     </style>
     <style name="TextAppearance.title_01_bold" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">22sp</item>
+        <item name="setLineHeight">35sp</item>
     </style>
 
     <style name="TextAppearance.title_01_regular" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">22sp</item>
+        <item name="setLineHeight">35sp</item>
     </style>
     <style name="TextAppearance.title_02_bold" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">20sp</item>
+        <item name="setLineHeight">32sp</item>
     </style>
 
     <style name="TextAppearance.title_02_regular" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">20sp</item>
+        <item name="setLineHeight">32sp</item>
     </style>
     <style name="TextAppearance.large_bold" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">18sp</item>
+        <item name="setLineHeight">28sp</item>
+    </style>
+
+    <style name="TextAppearance.large_medium" parent="Base.TextViewFontStyle">
+        <item name="fontFamily">@font/pretendard_medium</item>
+        <item name="android:textSize">18sp</item>
+        <item name="setLineHeight">28sp</item>
     </style>
 
     <style name="TextAppearance.large_regular" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">18sp</item>
+        <item name="setLineHeight">28sp</item>
     </style>
 
     <style name="TextAppearance.body_01_bold" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">16sp</item>
+        <item name="setLineHeight">25sp</item>
     </style>
 
     <style name="TextAppearance.body_01_medium" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_medium</item>
         <item name="android:textSize">16sp</item>
+        <item name="setLineHeight">25sp</item>
     </style>
 
     <style name="TextAppearance.body_01_regular" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">16sp</item>
+        <item name="setLineHeight">25sp</item>
     </style>
 
     <style name="TextAppearance.body_02_bold" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">14sp</item>
+        <item name="setLineHeight">22sp</item>
     </style>
 
     <style name="TextAppearance.body_02_medium" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_medium</item>
         <item name="android:textSize">14sp</item>
+        <item name="setLineHeight">22sp</item>
     </style>
 
     <style name="TextAppearance.body_02_regular" parent="Base.TextViewFontStyle">
@@ -131,26 +153,39 @@
     <style name="TextAppearance.caption_bold" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_bold</item>
         <item name="android:textSize">13sp</item>
+        <item name="setLineHeight">20sp</item>
     </style>
 
     <style name="TextAppearance.caption_medium" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_medium</item>
         <item name="android:textSize">13sp</item>
+        <item name="setLineHeight">20sp</item>
     </style>
 
     <style name="TextAppearance.caption_regular" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">13sp</item>
-    </style>
-
-    <style name="TextAppearance.large_medium" parent="Base.TextViewFontStyle">
-        <item name="fontFamily">@font/pretendard_medium</item>
-        <item name="android:textSize">18sp</item>
+        <item name="setLineHeight">20sp</item>
     </style>
 
     <style name="TextAppearance.cookie_card" parent="Base.TextViewFontStyle">
         <item name="fontFamily">@font/pretendard_regular</item>
         <item name="android:textSize">16sp</item>
+        <item name="setLineHeight">19sp</item>
+    </style>
+
+    <style name="TextAppearance.button_large_brand_normal" parent="TextAppearance.body_02_bold" >
+        <item name="android:background">@drawable/btn_brand_normal_radius_44dp</item>
+        <item name="android:textColor">@color/gray_100</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+    <style name="TextAppearance.button_large_sec_normal" parent="TextAppearance.body_02_bold" >
+        <item name="android:background">@drawable/btn_sec_normal_radius_44dp</item>
+        <item name="android:textColor">@color/gray_90_t1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">48dp</item>
     </style>
 
 </resources>
