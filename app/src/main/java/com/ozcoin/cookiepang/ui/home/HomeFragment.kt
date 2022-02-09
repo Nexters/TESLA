@@ -1,7 +1,6 @@
 package com.ozcoin.cookiepang.ui.home
 
 import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.DividerItemDecoration
@@ -28,18 +27,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun getLayoutRes(): Int {
         return R.layout.fragment_home
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initView()
-    }
-
-    private fun initView() {
-        animSlideUpContents()
-        setUpCategoryList()
-        setUpFeedList()
     }
 
     private fun setUpCategoryList() {
@@ -107,5 +94,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 binding.rvCategory.layoutManager?.onSaveInstanceState()
             )
         }
+    }
+
+    override fun initListener() {
+    }
+
+    override fun initObserve() {
+    }
+
+    override fun init() {
+    }
+
+    override fun initView() {
+        animSlideUpContents()
+        setUpCategoryList()
+        setUpFeedList()
     }
 }

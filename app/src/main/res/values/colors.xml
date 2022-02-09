@@ -14,7 +14,7 @@
     <color name="gray_30_sur2_bg2">#262B3F</color>
     <color name="gray_40_t4_ic2_br1">#3E465B</color>
     <color name="gray_50_t3_ic1">#949BAC</color>
-    <color name="gray_60_t2">#000000</color>
+    <color name="gray_60_t2">#C4C8D3</color>
     <color name="gray_70">#D6D9DE</color>
     <color name="gray_80">#E4E5E9</color>
     <color name="gray_90_t1">#F1F1F5</color>
@@ -30,5 +30,6 @@
     <color name="sub_05">#806231CD</color>
     <color name="sub_04">#FF6833</color>
     <color name="sub_04_50">#80FF6833</color>
+    <color name="sub__50">#806231CD</color>
 
 </resources>

@@ -1,7 +1,5 @@
 package com.ozcoin.cookiepang.ui.selectcategory
 
-import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -22,15 +20,7 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
         return R.layout.fragment_select_category
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initView()
-        initObserve()
-        init()
-    }
-
-    private fun initView() {
+    override fun initView() {
         with(binding) {
             val args: SelectCategoryFragmentArgs by navArgs()
             userName = args.userName
@@ -38,13 +28,16 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
         }
     }
 
-    private fun initObserve() {
+    override fun initObserve() {
         lifecycleScope.launch {
             selectCategoryFragmentViewModel.eventFlow.collect { handleEvent(it) }
         }
     }
 
-    private fun init() {
+    override fun init() {
         selectCategoryFragmentViewModel.finishActivity = splashActivityViewModel::finishActivity
+    }
+
+    override fun initListener() {
     }
 }

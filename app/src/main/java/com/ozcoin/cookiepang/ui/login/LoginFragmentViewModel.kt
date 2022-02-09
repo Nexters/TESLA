@@ -16,7 +16,7 @@ class LoginFragmentViewModel @Inject constructor(
     private suspend fun regUser() = userRegRepository.regUser(User("오지코인"))
 
     private fun navigateToSelectCategory() {
-        navigateTo(LoginFragmentDirections.actionSelectCategory())
+        navigateTo(LoginFragmentDirections.actionRegistID())
     }
 
     fun clickLogin() {

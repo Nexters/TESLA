@@ -16,6 +16,7 @@ class UserRegLocalDataSource @Inject constructor(
     }
 
     fun isUserReg(): Boolean {
-        return !sharedPrefProvider.getUserName().isNullOrBlank()
+//        return !sharedPrefProvider.getUserName().isNullOrBlank()
+        return false
     }
 }

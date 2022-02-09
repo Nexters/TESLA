@@ -181,11 +181,98 @@
         <item name="android:layout_height">48dp</item>
     </style>
 
+    <style name="TextAppearance.button_medium_brand_normal" parent="TextAppearance.body_02_bold" >
+        <item name="android:background">@drawable/btn_brand_normal_radius_44dp</item>
+        <item name="android:textColor">@color/gray_100</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+
     <style name="TextAppearance.button_large_sec_normal" parent="TextAppearance.body_02_bold" >
         <item name="android:background">@drawable/btn_sec_normal_radius_44dp</item>
         <item name="android:textColor">@color/gray_90_t1</item>
         <item name="android:gravity">center</item>
         <item name="android:layout_height">48dp</item>
+    </style>
+
+    <style name="TextAppearance.button_medium_sec_normal" parent="TextAppearance.body_02_bold" >
+        <item name="android:background">@drawable/btn_sec_normal_radius_44dp</item>
+        <item name="android:textColor">@color/gray_90_t1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+
+    <style name="TextAppearance.button_large_sec_disable" parent="TextAppearance.body_02_bold" >
+        <item name="android:background">@drawable/btn_sec_normal_radius_44dp</item>
+        <item name="android:textColor">@color/gray_40_t4_ic2_br1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+    <style name="TextAppearance.button_large_inline" parent="TextAppearance.body_02_bold" >
+        <item name="android:background">@drawable/btn_inline_normal</item>
+        <item name="android:textColor">@color/error30</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+    <style name="TextAppearance.button_medium_inline" parent="TextAppearance.body_02_bold" >
+        <item name="android:background">@drawable/btn_inline_normal</item>
+        <item name="android:textColor">@color/error30</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+    <style name="TextAppearance.button_large_text" parent="TextAppearance.body_02_bold" >
+        <item name="android:textColor">@color/gray_90_t1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+    <style name="TextAppearance.button_medium_text" parent="TextAppearance.body_02_bold" >
+        <item name="android:textColor">@color/gray_90_t1</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">48dp</item>
+    </style>
+
+    <style name="EditTextAppearance.double_01" parent="TextAppearance.body_01_regular" >
+        <item name="android:textColor">@drawable/selector_et_double01_text_color</item>
+        <item name="android:textColorHint">@color/gray_40_t4_ic2_br1</item>
+        <item name="android:background">@drawable/selector_et_double_01</item>
+        <item name="android:paddingTop">11dp</item>
+        <item name="android:paddingBottom">11dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:gravity">start|center</item>
+
+        <item name="android:scrollHorizontally">false</item>
+        <item name="android:inputType">textMultiLine</item>
+    </style>
+
+
+    <style name="EditTextAppearance.double_02" parent="TextAppearance.body_01_regular" >
+        <item name="android:textColor">@drawable/selector_et_double02_text_color</item>
+        <item name="android:textColorHint">@color/gray_40_t4_ic2_br1</item>
+        <item name="android:background">@drawable/selector_et_double_02</item>
+        <item name="android:paddingTop">11dp</item>
+        <item name="android:paddingBottom">11dp</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+
+        <item name="android:scrollHorizontally">false</item>
+        <item name="android:inputType">textMultiLine</item>
+    </style>
+
+    <style name="ToggleAppearance.category_stroke" parent="TextAppearance.body_02_regular" >
+        <item name="android:textColor">@android:color/white</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_height">40dp</item>
+    </style>
+
+    <style name="ToggleAppearance.category_stroke_none" parent="TextAppearance.body_02_regular" >
+        <item name="android:textColor">@color/gray_50_t3_ic1</item>
+        <item name="android:button">@null</item>
+        <item name="android:layout_height">40dp</item>
     </style>
 
 </resources>

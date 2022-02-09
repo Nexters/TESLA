@@ -1,7 +1,5 @@
 package com.ozcoin.cookiepang.ui.myhome
 
-import android.os.Bundle
-import android.view.View
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentMyHomeBinding
@@ -14,21 +12,16 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
         return R.layout.fragment_my_home
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-        initView()
-        initListener()
-        init()
+    override fun initView() {
     }
 
-    private fun initView() {
+    override fun initListener() {
     }
 
-    private fun initListener() {
-    }
-
-    private fun init() {
+    override fun init() {
         animSlideUpContents()
+    }
+
+    override fun initObserve() {
     }
 }

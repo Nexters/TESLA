@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/ll_title_layout"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:gravity="center|start"
+            android:paddingLeft="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_height">
+
+            <ImageView
+                android:id="@+id/iv_back_btn"
+                android:src="@drawable/ic_left"
+                android:padding="8dp"
+                android:layout_width="40dp"
+                android:layout_height="40dp" />
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <include layout="@layout/layout_contents_guide_line" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            style="@style/TextAppearance.head_02_bold"
+            android:id="@+id/tv_input_description_title"
+            app:layout_constraintTop_toBottomOf="@+id/ll_title_layout"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            android:text="Input\nYour Profile ID"
+            android:layout_marginTop="30dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_label"
+            style="@style/TextAppearance.caption_bold"
+            android:text="label"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_input_description_title"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <EditText
+            android:id="@+id/et_profile_id"
+            style="@style/EditTextAppearance.double_02"
+            app:layout_constraintTop_toBottomOf="@+id/tv_label"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            android:hint="hint here"
+            android:layout_marginTop="6dp"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:autofillHints="username"
+            android:inputType="text"
+            android:imeOptions="actionDone" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_regist_description"
+            style="@style/TextAppearance.body_02_regular"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            android:text="Once selected ID can not be changed anymore."
+            app:layout_constraintBottom_toTopOf="@+id/tv_regist_id_btn"
+            android:gravity="center"
+            android:layout_marginBottom="20dp"
+            android:textColor="@color/gray_50_t3_ic1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_regist_id_btn"
+            style="@style/TextAppearance.button_large_brand_normal"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:text="Regist ID"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="40dp"
+            android:layout_width="0dp" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

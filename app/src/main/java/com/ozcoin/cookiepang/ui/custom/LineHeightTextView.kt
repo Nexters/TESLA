@@ -23,11 +23,12 @@ class LineHeightTextView : AppCompatTextView {
             R.styleable.lineHeightTextAttrs,
             0, 0
         )
-
-        attr.use {
-            val lineHeight = it.getDimensionPixelSize(R.styleable.lineHeightTextAttrs_setLineHeight, -1)
+        try {
+            val lineHeight = attr.getDimensionPixelSize(R.styleable.lineHeightTextAttrs_setLineHeight, -1)
             if (lineHeight != -1)
                 TextViewCompat.setLineHeight(this, lineHeight)
+        } finally {
+            attr.recycle()
         }
     }
 

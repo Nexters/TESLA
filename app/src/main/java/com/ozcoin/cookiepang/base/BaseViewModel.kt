@@ -22,4 +22,12 @@ abstract class BaseViewModel : ViewModel() {
             )
         }
     }
+
+    protected fun navigateUp() {
+        viewModelScope.launch {
+            _eventFlow.emit(
+                Event.Nav.Up
+            )
+        }
+    }
 }

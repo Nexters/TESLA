@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-            android:id="@+id/home_dest"
-            android:title="홈 - 피드"/>
+        android:id="@+id/home_dest"
+        android:icon="@drawable/selector_btm_nav_home"
+        android:title="홈 - 피드" />
 
     <item
-            android:id="@+id/action_empty"
-            android:title=""
-            android:enabled="false"
-            android:checkable="false"/>
+        android:id="@+id/action_empty"
+        android:checkable="false"
+        android:enabled="false"
+        android:title="" />
 
     <item
-            android:id="@+id/my_home_dest"
-            android:title="마이 홈"/>
+        android:id="@+id/my_home_dest"
+        android:icon="@drawable/selector_btm_nav_profile"
+        android:title="마이 홈" />
 </menu>

@@ -27,15 +27,21 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
         initObserve()
     }
 
-    private fun initView() {
+    override fun initView() {
         with(binding) {
             viewModel = loginFragmentViewModel
         }
     }
 
-    private fun initObserve() {
+    override fun initObserve() {
         lifecycleScope.launch {
             loginFragmentViewModel.eventFlow.collect { handleEvent(it) }
         }
+    }
+
+    override fun initListener() {
+    }
+
+    override fun init() {
     }
 }
