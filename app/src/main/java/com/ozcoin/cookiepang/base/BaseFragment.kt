@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.base
 
 import android.os.Bundle
+import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,6 +21,14 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     @LayoutRes
     protected abstract fun getLayoutRes(): Int
 
+    protected abstract fun initView()
+
+    protected abstract fun initListener()
+
+    protected abstract fun initObserve()
+
+    protected abstract fun init()
+
     protected lateinit var binding: T
 
     override fun onCreateView(
@@ -27,10 +36,20 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DataBindingUtil.inflate(inflater, getLayoutRes(), container, false)
+        val localInflater = inflater.cloneInContext(ContextThemeWrapper(requireActivity(), R.style.Base_Theme_CookiePang))
+        binding = DataBindingUtil.inflate(localInflater, getLayoutRes(), container, false)
         binding.lifecycleOwner = this
 
         return binding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initView()
+        initListener()
+        initObserve()
+        init()
     }
 
     protected fun animSlideUpContents() {
@@ -46,6 +65,9 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
                     is Event.Nav.To -> {
                         handleNavTo(event.action)
                     }
+                    is Event.Nav.Up -> {
+                        handleNavUp()
+                    }
                 }
             }
             else -> {}
@@ -55,5 +77,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     private fun handleNavTo(action: NavDirections) {
         Timber.d("navigate to : ${action.javaClass.simpleName}")
         findNavController().navigate(action)
+    }
+
+    private fun handleNavUp() {
+        Timber.d("navigate Up")
+        findNavController().navigateUp()
     }
 }

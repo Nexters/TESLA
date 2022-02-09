@@ -30,7 +30,14 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 (supportFragmentManager.findFragmentById(binding.fcvNavHost.id) as NavHostFragment).navController
 
             setUpActionBar()
-            includeBtmNavLayout.customBtmNav.setupWithNavController(navController)
+            setUpBtmNav()
+        }
+    }
+
+    private fun setUpBtmNav() {
+        with(binding.includeBtmNavLayout.customBtmNav) {
+            setupWithNavController(navController)
+            itemIconTintList = null
         }
     }
 

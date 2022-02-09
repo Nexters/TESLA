@@ -11,4 +11,16 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     override fun getLayoutRes(): Int {
         return R.layout.fragment_splash
     }
+
+    override fun initView() {
+    }
+
+    override fun initListener() {
+    }
+
+    override fun initObserve() {
+    }
+
+    override fun init() {
+    }
 }

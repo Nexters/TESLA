@@ -1,77 +1,25 @@
 <resources>
     <!-- Base application theme. -->
-    <style name="Theme.CookiePang" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Base.Theme.CookiePang" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
         <item name="colorOnPrimary">@color/white</item>
-        <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/teal_200</item>
-        <item name="colorSecondaryVariant">@color/teal_700</item>
-        <item name="colorOnSecondary">@color/black</item>
+        <item name="colorControlActivated">#336FFF</item>
 
         <!-- Status bar color. -->
-        <item name="android:statusBarColor">@android:color/white</item>
-        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:statusBarColor">@color/gray_10_bg1</item>
 
-        <item name="android:windowBackground">@android:color/white</item>
+        <item name="android:windowBackground">@drawable/bg_gradient_basic_black</item>
 
         <!-- Customize your theme here. -->
         <item name="toolbarStyle">@style/ToolbarStyle.Dark</item>
-        <item name="android:textViewStyle">@style/cpTextViewFontStyle</item>
-        <item name="android:buttonStyle">@style/cpButtonFontStyle</item>
-        <item name="android:editTextStyle">@style/cpEditTextFontStyle</item>
-        <item name="android:radioButtonStyle">@style/cpRadioButtonFontStyle</item>
-        <item name="android:checkboxStyle">@style/cpCheckboxFontStyle</item>
-
+        <item name="android:textViewStyle">@style/Base.TextViewFontStyle</item>
+        <item name="android:buttonStyle">@style/Base.ButtonFontStyle</item>
+        <item name="android:editTextStyle">@style/Base.EditTextFontStyle</item>
+        <item name="android:radioButtonStyle">@style/Base.RadioButtonFontStyle</item>
+        <item name="android:checkboxStyle">@style/Base.CheckboxFontStyle</item>
 
     </style>
-
-    <style name="cpTextViewFontStyle" parent="@android:style/Widget.DeviceDefault.TextView">
-        <item name="fontFamily">@font/font_pretendard</item>
-    </style>
-
-    <style name="cpButtonFontStyle" parent="@android:style/Widget.DeviceDefault.Button.Borderless">
-        <item name="fontFamily">@font/font_pretendard</item>
-    </style>
-
-    <style name="cpEditTextFontStyle" parent="@android:style/Widget.DeviceDefault.EditText">
-        <item name="fontFamily">@font/font_pretendard</item>
-    </style>
-
-    <style name="cpRadioButtonFontStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.RadioButton">
-        <item name="fontFamily">@font/font_pretendard</item>
-    </style>
-
-    <style name="cpCheckboxFontStyle" parent="@android:style/Widget.DeviceDefault.CompoundButton.CheckBox">
-        <item name="fontFamily">@font/font_pretendard</item>
-    </style>
-
-    <style name="titleMenuTextViewStyle" parent="cpTextViewFontStyle">
-        <item name="android:textSize">15dp</item>
-        <item name="android:padding">8dp</item>
-        <item name="android:textColor">@android:color/black</item>
-    </style>
-
-    <!-- toolbar style  -->
-    <style name="ToolbarStyle.Dark" parent="ThemeOverlay.MaterialComponents.Dark.ActionBar">
-        <item name="titleTextAppearance">@style/cpToolbarTitleTextStyle</item>
-    </style>
-
-    <!--  toolbar title style  -->
-    <style name="cpToolbarTitleTextStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
-        <item name="fontFamily">@font/font_pretendard</item>
-        <item name="android:textSize">20dp</item>
-        <item name="android:textColor">@android:color/black</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <!--  toolbar sub title style  -->
-    <style name="cpToolbarSubTitleTextStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Subtitle">
-        <item name="fontFamily">@font/font_pretendard</item>
-        <item name="android:textColor">@android:color/white</item>
-        <item name="android:textSize">14dp</item>
-    </style>
-
 
 </resources>

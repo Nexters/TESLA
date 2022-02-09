@@ -10,7 +10,7 @@
             android:name=".MyApplication"
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
-            android:theme="@style/Theme.CookiePang">
+            android:theme="@style/Base.Theme.CookiePang">
 
         <activity android:name=".ui.splash.SplashActivity"
                 android:exported="true">
