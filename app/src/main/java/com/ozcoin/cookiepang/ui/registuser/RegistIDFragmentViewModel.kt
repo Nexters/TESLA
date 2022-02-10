@@ -4,12 +4,15 @@ import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.utils.TextInputUtil
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
+@HiltViewModel
 class RegistIDFragmentViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
@@ -22,13 +25,10 @@ class RegistIDFragmentViewModel @Inject constructor(
     val profileIDMaxLengthCaption: StateFlow<String?>
         get() = _profileIDMaxLengthCaption.asStateFlow()
 
-    var setUserProfileID: ((String) -> Unit)? = null
     var getUserProfileID: (() -> String)? = null
 
     private fun navigateToRegistInfo() {
-        viewModelScope.launch {
-//            _eventFlow.emit(Event.Nav.To())
-        }
+        navigateTo(RegistIDFragmentDirections.actionRegistUserInfo())
     }
 
     suspend fun emitProfileIDLength(length: Int) {
@@ -50,6 +50,7 @@ class RegistIDFragmentViewModel @Inject constructor(
     fun clickRegistID() {
         viewModelScope.launch {
             if (checkDuplicateProfileID()) {
+                Timber.d("checkDuplicateProfileID is success")
                 navigateToRegistInfo()
             }
         }

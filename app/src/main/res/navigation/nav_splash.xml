@@ -51,11 +51,6 @@
         android:label="SelectCategoryFragment"
         tools:layout="@layout/fragment_select_category">
 
-        <argument
-            android:name="userName"
-            android:defaultValue="오지코인"
-            app:argType="string" />
-
         <action
             android:id="@+id/action_main"
             app:destination="@id/main_dest"
@@ -65,6 +60,14 @@
             app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/nav_splash"
             app:popUpToInclusive="true" />
+
+        <action
+            android:id="@+id/action_completeUserReg"
+            app:destination="@id/completeUserReg_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
 
@@ -96,8 +99,8 @@
     <fragment
         android:id="@+id/registUserInfo_dest"
         android:name="com.ozcoin.cookiepang.ui.registuser.RegistUserInfoFragment"
-        tools:layout="@layout/fragment_regist_user_info"
-        android:label="RegistUserInfoFragment">
+        android:label="RegistUserInfoFragment"
+        tools:layout="@layout/fragment_regist_user_info">
 
         <action
             android:id="@+id/action_select_category"
@@ -108,5 +111,11 @@
             app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
+
+    <fragment
+        android:id="@+id/completeUserReg_dest"
+        android:name="com.ozcoin.cookiepang.ui.registuser.CompleteUserRegFragment"
+        tools:layout="@layout/fragment_complete_user_reg"
+        android:label="CompleteUserRegFragment" />
 
 </navigation>

@@ -7,18 +7,11 @@ import javax.inject.Inject
 @HiltViewModel
 class SelectCategoryFragmentViewModel @Inject constructor() : BaseViewModel() {
 
-    var finishActivity: (() -> Unit)? = null
-
-    private fun finishActivity() {
-        finishActivity?.invoke()
-    }
-
-    private fun navigateToMain() {
-        navigateTo(SelectCategoryFragmentDirections.actionMain())
+    private fun navigateToCompleteUserReg() {
+        navigateTo(SelectCategoryFragmentDirections.actionCompleteUserReg())
     }
 
     fun clickNext() {
-        navigateToMain()
-        finishActivity()
+        navigateToCompleteUserReg()
     }
 }
