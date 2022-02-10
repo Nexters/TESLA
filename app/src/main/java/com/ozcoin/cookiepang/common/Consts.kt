@@ -1,14 +1,13 @@
 package com.ozcoin.cookiepang.common
 
-const val EXTRA_BUNDLE = "EXTRA_BUNDLE"
-
 /*
-    SharedPreferences
+    Preference Datastore
  */
 
-const val PREF_STORE_APP_SETTING = "pref_store_app_setting"
+const val PREF_NAME_APP_SETTING = "pref_name_app_setting"
 const val PREF_THEME_MODE = "pref_theme_mode"
+const val PREF_SHOWED_ON_BOARDING = "pref_showed_on_boarding"
 
-const val PREF_STORE_USER = "pref_store_user"
+const val PREF_NAME_USER = "pref_name_user"
 const val PREF_USER_NAME = "pref_user_name"
-const val PREF_USER_ADDRESS = "pref_user_address"
+const val PREF_USER_KLIP_ADDRESS = "pref_user_klip_address"

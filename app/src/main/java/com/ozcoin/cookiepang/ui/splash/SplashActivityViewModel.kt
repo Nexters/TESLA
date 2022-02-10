@@ -7,6 +7,7 @@ import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.utils.Event
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -19,7 +20,9 @@ class SplashActivityViewModel @Inject constructor(
     val user = User()
     private var userAddress = ""
 
-    fun isUserLogin() = klipAuthRepository.isUserLogin()
+    fun isUserLogin(): Flow<Boolean> {
+        return klipAuthRepository.isUserLogin()
+    }
 
     fun setUserAddress(userAddress: String) {
         this.userAddress = userAddress
@@ -28,7 +31,7 @@ class SplashActivityViewModel @Inject constructor(
     private fun regUser() {
         viewModelScope.launch {
             if (userRepository.regUser(user))
-                klipAuthRepository.saveUserAddress(userAddress)
+                klipAuthRepository.saveUserKlipAddress(userAddress)
         }
     }
 

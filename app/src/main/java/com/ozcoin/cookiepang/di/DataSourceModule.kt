@@ -2,8 +2,9 @@ package com.ozcoin.cookiepang.di
 
 import android.content.Context
 import com.ozcoin.cookiepang.data.klip.KlipAuthDataSource
+import com.ozcoin.cookiepang.data.provider.AppSettingPrefProvider
 import com.ozcoin.cookiepang.data.provider.ResourceProvider
-import com.ozcoin.cookiepang.data.provider.SharedPrefProvider
+import com.ozcoin.cookiepang.data.provider.UserPrefProvider
 import com.ozcoin.cookiepang.data.thememode.ThemeModeLocalDataSource
 import com.ozcoin.cookiepang.data.user.UserRegLocalDataSource
 import dagger.Module
@@ -17,21 +18,21 @@ import dagger.hilt.components.SingletonComponent
 object DataSourceModule {
 
     @Provides
-    fun provideThemeModeLocal(sharedPrefProvider: SharedPrefProvider): ThemeModeLocalDataSource {
-        return ThemeModeLocalDataSource(sharedPrefProvider)
+    fun provideThemeModeLocal(appSettingPrefProvider: AppSettingPrefProvider): ThemeModeLocalDataSource {
+        return ThemeModeLocalDataSource(appSettingPrefProvider)
     }
 
     @Provides
-    fun provideUserRegLocal(sharedPrefProvider: SharedPrefProvider): UserRegLocalDataSource {
-        return UserRegLocalDataSource(sharedPrefProvider)
+    fun provideUserRegLocal(userPrefProvider: UserPrefProvider): UserRegLocalDataSource {
+        return UserRegLocalDataSource(userPrefProvider)
     }
 
     @Provides
     fun provideKlipAuth(
         @ApplicationContext context: Context,
         resourceProvider: ResourceProvider,
-        sharedPrefProvider: SharedPrefProvider
+        userPrefProvider: UserPrefProvider
     ): KlipAuthDataSource {
-        return KlipAuthDataSource(context, resourceProvider, sharedPrefProvider)
+        return KlipAuthDataSource(context, resourceProvider, userPrefProvider)
     }
 }

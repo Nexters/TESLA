@@ -28,15 +28,16 @@ class SplashActivity @Inject constructor() : BaseActivity<ActivitySplashBinding>
     init {
         lifecycleScope.launchWhenStarted {
             withContext(Dispatchers.Default) {
-//                delay(1000)
-                delay(500)
+                delay(1000)
             }
 
-            if (splashActivityViewModel.isUserLogin()) {
-                navController.navigate(SplashFragmentDirections.actionMain())
-                finish()
-            } else {
-                navController.navigate(SplashFragmentDirections.actionLogin())
+            splashActivityViewModel.isUserLogin().collect {
+                if (it) {
+                    navController.navigate(SplashFragmentDirections.actionMain())
+                    finish()
+                } else {
+                    navController.navigate(SplashFragmentDirections.actionLogin())
+                }
             }
         }
     }

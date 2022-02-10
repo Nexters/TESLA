@@ -4,14 +4,16 @@ import androidx.appcompat.app.AppCompatDelegate
 import com.ozcoin.cookiepang.data.thememode.ThemeModeLocalDataSource
 import com.ozcoin.cookiepang.data.thememode.toData
 import com.ozcoin.cookiepang.data.thememode.toDomain
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
 class ThemeModeRepositoryImpl @Inject constructor(
     private val themeModeLocalDataSource: ThemeModeLocalDataSource
 ) : ThemeModeRepository {
 
-    override fun getThemeMode(): ThemeMode {
-        return themeModeLocalDataSource.getThemeMode().toDomain()
+    override fun getThemeMode(): Flow<ThemeMode> {
+        return themeModeLocalDataSource.getThemeMode().map { it.toDomain() }
     }
 
     override fun setThemeMode(themeMode: ThemeMode) {
@@ -24,7 +26,7 @@ class ThemeModeRepositoryImpl @Inject constructor(
         AppCompatDelegate.setDefaultNightMode(mode)
     }
 
-    override fun saveUserSetting(themeMode: ThemeMode) {
+    override suspend fun saveUserSetting(themeMode: ThemeMode) {
         themeModeLocalDataSource.setThemeMode(themeMode.toData())
     }
 }

@@ -2,7 +2,7 @@ package com.ozcoin.cookiepang
 
 import io.kotest.core.spec.style.BehaviorSpec
 
-class KlipAuthTest : BehaviorSpec() {
+class SplashActivityViewModelTest : BehaviorSpec() {
     init {
         Given("유저 정보가 주어졌을때") {
 

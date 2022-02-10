@@ -6,14 +6,14 @@ import com.klipwallet.app2app.api.request.AuthRequest
 import com.klipwallet.app2app.api.response.KlipErrorResponse
 import com.klipwallet.app2app.api.response.KlipResponse
 import com.ozcoin.cookiepang.data.provider.ResourceProvider
-import com.ozcoin.cookiepang.data.provider.SharedPrefProvider
+import com.ozcoin.cookiepang.data.provider.UserPrefProvider
 import timber.log.Timber
 import javax.inject.Inject
 
 class KlipAuthDataSource @Inject constructor(
     context: Context,
     private val resourceProvider: ResourceProvider,
-    private val sharedPrefProvider: SharedPrefProvider
+    private val userPrefProvider: UserPrefProvider
 ) : KlipApi(context, resourceProvider) {
 
     fun prepareRequest(callbackURL: String?, resultCallback: (Boolean) -> Unit) {
@@ -51,15 +51,13 @@ class KlipAuthDataSource @Inject constructor(
         }
     }
 
-    fun getUserAddress(): String {
-        return sharedPrefProvider.getUserAddress() ?: ""
+    fun getUserKlipAddress() = userPrefProvider.getUserKlipAddress()
+
+    suspend fun saveUserKlipAddress(userKlipAddress: String) {
+        userPrefProvider.setUserKlipAddress(userKlipAddress)
     }
 
-    fun saveUserAddress(userAddress: String) {
-        sharedPrefProvider.setUserAddress(userAddress)
-    }
-
-    fun removeUserAddress() {
-        sharedPrefProvider.setUserAddress("")
+    suspend fun removeUserKlipAddress() {
+        userPrefProvider.setUserKlipAddress("")
     }
 }

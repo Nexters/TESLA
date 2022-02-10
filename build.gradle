@@ -18,7 +18,7 @@ buildscript {
         hiltVersion = "2.40"
         firebaseAnalyticsVersion = "20.0.2"
         firebaseMessagingVersion = "23.0.0"
-
+        datastoreVersion = "1.0.0"
 
         espressoCoreVersion = "3.4.0"
         androidTestRulesVersion = "1.4.0"
