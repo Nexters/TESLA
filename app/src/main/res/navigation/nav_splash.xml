@@ -14,10 +14,6 @@
         <action
             android:id="@+id/action_login"
             app:destination="@id/login_dest"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/splash_dest"
             app:popUpToInclusive="true" />
 
@@ -51,7 +47,7 @@
 
     <fragment
         android:id="@+id/selectCategory_dest"
-        android:name="com.ozcoin.cookiepang.ui.selectcategory.SelectCategoryFragment"
+        android:name="com.ozcoin.cookiepang.ui.registuser.SelectCategoryFragment"
         android:label="SelectCategoryFragment"
         tools:layout="@layout/fragment_select_category">
 
@@ -81,11 +77,27 @@
     <fragment
         android:id="@+id/registID_dest"
         android:name="com.ozcoin.cookiepang.ui.registuser.RegistIDFragment"
-        tools:layout="@layout/fragment_regist_id"
         app:enterAnim="@anim/slide_in_right"
         app:exitAnim="@anim/slide_out_left"
         app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right">
+        app:popExitAnim="@anim/slide_out_right"
+        tools:layout="@layout/fragment_regist_id">
+
+        <action
+            android:id="@+id/action_regist_user_info"
+            app:destination="@id/registUserInfo_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/registUserInfo_dest"
+        android:name="com.ozcoin.cookiepang.ui.registuser.RegistUserInfoFragment"
+        tools:layout="@layout/fragment_regist_user_info"
+        android:label="RegistUserInfoFragment">
 
         <action
             android:id="@+id/action_select_category"

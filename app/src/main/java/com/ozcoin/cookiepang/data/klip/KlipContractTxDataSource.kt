@@ -23,7 +23,7 @@ class KlipContractTxDataSource(
             .build()
     }
 
-    override fun getResult(callback: (Boolean) -> Unit) {
+    override fun getResult(callback: (Boolean, String?) -> Unit) {
         klip.getResult(
             requestKey,
             object : KlipCallback<KlipResponse> {

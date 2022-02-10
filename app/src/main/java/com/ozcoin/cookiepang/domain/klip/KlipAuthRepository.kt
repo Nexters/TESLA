@@ -4,11 +4,11 @@ interface KlipAuthRepository {
 
     fun isUserLogin(): Boolean
 
-    fun prepareRequest()
+    suspend fun requestAuth(callbackURL: String?)
 
-    fun requestAuth()
+    fun saveUserAddress(userAddress: String)
 
-    fun getAuthResult(callback: (Boolean) -> Unit)
+    fun removeUserAddress()
 
-    fun logOut()
+    fun getAuthResult(callback: (Boolean, String?) -> Unit)
 }

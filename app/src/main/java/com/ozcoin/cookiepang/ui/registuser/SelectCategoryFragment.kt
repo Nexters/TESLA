@@ -1,4 +1,4 @@
-package com.ozcoin.cookiepang.ui.selectcategory
+package com.ozcoin.cookiepang.ui.registuser
 
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels

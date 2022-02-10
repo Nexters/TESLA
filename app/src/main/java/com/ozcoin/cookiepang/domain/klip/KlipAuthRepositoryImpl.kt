@@ -1,8 +1,12 @@
 package com.ozcoin.cookiepang.domain.klip
 
 import com.ozcoin.cookiepang.data.klip.KlipAuthDataSource
+import kotlinx.coroutines.CompletableDeferred
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class KlipAuthRepositoryImpl(
+class KlipAuthRepositoryImpl @Inject constructor(
     private val klipAuthDataSource: KlipAuthDataSource
 ) : KlipAuthRepository {
 
@@ -10,19 +14,28 @@ class KlipAuthRepositoryImpl(
         return klipAuthDataSource.getUserAddress().isNotEmpty()
     }
 
-    override fun prepareRequest() {
-        klipAuthDataSource.prepareRequest()
+    override suspend fun requestAuth(callbackURL: String?) = withContext(Dispatchers.IO) {
+        val response = CompletableDeferred<Boolean>()
+        klipAuthDataSource.prepareRequest(callbackURL) {
+            response.complete(it)
+        }
+
+        if (response.await()) {
+            withContext(Dispatchers.Main) {
+                klipAuthDataSource.request()
+            }
+        }
     }
 
-    override fun requestAuth() {
-        klipAuthDataSource.request()
+    override fun saveUserAddress(userAddress: String) {
+        klipAuthDataSource.saveUserAddress(userAddress)
     }
 
-    override fun getAuthResult(callback: (Boolean) -> Unit) {
-        klipAuthDataSource.getResult(callback)
-    }
-
-    override fun logOut() {
+    override fun removeUserAddress() {
         klipAuthDataSource.removeUserAddress()
+    }
+
+    override fun getAuthResult(callback: (Boolean, String?) -> Unit) {
+        klipAuthDataSource.getResult(callback)
     }
 }

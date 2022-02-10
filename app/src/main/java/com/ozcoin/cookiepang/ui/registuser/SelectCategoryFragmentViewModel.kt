@@ -1,4 +1,4 @@
-package com.ozcoin.cookiepang.ui.selectcategory
+package com.ozcoin.cookiepang.ui.registuser
 
 import com.ozcoin.cookiepang.base.BaseViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel

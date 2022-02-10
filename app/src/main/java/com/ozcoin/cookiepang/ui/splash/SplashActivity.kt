@@ -28,10 +28,11 @@ class SplashActivity @Inject constructor() : BaseActivity<ActivitySplashBinding>
     init {
         lifecycleScope.launchWhenStarted {
             withContext(Dispatchers.Default) {
-                delay(1000)
+//                delay(1000)
+                delay(500)
             }
 
-            if (splashActivityViewModel.isUserReg()) {
+            if (splashActivityViewModel.isUserLogin()) {
                 navController.navigate(SplashFragmentDirections.actionMain())
                 finish()
             } else {
@@ -45,8 +46,6 @@ class SplashActivity @Inject constructor() : BaseActivity<ActivitySplashBinding>
 
         navController =
             (supportFragmentManager.findFragmentById(binding.fcvNavHost.id) as NavHostFragment).navController
-
-        initObserve()
     }
 
     override fun initObserve() {

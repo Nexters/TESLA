@@ -1,7 +1,6 @@
 package com.ozcoin.cookiepang.data.klip
 
 import android.content.Context
-import android.net.Uri
 import com.klipwallet.app2app.api.Klip
 import com.klipwallet.app2app.api.KlipCallback
 import com.klipwallet.app2app.api.request.KlipRequest
@@ -21,22 +20,6 @@ abstract class KlipApi(
     protected var requestKey = ""
     protected var requestResult = false
 
-    private val bAppInfo = BAppInfo(resourceProvider.getString(R.string.app_name)).apply {
-        val successURL = Uri.Builder()
-            .scheme(resourceProvider.getString(R.string.scheme_klip_auth))
-            .authority(resourceProvider.getString(R.string.host_klip_auth_success))
-            .build()
-            .toString()
-
-        val failURL = Uri.Builder()
-            .scheme(resourceProvider.getString(R.string.scheme_klip_auth))
-            .authority(resourceProvider.getString(R.string.host_klip_auth_fail))
-            .build()
-            .toString()
-
-        callback = BAppDeepLinkCB(successURL, failURL)
-    }
-
     private val prepareCallback = object : KlipCallback<KlipResponse> {
         override fun onSuccess(p0: KlipResponse?) {
             Timber.d("Klip Request Success")
@@ -53,10 +36,33 @@ abstract class KlipApi(
 
     protected lateinit var klipRequest: KlipRequest
 
-    abstract fun getResult(callback: (Boolean) -> Unit)
+    abstract fun getResult(callback: (Boolean, String?) -> Unit)
 
-    protected fun prepare() {
-        klip.prepare(klipRequest, bAppInfo, prepareCallback)
+    protected fun prepare(callbackURL: String? = null, resultCallback: (Boolean) -> Unit) {
+        val bAppInfo = BAppInfo(resourceProvider.getString(R.string.app_name)).apply {
+            if (callbackURL != null)
+                callback = BAppDeepLinkCB(callbackURL, callbackURL)
+        }
+
+        klip.prepare(
+            klipRequest,
+            bAppInfo,
+            object : KlipCallback<KlipResponse> {
+                override fun onSuccess(p0: KlipResponse?) {
+                    Timber.d("Klip Request Success")
+                    p0?.let { res ->
+                        requestKey = res.requestKey
+                        resultCallback(true)
+                    } ?: resultCallback(false)
+                }
+
+                override fun onFail(p0: KlipErrorResponse?) {
+                    Timber.d("Klip Request Fail")
+                    requestKey = ""
+                    resultCallback(false)
+                }
+            }
+        )
     }
 
     fun request() {

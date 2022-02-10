@@ -30,4 +30,8 @@ abstract class BaseViewModel : ViewModel() {
             )
         }
     }
+
+    fun clickBack() {
+        navigateUp()
+    }
 }

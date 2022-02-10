@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.di
 
 import android.content.Context
+import com.ozcoin.cookiepang.data.provider.ResourceProvider
 import com.ozcoin.cookiepang.data.provider.SharedPrefProvider
 import dagger.Module
 import dagger.Provides
@@ -17,5 +18,11 @@ object ProviderModule {
     @Provides
     fun provideSharedPref(@ApplicationContext appContext: Context): SharedPrefProvider {
         return SharedPrefProvider(appContext)
+    }
+
+    @Singleton
+    @Provides
+    fun provideResource(@ApplicationContext appContext: Context): ResourceProvider {
+        return ResourceProvider(appContext)
     }
 }
