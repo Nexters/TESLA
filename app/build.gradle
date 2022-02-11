@@ -21,12 +21,6 @@ android {
         testInstrumentationRunner "com.ozcoin.cookiepang.HiltTestRunner"
     }
 
-    testOptions {
-        unitTests.all {
-            useJUnitPlatform()
-        }
-    }
-
     buildTypes {
         release {
             minifyEnabled false
@@ -35,8 +29,11 @@ android {
     }
 
     testOptions {
-        unitTests.returnDefaultValues = true
+        unitTests.all {
+            useJUnitPlatform()
+        }
     }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -91,10 +88,10 @@ dependencies {
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpLoggingVersion"
 
-    //Timber
+    // Timber
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"
 
-    //Navigation
+    // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$rootProject.navigationVersion"
     implementation "androidx.navigation:navigation-ui-ktx:$rootProject.navigationVersion"
 
@@ -102,6 +99,9 @@ dependencies {
     testImplementation "io.kotest:kotest-assertions-core:$rootProject.kotestVersion"
 
     testImplementation "io.mockk:mockk:$rootProject.mockkVersion"
+    testImplementation "io.mockk:mockk-agent-jvm:$rootProject.mockkVersion"
+    androidTestImplementation "io.mockk:mockk-android:$rootProject.mockkVersion"
+    implementation "org.jetbrains.kotlin:kotlin-reflect:$rootProject.kotlinVersion"
 
     // hilt
     implementation "com.google.dagger:hilt-android:$rootProject.hiltVersion"

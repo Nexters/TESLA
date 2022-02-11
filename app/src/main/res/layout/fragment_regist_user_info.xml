@@ -60,7 +60,7 @@
             android:text="@={user.dateOfBirth}"
             android:imeOptions="actionNext"
             android:inputType="date"
-            android:maxLength="15"
+            android:maxLength="10"
             app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
             app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
             app:layout_constraintTop_toBottomOf="@+id/tv_date_of_birth_label" />
@@ -86,7 +86,7 @@
             android:text="@={user.mbti}"
             android:imeOptions="actionNext"
             android:inputType="text"
-            android:maxLength="15"
+            android:maxLength="4"
             app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
             app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
             app:layout_constraintTop_toBottomOf="@+id/tv_mbti_label" />
@@ -109,7 +109,7 @@
             android:layout_marginTop="6dp"
             android:autofillHints="username"
             android:hint="Music"
-            android:text="@={user.mbti}"
+            android:text="@={user.hobby}"
             android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLength="15"

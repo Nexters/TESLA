@@ -62,6 +62,9 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
     }
 
     override fun initListener() {
+        binding.includeTitleLayout.ivBackBtn.setOnClickListener {
+            selectCategoryFragmentViewModel.clickBack()
+        }
     }
 
     override fun init() {
