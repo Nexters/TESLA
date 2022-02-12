@@ -3,7 +3,6 @@ package com.ozcoin.cookiepang.ui.splash
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseActivity
@@ -14,6 +13,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -23,7 +23,6 @@ class SplashActivity @Inject constructor() : BaseActivity<ActivitySplashBinding>
     }
 
     private val splashActivityViewModel by viewModels<SplashActivityViewModel>()
-    private lateinit var navController: NavController
 
     init {
         lifecycleScope.launchWhenStarted {
@@ -32,11 +31,11 @@ class SplashActivity @Inject constructor() : BaseActivity<ActivitySplashBinding>
             }
 
             splashActivityViewModel.isUserLogin().collect {
+                Timber.d("isUserLogin : $it")
                 if (it) {
-                    navController.navigate(SplashFragmentDirections.actionMain())
-                    finish()
+                    splashActivityViewModel.navigateToMain()
                 } else {
-                    navController.navigate(SplashFragmentDirections.actionLogin())
+                    splashActivityViewModel.navigateToLogin()
                 }
             }
         }

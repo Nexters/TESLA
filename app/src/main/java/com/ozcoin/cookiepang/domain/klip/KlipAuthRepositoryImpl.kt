@@ -14,7 +14,7 @@ class KlipAuthRepositoryImpl @Inject constructor(
 
     override fun isUserLogin(): Flow<Boolean> {
         return klipAuthDataSource.getUserKlipAddress().map {
-            it?.isNotEmpty() ?: false
+            it.isNotEmpty()
         }
     }
 

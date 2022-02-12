@@ -7,6 +7,8 @@ import androidx.annotation.LayoutRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import com.ozcoin.cookiepang.utils.Event
 import timber.log.Timber
 
@@ -15,6 +17,8 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     protected val binding: T by lazy {
         DataBindingUtil.setContentView(this, getLayoutRes())
     }
+
+    protected lateinit var navController: NavController
 
     @LayoutRes
     protected abstract fun getLayoutRes(): Int
@@ -67,6 +71,16 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
                     }
                 }
             }
+            is Event.Nav -> {
+                when (event) {
+                    is Event.Nav.To -> {
+                        handleNavTo(event.action)
+                    }
+                    is Event.Nav.Up -> {
+                        handleNavUp()
+                    }
+                }
+            }
         }
     }
 
@@ -81,5 +95,15 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     override fun finish() {
         super.finish()
         overridePendingTransition(0, 0)
+    }
+
+    private fun handleNavTo(action: NavDirections) {
+        Timber.d("navigate to : ${action.javaClass.simpleName}")
+        navController.navigate(action)
+    }
+
+    private fun handleNavUp() {
+        Timber.d("navigate Up")
+        navController.navigateUp()
     }
 }

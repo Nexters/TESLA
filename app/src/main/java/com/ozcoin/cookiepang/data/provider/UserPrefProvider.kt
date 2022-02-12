@@ -33,6 +33,6 @@ class UserPrefProvider @Inject constructor(
                 throw exception
             }
         }.map {
-            it[userKlipAddressKey]
+            it[userKlipAddressKey] ?: ""
         }
 }

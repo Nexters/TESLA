@@ -28,6 +28,15 @@ class SplashActivityViewModel @Inject constructor(
         this.userAddress = userAddress
     }
 
+    fun navigateToLogin() {
+        navigateTo(SplashFragmentDirections.actionLogin())
+    }
+
+    fun navigateToMain() {
+        navigateTo(SplashFragmentDirections.actionMain())
+        finishActivity()
+    }
+
     private fun regUser() {
         viewModelScope.launch {
             if (userRepository.regUser(user))
