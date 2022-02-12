@@ -34,5 +34,6 @@ class UserPrefProvider @Inject constructor(
             }
         }.map {
             it[userKlipAddressKey] ?: ""
+            "asdf"
         }
 }

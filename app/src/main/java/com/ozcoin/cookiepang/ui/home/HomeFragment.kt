@@ -1,17 +1,21 @@
 package com.ozcoin.cookiepang.ui.home
 
-import android.os.Bundle
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ozcoin.cookiepang.R
-import com.ozcoin.cookiepang.adapter.CategoryListAdapter
 import com.ozcoin.cookiepang.adapter.FeedListAdapter
+import com.ozcoin.cookiepang.adapter.UserCategoryListAdapter
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentHomeBinding
+import com.ozcoin.cookiepang.extensions.toDp
 import com.ozcoin.cookiepang.ui.MainActivityViewModel
+import com.ozcoin.cookiepang.ui.divider.SingleLineItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
@@ -34,29 +38,19 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             layoutManager = LinearLayoutManager(requireContext()).apply {
                 orientation = LinearLayoutManager.HORIZONTAL
             }
-            adapter = CategoryListAdapter()
+            adapter = UserCategoryListAdapter()
         }
     }
 
     private fun setUpFeedList() {
         with(binding.rvFeed) {
-            addItemDecoration(DividerItemDecoration(requireContext(), LinearLayoutManager.VERTICAL))
+            addItemDecoration(
+                SingleLineItemDecoration(
+                    1.toDp(),
+                    ContextCompat.getColor(requireContext(), R.color.gray_30_sur2_bg2)
+                )
+            )
             adapter = FeedListAdapter()
-        }
-    }
-
-    override fun onSaveInstanceState(outState: Bundle) {
-        super.onSaveInstanceState(outState)
-
-        outState.run {
-            putParcelable(
-                KEY_VIEW_STATE_CATEGORY_LIST,
-                binding.rvCategory.layoutManager?.onSaveInstanceState()
-            )
-            putParcelable(
-                KEY_VIEW_STATE_FEED_LIST,
-                binding.rvFeed.layoutManager?.onSaveInstanceState()
-            )
         }
     }
 
@@ -96,18 +90,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
+    override fun initView() {
+        with(binding) {
+        }
+
+        setUpCategoryList()
+        setUpFeedList()
+    }
+
     override fun initListener() {
+        homeFragmentViewModel.sendUiState = mainActivityViewModel::sendUiState
     }
 
     override fun initObserve() {
+        with(homeFragmentViewModel) {
+            lifecycleScope.launch {
+                eventFlow.collect { handleEvent(it) }
+            }
+        }
     }
 
     override fun init() {
-    }
-
-    override fun initView() {
-        animSlideUpContents()
-        setUpCategoryList()
-        setUpFeedList()
     }
 }

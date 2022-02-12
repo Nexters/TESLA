@@ -6,6 +6,8 @@ import com.ozcoin.cookiepang.domain.thememode.ThemeModeRepository
 import com.ozcoin.cookiepang.domain.thememode.ThemeModeRepositoryImpl
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.domain.user.UserRepositoryImpl
+import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
+import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -23,4 +25,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindKlipAuthRepository(impl: KlipAuthRepositoryImpl): KlipAuthRepository
+
+    @Binds
+    abstract fun bindUserCategoryRepository(impl: UserCategoryRepositoryImpl): UserCategoryRepository
 }

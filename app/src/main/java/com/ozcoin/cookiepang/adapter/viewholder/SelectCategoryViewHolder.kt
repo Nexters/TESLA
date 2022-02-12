@@ -4,7 +4,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ozcoin.cookiepang.databinding.ItemSelectCategoryBinding
 import com.ozcoin.cookiepang.domain.selectcategory.SelectCategory
 
-class SCLAViewHolder(
+class SelectCategoryViewHolder(
     private val binding: ItemSelectCategoryBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 

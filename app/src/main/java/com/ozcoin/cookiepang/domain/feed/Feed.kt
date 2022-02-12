@@ -1,9 +1,11 @@
 package com.ozcoin.cookiepang.domain.feed
 
 data class Feed(
+    val isHidden: Boolean,
+    val userThumbnailUrl: String,
+    val createdTimeStamp: String,
     val question: String,
-    val contents: String,
-    val thumnail: ByteArray ? = null,
+    val answer: String?,
     val viewCount: Int,
-    val price: Int
+    val hammerPrice: Int
 )

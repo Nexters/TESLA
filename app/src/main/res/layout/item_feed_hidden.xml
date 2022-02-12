@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="url"
+            type="String" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/space_contents_left"
+        android:paddingTop="@dimen/space_contents_top"
+        android:paddingEnd="@dimen/space_contents_right"
+        android:paddingBottom="@dimen/space_contents_bottom">
+
+        <ImageView
+            android:id="@+id/iv_user_thumbnail"
+            android:layout_width="40dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="10dp"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            bind:layout_constraintTop_toTopOf="parent"
+            bind:loadCircleImg="@{url}"
+            bind:setErrorImg="@{@drawable/ic_circle_user_profile_default}"
+            tools:background="@drawable/ic_circle_user_profile_default" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_user_name"
+            style="@style/TextAppearance.body_02_medium"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="8dp"
+            android:ellipsize="end"
+            android:gravity="center|start"
+            android:lines="1"
+            android:text="Username_Maxcase"
+            android:textColor="@color/gray_90_t1"
+            app:layout_constraintBottom_toTopOf="@+id/tv_time_stamp"
+            app:layout_constraintLeft_toRightOf="@+id/iv_user_thumbnail"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/iv_user_thumbnail"
+            tools:text="Username_MaxcaseUsername_MaxcaseUsername_Maxcase" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_time_stamp"
+            style="@style/TextAppearance.caption_regular"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginLeft="8dp"
+            android:ellipsize="end"
+            android:gravity="center|start"
+            android:lines="1"
+            android:text="32 min ago"
+            android:textColor="@color/gray_60_t2"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_user_thumbnail"
+            app:layout_constraintLeft_toRightOf="@+id/iv_user_thumbnail"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_name"
+            tools:text="32 min ago" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_contents_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:paddingTop="12dp"
+            android:paddingBottom="12dp"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:background="@drawable/bg_feed_contents"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_user_thumbnail">
+
+            <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+                android:id="@+id/tv_q_mark"
+                style="@style/TextAppearance.body_01_bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_90_t1"
+                android:text="Q."
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toLeftOf="@id/tv_question"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+                android:id="@+id/tv_question"
+                style="@style/TextAppearance.body_01_medium"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/gray_90_t1"
+                android:layout_marginStart="4dp"
+                app:layout_constraintLeft_toRightOf="@+id/tv_q_mark"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:text="My real secret_xxxxxxxxxxxxxxxxxxxx"
+                tools:text="My real secret_xxxxxxxxxxxxxxxxxxxx" />
+
+            <androidx.constraintlayout.utils.widget.ImageFilterView
+                android:id="@+id/iv_ic_comment"
+                android:layout_marginTop="12dp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_question"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:src="@drawable/ic_coment_24px"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <ImageView
+                android:id="@+id/iv_ic_cookie_hidden"
+                android:layout_marginStart="8dp"
+                app:layout_constraintLeft_toRightOf="@+id/iv_ic_comment"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/iv_ic_comment"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:padding="8dp"
+                android:background="@drawable/ic_feed_hidden_cookie_blue"
+                android:layout_width="160dp"
+                android:layout_height="112dp" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <ImageView
+            android:id="@+id/iv_ic_view"
+            android:src="@drawable/ic_view_24px"
+            android:layout_marginTop="16dp"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintHorizontal_bias="0"
+            app:layout_constraintTop_toBottomOf="@+id/cl_contents_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv_view_cnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_view_cnt"
+            style="@style/TextAppearance.caption_bold"
+            tools:text="234"
+            android:text="234"
+            android:textColor="@color/gray_60_t2"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="@+id/iv_ic_view"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_ic_view"
+            app:layout_constraintLeft_toRightOf="@+id/iv_ic_view"
+            app:layout_constraintRight_toLeftOf="@+id/iv_ic_hammer"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp" />
+
+        <ImageView
+            android:id="@+id/iv_ic_hammer"
+            android:src="@drawable/ic_hammer_24px"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="12dp"
+            app:layout_constraintTop_toBottomOf="@+id/cl_contents_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tv_view_cnt"
+            app:layout_constraintRight_toLeftOf="@+id/tv_hammer_cnt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_hammer_cnt"
+            style="@style/TextAppearance.caption_bold"
+            tools:text="50"
+            android:text="50"
+            android:textColor="@color/gray_60_t2"
+            android:layout_marginStart="4dp"
+            android:gravity="center"
+            app:layout_constraintTop_toTopOf="@+id/iv_ic_hammer"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_ic_hammer"
+            app:layout_constraintLeft_toRightOf="@+id/iv_ic_hammer"
+            app:layout_constraintRight_toRightOf="parent"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

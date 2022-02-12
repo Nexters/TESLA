@@ -19,7 +19,6 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
     }
 
     override fun init() {
-        animSlideUpContents()
     }
 
     override fun initObserve() {
