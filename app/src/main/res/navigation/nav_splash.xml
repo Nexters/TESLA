@@ -14,10 +14,6 @@
         <action
             android:id="@+id/action_login"
             app:destination="@id/login_dest"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/splash_dest"
             app:popUpToInclusive="true" />
 
@@ -51,14 +47,92 @@
 
     <fragment
         android:id="@+id/selectCategory_dest"
-        android:name="com.ozcoin.cookiepang.ui.selectcategory.SelectCategoryFragment"
+        android:name="com.ozcoin.cookiepang.ui.registuser.SelectCategoryFragment"
         android:label="SelectCategoryFragment"
         tools:layout="@layout/fragment_select_category">
 
-        <argument
-            android:name="userName"
-            android:defaultValue="오지코인"
-            app:argType="string" />
+        <action
+            android:id="@+id/action_completeUserReg"
+            app:destination="@id/completeUserReg_dest"
+            app:popUpTo="@id/nav_splash"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <activity
+        android:id="@+id/main_dest"
+        android:name="com.ozcoin.cookiepang.ui.MainActivity"
+        android:label="MainActivity"
+        tools:layout="@layout/activity_main" />
+
+    <fragment
+        android:id="@+id/registID_dest"
+        android:name="com.ozcoin.cookiepang.ui.registuser.RegistIDFragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        tools:layout="@layout/fragment_regist_id">
+
+        <action
+            android:id="@+id/action_regist_user_info"
+            app:destination="@id/registUserInfo_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/registUserInfo_dest"
+        android:name="com.ozcoin.cookiepang.ui.registuser.RegistUserInfoFragment"
+        android:label="RegistUserInfoFragment"
+        tools:layout="@layout/fragment_regist_user_info">
+
+        <action
+            android:id="@+id/action_select_category"
+            app:destination="@id/selectCategory_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/completeUserReg_dest"
+        android:name="com.ozcoin.cookiepang.ui.registuser.CompleteUserRegFragment"
+        android:label="CompleteUserRegFragment"
+        tools:layout="@layout/fragment_complete_user_reg">
+
+        <action
+            android:id="@+id/action_onBoarding01"
+            app:destination="@id/onBoarding01_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/onBoarding01_dest"
+        android:name="com.ozcoin.cookiepang.ui.onboarding.OnBoarding01Fragment"
+        android:label="OnBoarding01Fragment"
+        tools:layout="@layout/fragment_on_boarding_01">
+
+        <action
+            android:id="@+id/action_onBoarding02"
+            app:destination="@id/onBoarding02_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
         <action
             android:id="@+id/action_main"
@@ -72,28 +146,51 @@
 
     </fragment>
 
-    <activity
-        android:id="@+id/main_dest"
-        android:name="com.ozcoin.cookiepang.ui.MainActivity"
-        android:label="MainActivity"
-        tools:layout="@layout/activity_main" />
-
     <fragment
-        android:id="@+id/registID_dest"
-        android:name="com.ozcoin.cookiepang.ui.registuser.RegistIDFragment"
-        tools:layout="@layout/fragment_regist_id"
-        app:enterAnim="@anim/slide_in_right"
-        app:exitAnim="@anim/slide_out_left"
-        app:popEnterAnim="@anim/slide_in_left"
-        app:popExitAnim="@anim/slide_out_right">
+        android:id="@+id/onBoarding02_dest"
+        android:name="com.ozcoin.cookiepang.ui.onboarding.OnBoarding02Fragment"
+        android:label="OnBoarding02Fragment"
+        tools:layout="@layout/fragment_on_boarding_02">
 
         <action
-            android:id="@+id/action_select_category"
-            app:destination="@id/selectCategory_dest"
+            android:id="@+id/action_onBoarding03"
+            app:destination="@id/onBoarding03_dest"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/action_main"
+            app:destination="@id/main_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/nav_splash"
+            app:popUpToInclusive="true" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/onBoarding03_dest"
+        android:name="com.ozcoin.cookiepang.ui.onboarding.OnBoarding03Fragment"
+        android:label="OnBoarding03Fragment"
+        app:enterAnim="@anim/slide_in_right"
+        app:exitAnim="@anim/slide_out_left"
+        app:popEnterAnim="@anim/slide_in_left"
+        app:popExitAnim="@anim/slide_out_right"
+        tools:layout="@layout/fragment_on_boarding_03" >
+
+        <action
+            android:id="@+id/action_main"
+            app:destination="@id/main_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/nav_splash"
+            app:popUpToInclusive="true" />
 
     </fragment>
 

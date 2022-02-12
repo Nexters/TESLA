@@ -1,14 +1,16 @@
 package com.ozcoin.cookiepang.domain.klip
 
+import kotlinx.coroutines.flow.Flow
+
 interface KlipAuthRepository {
 
-    fun isUserLogin(): Boolean
+    fun isUserLogin(): Flow<Boolean>
 
-    fun prepareRequest()
+    suspend fun requestAuth(callbackURL: String?)
 
-    fun requestAuth()
+    suspend fun saveUserKlipAddress(userKlipAddress: String)
 
-    fun getAuthResult(callback: (Boolean) -> Unit)
+    suspend fun removeUserKlipAddress()
 
-    fun logOut()
+    fun getAuthResult(callback: (Boolean, String?) -> Unit)
 }

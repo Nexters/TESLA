@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="user"
+            type="com.ozcoin.cookiepang.domain.user.User" />
+
+        <variable
+            name="viewModel"
+            type="com.ozcoin.cookiepang.ui.registuser.RegistUserInfoFragmentViewModel" />
+
+        <variable
+            name="showSkipBtn"
+            type="Boolean" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/include_title_layout"
+            layout="@layout/layout_title_splash"
+            bind:showSkipBtn="@{showSkipBtn}" />
+
+        <include layout="@layout/layout_contents_guide_line" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_input_your_info"
+            style="@style/TextAppearance.head_02_bold"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Input\nYour information"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:layout_constraintTop_toBottomOf="@+id/include_title_layout" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_date_of_birth_label"
+            style="@style/TextAppearance.caption_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="date of birth"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintTop_toBottomOf="@+id/tv_input_your_info" />
+
+        <EditText
+            android:id="@+id/et_date_of_birth"
+            style="@style/EditTextAppearance.double_02"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:autofillHints="username"
+            android:hint="1994-10-21"
+            android:text="@={user.dateOfBirth}"
+            android:imeOptions="actionNext"
+            android:inputType="date"
+            android:maxLength="10"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:layout_constraintTop_toBottomOf="@+id/tv_date_of_birth_label" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_mbti_label"
+            style="@style/TextAppearance.caption_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="MBTI"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintTop_toBottomOf="@+id/et_date_of_birth" />
+
+        <EditText
+            android:id="@+id/et_mbti"
+            style="@style/EditTextAppearance.double_02"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:autofillHints="username"
+            android:hint="ENTP"
+            android:text="@={user.mbti}"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLength="4"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:layout_constraintTop_toBottomOf="@+id/tv_mbti_label" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_hobby_label"
+            style="@style/TextAppearance.caption_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Hobby"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintTop_toBottomOf="@+id/et_mbti" />
+
+        <EditText
+            android:id="@+id/et_hobby"
+            style="@style/EditTextAppearance.double_02"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:autofillHints="username"
+            android:hint="Music"
+            android:text="@={user.hobby}"
+            android:imeOptions="actionDone"
+            android:inputType="text"
+            android:maxLength="15"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:layout_constraintTop_toBottomOf="@+id/tv_hobby_label" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            style="@style/TextAppearance.body_02_regular"
+            android:textColor="@color/gray_50_t3_ic1"
+            android:text="@string/regist_user_info_tou_description"
+            android:gravity="center"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:layout_constraintBottom_toTopOf="@+id/tv_regist_id_btn"
+            android:layout_marginBottom="16dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_regist_id_btn"
+            style="@style/TextAppearance.button_large_brand_normal"
+            android:layout_width="0dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="40dp"
+            android:onClick="@{() -> viewModel.clickRegistID()}"
+            android:text="Regist ID"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

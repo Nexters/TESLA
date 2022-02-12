@@ -38,7 +38,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     ): View? {
         val localInflater = inflater.cloneInContext(ContextThemeWrapper(requireActivity(), R.style.Base_Theme_CookiePang))
         binding = DataBindingUtil.inflate(localInflater, getLayoutRes(), container, false)
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
 
         return binding.root
     }

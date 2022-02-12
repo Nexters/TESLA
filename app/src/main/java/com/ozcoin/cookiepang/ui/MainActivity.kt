@@ -17,7 +17,6 @@ import timber.log.Timber
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private val mainVm by viewModels<MainActivityViewModel>()
-    private lateinit var navController: NavController
 
     override fun getLayoutRes(): Int {
         return R.layout.activity_main

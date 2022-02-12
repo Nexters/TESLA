@@ -1,7 +1,9 @@
 package com.ozcoin.cookiepang.di
 
 import android.content.Context
-import com.ozcoin.cookiepang.data.provider.SharedPrefProvider
+import com.ozcoin.cookiepang.data.provider.AppSettingPrefProvider
+import com.ozcoin.cookiepang.data.provider.ResourceProvider
+import com.ozcoin.cookiepang.data.provider.UserPrefProvider
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -15,7 +17,19 @@ object ProviderModule {
 
     @Singleton
     @Provides
-    fun provideSharedPref(@ApplicationContext appContext: Context): SharedPrefProvider {
-        return SharedPrefProvider(appContext)
+    fun provideResource(@ApplicationContext appContext: Context): ResourceProvider {
+        return ResourceProvider(appContext)
+    }
+
+    @Singleton
+    @Provides
+    fun provideAppSettingPref(@ApplicationContext appContext: Context): AppSettingPrefProvider {
+        return AppSettingPrefProvider(appContext)
+    }
+
+    @Singleton
+    @Provides
+    fun provideUserPref(@ApplicationContext appContext: Context): UserPrefProvider {
+        return UserPrefProvider(appContext)
     }
 }

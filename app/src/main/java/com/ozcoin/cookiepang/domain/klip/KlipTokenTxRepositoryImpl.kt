@@ -14,6 +14,6 @@ class KlipTokenTxRepositoryImpl(
             sendToken.amount
         )
         klipTokenTxDataSource.request()
-        klipTokenTxDataSource.getResult(callback)
+//        klipTokenTxDataSource.getResult(callback)
     }
 }
