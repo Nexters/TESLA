@@ -39,11 +39,7 @@ class OnBoarding02Fragment : BaseFragment<FragmentOnBoarding02Binding>() {
     }
 
     override fun initObserve() {
-        with(onBoarding02FragmentViewModel) {
-            lifecycleScope.launch {
-                eventFlow.collect { handleEvent(it) }
-            }
-        }
+        observeEvent(onBoarding02FragmentViewModel)
     }
 
     override fun init() {

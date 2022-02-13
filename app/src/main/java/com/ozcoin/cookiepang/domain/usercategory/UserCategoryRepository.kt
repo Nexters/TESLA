@@ -1,6 +1,8 @@
 package com.ozcoin.cookiepang.domain.usercategory
 
+import com.ozcoin.cookiepang.utils.DataResult
+
 interface UserCategoryRepository {
 
-    suspend fun getUserCategory(): List<UserCategory>
+    suspend fun getUserCategory(): DataResult<List<UserCategory>>
 }

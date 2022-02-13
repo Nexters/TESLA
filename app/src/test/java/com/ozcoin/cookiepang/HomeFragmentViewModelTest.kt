@@ -1,64 +1,64 @@
 package com.ozcoin.cookiepang
 
-import com.ozcoin.cookiepang.domain.usercategory.UserCategory
+import com.ozcoin.cookiepang.domain.feed.FeedRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.ui.home.HomeFragmentViewModel
+import com.ozcoin.cookiepang.utils.DataResult
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.spyk
+import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.test.runBlockingTest
+import kotlinx.coroutines.test.setMain
 
 @ExperimentalCoroutinesApi
 class HomeFragmentViewModelTest : BehaviorSpec({
 
     val testDispatcher = TestCoroutineDispatcher()
+    Dispatchers.setMain(testDispatcher)
 
     val userCategoryRepository = mockk<UserCategoryRepository>()
+    val feedRepository = mockk<FeedRepository>()
     var viewModel = HomeFragmentViewModel(
-        userCategoryRepository
+        userCategoryRepository, feedRepository
     )
 
-    Given("뷰모델이 초기 생성 되어 유저가 선택한 카테고리를 불러올 때") {
-
-        When("로드에 성공하면") {
-
-            coEvery {
-                userCategoryRepository.getUserCategory()
-            } coAnswers {
-                emptyList()
-            }
-
-            viewModel = spyk(
-                HomeFragmentViewModel(
-                    userCategoryRepository
-                )
-            )
-
-            Then("All 로 데이터를 쿼리하여 리스트에 보여준다") {
-                UserCategory.typeAll()
-            }
-        }
+    Given("유저가 선택한 카테고리를 불러올 때") {
 
         When("로드에 실패하면") {
 
             coEvery {
                 userCategoryRepository.getUserCategory()
             } coAnswers {
-                emptyList()
+                DataResult.OnFail
+            } coAndThen {
+                DataResult.OnFail
+            } coAndThen {
+                DataResult.OnFail
             }
 
             viewModel = spyk(
                 HomeFragmentViewModel(
-                    userCategoryRepository
+                    userCategoryRepository, feedRepository
                 )
             )
 
-            Then("3회 재시도 한다") {
+            runBlockingTest {
+                viewModel.getUserCategoryList(1)
+                pauseDispatcher()
+
+                Then("3회 재시도 한다") {
+//                verify(exactly = 3) { viewModel.loadUserCategory() }
+
+                    resumeDispatcher()
+                    verify { viewModel.getUserCategoryList() }
+                }
             }
         }
     }
@@ -66,6 +66,7 @@ class HomeFragmentViewModelTest : BehaviorSpec({
     afterTest {
         clearMocks(viewModel)
         clearMocks(userCategoryRepository)
+        clearMocks(feedRepository)
 
         Dispatchers.resetMain()
         testDispatcher.cleanupTestCoroutines()

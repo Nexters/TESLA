@@ -5,10 +5,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
-            name="url"
-            type="String" />
+            name="feed"
+            type="com.ozcoin.cookiepang.domain.feed.Feed" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -27,7 +26,7 @@
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintLeft_toLeftOf="parent"
             bind:layout_constraintTop_toTopOf="parent"
-            bind:loadCircleImg="@{url}"
+            bind:loadCircleImg="@{feed.userThumbnailUrl}"
             bind:setErrorImg="@{@drawable/ic_circle_user_profile_default}"
             tools:background="@drawable/ic_circle_user_profile_default" />
 
@@ -36,11 +35,11 @@
             style="@style/TextAppearance.body_02_medium"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:ellipsize="end"
             android:gravity="center|start"
             android:lines="1"
-            android:text="Username_Maxcase"
+            android:text="@{feed.userProfileId}"
             android:textColor="@color/gray_90_t1"
             app:layout_constraintBottom_toTopOf="@+id/tv_time_stamp"
             app:layout_constraintLeft_toRightOf="@+id/iv_user_thumbnail"
@@ -53,11 +52,11 @@
             style="@style/TextAppearance.caption_regular"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
             android:ellipsize="end"
             android:gravity="center|start"
             android:lines="1"
-            android:text="32 min ago"
+            android:text="@{feed.createdTimeStamp}"
             android:textColor="@color/gray_60_t2"
             app:layout_constraintBottom_toBottomOf="@+id/iv_user_thumbnail"
             app:layout_constraintLeft_toRightOf="@+id/iv_user_thumbnail"
@@ -101,7 +100,7 @@
                 app:layout_constraintLeft_toRightOf="@+id/tv_q_mark"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                android:text="My real secret_xxxxxxxxxxxxxxxxxxxx"
+                android:text="@{feed.question}"
                 tools:text="My real secret_xxxxxxxxxxxxxxxxxxxx" />
 
             <androidx.constraintlayout.utils.widget.ImageFilterView
@@ -121,6 +120,8 @@
                 app:layout_constraintTop_toTopOf="@+id/iv_ic_comment"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:padding="8dp"
+                bind:setCookieCardStyle="@{feed.cookieCardStyle}"
+                bind:isHidden="@{feed.hidden}"
                 android:background="@drawable/bg_feed_contents_answer_pink"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" >
@@ -148,7 +149,7 @@
                     app:layout_constraintLeft_toRightOf="@+id/tv_a_mark"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    android:text="My real secret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxx"
+                    android:text="@{feed.answer}"
                     tools:text="My real secret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxx" />
 
 
@@ -173,7 +174,7 @@
             android:id="@+id/tv_view_cnt"
             style="@style/TextAppearance.caption_bold"
             tools:text="234"
-            android:text="234"
+            android:text="@{String.valueOf(feed.viewCount)}"
             android:textColor="@color/gray_60_t2"
             android:layout_marginStart="4dp"
             android:gravity="center"
@@ -200,7 +201,7 @@
             android:id="@+id/tv_hammer_cnt"
             style="@style/TextAppearance.caption_bold"
             tools:text="50"
-            android:text="50"
+            android:text="@{String.valueOf(feed.hammerPrice)}"
             android:textColor="@color/gray_60_t2"
             android:layout_marginStart="4dp"
             android:gravity="center"

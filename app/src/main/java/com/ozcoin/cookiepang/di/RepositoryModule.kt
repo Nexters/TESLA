@@ -1,5 +1,7 @@
 package com.ozcoin.cookiepang.di
 
+import com.ozcoin.cookiepang.domain.feed.FeedRepository
+import com.ozcoin.cookiepang.domain.feed.FeedRepositoryImpl
 import com.ozcoin.cookiepang.domain.klip.KlipAuthRepository
 import com.ozcoin.cookiepang.domain.klip.KlipAuthRepositoryImpl
 import com.ozcoin.cookiepang.domain.thememode.ThemeModeRepository
@@ -28,4 +30,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindUserCategoryRepository(impl: UserCategoryRepositoryImpl): UserCategoryRepository
+
+    @Binds
+    abstract fun bindFeedRepository(impl: FeedRepositoryImpl): FeedRepository
 }

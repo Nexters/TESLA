@@ -10,10 +10,13 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.utils.Event
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
@@ -50,6 +53,12 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         initListener()
         initObserve()
         init()
+    }
+
+    protected fun observeEvent(viewModel: BaseViewModel) {
+        lifecycleScope.launch {
+            viewModel.eventFlow.collect { handleEvent(it) }
+        }
     }
 
     protected fun animSlideUpContents() {

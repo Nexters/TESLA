@@ -10,23 +10,31 @@ abstract class FeedViewHolder(
     private val binding: ViewDataBinding
 ) : RecyclerView.ViewHolder(binding.root) {
     companion object {
-        val VIEW_TYPE_HIDDEN = 8810
-        val VIEW_TYPE_OPENED = 8811
+        const val VIEW_TYPE_HIDDEN = 8810
+        const val VIEW_TYPE_OPENED = 8811
     }
 
-    abstract fun bind(feed: Feed)
+    abstract fun bind(feed: Feed, onClick: (Feed) -> Unit)
 }
 
-class FLAOpenedViewHolder(
+class FeedOpenedViewHolder(
     private val binding: ItemFeedOpenedBinding
 ) : FeedViewHolder(binding) {
-    override fun bind(feed: Feed) {
+    override fun bind(feed: Feed, onClick: (Feed) -> Unit) {
+        with(binding) {
+            this.feed = feed
+            root.setOnClickListener { onClick(feed) }
+        }
     }
 }
 
-class FLAHiddenViewHolder(
+class FeedHiddenViewHolder(
     private val binding: ItemFeedHiddenBinding
 ) : FeedViewHolder(binding) {
-    override fun bind(feed: Feed) {
+    override fun bind(feed: Feed, onClick: (Feed) -> Unit) {
+        with(binding) {
+            this.feed = feed
+            root.setOnClickListener { onClick(feed) }
+        }
     }
 }

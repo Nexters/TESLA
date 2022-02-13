@@ -264,7 +264,7 @@
         <item name="android:inputType">textMultiLine</item>
     </style>
 
-    <style name="ToggleAppearance.category_stroke" parent="TextAppearance.body_02_regular" >
+    <style name="ToggleAppearance.category_stroke" parent="TextAppearance.body_02_bold" >
         <item name="android:textColor">@android:color/white</item>
         <item name="android:button">@null</item>
         <item name="android:layout_height">40dp</item>

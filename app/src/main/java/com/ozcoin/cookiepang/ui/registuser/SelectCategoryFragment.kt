@@ -3,7 +3,6 @@ package com.ozcoin.cookiepang.ui.registuser
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.adapter.SelectCategoryListAdapter
 import com.ozcoin.cookiepang.base.BaseFragment
@@ -12,8 +11,6 @@ import com.ozcoin.cookiepang.domain.selectcategory.SelectCategory
 import com.ozcoin.cookiepang.extensions.toDp
 import com.ozcoin.cookiepang.ui.divider.SingleLineItemDecoration
 import com.ozcoin.cookiepang.ui.splash.SplashActivityViewModel
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
 
 class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
 
@@ -56,9 +53,7 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
     }
 
     override fun initObserve() {
-        lifecycleScope.launch {
-            selectCategoryFragmentViewModel.eventFlow.collect { handleEvent(it) }
-        }
+        observeEvent(selectCategoryFragmentViewModel)
     }
 
     override fun initListener() {

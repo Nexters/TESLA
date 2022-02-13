@@ -4,41 +4,65 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.SimpleItemAnimator
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.adapter.FeedListAdapter
 import com.ozcoin.cookiepang.adapter.UserCategoryListAdapter
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentHomeBinding
+import com.ozcoin.cookiepang.domain.feed.Feed
+import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.extensions.toDp
 import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.ui.divider.SingleLineItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     companion object {
-        private const val KEY_VIEW_STATE_CATEGORY_LIST = "KEY_VIEW_STATE_CATEGORY_LIST"
-        private const val KEY_VIEW_STATE_SCROLL_POS = "KEY_VIEW_STATE_SCROLL_POS"
+        private const val KEY_VIEW_STATE_USER_CATEGORY_LIST = "KEY_VIEW_STATE_CATEGORY_LIST"
         private const val KEY_VIEW_STATE_FEED_LIST = "KEY_VIEW_STATE_FEED_LIST"
+        private const val KEY_VIEW_DATA_USER_CATEGORY_LIST = "KEY_VIEW_DATA_USER_CATEGORY_LIST"
+        private const val KEY_VIEW_DATA_FEED_LIST = "KEY_VIEW_DATA_FEED_LIST"
     }
 
     private val mainActivityViewModel by activityViewModels<MainActivityViewModel>()
     private val homeFragmentViewModel by viewModels<HomeFragmentViewModel>()
 
+    private lateinit var userCategoryListAdapter: UserCategoryListAdapter
+    private lateinit var feedListAdapter: FeedListAdapter
+
     override fun getLayoutRes(): Int {
         return R.layout.fragment_home
     }
 
-    private fun setUpCategoryList() {
+    private fun setUpUserCategoryList() {
         with(binding.rvCategory) {
             layoutManager = LinearLayoutManager(requireContext()).apply {
                 orientation = LinearLayoutManager.HORIZONTAL
             }
-            adapter = UserCategoryListAdapter()
+            userCategoryListAdapter = UserCategoryListAdapter().apply {
+                (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
+
+                onItemClick = {
+                    if (it != null) {
+                        homeFragmentViewModel.getFeedList(it)
+                        binding.rvFeed.smoothScrollToPosition(0)
+                    } else {
+                        mainActivityViewModel.hideBtmNavView()
+                        homeFragmentViewModel.navigateToSelectCategory()
+                    }
+                }
+            }
+            adapter = userCategoryListAdapter
         }
     }
 
@@ -50,27 +74,26 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     ContextCompat.getColor(requireContext(), R.color.gray_30_sur2_bg2)
                 )
             )
-            adapter = FeedListAdapter()
+            feedListAdapter = FeedListAdapter()
+            adapter = feedListAdapter
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-
-        restoreListState()
-    }
-
     private fun restoreListState() {
+
         mainActivityViewModel.savedStateHandle.let {
+            userCategoryListAdapter.updateList(
+                it[KEY_VIEW_DATA_USER_CATEGORY_LIST] ?: emptyList()
+            )
+            feedListAdapter.updateList(
+                it[KEY_VIEW_DATA_FEED_LIST] ?: emptyList()
+            )
             binding.rvFeed.layoutManager?.onRestoreInstanceState(
                 it.get(KEY_VIEW_STATE_FEED_LIST)
             )
             binding.rvCategory.layoutManager?.onRestoreInstanceState(
-                it.get(KEY_VIEW_STATE_CATEGORY_LIST)
+                it.get(KEY_VIEW_STATE_USER_CATEGORY_LIST)
             )
-//            it.get<Int>(KEY_VIEW_STATE_SCROLL_POS)?.let { posY ->
-//                binding.nsvContainerLayout.scrollY = posY
-//            }
         }
     }
 
@@ -80,21 +103,75 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun saveListState() {
-        mainActivityViewModel.savedStateHandle.run {
-            set(KEY_VIEW_STATE_SCROLL_POS, binding.nsvContainerLayout.scrollY)
-            set(KEY_VIEW_STATE_FEED_LIST, binding.rvFeed.layoutManager?.onSaveInstanceState())
-            set(
-                KEY_VIEW_STATE_CATEGORY_LIST,
-                binding.rvCategory.layoutManager?.onSaveInstanceState()
-            )
-        }
+        setViewStateUserCategoryList(true)
+        setViewStateFeedList(true)
+        setViewDataFeedList(true)
+        setViewDataUserCategoryList(true)
     }
 
-    override fun initView() {
-        with(binding) {
+    private fun isViewDataLoaded(): Boolean {
+        val feedList = mainActivityViewModel.savedStateHandle.get<List<Feed>>(
+            KEY_VIEW_DATA_USER_CATEGORY_LIST
+        )
+        val userCategoryList = mainActivityViewModel.savedStateHandle.get<List<UserCategory>>(
+            KEY_VIEW_DATA_USER_CATEGORY_LIST
+        )
+
+        return feedList != null && feedList.isNotEmpty()
+                && userCategoryList != null && userCategoryList.isNotEmpty()
+    }
+
+    private fun setViewStateFeedList(saveState: Boolean) {
+        val viewState = if (saveState) binding.rvFeed.layoutManager?.onSaveInstanceState() else null
+
+        mainActivityViewModel.savedStateHandle.set(
+            KEY_VIEW_STATE_FEED_LIST,
+            viewState
+        )
+    }
+
+    private fun setViewStateUserCategoryList(saveState: Boolean) {
+        val viewState = if (saveState) {
+            binding.rvCategory.layoutManager?.onSaveInstanceState()
+        } else {
+            null
         }
 
-        setUpCategoryList()
+        mainActivityViewModel.savedStateHandle.set(
+            KEY_VIEW_STATE_USER_CATEGORY_LIST,
+            viewState
+        )
+    }
+
+    private fun setViewDataUserCategoryList(saveState: Boolean) {
+        val viewData = if (saveState) {
+            userCategoryListAdapter.getUserCategoryList()
+        } else {
+            null
+        }
+
+        mainActivityViewModel.savedStateHandle.set(
+            KEY_VIEW_DATA_USER_CATEGORY_LIST,
+            viewData
+        )
+    }
+
+    private fun setViewDataFeedList(saveState: Boolean) {
+        val viewData = if (saveState) {
+            feedListAdapter.getFeedList()
+        } else {
+            null
+        }
+
+        mainActivityViewModel.savedStateHandle.set(
+            KEY_VIEW_DATA_FEED_LIST,
+            viewData
+        )
+    }
+
+
+    override fun initView() {
+        setUpUserCategoryList()
         setUpFeedList()
     }
 
@@ -103,13 +180,55 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun initObserve() {
-        with(homeFragmentViewModel) {
-            lifecycleScope.launch {
-                eventFlow.collect { handleEvent(it) }
+        observeEvent(homeFragmentViewModel)
+        observeUserCategoryList()
+        observeFeedList()
+    }
+
+    private fun observeUserCategoryList() {
+        lifecycleScope.launch {
+            homeFragmentViewModel.userCategoryList.collect {
+                if (it.isNotEmpty()) {
+                    userCategoryListAdapter.updateList(it)
+                    homeFragmentViewModel.getFeedList(UserCategory.typeAll())
+                }
+            }
+        }
+    }
+
+    private fun observeFeedList() {
+        lifecycleScope.launch {
+            homeFragmentViewModel.feedList.collect {
+                feedListAdapter.updateList(it)
             }
         }
     }
 
     override fun init() {
+        if (itHaveToResetUserCategory()) {
+            Timber.d("is User reset Category")
+            homeFragmentViewModel.getUserCategoryList()
+        } else {
+            if (isViewDataLoaded()) {
+                Timber.d("is view data loaded, so restore view")
+                restoreListState()
+            } else {
+                Timber.d("is not view data loaded, so get list data")
+                homeFragmentViewModel.getUserCategoryList()
+            }
+        }
+    }
+
+    private fun itHaveToResetUserCategory(): Boolean {
+        val args by navArgs<HomeFragmentArgs>()
+        return args.refreshUserCategory
+    }
+
+    override fun onResume() {
+        super.onResume()
+        lifecycleScope.launch(Dispatchers.Default) {
+            delay(200)
+            mainActivityViewModel.showBtmNavView()
+        }
     }
 }

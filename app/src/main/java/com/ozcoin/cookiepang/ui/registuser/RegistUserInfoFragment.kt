@@ -35,11 +35,7 @@ class RegistUserInfoFragment : BaseFragment<FragmentRegistUserInfoBinding>() {
     }
 
     override fun initObserve() {
-        with(registUserInfoFragmentViewModel) {
-            lifecycleScope.launch {
-                eventFlow.collect { handleEvent(it) }
-            }
-        }
+        observeEvent(registUserInfoFragmentViewModel)
     }
 
     override fun init() {

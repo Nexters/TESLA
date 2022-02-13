@@ -11,15 +11,9 @@
             type="Boolean" />
     </data>
 
-    <androidx.core.widget.NestedScrollView
-        android:id="@+id/nsv_container_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <include
                 android:id="@+id/include_title_layout"
@@ -41,7 +35,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_feed"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
@@ -51,7 +45,5 @@
                 tools:listitem="@layout/item_feed_opened" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-    </androidx.core.widget.NestedScrollView>
 
 </layout>
