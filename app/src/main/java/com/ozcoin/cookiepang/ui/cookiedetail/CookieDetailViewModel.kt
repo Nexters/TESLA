@@ -11,6 +11,7 @@ import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.ActivityEventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -29,7 +30,10 @@ class CookieDetailViewModel @Inject constructor(
     lateinit var activityEventObserver: ActivityEventObserver
     lateinit var uiStateObserver: UiStateObserver
 
+    private lateinit var cookieId: String
+
     fun getCookieDetail(cookieId: String) {
+        this.cookieId = cookieId
         uiStateObserver.update(UiState.OnLoading)
 
         viewModelScope.launch {
@@ -47,12 +51,32 @@ class CookieDetailViewModel @Inject constructor(
 
     private fun purchaseCookie() {
         Timber.d("purchaseCookie() called")
+
+        uiStateObserver.update(UiState.OnLoading)
+
+        viewModelScope.launch {
+            delay(1000L)
+
+            uiStateObserver.update(UiState.OnSuccess)
+            showPurchaseCookieSuccessDialog()
+        }
+    }
+
+    private fun showPurchaseCookieSuccessDialog() {
+        activityEventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getPurchaseCookieSuccessContents(),
+                callback = {
+                    if (it) getCookieDetail(cookieId) else Timber.d("PurchaseCookieSuccessDialog cancelled")
+                }
+            )
+        )
     }
 
     private fun showConfirmPurchaseCookieDialog() {
         activityEventObserver.update(
             Event.ShowDialog(
-                DialogUtil.getDialogContents(cookieDetail.value),
+                DialogUtil.getConfirmPurchaseCookieContents(cookieDetail.value),
                 callback = {
                     if (it) purchaseCookie() else Timber.d("ConfirmPurchaseCookieDialog cancelled")
                 }
@@ -60,7 +84,10 @@ class CookieDetailViewModel @Inject constructor(
         )
     }
 
-    fun clickPurchase() {
-        showConfirmPurchaseCookieDialog()
+    fun clickCookieContentsBtn(isMine: Boolean) {
+        if (isMine) {
+        } else {
+            showConfirmPurchaseCookieDialog()
+        }
     }
 }

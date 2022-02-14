@@ -5,6 +5,7 @@
     xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
+        <import type="android.view.View"/>
 
         <variable
             name="cookieDetail"
@@ -26,6 +27,7 @@
         android:layout_height="match_parent" >
 
         <androidx.constraintlayout.widget.ConstraintLayout
+            android:paddingBottom="20dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
@@ -107,7 +109,7 @@
                     android:text="@{cookieDetail.question}"
                     tools:text="My real secret_xxxxxxxxxxxxxxxxxxxx" />
 
-                <androidx.constraintlayout.utils.widget.ImageFilterView
+                <ImageView
                     android:id="@+id/iv_ic_comment"
                     android:layout_marginTop="12dp"
                     app:layout_constraintTop_toBottomOf="@+id/tv_question"
@@ -116,18 +118,69 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:id="@+id/iv_ic_cookie_hidden"
-                    android:layout_marginStart="8dp"
+                <androidx.appcompat.widget.LinearLayoutCompat
+                    android:id="@+id/ll_contents_container"
                     app:layout_constraintLeft_toRightOf="@+id/iv_ic_comment"
                     app:layout_constraintRight_toRightOf="parent"
                     app:layout_constraintTop_toTopOf="@+id/iv_ic_comment"
-                    android:padding="8dp"
-                    bind:setCookieCardStyle="@{cookieDetail.cookieCardStyle}"
-                    bind:isHidden="@{true}"
-                    android:background="@drawable/ic_feed_hidden_cookie_blue"
-                    android:layout_width="288dp"
-                    android:layout_height="176dp" />
+                    android:gravity="center"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content" >
+
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:id="@+id/cl_contents_answer_layout"
+                        android:layout_marginStart="8dp"
+                        android:padding="8dp"
+                        bind:setCookieCardStyle="@{cookieDetail.cookieCardStyle}"
+                        bind:isHidden="@{false}"
+                        android:visibility="@{cookieDetail.mine ? View.VISIBLE : View.GONE}"
+                        tools:visibility="gone"
+                        android:background="@drawable/bg_feed_contents_answer_pink"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" >
+
+                        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+                            android:id="@+id/tv_a_mark"
+                            style="@style/TextAppearance.body_01_bold"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray_90_t1"
+                            app:layout_constraintLeft_toLeftOf="parent"
+                            app:layout_constraintLeft_toRightOf="@+id/tv_answer"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:text="A." />
+
+                        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+                            android:id="@+id/tv_answer"
+                            style="@style/TextAppearance.body_01_medium"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/gray_90_t1"
+                            android:layout_marginStart="4dp"
+                            android:maxLines="5"
+                            android:ellipsize="end"
+                            app:layout_constraintLeft_toRightOf="@+id/tv_a_mark"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            android:text="@{cookieDetail.answer}"
+                            tools:text="My real secret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxxsecret_xxxxxxxxxxxxxxxxxxxx" />
+
+
+                    </androidx.constraintlayout.widget.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_ic_cookie_hidden"
+                        android:padding="8dp"
+                        bind:setCookieCardStyle="@{cookieDetail.cookieCardStyle}"
+                        bind:isHidden="@{true}"
+                        tools:visibility="visible"
+                        android:visibility="@{cookieDetail.mine ? View.GONE : View.VISIBLE}"
+                        android:background="@drawable/ic_feed_hidden_cookie_blue"
+                        android:layout_width="288dp"
+                        android:layout_height="176dp" />
+
+                </androidx.appcompat.widget.LinearLayoutCompat>
+
 
                 <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
                     android:id="@+id/tv_hammer"
@@ -135,7 +188,7 @@
                     android:textColor="@color/gray_90_t1"
                     android:layout_marginTop="20dp"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_ic_cookie_hidden"
+                    app:layout_constraintTop_toBottomOf="@+id/ll_contents_container"
                     android:text="Hammer"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -154,7 +207,7 @@
                     style="@style/TextAppearance.title_01_bold"
                     android:textColor="@color/gray_90_t1"
                     android:layout_marginTop="20dp"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_ic_cookie_hidden"
+                    app:layout_constraintTop_toBottomOf="@+id/ll_contents_container"
                     app:layout_constraintRight_toLeftOf="@+id/tv_hammer_cnt_value"
                     android:layout_marginEnd="4dp"
                     tools:text="24"
@@ -179,8 +232,9 @@
                     style="@style/TextAppearance.button_large_brand_normal"
                     android:layout_width="0dp"
                     android:layout_marginTop="23dp"
-                    android:text="Purchase"
-                    android:onClick="@{() -> viewModel.clickPurchase()}"
+                    android:text='@{cookieDetail.mine ? "Edit Pricing Info" : "Purchase"}'
+                    tools:text="Purchase"
+                    android:onClick="@{() -> viewModel.clickCookieContentsBtn(cookieDetail.mine)}"
                     app:layout_constraintTop_toBottomOf="@+id/tv_hammer"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"
@@ -343,6 +397,7 @@
                 android:text="History"
                 android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@+id/tv_token_address"
+                app:layout_constraintBottom_toTopOf="@+id/rv_cookie_history"
                 app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" />
@@ -353,14 +408,39 @@
                 app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
                 app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
                 app:layout_constraintTop_toBottomOf="@+id/tv_cookie_history"
-                app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="@dimen/space_contents_bottom"
+                app:layout_constraintBottom_toTopOf="@+id/tv_hide_show_btn"
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_cookie_history"
-                tools:itemCount="8"
+                tools:itemCount="3"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
+
+            <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+                android:id="@+id/tv_hide_show_btn"
+                style="@style/TextAppearance.button_large_sec_normal"
+                android:layout_marginTop="20dp"
+                app:layout_constraintTop_toBottomOf="@+id/rv_cookie_history"
+                app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+                app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+                android:text='@{cookieDetail.hidden ? "공개하기" : "숨기기"}'
+                android:visibility="@{cookieDetail.mine ? View.VISIBLE : View.GONE}"
+                tools:visibility="gone"
+                tools:text="숨기기"
+                android:layout_width="0dp" />
+
+            <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+                android:id="@+id/tv_delete_btn"
+                style="@style/TextAppearance.button_large_inline"
+                android:layout_marginTop="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/tv_hide_show_btn"
+                app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+                app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:visibility="@{cookieDetail.mine ? View.VISIBLE : View.GONE}"
+                tools:visibility="gone"
+                android:text="삭제하기"
+                android:layout_width="0dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
