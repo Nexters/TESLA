@@ -11,7 +11,7 @@ import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.resetMain
@@ -20,39 +20,35 @@ import kotlinx.coroutines.test.setMain
 @ExperimentalCoroutinesApi
 class SplashActivityViewModelTest : BehaviorSpec({
 
-    val testDispatcher = TestCoroutineDispatcher()
-    Dispatchers.setMain(testDispatcher)
+    var testDispatcher = TestCoroutineDispatcher()
+
+    val klipAuthRepository = mockk<KlipAuthRepository>()
+    val userRepository = mockk<UserRepository>()
+    val splashActivityViewModel = spyk(
+        SplashActivityViewModel(
+            userRepository, klipAuthRepository
+        )
+    )
+
+    beforeTest {
+        testDispatcher = TestCoroutineDispatcher()
+        Dispatchers.setMain(testDispatcher)
+    }
 
     Given("유저 정보가 주어졌을때") {
 
-        val klipAuthRepository = mockk<KlipAuthRepository>()
-        val userRepository = mockk<UserRepository>()
-        var splashActivityViewModel = SplashActivityViewModel(
-            userRepository, klipAuthRepository
-        )
-
         When("Klip 로그인 상태가 아니라면") {
-
-            splashActivityViewModel = spyk(
-                SplashActivityViewModel(
-                    userRepository, klipAuthRepository
-                )
-            )
 
             every { klipAuthRepository.isUserLogin() } returns flow {
                 emit(false)
             }
 
-            splashActivityViewModel.isUserLogin().collect {
+            splashActivityViewModel.isUserLogin().first().let {
                 if (it) {
                     splashActivityViewModel.navigateToMain()
                 } else {
                     splashActivityViewModel.navigateToLogin()
                 }
-            }
-
-            every { klipAuthRepository.isUserLogin() } returns flow {
-                emit(false)
             }
 
             Then("로그인 화면으로 이동한다") {
@@ -61,17 +57,11 @@ class SplashActivityViewModelTest : BehaviorSpec({
         }
         When("Klip 로그인 상태라면") {
 
-            splashActivityViewModel = spyk(
-                SplashActivityViewModel(
-                    userRepository, klipAuthRepository
-                )
-            )
-
             every { klipAuthRepository.isUserLogin() } returns flow {
                 emit(true)
             }
 
-            splashActivityViewModel.isUserLogin().collect {
+            splashActivityViewModel.isUserLogin().first().let {
                 if (it) {
                     splashActivityViewModel.navigateToMain()
                 } else {
@@ -83,11 +73,14 @@ class SplashActivityViewModelTest : BehaviorSpec({
                 verify { splashActivityViewModel.navigateToMain() }
             }
         }
+    }
 
-        afterTest {
-            clearMocks(userRepository, klipAuthRepository, splashActivityViewModel)
-            Dispatchers.resetMain()
-            testDispatcher.cleanupTestCoroutines()
-        }
+    afterTest {
+        clearMocks(klipAuthRepository)
+        clearMocks(splashActivityViewModel)
+        clearMocks(userRepository)
+
+        Dispatchers.resetMain()
+        testDispatcher.cleanupTestCoroutines()
     }
 })

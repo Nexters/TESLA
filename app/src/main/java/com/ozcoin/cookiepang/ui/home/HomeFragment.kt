@@ -117,8 +117,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             KEY_VIEW_DATA_USER_CATEGORY_LIST
         )
 
-        return feedList != null && feedList.isNotEmpty()
-                && userCategoryList != null && userCategoryList.isNotEmpty()
+        return feedList != null && feedList.isNotEmpty() &&
+            userCategoryList != null && userCategoryList.isNotEmpty()
     }
 
     private fun setViewStateFeedList(saveState: Boolean) {
@@ -168,7 +168,6 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             viewData
         )
     }
-
 
     override fun initView() {
         setUpUserCategoryList()

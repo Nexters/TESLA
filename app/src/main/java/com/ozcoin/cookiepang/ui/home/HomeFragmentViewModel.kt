@@ -33,9 +33,9 @@ class HomeFragmentViewModel @Inject constructor(
     var sendUiState: ((UiState) -> Unit)? = null
 
     fun getUserCategoryList(retryCnt: Int = 3) {
-        viewModelScope.launch {
-            sendUiState?.invoke(UiState.OnLoading)
+        sendUiState?.invoke(UiState.OnLoading)
 
+        viewModelScope.launch {
             val result = userCategoryRepository.getUserCategory()
             if (result is DataResult.OnSuccess) {
                 Timber.d("getUserCategoryList onSuccess")
@@ -46,7 +46,7 @@ class HomeFragmentViewModel @Inject constructor(
             } else {
                 Timber.d("getUserCategoryList onFail(retryCnt: $retryCnt)")
 
-                if (retryCnt < 0) {
+                if (retryCnt == 0) {
                     sendUiState?.invoke(UiState.OnFail)
                 } else {
                     getUserCategoryList(retryCnt - 1)

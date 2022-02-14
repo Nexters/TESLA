@@ -1,17 +1,27 @@
-package com.ozcoin.cookiepang.domain.feed
+package com.ozcoin.cookiepang
 
+import com.ozcoin.cookiepang.domain.feed.CookieCardStyle
+import com.ozcoin.cookiepang.domain.feed.Feed
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.utils.DataResult
 import java.util.Random
-import javax.inject.Inject
 
-class FeedRepositoryImpl @Inject constructor() : FeedRepository {
-    override suspend fun getFeedList(userCategory: UserCategory): DataResult<List<Feed>> {
-//        return DataResult.OnSuccess(emptyList())
+object MockUtil {
+
+    fun getUserCategoryList() = DataResult.OnSuccess(
+        listOf(
+            UserCategory("Free Chat", false),
+            UserCategory("Money", false),
+            UserCategory("Friend", false),
+            UserCategory("Hobby", false),
+        )
+    )
+
+    fun getFeedList(): DataResult.OnSuccess<List<Feed>> {
         val list = mutableListOf<Feed>()
         val random = Random()
 
-        repeat(200) {
+        repeat(100) {
             val feed = Feed(
                 isHidden = it % 8 != 0,
                 userThumbnailUrl = "",
@@ -26,8 +36,12 @@ class FeedRepositoryImpl @Inject constructor() : FeedRepository {
             list.add(feed)
         }
 
-//        delay(2000L)
-
         return DataResult.OnSuccess(list.toList())
+    }
+
+    fun clearMocks(mocks: List<Any>) {
+        mocks.forEach {
+            io.mockk.clearMocks(it)
+        }
     }
 }
