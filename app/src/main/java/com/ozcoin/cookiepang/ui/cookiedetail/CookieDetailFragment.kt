@@ -33,6 +33,7 @@ class CookieDetailFragment : BaseFragment<FragmentCookieDetailBinding>() {
     override fun initView() {
         with(binding) {
             isShareAvailable = true
+            viewModel = cookieDetailViewModel
         }
 
         setupCookieHistoryList()

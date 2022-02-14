@@ -11,6 +11,10 @@
             type="com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail" />
 
         <variable
+            name="viewModel"
+            type="com.ozcoin.cookiepang.ui.cookiedetail.CookieDetailViewModel" />
+
+        <variable
             name="isShareAvailable"
             type="Boolean" />
 
@@ -176,6 +180,7 @@
                     android:layout_width="0dp"
                     android:layout_marginTop="23dp"
                     android:text="Purchase"
+                    android:onClick="@{() -> viewModel.clickPurchase()}"
                     app:layout_constraintTop_toBottomOf="@+id/tv_hammer"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintLeft_toLeftOf="parent"

@@ -1,7 +1,9 @@
 package com.ozcoin.cookiepang.ui.dialog
 
 import android.content.Context
+import android.graphics.Color
 import android.graphics.Point
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -37,6 +39,8 @@ class TwoBtnDialog(
 
     private fun initView() {
         binding.dialogContents = dialogContents
+        dialog?.setCanceledOnTouchOutside(false)
+        dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT))
         getDisplaySize()
     }
 
@@ -51,9 +55,11 @@ class TwoBtnDialog(
     private fun initListener() {
         binding.tvConfirmBtn.setOnClickListener {
             callback(true)
+            dismiss()
         }
         binding.tvCancelBtn.setOnClickListener {
             callback(false)
+            dismiss()
         }
     }
 

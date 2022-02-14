@@ -79,6 +79,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
                 }
             }
             is Event.ShowDialog -> {
+                handleShowDialog(event)
             }
             is Event.Nav -> {
                 when (event) {
