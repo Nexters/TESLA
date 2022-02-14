@@ -27,7 +27,7 @@ class MainActivityViewModel @Inject constructor(
         viewModelScope.launch { _isBtmNavViewVisible.emit(false) }
     }
 
-    fun sendUiState(uiState: UiState) {
+    fun updateUiState(uiState: UiState) {
         viewModelScope.launch {
             _uiStateFlow.emit(uiState)
         }

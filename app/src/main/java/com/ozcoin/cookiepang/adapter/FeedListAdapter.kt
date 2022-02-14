@@ -17,6 +17,8 @@ class FeedListAdapter : RecyclerView.Adapter<FeedViewHolder>() {
 
     private val list = mutableListOf<Feed>()
 
+    var onItemClick: ((Feed) -> Unit)? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
         return if (viewType == FeedViewHolder.VIEW_TYPE_OPENED) {
             val binding =
@@ -31,6 +33,7 @@ class FeedListAdapter : RecyclerView.Adapter<FeedViewHolder>() {
 
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
         holder.bind(list[position]) {
+            onItemClick?.invoke(it)
         }
     }
 

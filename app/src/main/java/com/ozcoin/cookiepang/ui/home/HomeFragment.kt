@@ -17,6 +17,7 @@ import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.extensions.toDp
 import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.ui.divider.SingleLineItemDecoration
+import com.ozcoin.cookiepang.ui.uistate.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -74,7 +75,11 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     ContextCompat.getColor(requireContext(), R.color.gray_30_sur2_bg2)
                 )
             )
-            feedListAdapter = FeedListAdapter()
+            feedListAdapter = FeedListAdapter().apply {
+                onItemClick = {
+                    homeFragmentViewModel.navigateToCookieDetail(it.id)
+                }
+            }
             adapter = feedListAdapter
         }
     }
@@ -175,7 +180,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun initListener() {
-        homeFragmentViewModel.sendUiState = mainActivityViewModel::sendUiState
+        homeFragmentViewModel.uiStateObserver = UiStateObserver(mainActivityViewModel::updateUiState)
     }
 
     override fun initObserve() {

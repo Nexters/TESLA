@@ -49,7 +49,7 @@
             android:layout_width="288dp"
             android:layout_height="176dp" />
 
-        <TextView
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
             android:id="@+id/tv_check_how_to_use_btn"
             style="@style/TextAppearance.button_large_brand_normal"
             android:layout_width="0dp"

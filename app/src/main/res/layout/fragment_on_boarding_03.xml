@@ -62,7 +62,7 @@
             android:layout_width="0dp"
             android:layout_height="0dp" />
 
-        <TextView
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
             android:id="@+id/tv_confirm_btn"
             style="@style/TextAppearance.button_large_brand_normal"
             android:layout_width="0dp"

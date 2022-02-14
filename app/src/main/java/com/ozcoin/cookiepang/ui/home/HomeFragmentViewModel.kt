@@ -6,6 +6,7 @@ import com.ozcoin.cookiepang.domain.feed.Feed
 import com.ozcoin.cookiepang.domain.feed.FeedRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
+import com.ozcoin.cookiepang.ui.uistate.UiStateObserver
 import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.UiState
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -30,10 +31,10 @@ class HomeFragmentViewModel @Inject constructor(
     val feedList: StateFlow<List<Feed>>
         get() = _feedList
 
-    var sendUiState: ((UiState) -> Unit)? = null
+    lateinit var uiStateObserver: UiStateObserver
 
     fun getUserCategoryList(retryCnt: Int = 3) {
-        sendUiState?.invoke(UiState.OnLoading)
+        uiStateObserver.update(UiState.OnLoading)
 
         viewModelScope.launch {
             val result = userCategoryRepository.getUserCategory()
@@ -42,12 +43,12 @@ class HomeFragmentViewModel @Inject constructor(
 
                 val list = addAllTypeToUserCategoryList(result.response)
                 _userCategoryList.emit(list)
-                sendUiState?.invoke(UiState.OnSuccess)
+                uiStateObserver.update(UiState.OnSuccess)
             } else {
                 Timber.d("getUserCategoryList onFail(retryCnt: $retryCnt)")
 
                 if (retryCnt == 0) {
-                    sendUiState?.invoke(UiState.OnFail)
+                    uiStateObserver.update(UiState.OnFail)
                 } else {
                     getUserCategoryList(retryCnt - 1)
                 }
@@ -63,23 +64,27 @@ class HomeFragmentViewModel @Inject constructor(
 
     fun getFeedList(userCategory: UserCategory) {
         viewModelScope.launch {
-            sendUiState?.invoke(UiState.OnLoading)
+            uiStateObserver.update(UiState.OnLoading)
 
             val result = feedRepository.getFeedList(userCategory)
             if (result is DataResult.OnSuccess) {
                 Timber.d("getFeedList onSuccess")
 
                 _feedList.emit(result.response)
-                sendUiState?.invoke(UiState.OnSuccess)
+                uiStateObserver.update(UiState.OnSuccess)
             } else {
                 Timber.d("getFeedList onFail")
 
-                sendUiState?.invoke(UiState.OnFail)
+                uiStateObserver.update(UiState.OnFail)
             }
         }
     }
 
     fun navigateToSelectCategory() {
         navigateTo(HomeFragmentDirections.actionSelectCategory())
+    }
+
+    fun navigateToCookieDetail(cookieId: String) {
+        navigateTo(HomeFragmentDirections.actionCookieDetail(cookieId))
     }
 }
