@@ -19,6 +19,7 @@ buildscript {
         firebaseAnalyticsVersion = "20.0.2"
         firebaseMessagingVersion = "23.0.0"
         datastoreVersion = "1.0.0"
+        glideVersion = "4.13.0"
 
         espressoCoreVersion = "3.4.0"
         androidTestRulesVersion = "1.4.0"

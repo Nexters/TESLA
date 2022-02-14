@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "914298687483",
+    "project_id": "cookie-pang",
+    "storage_bucket": "cookie-pang.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:914298687483:android:dcb52426b3210bf6a0055e",
+        "android_client_info": {
+          "package_name": "com.ozcoin.cookiepang"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "914298687483-0kaa19hcdo1ba74pi7fa0tun1h9bau0i.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBBRi7qH7Oc9QhiiIvUN5fQk5rItGGNIPw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "914298687483-0kaa19hcdo1ba74pi7fa0tun1h9bau0i.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

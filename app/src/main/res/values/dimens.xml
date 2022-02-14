@@ -2,6 +2,7 @@
 <resources>
     <dimen name="space_contents_left">20dp</dimen>
     <dimen name="space_contents_right">20dp</dimen>
+    <dimen name="space_contents_top">18dp</dimen>
     <dimen name="space_contents_bottom">18dp</dimen>
 
     <dimen name="title_bar_height">56dp</dimen>

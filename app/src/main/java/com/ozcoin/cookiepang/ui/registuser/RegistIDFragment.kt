@@ -9,7 +9,6 @@ import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentRegistIdBinding
 import com.ozcoin.cookiepang.ui.splash.SplashActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -40,9 +39,7 @@ class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
     }
 
     override fun initObserve() {
-        lifecycleScope.launch {
-            registIDFragmentViewModel.eventFlow.collect { handleEvent(it) }
-        }
+        observeEvent(registIDFragmentViewModel)
     }
 
     override fun init() {

@@ -1,22 +1,21 @@
 package com.ozcoin.cookiepang.ui
 
-import android.view.Menu
 import androidx.activity.viewModels
-import androidx.navigation.NavController
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
-import androidx.navigation.ui.AppBarConfiguration
-import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseActivity
 import com.ozcoin.cookiepang.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
-    private val mainVm by viewModels<MainActivityViewModel>()
+    private val mainActivityViewModel by viewModels<MainActivityViewModel>()
 
     override fun getLayoutRes(): Int {
         return R.layout.activity_main
@@ -24,11 +23,10 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun initView() {
         with(binding) {
-            viewModel = mainVm
+            viewModel = mainActivityViewModel
             navController =
                 (supportFragmentManager.findFragmentById(binding.fcvNavHost.id) as NavHostFragment).navController
 
-            setUpActionBar()
             setUpBtmNav()
         }
     }
@@ -38,12 +36,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             setupWithNavController(navController)
             itemIconTintList = null
         }
-    }
-
-    private fun setUpActionBar() {
-        setSupportActionBar(binding.toolbarTitle)
-        val appBarConfiguration = AppBarConfiguration(setOf(R.id.home_dest, R.id.my_home_dest))
-        setupActionBarWithNavController(navController, appBarConfiguration)
     }
 
     override fun initListener() {
@@ -61,13 +53,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun initObserve() {
+        with(mainActivityViewModel) {
+            lifecycleScope.launch {
+                eventFlow.collect { handleEvent(it) }
+            }
+            lifecycleScope.launchWhenCreated {
+                uiStateFlow.collect { handleUiState(it) }
+            }
+        }
     }
 
     override fun init() {
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.menu_main_title_bar, menu)
-        return true
     }
 }
