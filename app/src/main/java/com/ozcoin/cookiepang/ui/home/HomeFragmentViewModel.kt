@@ -6,9 +6,9 @@ import com.ozcoin.cookiepang.domain.feed.Feed
 import com.ozcoin.cookiepang.domain.feed.FeedRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
-import com.ozcoin.cookiepang.ui.uistate.UiStateObserver
 import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.UiState
+import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

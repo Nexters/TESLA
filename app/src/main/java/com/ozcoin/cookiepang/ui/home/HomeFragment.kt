@@ -17,7 +17,7 @@ import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.extensions.toDp
 import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.ui.divider.SingleLineItemDecoration
-import com.ozcoin.cookiepang.ui.uistate.UiStateObserver
+import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay

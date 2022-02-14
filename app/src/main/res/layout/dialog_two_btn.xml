@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="dialogContents"
+            type="com.ozcoin.cookiepang.domain.dialog.DialogContents" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@drawable/bg_feed_contents"
+        android:paddingTop="32dp"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingBottom="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_title"
+            style="@style/TextAppearance.body_01_bold"
+            android:textColor="@color/gray_90_t1"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:text="@{dialogContents.title}"
+            tools:text="쿠키가 성공적으로 구매되었습니다."
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_contents"
+            style="@style/TextAppearance.body_02_regular"
+            android:textColor="@color/gray_90_t1"
+            android:layout_marginTop="9dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_title"
+            android:text="@{dialogContents.contents}"
+            tools:text="구매한 쿠키를 확인하시겠어요?"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_confirm_btn"
+            style="@style/TextAppearance.button_large_brand_normal"
+            android:layout_width="0dp"
+            android:layout_marginTop="18dp"
+            android:layout_marginStart="8dp"
+            tools:text="확인하러 가기"
+            android:text="@{dialogContents.confirm}"
+            android:visibility="@{dialogContents.confirm != null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@+id/tv_contents"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/tv_cancel_btn"
+            app:layout_constraintRight_toRightOf="parent" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_cancel_btn"
+            style="@style/TextAppearance.button_large_sec_normal"
+            android:layout_width="0dp"
+            android:layout_marginTop="18dp"
+            tools:text="취소하기"
+            android:text="@{dialogContents.cancel}"
+            android:visibility="@{dialogContents.cancel != null ? View.VISIBLE : View.GONE}"
+            app:layout_constraintTop_toBottomOf="@+id/tv_contents"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@+id/tv_confirm_btn" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
