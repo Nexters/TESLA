@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:src="@drawable/ic_spinner_minus_btn"
+            android:layout_marginEnd="16dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"/>
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            style="@style/TextAppearance.spinner"
+            tools:text="1" />
+
+        <ImageView
+            android:src="@drawable/ic_spinner_plus_btn"
+            android:layout_marginStart="16dp"
+            android:layout_width="32dp"
+            android:layout_height="32dp"/>
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>
