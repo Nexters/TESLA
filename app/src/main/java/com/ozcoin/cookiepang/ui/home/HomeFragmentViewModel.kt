@@ -43,6 +43,7 @@ class HomeFragmentViewModel @Inject constructor(
                 val list = addAllTypeToUserCategoryList(result.response)
                 _userCategoryList.emit(list)
                 sendUiState?.invoke(UiState.OnSuccess)
+                getFeedList(UserCategory.typeAll())
             } else {
                 Timber.d("getUserCategoryList onFail(retryCnt: $retryCnt)")
 
@@ -52,6 +53,18 @@ class HomeFragmentViewModel @Inject constructor(
                     getUserCategoryList(retryCnt - 1)
                 }
             }
+        }
+    }
+
+    fun restoreUserCategoryList(list: List<UserCategory>) {
+        viewModelScope.launch {
+            _userCategoryList.emit(list)
+        }
+    }
+
+    fun restoreFeedList(list: List<Feed>) {
+        viewModelScope.launch {
+            _feedList.emit(list)
         }
     }
 
