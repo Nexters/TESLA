@@ -3,7 +3,6 @@ package com.ozcoin.cookiepang.ui.home
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
@@ -85,6 +84,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun restoreListState() {
+        Timber.d("restoreListState()")
 
         mainActivityViewModel.savedStateHandle.let {
             userCategoryListAdapter.updateList(
@@ -108,6 +108,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun saveListState() {
+        Timber.d("saveListState()")
         setViewStateUserCategoryList(true)
         setViewStateFeedList(true)
         setViewDataFeedList(true)
@@ -192,6 +193,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun observeUserCategoryList() {
         lifecycleScope.launch {
             homeFragmentViewModel.userCategoryList.collect {
+                Timber.d("collect UserCategoryList(size: ${it.size})")
                 if (it.isNotEmpty()) {
                     userCategoryListAdapter.updateList(it)
                     homeFragmentViewModel.getFeedList(UserCategory.typeAll())
@@ -203,6 +205,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun observeFeedList() {
         lifecycleScope.launch {
             homeFragmentViewModel.feedList.collect {
+                Timber.d("collect FeedList(size: ${it.size})")
                 feedListAdapter.updateList(it)
             }
         }
@@ -214,8 +217,13 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             homeFragmentViewModel.getUserCategoryList()
         } else {
             if (isViewDataLoaded()) {
-                Timber.d("is view data loaded, so restore view")
-                restoreListState()
+                Timber.d("is view data loaded")
+                if (homeFragmentViewModel.userCategoryList.value.isEmpty()) {
+                    Timber.d("viewModel data not exist, restore list")
+                    restoreListState()
+                } else {
+                    Timber.d("viewModel data exist")
+                }
             } else {
                 Timber.d("is not view data loaded, so get list data")
                 homeFragmentViewModel.getUserCategoryList()
