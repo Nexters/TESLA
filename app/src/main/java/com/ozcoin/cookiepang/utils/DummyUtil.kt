@@ -31,7 +31,7 @@ object DummyUtil {
                 createdTimeStamp = "$it min ago",
                 question = "My real Secret is too many speaker(#$it)",
                 answer = "오늘도 이 비는 그치지 않아. 모두 어디서 흘러 오는 건지. 창 밖으로 출렁이던 헤드라잇 강물도. 갈 곳을 잃은채 울먹이고, 자동응답기의 공허한 시간. 모두 어디로 흘러가는 건지. 기다림은 방 한 구석 잊혀진 화초처럼. 조금씩 시들어 고개 숙여가고.",
-                cookieCardStyle = if (it % 3 == 0) CookieCardStyle.BLUE else if (it % 3 == 1) CookieCardStyle.YELLOW else CookieCardStyle.PINK,
+                cookieCardStyle = getCookieCardStyle(),
                 viewCount = it * (random.nextInt(291) + 1),
                 hammerPrice = it * (random.nextInt(8) + 1),
             )
@@ -41,6 +41,11 @@ object DummyUtil {
         return DataResult.OnSuccess(list.toList())
     }
 
+    fun getCookieCardStyle(): CookieCardStyle {
+        val random = Random().nextInt(3) + 1
+        return if (random % 3 == 0) CookieCardStyle.BLUE else if (random % 3 == 1) CookieCardStyle.YELLOW else CookieCardStyle.PINK
+    }
+
     fun getCookieDetail(isMine: Boolean, isHidden: Boolean): DataResult<CookieDetail> {
         return DataResult.OnSuccess(
             CookieDetail(
@@ -48,9 +53,13 @@ object DummyUtil {
                 userCategory = UserCategory("Free Chat", true),
                 viewCount = 423,
                 question = "나에게 가장 수치스러운 것은?",
-                answer = null,
+                answer = "아몰랑 없어 ㅎ3ㅎ\n" +
+                    ".　｡・｡∧_∧｡・｡\n" +
+                    "｡ﾟ 　( ﾟ´Д｀)　 ﾟ｡\n" +
+                    "　 　o( U U\n" +
+                    "　　　 'ｰ'ｰ'\n",
                 hammerPrice = 24,
-                cookieCardStyle = CookieCardStyle.YELLOW,
+                cookieCardStyle = getCookieCardStyle(),
                 collectorThumbnailUrl = "",
                 collectorName = "강동구 호랑이3333333",
                 creatorThumbnailUrl = "",

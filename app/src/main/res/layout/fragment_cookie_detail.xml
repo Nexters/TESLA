@@ -228,12 +228,27 @@
                     android:layout_height="wrap_content" />
 
                 <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+                    android:id="@+id/tv_is_cookie_hidden_btn"
+                    style="@style/TextAppearance.button_large_sec_disable"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="23dp"
+                    android:text="이 쿠키는 숨겨졌어요."
+                    android:onClick="@{() -> viewModel.clickCookieContentsBtn(cookieDetail.mine)}"
+                    android:visibility="@{cookieDetail.mine &amp;&amp; cookieDetail.hidden ? View.VISIBLE : View.GONE}"
+                    tools:visibility="gone"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_hammer"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+                <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
                     android:id="@+id/tv_purchase_btn"
                     style="@style/TextAppearance.button_large_brand_normal"
                     android:layout_width="0dp"
                     android:layout_marginTop="23dp"
                     android:text='@{cookieDetail.mine ? "Edit Pricing Info" : "Purchase"}'
                     tools:text="Purchase"
+                    android:visibility="@{cookieDetail.mine &amp;&amp; cookieDetail.hidden ? View.GONE : View.VISIBLE}"
                     android:onClick="@{() -> viewModel.clickCookieContentsBtn(cookieDetail.mine)}"
                     app:layout_constraintTop_toBottomOf="@+id/tv_hammer"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -408,7 +423,7 @@
                 app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
                 app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
                 app:layout_constraintTop_toBottomOf="@+id/tv_cookie_history"
-                app:layout_constraintBottom_toTopOf="@+id/tv_hide_show_btn"
+                app:layout_constraintBottom_toTopOf="@+id/tv_hide_open_btn"
                 android:overScrollMode="never"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/item_cookie_history"
@@ -417,7 +432,7 @@
                 android:layout_height="wrap_content" />
 
             <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
-                android:id="@+id/tv_hide_show_btn"
+                android:id="@+id/tv_hide_open_btn"
                 style="@style/TextAppearance.button_large_sec_normal"
                 android:layout_marginTop="20dp"
                 app:layout_constraintTop_toBottomOf="@+id/rv_cookie_history"
@@ -426,6 +441,7 @@
                 android:text='@{cookieDetail.hidden ? "공개하기" : "숨기기"}'
                 android:visibility="@{cookieDetail.mine ? View.VISIBLE : View.GONE}"
                 tools:visibility="gone"
+                android:onClick="@{() -> viewModel.clickHideOpenBtn(cookieDetail.hidden)}"
                 tools:text="숨기기"
                 android:layout_width="0dp" />
 
@@ -433,12 +449,13 @@
                 android:id="@+id/tv_delete_btn"
                 style="@style/TextAppearance.button_large_inline"
                 android:layout_marginTop="16dp"
-                app:layout_constraintTop_toBottomOf="@+id/tv_hide_show_btn"
+                app:layout_constraintTop_toBottomOf="@+id/tv_hide_open_btn"
                 app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
                 app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:visibility="@{cookieDetail.mine ? View.VISIBLE : View.GONE}"
                 tools:visibility="gone"
+                android:onClick="@{() -> viewModel.clickDeleteCookie()}"
                 android:text="삭제하기"
                 android:layout_width="0dp" />
 

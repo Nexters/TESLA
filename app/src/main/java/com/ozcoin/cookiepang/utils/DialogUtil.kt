@@ -22,4 +22,13 @@ object DialogUtil {
             confirm = "확인하러 가기"
         )
     }
+
+    fun getDeleteCookieContents(): DialogContents {
+        return DialogContents(
+            title = "정말 삭제하시겠어요?",
+            contents = "쿠키를 삭제하면 다시 복구하기 어려워요.",
+            confirm = "삭제하기",
+            cancel = "취소하기"
+        )
+    }
 }

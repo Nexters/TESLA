@@ -77,12 +77,33 @@ class CookieDetailViewModel @Inject constructor(
         )
     }
 
-    private fun showConfirmPurchaseCookieDialog() {
+    private fun showPurchaseCookieDialog() {
         activityEventObserver.update(
             Event.ShowDialog(
                 DialogUtil.getConfirmPurchaseCookieContents(cookieDetail.value),
                 callback = {
                     if (it) purchaseCookie() else Timber.d("ConfirmPurchaseCookieDialog cancelled")
+                }
+            )
+        )
+    }
+
+    private fun hideCookie() {
+    }
+
+    private fun openCookie() {
+    }
+
+    private fun deleteCookie() {
+    }
+
+    private fun showDeleteCookieDialog() {
+        activityEventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getDeleteCookieContents(),
+                callback = {
+                    Timber.d("DeleteCookieDialog result($it)")
+                    if (it) deleteCookie()
                 }
             )
         )
@@ -95,7 +116,15 @@ class CookieDetailViewModel @Inject constructor(
         if (isMine) {
             editPricingInfo()
         } else {
-            showConfirmPurchaseCookieDialog()
+            showPurchaseCookieDialog()
         }
+    }
+
+    fun clickHideOpenBtn(isHidden: Boolean) {
+        if (isHidden) openCookie() else hideCookie()
+    }
+
+    fun clickDeleteCookie() {
+        showDeleteCookieDialog()
     }
 }
