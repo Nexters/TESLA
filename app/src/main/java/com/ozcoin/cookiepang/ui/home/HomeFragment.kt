@@ -82,10 +82,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun restoreListState() {
 
         mainActivityViewModel.savedStateHandle.let {
-            userCategoryListAdapter.updateList(
+            homeFragmentViewModel.restoreUserCategoryList(
                 it[KEY_VIEW_DATA_USER_CATEGORY_LIST] ?: emptyList()
             )
-            feedListAdapter.updateList(
+            homeFragmentViewModel.restoreFeedList(
                 it[KEY_VIEW_DATA_FEED_LIST] ?: emptyList()
             )
             binding.rvFeed.layoutManager?.onRestoreInstanceState(
@@ -145,7 +145,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun setViewDataUserCategoryList(saveState: Boolean) {
         val viewData = if (saveState) {
-            userCategoryListAdapter.getUserCategoryList()
+            homeFragmentViewModel.userCategoryList.value
         } else {
             null
         }
@@ -158,7 +158,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun setViewDataFeedList(saveState: Boolean) {
         val viewData = if (saveState) {
-            feedListAdapter.getFeedList()
+            homeFragmentViewModel.feedList.value
         } else {
             null
         }
@@ -187,10 +187,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     private fun observeUserCategoryList() {
         lifecycleScope.launch {
             homeFragmentViewModel.userCategoryList.collect {
-                if (it.isNotEmpty()) {
-                    userCategoryListAdapter.updateList(it)
-                    homeFragmentViewModel.getFeedList(UserCategory.typeAll())
-                }
+                userCategoryListAdapter.updateList(it)
             }
         }
     }
