@@ -3,7 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+        <variable
+            name="spinnerListener"
+            type="com.ozcoin.cookiepang.utils.SpinnerClickListener" />
     </data>
 
     <androidx.appcompat.widget.LinearLayoutCompat
@@ -15,16 +17,19 @@
         <ImageView
             android:src="@drawable/ic_spinner_minus_btn"
             android:layout_marginEnd="16dp"
+            android:onClick="@{() -> spinnerListener.clickMinus()}"
             android:layout_width="32dp"
             android:layout_height="32dp"/>
 
         <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
             style="@style/TextAppearance.spinner"
+            android:text="@{spinnerListener.numValue}"
             tools:text="1" />
 
         <ImageView
             android:src="@drawable/ic_spinner_plus_btn"
             android:layout_marginStart="16dp"
+            android:onClick="@{() -> spinnerListener.clickPlus()}"
             android:layout_width="32dp"
             android:layout_height="32dp"/>
 
