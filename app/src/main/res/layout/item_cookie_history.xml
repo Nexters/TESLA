@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="cookieHistory"
+            type="com.ozcoin.cookiepang.domain.cookiehistory.CookieHistory" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:background="@drawable/bg_feed_contents"
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
+        android:paddingTop="12dp"
+        android:paddingBottom="12dp"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_history_type"
+            style="@style/TextAppearance.body_02_bold"
+            android:textColor="@color/gray_90_t1"
+            tools:text="수정"
+            bind:setCookieHistoryType="@{cookieHistory.cookieHistoryType}"
+            android:lines="1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_history"
+            style="@style/TextAppearance.body_02_medium"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/gray_60_t2"
+            tools:text="‘강동구 호랑이' 님이 ‘Q.내가 여자친구가 있을까'를 망치 32개로 수정했습니다."
+            android:text="@{cookieHistory.contents}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_history_time_stamp"
+            style="@style/TextAppearance.caption_regular"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/gray_50_t3_ic1"
+            tools:text="2022-10-32 20:00"
+            android:text="@{cookieHistory.timeStamp}"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

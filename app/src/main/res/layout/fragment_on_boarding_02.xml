@@ -60,7 +60,7 @@
             android:layout_width="220dp"
             android:layout_height="220dp" />
 
-        <TextView
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
             android:id="@+id/tv_next_btn"
             style="@style/TextAppearance.button_large_brand_normal"
             android:layout_width="0dp"

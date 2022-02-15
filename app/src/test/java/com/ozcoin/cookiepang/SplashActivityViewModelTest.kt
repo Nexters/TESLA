@@ -4,7 +4,6 @@ import com.ozcoin.cookiepang.domain.klip.KlipAuthRepository
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.ui.splash.SplashActivityViewModel
 import io.kotest.core.spec.style.BehaviorSpec
-import io.mockk.clearMocks
 import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
@@ -76,9 +75,7 @@ class SplashActivityViewModelTest : BehaviorSpec({
     }
 
     afterTest {
-        clearMocks(klipAuthRepository)
-        clearMocks(splashActivityViewModel)
-        clearMocks(userRepository)
+        MockUtil.clearMocks(listOf(klipAuthRepository, splashActivityViewModel, userRepository))
 
         Dispatchers.resetMain()
         testDispatcher.cleanupTestCoroutines()

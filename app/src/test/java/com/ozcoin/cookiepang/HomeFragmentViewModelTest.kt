@@ -5,11 +5,12 @@ import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.ui.home.HomeFragmentViewModel
 import com.ozcoin.cookiepang.utils.DataResult
+import com.ozcoin.cookiepang.utils.DummyUtil
 import com.ozcoin.cookiepang.utils.UiState
+import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
-import io.mockk.clearMocks
 import io.mockk.coEvery
 import io.mockk.mockk
 import io.mockk.spyk
@@ -36,6 +37,13 @@ class HomeFragmentViewModelTest : BehaviorSpec({
         )
     )
 
+    var uiState: UiState? = null
+    val uiStateObserver = UiStateObserver {
+        uiState = it
+    }
+
+    viewModel.uiStateObserver = uiStateObserver
+
     beforeTest {
         testDispatcher = coroutineTestRule.beforeTest()
     }
@@ -52,11 +60,6 @@ class HomeFragmentViewModelTest : BehaviorSpec({
                 DataResult.OnFail
             } coAndThen {
                 DataResult.OnFail
-            }
-
-            var uiState: UiState? = null
-            viewModel.sendUiState = {
-                uiState = it
             }
 
             Then("재시도 한다") {
@@ -79,21 +82,16 @@ class HomeFragmentViewModelTest : BehaviorSpec({
             coEvery {
                 feedRepository.getFeedList(UserCategory.typeAll())
             } coAnswers {
-                MockUtil.getFeedList()
+                DummyUtil.getFeedList()
             }
 
             coEvery {
                 userCategoryRepository.getUserCategory()
             } coAnswers {
-                MockUtil.getUserCategoryList()
+                DummyUtil.getUserCategoryList()
             }
 
             Then("All 카테고리로 피드 리스트를 가져온다") {
-
-                var uiState: UiState? = null
-                viewModel.sendUiState = {
-                    uiState = it
-                }
 
                 viewModel.userCategoryList.takeWhile {
                     it.isNotEmpty()

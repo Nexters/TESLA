@@ -14,6 +14,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import com.ozcoin.cookiepang.R
+import com.ozcoin.cookiepang.extensions.showTwoBtnDialog
 import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.UiState
 import timber.log.Timber
@@ -77,6 +78,9 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
                     }
                 }
             }
+            is Event.ShowDialog -> {
+                handleShowDialog(event)
+            }
             is Event.Nav -> {
                 when (event) {
                     is Event.Nav.To -> {
@@ -96,6 +100,12 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
 
     private fun handleFinishActivity(event: Event.FinishComponent.Activity) {
         finish()
+    }
+
+    private fun handleShowDialog(event: Event.ShowDialog) {
+        showTwoBtnDialog(event.dialogContents) {
+            event.callback(it)
+        }
     }
 
     override fun finish() {

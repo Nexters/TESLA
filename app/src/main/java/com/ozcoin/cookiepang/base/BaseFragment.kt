@@ -15,6 +15,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.utils.Event
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -45,6 +46,9 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
         return binding.root
     }
+
+    val lifecycleScope: CoroutineScope
+        get() = viewLifecycleOwner.lifecycleScope
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -91,5 +95,17 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     private fun handleNavUp() {
         Timber.d("navigate Up")
         findNavController().navigateUp()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        checkBackStack()
+    }
+
+    private fun checkBackStack() {
+        Timber.d("Fragment Back Stack Cnt: ${parentFragmentManager.backStackEntryCount}")
+        for (i in 0 until parentFragmentManager.backStackEntryCount) {
+            Timber.d("Fragment Back Stack : ${parentFragmentManager.getBackStackEntryAt(i).name}")
+        }
     }
 }
