@@ -33,19 +33,23 @@ class CookieDetailViewModel @Inject constructor(
     private lateinit var cookieId: String
 
     fun getCookieDetail(cookieId: String) {
-        this.cookieId = cookieId
-        uiStateObserver.update(UiState.OnLoading)
+        if (cookieId.isNotEmpty()) {
+            this.cookieId = cookieId
+            uiStateObserver.update(UiState.OnLoading)
 
-        viewModelScope.launch {
-            val result = cookieDetailRepository.getCookieDetail(cookieId)
-            if (result is DataResult.OnSuccess) {
-                Timber.d("getCookieDetail($cookieId) is success")
-                uiStateObserver.update(UiState.OnSuccess)
-                _cookieDetail.emit(result.response)
-            } else {
-                Timber.d("getCookieDetail($cookieId) is fail")
-                uiStateObserver.update(UiState.OnFail)
+            viewModelScope.launch {
+                val result = cookieDetailRepository.getCookieDetail(cookieId)
+                if (result is DataResult.OnSuccess) {
+                    Timber.d("getCookieDetail($cookieId) is success")
+                    uiStateObserver.update(UiState.OnSuccess)
+                    _cookieDetail.emit(result.response)
+                } else {
+                    Timber.d("getCookieDetail($cookieId) is fail")
+                    uiStateObserver.update(UiState.OnFail)
+                }
             }
+        } else {
+            navigateUp()
         }
     }
 
@@ -84,8 +88,12 @@ class CookieDetailViewModel @Inject constructor(
         )
     }
 
+    private fun editPricingInfo() {
+    }
+
     fun clickCookieContentsBtn(isMine: Boolean) {
         if (isMine) {
+            editPricingInfo()
         } else {
             showConfirmPurchaseCookieDialog()
         }

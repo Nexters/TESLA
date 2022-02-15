@@ -76,12 +76,8 @@ class CookieDetailFragment : BaseFragment<FragmentCookieDetailBinding>() {
 
     private fun getCookieDetail() {
         val cookieId = getCookieId()
-        if (cookieId.isNotEmpty()) {
-            lifecycleScope.launch {
-                cookieDetailViewModel.getCookieDetail(cookieId)
-            }
-        } else {
-            cookieDetailViewModel.clickBack()
+        lifecycleScope.launch {
+            cookieDetailViewModel.getCookieDetail(cookieId)
         }
     }
 
