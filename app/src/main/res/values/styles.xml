@@ -270,12 +270,20 @@
         <item name="android:layout_height">40dp</item>
         <item name="android:paddingStart">16dp</item>
         <item name="android:paddingEnd">16dp</item>
+        <item name="android:clickable">false</item>
+        <item name="android:minWidth">60dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="ToggleAppearance.category_stroke_none" parent="TextAppearance.body_02_regular" >
         <item name="android:textColor">@color/gray_50_t3_ic1</item>
         <item name="android:button">@null</item>
         <item name="android:layout_height">40dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:clickable">false</item>
+        <item name="android:minWidth">60dp</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="TextAppearance.spinner" parent="TextAppearance.body_01_regular" >

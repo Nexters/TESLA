@@ -23,6 +23,14 @@
             android:defaultValue="false"
             app:argType="boolean" />
 
+        <action
+            android:id="@+id/action_cookieDetail"
+            app:destination="@id/cookieDetail_dest"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
     <fragment
@@ -36,6 +44,20 @@
         android:name="com.ozcoin.cookiepang.ui.registuser.SelectCategoryFragment"
         android:label="SelectCategoryFragment"
         tools:layout="@layout/fragment_select_category" />
+
+    <fragment
+        android:id="@+id/cookieDetail_dest"
+        android:name="com.ozcoin.cookiepang.ui.cookiedetail.CookieDetailFragment"
+        android:label="CookieDetailFragment"
+        tools:layout="@layout/fragment_cookie_detail">
+
+
+        <argument
+            android:name="cookieId"
+            android:defaultValue='""'
+            app:argType="string" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/editCookie_dest"

@@ -92,7 +92,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
             app:layout_constraintRight_toRightOf="@+id/gl_contents_right" />
 
-        <TextView
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
             android:id="@+id/tv_regist_id_btn"
             style="@style/TextAppearance.button_large_brand_normal"
             android:layout_width="0dp"

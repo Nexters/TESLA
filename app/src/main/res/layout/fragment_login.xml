@@ -52,7 +52,7 @@
             android:text="@string/login_title_description"
             android:textColor="@color/gray_50_t3_ic1" />
 
-        <TextView
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
             style="@style/TextAppearance.button_large_brand_normal"
             custom:layout_constraintLeft_toLeftOf="parent"
             custom:layout_constraintRight_toRightOf="parent"
