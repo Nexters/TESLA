@@ -2,7 +2,6 @@ package com.ozcoin.cookiepang.ui.cookiedetail
 
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.adapter.CookieHistoryListAdapter
@@ -62,7 +61,7 @@ class CookieDetailFragment : BaseFragment<FragmentCookieDetailBinding>() {
         observeEvent(cookieDetailViewModel)
         with(cookieDetailViewModel) {
             activityEventObserver = ActivityEventObserver(mainActivityViewModel::updateEvent)
-            lifecycleScope.launch {
+            viewLifecycleScope.launch {
                 cookieDetail.collect {
                     if (it != null) updateCookieDetail(it)
                 }
@@ -76,7 +75,7 @@ class CookieDetailFragment : BaseFragment<FragmentCookieDetailBinding>() {
 
     private fun getCookieDetail() {
         val cookieId = getCookieId()
-        lifecycleScope.launch {
+        viewLifecycleScope.launch {
             cookieDetailViewModel.getCookieDetail(cookieId)
         }
     }

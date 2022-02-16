@@ -4,5 +4,5 @@
     android:fromDegrees="0"
     android:pivotX="50%"
     android:pivotY="50%"
-    android:interpolator="@android:anim/accelerate_decelerate_interpolator"
-    android:toDegrees="405" />
+    android:interpolator="@android:anim/decelerate_interpolator"
+    android:toDegrees="360" />
