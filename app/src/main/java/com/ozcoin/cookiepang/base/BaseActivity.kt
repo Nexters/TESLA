@@ -85,9 +85,21 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
                     is Event.Nav.Up -> {
                         handleNavUp()
                     }
+                    is Event.Nav.ToEditCookie -> {
+                        handleNavToEditCookie()
+                    }
                 }
             }
+            is Event.FabAnim -> {
+                handleFabAnim(event)
+            }
         }
+    }
+
+    protected open fun handleNavToEditCookie() {
+    }
+
+    protected open fun handleFabAnim(event: Event.FabAnim) {
     }
 
     private fun handleStartActivity(event: Event.StartComponent.Activity) {
@@ -104,7 +116,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     }
 
     private fun handleNavTo(action: NavDirections) {
-        Timber.d("navigate to : ${action.javaClass.simpleName}")
+        Timber.d("navigate Action(${action.javaClass.simpleName})")
         navController.navigate(action)
     }
 

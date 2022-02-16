@@ -37,17 +37,31 @@
             android:elevation="0dp"
             app:cardCornerRadius="220dp"
             android:visibility="@{viewModel.isBtmNavViewVisible() ? View.VISIBLE : View.GONE}"
+            android:onClick="@{() -> viewModel.clickFabBtn()}"
             app:layout_constraintTop_toTopOf="@+id/include_btm_nav_layout"
             app:layout_constraintBottom_toTopOf="@+id/include_btm_nav_layout"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent">
 
             <ImageView
+                android:id="@+id/iv_fab_btn"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@drawable/btn_floting_btn" />
 
         </androidx.cardview.widget.CardView>
+
+        <View
+            android:background="@android:color/transparent"
+            app:layout_constraintLeft_toLeftOf="@+id/include_btm_nav_layout"
+            app:layout_constraintRight_toRightOf="@+id/include_btm_nav_layout"
+            app:layout_constraintTop_toTopOf="@+id/include_btm_nav_layout"
+            app:layout_constraintBottom_toBottomOf="@+id/include_btm_nav_layout"
+            android:translationZ="1dp"
+            android:visibility="@{viewModel.isEditingCookie() ? View.VISIBLE : View.GONE}"
+            android:onClick="@{() -> viewModel.clickInterceptBtnMenu()}"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
 
         <include
             android:id="@+id/include_btm_nav_layout"
