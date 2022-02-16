@@ -1,7 +1,6 @@
 package com.ozcoin.cookiepang.ui.editcookie
 
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -55,7 +54,7 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
     }
 
     private fun observeUserCategory() {
-        lifecycleScope.launch {
+        viewLifecycleScope.launch {
             editCookieFragmentViewModel.userCategoryList.collect {
                 userCategoryListAdapter.updateList(it)
             }

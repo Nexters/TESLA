@@ -4,8 +4,12 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseViewModel
+import com.ozcoin.cookiepang.utils.DialogUtil
 import com.ozcoin.cookiepang.utils.Event
+import com.ozcoin.cookiepang.utils.EventFlow
+import com.ozcoin.cookiepang.utils.MutableEventFlow
 import com.ozcoin.cookiepang.utils.UiState
+import com.ozcoin.cookiepang.utils.asEventFlow
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,27 +30,36 @@ class MainActivityViewModel @Inject constructor(
     val isEditingCookie: StateFlow<Boolean>
         get() = _isEditingCookie
 
+    private val _mainEventFlow = MutableEventFlow<MainEvent>()
+    val mainEventFlow: EventFlow<MainEvent>
+        get() = _mainEventFlow.asEventFlow()
+
     private var currentFragmentId = -1
         set(value) {
             if (field != R.id.editCookie_dest && value == R.id.editCookie_dest) {
                 isEditingCookie(true)
-                animFab(Event.FabAnim.Left)
             } else if (field == R.id.editCookie_dest && value != R.id.editCookie_dest) {
                 isEditingCookie(false)
-                animFab(Event.FabAnim.Right)
             }
             field = value
         }
 
-    private fun animFab(event: Event.FabAnim) {
+    private fun animFab(event: MainEvent.FabAnim) {
         viewModelScope.launch {
-            _eventFlow.emit(event)
+            _mainEventFlow.emit(event)
         }
     }
 
     private fun isEditingCookie(isEditingCookie: Boolean) {
         viewModelScope.launch {
             _isEditingCookie.emit(isEditingCookie)
+
+            val mainEvent = if (isEditingCookie) {
+                MainEvent.FabAnim.Rotate0to405
+            } else {
+                MainEvent.FabAnim.Rotate405to0
+            }
+            animFab(mainEvent)
         }
     }
 
@@ -76,12 +89,20 @@ class MainActivityViewModel @Inject constructor(
 
     private fun navigateToEditCookie() {
         viewModelScope.launch {
-            _eventFlow.emit(Event.Nav.ToEditCookie)
+            _mainEventFlow.emit(MainEvent.NavigateToEditCookie)
         }
     }
 
     private fun showCancelToEditingCookieDialog() {
         viewModelScope.launch {
+            _eventFlow.emit(
+                Event.ShowDialog(
+                    DialogUtil.getDeleteCookieContents(),
+                    callback = {
+                        Timber.d("CancelToEditingCookieDialog result($it)")
+                    }
+                )
+            )
         }
     }
 

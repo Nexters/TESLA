@@ -9,7 +9,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseActivity
 import com.ozcoin.cookiepang.databinding.ActivityMainBinding
-import com.ozcoin.cookiepang.utils.Event
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -56,8 +55,16 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
             lifecycleScope.launch {
                 eventFlow.collect { handleEvent(it) }
             }
-            lifecycleScope.launchWhenCreated {
+            lifecycleScope.launch {
                 uiStateFlow.collect { handleUiState(it) }
+            }
+            lifecycleScope.launch {
+                mainEventFlow.collect {
+                    if (it is MainEvent.FabAnim)
+                        handleFabAnim(it)
+                    else if (it is MainEvent.NavigateToEditCookie)
+                        handleNavToEditCookie()
+                }
             }
         }
     }
@@ -65,24 +72,28 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
     override fun init() {
     }
 
-    override fun handleFabAnim(event: Event.FabAnim) {
+    private fun handleFabAnim(event: MainEvent.FabAnim) {
         Timber.d("handleFabAnim(${event.javaClass.name})")
-        val animRes = if (event is Event.FabAnim.Left) {
-            binding.ivFabBtn.rotation = 405f
-            R.anim.rotate_0_to_405
+        val rotation: Float
+        val animRes = if (event is MainEvent.FabAnim.Rotate0to405) {
+            rotation = 405f
+            R.anim.rotate_0_to_360
         } else {
-            binding.ivFabBtn.rotation = 0f
-            R.anim.rotate_405_to_0
+            rotation = 0f
+            R.anim.rotate_360_to_0
         }
 
-        binding.ivFabBtn.startAnimation(
-            AnimationUtils.loadAnimation(
-                this, animRes
+        with(binding.ivFabBtn) {
+            startAnimation(
+                AnimationUtils.loadAnimation(
+                    this@MainActivity, animRes
+                )
             )
-        )
+            this.rotation = rotation
+        }
     }
 
-    override fun handleNavToEditCookie() {
+    private fun handleNavToEditCookie() {
         val options = navOptions {
             anim {
                 enter = R.anim.slide_in_up

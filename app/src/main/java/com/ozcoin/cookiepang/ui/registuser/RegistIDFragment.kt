@@ -3,7 +3,6 @@ package com.ozcoin.cookiepang.ui.registuser
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentRegistIdBinding
@@ -31,7 +30,7 @@ class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
 
     override fun initListener() {
         binding.etProfileId.addTextChangedListener {
-            lifecycleScope.launch { registIDFragmentViewModel.emitProfileIDLength(it?.length ?: 0) }
+            viewLifecycleScope.launch { registIDFragmentViewModel.emitProfileIDLength(it?.length ?: 0) }
         }
         binding.includeTitleLayout.ivBackBtn.setOnClickListener {
             registIDFragmentViewModel.clickBack()

@@ -191,7 +191,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun observeUserCategoryList() {
-        lifecycleScope.launch {
+        viewLifecycleScope.launch {
             homeFragmentViewModel.userCategoryList.collect {
                 Timber.d("collect UserCategoryList(size: ${it.size})")
                 userCategoryListAdapter.updateList(it)
@@ -200,7 +200,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun observeFeedList() {
-        lifecycleScope.launch {
+        viewLifecycleScope.launch {
             homeFragmentViewModel.feedList.collect {
                 Timber.d("collect FeedList(size: ${it.size})")
                 feedListAdapter.updateList(it)
@@ -235,7 +235,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun onResume() {
         super.onResume()
-        lifecycleScope.launch(Dispatchers.Default) {
+        viewLifecycleScope.launch(Dispatchers.Default) {
             delay(200)
             mainActivityViewModel.showBtmNavView()
         }
