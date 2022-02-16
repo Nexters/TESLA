@@ -13,9 +13,15 @@ sealed class Event {
         class Activity(val target: Class<out Any>) : StartComponent()
     }
 
+    sealed class FabAnim : Event() {
+        object Left : FabAnim()
+        object Right : FabAnim()
+    }
+
     sealed class Nav : Event() {
         class To(val action: NavDirections) : Nav()
         object Up : Nav()
+        object ToEditCookie : Nav()
     }
 
     class ShowDialog(

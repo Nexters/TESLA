@@ -89,9 +89,21 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
                     is Event.Nav.Up -> {
                         handleNavUp()
                     }
+                    is Event.Nav.ToEditCookie -> {
+                        handleNavToEditCookie()
+                    }
                 }
             }
+            is Event.FabAnim -> {
+                handleFabAnim(event)
+            }
         }
+    }
+
+    protected open fun handleNavToEditCookie() {
+    }
+
+    protected open fun handleFabAnim(event: Event.FabAnim) {
     }
 
     private fun handleStartActivity(event: Event.StartComponent.Activity) {
