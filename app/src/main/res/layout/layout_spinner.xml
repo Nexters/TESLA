@@ -23,7 +23,7 @@
 
         <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
             style="@style/TextAppearance.spinner"
-            android:text="@{spinnerListener.numValue}"
+            android:text="@{String.valueOf(spinnerListener.numValue)}"
             tools:text="1" />
 
         <ImageView
