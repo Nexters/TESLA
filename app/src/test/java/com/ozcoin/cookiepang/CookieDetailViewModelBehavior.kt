@@ -6,7 +6,7 @@ import com.ozcoin.cookiepang.ui.cookiedetail.CookieDetailViewModel
 import com.ozcoin.cookiepang.utils.DummyUtil
 import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.UiState
-import com.ozcoin.cookiepang.utils.observer.ActivityEventObserver
+import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
@@ -38,7 +38,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
     var event: Event? = null
     var uiState: UiState? = null
     cookieDetailViewModel.uiStateObserver = UiStateObserver { uiState = it }
-    cookieDetailViewModel.activityEventObserver = ActivityEventObserver { event = it }
+    cookieDetailViewModel.eventObserver = EventObserver { event = it }
 
     var cookieId = ""
 

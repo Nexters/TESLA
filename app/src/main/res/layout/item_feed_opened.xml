@@ -133,12 +133,12 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/gray_90_t1"
                     app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintLeft_toRightOf="@+id/tv_answer"
+                    app:layout_constraintLeft_toRightOf="@+id/tv_answer_label"
                     app:layout_constraintTop_toTopOf="parent"
                     android:text="A." />
 
                 <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
-                    android:id="@+id/tv_answer"
+                    android:id="@+id/tv_answer_label"
                     style="@style/TextAppearance.cookie_card"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"

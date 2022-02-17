@@ -49,7 +49,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             layoutManager = LinearLayoutManager(requireContext()).apply {
                 orientation = LinearLayoutManager.HORIZONTAL
             }
-            userCategoryListAdapter = UserCategoryListAdapter().apply {
+            userCategoryListAdapter = UserCategoryListAdapter(true).apply {
                 (itemAnimator as? SimpleItemAnimator)?.supportsChangeAnimations = false
 
                 onItemClick = {

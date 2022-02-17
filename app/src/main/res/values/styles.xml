@@ -286,13 +286,7 @@
         <item name="android:gravity">center</item>
     </style>
 
-    <style name="TextAppearance.spinner" parent="TextAppearance.body_01_regular" >
-        <item name="android:textColor">@color/gray_90_t1</item>
-        <item name="android:background">@drawable/bg_spinner_num_box</item>
-        <item name="android:paddingTop">11dp</item>
-        <item name="android:paddingBottom">11dp</item>
-        <item name="android:paddingLeft">16dp</item>
-        <item name="android:paddingRight">16dp</item>
+    <style name="TextAppearance.spinner" parent="EditTextAppearance.double_02" >
         <item name="android:gravity">center</item>
         <item name="android:layout_width">100dp</item>
         <item name="android:layout_height">48dp</item>

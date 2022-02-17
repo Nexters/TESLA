@@ -16,6 +16,10 @@ object DummyUtil {
             UserCategory("Money", false),
             UserCategory("Friend", false),
             UserCategory("Hobby", false),
+            UserCategory("Coffee", false),
+            UserCategory("Hiphop", false),
+            UserCategory("blah blah blah blah", false),
+            UserCategory("Coin", false)
         )
     )
 

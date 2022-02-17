@@ -1,5 +1,6 @@
 package com.ozcoin.cookiepang.ui
 
+import android.os.Bundle
 import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -63,7 +64,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                     if (it is MainEvent.FabAnim)
                         handleFabAnim(it)
                     else if (it is MainEvent.NavigateToEditCookie)
-                        handleNavToEditCookie()
+                        handleNavToEditCookie(it)
                 }
             }
         }
@@ -93,7 +94,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         }
     }
 
-    private fun handleNavToEditCookie() {
+    private fun handleNavToEditCookie(event: MainEvent.NavigateToEditCookie) {
         val options = navOptions {
             anim {
                 enter = R.anim.slide_in_up
@@ -102,6 +103,13 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
                 popExit = R.anim.slide_out_down
             }
         }
-        navController.navigate(R.id.editCookie_dest, null, options)
+
+        val args = event.editCookie?.let { editCookie ->
+            Bundle().also {
+                it.putParcelable("editCookie", editCookie)
+            }
+        }
+
+        navController.navigate(R.id.editCookie_dest, args, options)
     }
 }

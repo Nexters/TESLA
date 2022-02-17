@@ -11,7 +11,8 @@ import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.extensions.toDp
 import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.ui.divider.SpaceItemDecoration
-import com.ozcoin.cookiepang.utils.observer.ActivityEventObserver
+import com.ozcoin.cookiepang.utils.observer.EventObserver
+import com.ozcoin.cookiepang.utils.observer.MainEventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -55,12 +56,14 @@ class CookieDetailFragment : BaseFragment<FragmentCookieDetailBinding>() {
         }
         cookieDetailViewModel.uiStateObserver =
             UiStateObserver(mainActivityViewModel::updateUiState)
+        cookieDetailViewModel.mainEventObserver =
+            MainEventObserver(mainActivityViewModel::updateMainEvent)
     }
 
     override fun initObserve() {
         observeEvent(cookieDetailViewModel)
         with(cookieDetailViewModel) {
-            activityEventObserver = ActivityEventObserver(mainActivityViewModel::updateEvent)
+            eventObserver = EventObserver(mainActivityViewModel::updateEvent)
             viewLifecycleScope.launch {
                 cookieDetail.collect {
                     if (it != null) updateCookieDetail(it)

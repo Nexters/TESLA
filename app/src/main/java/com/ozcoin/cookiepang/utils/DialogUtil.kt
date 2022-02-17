@@ -31,4 +31,13 @@ object DialogUtil {
             cancel = "취소하기"
         )
     }
+    fun getCloseEditingCookie(): DialogContents {
+        return DialogContents(
+            title = "쿠키 만들기를 그만 두시겠어요?",
+            contents = "이 페이지를 나가면 \n" +
+                    "만들던 쿠키가 사라져버려요..",
+            confirm = "그만두기",
+            cancel = "취소하기"
+        )
+    }
 }

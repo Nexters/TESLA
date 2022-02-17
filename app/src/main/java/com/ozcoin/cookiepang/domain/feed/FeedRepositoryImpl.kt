@@ -27,7 +27,7 @@ class FeedRepositoryImpl @Inject constructor() : FeedRepository {
             list.add(feed)
         }
 
-        delay(1500L)
+//        delay(1500L)
 
         return DataResult.OnSuccess(list.toList())
     }

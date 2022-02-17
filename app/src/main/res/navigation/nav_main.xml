@@ -51,7 +51,6 @@
         android:label="CookieDetailFragment"
         tools:layout="@layout/fragment_cookie_detail">
 
-
         <argument
             android:name="cookieId"
             android:defaultValue='""'
@@ -62,7 +61,15 @@
     <fragment
         android:id="@+id/editCookie_dest"
         android:name="com.ozcoin.cookiepang.ui.editcookie.EditCookieFragment"
-        tools:layout="@layout/fragment_edit_cookie"
-        android:label="EditCookieFragment" />
+        android:label="EditCookieFragment"
+        tools:layout="@layout/fragment_edit_cookie">
+
+        <argument
+            android:name="editCookie"
+            android:defaultValue="@null"
+            app:argType="com.ozcoin.cookiepang.domain.editcookie.EditCookie"
+            app:nullable="true" />
+
+    </fragment>
 
 </navigation>

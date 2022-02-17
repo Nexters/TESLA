@@ -7,12 +7,21 @@
     <data>
 
         <variable
+            name="editCookie"
+            type="com.ozcoin.cookiepang.domain.editcookie.EditCookie" />
+
+        <variable
             name="spinnerListener"
             type="com.ozcoin.cookiepang.utils.SpinnerClickListener" />
 
         <variable
             name="isShareAvailable"
             type="Boolean" />
+
+        <variable
+            name="viewModel"
+            type="com.ozcoin.cookiepang.ui.editcookie.EditCookieFragmentViewModel" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -52,8 +61,10 @@
 
                 <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
                     android:id="@+id/tv_question_max_length_caption"
-                    tools:text="20/25"
                     style="@style/TextAppearance.caption_regular"
+                    tools:text="20/25"
+                    android:text="@{viewModel.questionMaxLengthCaption}"
+                    bind:inputReachingTheLimit="@{viewModel.questionMaxLengthCaption != null ? true : false}"
                     android:textColor="@color/error30"
                     app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
                     app:layout_constraintTop_toTopOf="@+id/tv_question_label"
@@ -71,6 +82,9 @@
                     android:imeOptions="actionNext"
                     android:inputType="text"
                     android:maxLength="25"
+                    android:text="@={editCookie.question}"
+                    android:enabled="@{!editCookie.editPricingInfo}"
+                    tools:enabled="false"
                     app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
                     app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
                     app:layout_constraintTop_toBottomOf="@+id/tv_question_label" />
@@ -90,7 +104,7 @@
                     android:layout_height="wrap_content" >
 
                     <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
-                        android:id="@+id/tv_answer"
+                        android:id="@+id/tv_answer_label"
                         style="@style/TextAppearance.body_02_bold"
                         android:text="Answer"
                         android:textColor="@color/gray_90_t1"
@@ -99,6 +113,19 @@
                         app:layout_constraintTop_toTopOf="parent"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content" />
+
+                    <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+                        android:id="@+id/tv_answer_max_length_caption"
+                        style="@style/TextAppearance.caption_regular"
+                        tools:text="45/50"
+                        android:text="@{viewModel.answerMaxLengthCaption}"
+                        bind:inputReachingTheLimit="@{viewModel.answerMaxLengthCaption != null ? true : false}"
+                        android:textColor="@color/error30"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@+id/tv_answer_label"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_answer_label"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp" />
 
                     <EditText
                         android:id="@+id/et_answer"
@@ -109,10 +136,13 @@
                         android:hint="Input a Answer"
                         android:inputType="textMultiLine"
                         android:maxLength="50"
+                        tools:enabled="false"
+                        android:text="@={editCookie.answer}"
+                        android:enabled="@{!editCookie.editPricingInfo}"
                         tools:text="TextTextTextTextTextextTextTextTextTextTextTextText"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_answer" />
+                        app:layout_constraintTop_toBottomOf="@+id/tv_answer_label" />
 
                     <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
                         android:id="@+id/tv_answer_description"
@@ -172,6 +202,9 @@
                     app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
                     app:layout_constraintVertical_bias="0"
                     tools:listitem="@layout/item_user_category"
+                    android:focusable="@{editCookie.editPricingInfo ? false : true}"
+                    android:clickable="@{editCookie.editPricingInfo ? false : true}"
+                    android:alpha="@{editCookie.editPricingInfo ? 0.5f : 1f}"
                     tools:itemCount="2"
                     android:overScrollMode="never"
                     android:layout_width="0dp"
@@ -189,6 +222,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="40dp"
             android:text="Make a Cookie"
+            android:onClick="@{() -> viewModel.clickEditCookie(editCookie)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

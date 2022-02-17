@@ -81,6 +81,12 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
+    fun updateMainEvent(event: MainEvent) {
+        viewModelScope.launch {
+            _mainEventFlow.emit(event)
+        }
+    }
+
     fun updateUiState(uiState: UiState) {
         viewModelScope.launch {
             _uiStateFlow.emit(uiState)
@@ -89,17 +95,18 @@ class MainActivityViewModel @Inject constructor(
 
     private fun navigateToEditCookie() {
         viewModelScope.launch {
-            _mainEventFlow.emit(MainEvent.NavigateToEditCookie)
+            _mainEventFlow.emit(MainEvent.NavigateToEditCookie())
         }
     }
 
-    private fun showCancelToEditingCookieDialog() {
+    private fun showCloseEditingCookieDialog() {
         viewModelScope.launch {
             _eventFlow.emit(
                 Event.ShowDialog(
-                    DialogUtil.getDeleteCookieContents(),
+                    DialogUtil.getCloseEditingCookie(),
                     callback = {
                         Timber.d("CancelToEditingCookieDialog result($it)")
+                        if (it) navigateUp()
                     }
                 )
             )
@@ -110,11 +117,11 @@ class MainActivityViewModel @Inject constructor(
         if (!isEditingCookie.value)
             navigateToEditCookie()
         else
-            showCancelToEditingCookieDialog()
+            showCloseEditingCookieDialog()
     }
 
     fun clickInterceptBtnMenu() {
         Timber.d("Btm menu is intercepted haha")
-        showCancelToEditingCookieDialog()
+        showCloseEditingCookieDialog()
     }
 }
