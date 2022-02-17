@@ -144,7 +144,7 @@
                     android:layout_height="wrap_content"
                     android:textColor="@color/gray_90_t1"
                     android:layout_marginStart="4dp"
-                    android:maxLines="5"
+                    android:maxLines="2"
                     android:ellipsize="end"
                     app:layout_constraintLeft_toRightOf="@+id/tv_a_mark"
                     app:layout_constraintRight_toRightOf="parent"
