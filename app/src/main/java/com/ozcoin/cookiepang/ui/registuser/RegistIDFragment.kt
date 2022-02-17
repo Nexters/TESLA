@@ -8,7 +8,6 @@ import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentRegistIdBinding
 import com.ozcoin.cookiepang.ui.login.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
@@ -30,7 +29,7 @@ class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
 
     override fun initListener() {
         binding.etProfileId.addTextChangedListener {
-            lifecycleScope.launch { registIDFragmentViewModel.emitProfileIDLength(it?.length ?: 0) }
+            registIDFragmentViewModel.emitProfileIDLength(it?.length ?: 0)
         }
         binding.includeTitleLayout.ivBackBtn.setOnClickListener {
             registIDFragmentViewModel.clickBack()

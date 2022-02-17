@@ -15,7 +15,7 @@ class CookieDetailRepositoryImpl @Inject constructor() : CookieDetailRepository 
         val result = if (count == 0) {
             DummyUtil.getCookieDetail(false, isHidden = true)
         } else {
-            DummyUtil.getCookieDetail(true, isHidden = true)
+            DummyUtil.getCookieDetail(true, isHidden = false)
         }
 
         count++

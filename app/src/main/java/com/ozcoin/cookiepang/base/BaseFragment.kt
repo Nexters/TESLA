@@ -47,7 +47,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         return binding.root
     }
 
-    val lifecycleScope: CoroutineScope
+    val viewLifecycleScope: CoroutineScope
         get() = viewLifecycleOwner.lifecycleScope
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -60,7 +60,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     }
 
     protected fun observeEvent(viewModel: BaseViewModel) {
-        lifecycleScope.launch {
+        viewLifecycleScope.launch {
             viewModel.eventFlow.collect { handleEvent(it) }
         }
     }

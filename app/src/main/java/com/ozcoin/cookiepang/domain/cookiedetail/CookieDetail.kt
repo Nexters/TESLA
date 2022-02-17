@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.domain.cookiedetail
 
 import com.ozcoin.cookiepang.domain.cookiehistory.CookieHistory
+import com.ozcoin.cookiepang.domain.editcookie.EditCookie
 import com.ozcoin.cookiepang.domain.feed.CookieCardStyle
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 
@@ -21,3 +22,13 @@ data class CookieDetail(
     val cookieHistory: List<CookieHistory>,
     val isHidden: Boolean
 )
+
+fun CookieDetail.toEditCookie(): EditCookie {
+    return EditCookie().also {
+        it.isEditPricingInfo = true
+        it.question = question
+        it.answer = answer ?: ""
+        it.hammerCost = hammerPrice.toString()
+        it.selectedCategory = userCategory
+    }
+}

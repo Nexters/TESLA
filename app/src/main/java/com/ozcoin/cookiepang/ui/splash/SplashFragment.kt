@@ -27,7 +27,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
                 delay(1500)
             }
 
-            if (loginViewModel.isUserLogin().first()) {
+//            if (loginViewModel.isUserLogin().first()) {
+            if (false) {
                 navigateToMain()
             } else {
                 navigateToLogin()

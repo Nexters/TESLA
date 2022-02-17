@@ -2,7 +2,6 @@ package com.ozcoin.cookiepang.domain.feed
 
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.utils.DataResult
-import kotlinx.coroutines.delay
 import java.util.Random
 import javax.inject.Inject
 
@@ -27,7 +26,7 @@ class FeedRepositoryImpl @Inject constructor() : FeedRepository {
             list.add(feed)
         }
 
-        delay(1500L)
+//        delay(1500L)
 
         return DataResult.OnSuccess(list.toList())
     }

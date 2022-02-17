@@ -2,7 +2,6 @@ package com.ozcoin.cookiepang.ui.cookiedetail
 
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.navArgs
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.adapter.CookieHistoryListAdapter
@@ -12,7 +11,8 @@ import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.extensions.toDp
 import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.ui.divider.SpaceItemDecoration
-import com.ozcoin.cookiepang.utils.observer.ActivityEventObserver
+import com.ozcoin.cookiepang.utils.observer.EventObserver
+import com.ozcoin.cookiepang.utils.observer.MainEventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -56,13 +56,15 @@ class CookieDetailFragment : BaseFragment<FragmentCookieDetailBinding>() {
         }
         cookieDetailViewModel.uiStateObserver =
             UiStateObserver(mainActivityViewModel::updateUiState)
+        cookieDetailViewModel.mainEventObserver =
+            MainEventObserver(mainActivityViewModel::updateMainEvent)
     }
 
     override fun initObserve() {
         observeEvent(cookieDetailViewModel)
         with(cookieDetailViewModel) {
-            activityEventObserver = ActivityEventObserver(mainActivityViewModel::updateEvent)
-            lifecycleScope.launch {
+            eventObserver = EventObserver(mainActivityViewModel::updateEvent)
+            viewLifecycleScope.launch {
                 cookieDetail.collect {
                     if (it != null) updateCookieDetail(it)
                 }
@@ -76,7 +78,7 @@ class CookieDetailFragment : BaseFragment<FragmentCookieDetailBinding>() {
 
     private fun getCookieDetail() {
         val cookieId = getCookieId()
-        lifecycleScope.launch {
+        viewLifecycleScope.launch {
             cookieDetailViewModel.getCookieDetail(cookieId)
         }
     }

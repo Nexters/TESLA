@@ -10,11 +10,13 @@ import com.ozcoin.cookiepang.databinding.ItemUserCategoryBinding
 import com.ozcoin.cookiepang.databinding.ItemUserCategoryResetBinding
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 
-class UserCategoryListAdapter : RecyclerView.Adapter<UserCategoryViewHolder>() {
+class UserCategoryListAdapter(
+    private val itHasResetCategoryItem: Boolean
+) : RecyclerView.Adapter<UserCategoryViewHolder>() {
 
     private val list = mutableListOf<UserCategory>()
 
-    private val tempItemLen = 1
+    private val tempItemLen = if (itHasResetCategoryItem) 1 else 0
     private var selectedPos = -1
     var onItemClick: ((UserCategory?) -> Unit)? = null
 
@@ -47,7 +49,7 @@ class UserCategoryListAdapter : RecyclerView.Adapter<UserCategoryViewHolder>() {
     }
 
     private fun changeSelectedCategory(prePos: Int, selectPos: Int) {
-        if (prePos != - tempItemLen) {
+        if (selectedPos != -1 && prePos != selectPos) {
             list[prePos - tempItemLen].isSelected = false
             notifyItemChanged(prePos)
         }
@@ -63,7 +65,7 @@ class UserCategoryListAdapter : RecyclerView.Adapter<UserCategoryViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if (position == 0) {
+        return if (position == 0 && itHasResetCategoryItem) {
             UserCategoryViewHolder.VIEW_TYPE_RESET
         } else {
             UserCategoryViewHolder.VIEW_TYPE_CATEGORY

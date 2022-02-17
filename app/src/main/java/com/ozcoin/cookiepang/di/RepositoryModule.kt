@@ -2,6 +2,8 @@ package com.ozcoin.cookiepang.di
 
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepositoryImpl
+import com.ozcoin.cookiepang.domain.editcookie.EditCookieRepository
+import com.ozcoin.cookiepang.domain.editcookie.EditCookieRepositoryImpl
 import com.ozcoin.cookiepang.domain.feed.FeedRepository
 import com.ozcoin.cookiepang.domain.feed.FeedRepositoryImpl
 import com.ozcoin.cookiepang.domain.klip.KlipAuthRepository
@@ -38,4 +40,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindCookieDetailRepository(impl: CookieDetailRepositoryImpl): CookieDetailRepository
+
+    @Binds
+    abstract fun bindEditCookieRepository(impl: EditCookieRepositoryImpl): EditCookieRepository
 }

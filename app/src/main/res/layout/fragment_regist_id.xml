@@ -53,7 +53,7 @@
         <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
             android:id="@+id/tv_profile_id_max_length_caption"
             android:text="@{viewModel.profileIDMaxLengthCaption}"
-            bind:inputReachingTheLimit="@{viewModel.profileIDMaxLengthCaption != null ? true : false}"
+            inputReachingTheLimit="@{viewModel.profileIDMaxLengthCaption != null ? true : false}"
             tools:text="10/15"
             style="@style/TextAppearance.caption_regular"
             android:textColor="@color/error30"

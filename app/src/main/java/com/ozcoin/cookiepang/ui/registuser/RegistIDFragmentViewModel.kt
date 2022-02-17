@@ -27,13 +27,14 @@ class RegistIDFragmentViewModel @Inject constructor(
         navigateTo(RegistIDFragmentDirections.actionRegistUserInfo())
     }
 
-    suspend fun emitProfileIDLength(length: Int) {
+    fun emitProfileIDLength(length: Int) {
         val caption = if (length >= 10)
             TextInputUtil.getMaxLengthFormattedString(length, 15)
         else
             null
-
-        _profileIDMaxLengthCaption.emit(caption)
+        viewModelScope.launch {
+            _profileIDMaxLengthCaption.emit(caption)
+        }
     }
 
     private suspend fun checkDuplicateProfileID(): Boolean {

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="spinnerListener"
+            type="com.ozcoin.cookiepang.utils.SpinnerClickListener" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="16dp"
+            android:onClick="@{() -> spinnerListener.clickMinus()}"
+            android:src="@drawable/ic_spinner_minus_btn" />
+
+        <EditText
+            android:id="@+id/et_num_value"
+            style="@style/TextAppearance.spinner"
+            android:digits="1234567890"
+            android:imeOptions="actionDone"
+            android:inputType="number"
+            android:singleLine="true"
+            android:text="@={spinnerListener.numValue}"
+            tools:text="1" />
+
+        <ImageView
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="16dp"
+            android:onClick="@{() -> spinnerListener.clickPlus()}"
+            android:src="@drawable/ic_spinner_plus_btn" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</layout>

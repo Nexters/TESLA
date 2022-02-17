@@ -114,7 +114,7 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity() {
     }
 
     private fun handleNavTo(action: NavDirections) {
-        Timber.d("navigate to : ${action.javaClass.simpleName}")
+        Timber.d("navigate Action(${action.javaClass.simpleName})")
         navController.navigate(action)
     }
 
