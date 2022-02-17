@@ -10,6 +10,7 @@ import androidx.navigation.ui.setupWithNavController
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseActivity
 import com.ozcoin.cookiepang.databinding.ActivityMainBinding
+import com.ozcoin.cookiepang.ui.login.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -18,6 +19,7 @@ import timber.log.Timber
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding>() {
 
+    private val loginViewModel by viewModels<LoginViewModel>()
     private val mainActivityViewModel by viewModels<MainActivityViewModel>()
 
     override fun getLayoutRes(): Int {

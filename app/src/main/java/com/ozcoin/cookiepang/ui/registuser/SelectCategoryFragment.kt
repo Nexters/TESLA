@@ -10,11 +10,11 @@ import com.ozcoin.cookiepang.databinding.FragmentSelectCategoryBinding
 import com.ozcoin.cookiepang.domain.selectcategory.SelectCategory
 import com.ozcoin.cookiepang.extensions.toDp
 import com.ozcoin.cookiepang.ui.divider.SingleLineItemDecoration
-import com.ozcoin.cookiepang.ui.splash.SplashActivityViewModel
+import com.ozcoin.cookiepang.ui.login.LoginViewModel
 
 class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
 
-    private val splashActivityViewModel by activityViewModels<SplashActivityViewModel>()
+    private val loginViewModel by activityViewModels<LoginViewModel>()
     private val selectCategoryFragmentViewModel by viewModels<SelectCategoryFragmentViewModel>()
 
     private lateinit var selectCategoryListAdapter: SelectCategoryListAdapter
@@ -39,7 +39,11 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
                     ContextCompat.getColor(requireContext(), R.color.gray_40_t4_ic2_br1)
                 )
             )
-            selectCategoryListAdapter = SelectCategoryListAdapter()
+            selectCategoryListAdapter = SelectCategoryListAdapter().apply {
+                onItemClick = {
+                    loginViewModel.user.interestCategoryList = it
+                }
+            }
             adapter = selectCategoryListAdapter
         }
     }
@@ -59,6 +63,9 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
     override fun initListener() {
         binding.includeTitleLayout.ivBackBtn.setOnClickListener {
             selectCategoryFragmentViewModel.clickBack()
+        }
+        selectCategoryFragmentViewModel.getSelectedCategory = {
+            loginViewModel.user.interestCategoryList ?: emptyList()
         }
     }
 

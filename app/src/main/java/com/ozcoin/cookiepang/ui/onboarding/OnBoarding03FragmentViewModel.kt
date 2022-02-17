@@ -7,11 +7,8 @@ import javax.inject.Inject
 @HiltViewModel
 class OnBoarding03FragmentViewModel @Inject constructor() : BaseViewModel() {
 
-    var finishActivity: (() -> Unit)? = null
-
     private fun navigateToMain() {
         navigateTo(OnBoarding03FragmentDirections.actionMain())
-        finishActivity?.invoke()
     }
 
     fun clickSkip() {
