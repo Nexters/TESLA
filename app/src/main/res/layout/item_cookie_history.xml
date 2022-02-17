@@ -24,7 +24,7 @@
             style="@style/TextAppearance.body_02_bold"
             android:textColor="@color/gray_90_t1"
             tools:text="수정"
-            bind:setCookieHistoryType="@{cookieHistory.cookieHistoryType}"
+            setCookieHistoryType="@{cookieHistory.cookieHistoryType}"
             android:lines="1"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

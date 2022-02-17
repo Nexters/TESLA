@@ -127,7 +127,6 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
         onBackPressedCallback.remove()
     }
 
-
     override fun initObserve() {
         with(editCookieFragmentViewModel) {
             eventObserver = EventObserver(mainActivityViewModel::updateEvent)

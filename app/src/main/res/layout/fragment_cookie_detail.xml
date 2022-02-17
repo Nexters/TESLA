@@ -139,8 +139,8 @@
                             android:id="@+id/cl_contents_answer_layout"
                             android:layout_marginStart="8dp"
                             android:padding="8dp"
-                            bind:setCookieCardStyle="@{cookieDetail.cookieCardStyle}"
-                            bind:isHidden="@{false}"
+                            setCookieCardStyle="@{cookieDetail.cookieCardStyle}"
+                            isHidden="@{false}"
                             android:visibility="@{cookieDetail.mine ? View.VISIBLE : View.GONE}"
                             tools:visibility="gone"
                             android:background="@drawable/bg_feed_contents_answer_pink"
@@ -179,8 +179,8 @@
                         <ImageView
                             android:id="@+id/iv_ic_cookie_hidden"
                             android:padding="8dp"
-                            bind:setCookieCardStyle="@{cookieDetail.cookieCardStyle}"
-                            bind:isHidden="@{true}"
+                            setCookieCardStyle="@{cookieDetail.cookieCardStyle}"
+                            isHidden="@{true}"
                             tools:visibility="visible"
                             android:visibility="@{cookieDetail.mine ? View.GONE : View.VISIBLE}"
                             android:background="@drawable/ic_feed_hidden_cookie_blue"
@@ -280,8 +280,8 @@
 
                 <ImageView
                     android:id="@+id/iv_collector_user_thumbnail"
-                    bind:loadCircleImg="@{cookieDetail.collectorThumbnailUrl}"
-                    bind:setErrorImg="@{@drawable/ic_circle_user_profile_default}"
+                    loadCircleImg="@{cookieDetail.collectorThumbnailUrl}"
+                    setErrorImg="@{@drawable/ic_circle_user_profile_default}"
                     tools:background="@drawable/ic_circle_user_profile_default"
                     app:layout_constraintTop_toBottomOf="@+id/tv_collector"
                     app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
@@ -326,8 +326,8 @@
 
                 <ImageView
                     android:id="@+id/iv_creator_user_thumbnail"
-                    bind:loadCircleImg="@{cookieDetail.creatorThumbnailUrl}"
-                    bind:setErrorImg="@{@drawable/ic_circle_user_profile_default}"
+                    loadCircleImg="@{cookieDetail.creatorThumbnailUrl}"
+                    setErrorImg="@{@drawable/ic_circle_user_profile_default}"
                     tools:background="@drawable/ic_circle_user_profile_default"
                     app:layout_constraintTop_toBottomOf="@+id/tv_creator"
                     app:layout_constraintLeft_toLeftOf="@+id/gl_contents_middle"

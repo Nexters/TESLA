@@ -71,7 +71,6 @@ class EditCookieFragmentViewModel @Inject constructor(
         }
     }
 
-
     fun getUserCategoryList() {
         uiStateObserver.update(UiState.OnLoading)
 

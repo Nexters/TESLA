@@ -9,7 +9,7 @@ import com.ozcoin.cookiepang.R
 object AnimBinding {
 
     @JvmStatic
-    @BindingAdapter("bind:inputReachingTheLimit")
+    @BindingAdapter("inputReachingTheLimit")
     fun inputReachingTheLimit(textView: TextView, isReachingTheLimit: Boolean?) {
         isReachingTheLimit?.let {
             if (it) startBounceAnim(textView)

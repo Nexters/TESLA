@@ -9,13 +9,13 @@ import com.bumptech.glide.request.RequestOptions
 object ImageBinding {
 
     @JvmStatic
-    @BindingAdapter(value = ["bind:loadCircleImg", "bind:setErrorImg"], requireAll = false)
+    @BindingAdapter(value = ["loadCircleImg", "setErrorImg"], requireAll = false)
     fun loadCircleImg(imageView: ImageView, drawable: Drawable?, errorImgDrawable: Drawable?) {
         setCircleImg(imageView, drawable, errorImgDrawable)
     }
 
     @JvmStatic
-    @BindingAdapter(value = ["bind:loadCircleImg", "bind:setErrorImg"], requireAll = false)
+    @BindingAdapter(value = ["loadCircleImg", "setErrorImg"], requireAll = false)
     fun loadCircleImg(imageView: ImageView, url: String?, errorImgDrawable: Drawable?) {
         setCircleImg(imageView, url, errorImgDrawable)
     }

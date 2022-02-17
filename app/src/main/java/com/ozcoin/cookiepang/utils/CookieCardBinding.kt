@@ -9,7 +9,7 @@ import com.ozcoin.cookiepang.domain.feed.CookieCardStyle
 object CookieCardBinding {
 
     @JvmStatic
-    @BindingAdapter(value = ["bind:setCookieCardStyle", "bind:isHidden"], requireAll = true)
+    @BindingAdapter(value = ["setCookieCardStyle", "isHidden"], requireAll = true)
     fun setCookieCard(view: View, cookieCardStyle: CookieCardStyle?, isHidden: Boolean?) {
         if (cookieCardStyle != null && isHidden != null) {
             if (isHidden) {

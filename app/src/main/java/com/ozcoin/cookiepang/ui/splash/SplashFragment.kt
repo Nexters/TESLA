@@ -10,7 +10,6 @@ import com.ozcoin.cookiepang.utils.Event
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
@@ -27,7 +26,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
                 delay(1500)
             }
 
-            if (loginViewModel.isUserLogin().first()) {
+//            if (loginViewModel.isUserLogin().first()) {
+            if (false) {
                 navigateToMain()
             } else {
                 navigateToLogin()

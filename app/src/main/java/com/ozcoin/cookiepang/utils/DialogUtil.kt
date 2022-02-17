@@ -9,7 +9,7 @@ object DialogUtil {
         return DialogContents(
             title = "해당 쿠키를 구매하시겠어요?",
             contents = "이 쿠키를 ${cookieDetail?.hammerPrice}톤에 구매해\n" +
-                    "쿠키의 내용을 까보시겠어요?",
+                "쿠키의 내용을 까보시겠어요?",
             confirm = "구매하기",
             cancel = "취소하기"
         )
@@ -36,7 +36,7 @@ object DialogUtil {
         return DialogContents(
             title = "쿠키 만들기를 그만 두시겠어요?",
             contents = "이 페이지를 나가면 \n" +
-                    "만들던 쿠키가 사라져버려요..",
+                "만들던 쿠키가 사라져버려요..",
             confirm = "그만두기",
             cancel = "취소하기"
         )
@@ -55,7 +55,7 @@ object DialogUtil {
         return DialogContents(
             title = "쿠키가 굽기가 실패했습니다.",
             contents = "쿠키 굽기를 알 수 없는 이유로 실패했습니다. \n" +
-                    "다시 시도하시겠어요?",
+                "다시 시도하시겠어요?",
             confirm = "다시 시도하기",
             cancel = "취소하기"
         )

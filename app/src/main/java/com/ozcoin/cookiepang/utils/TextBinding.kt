@@ -7,7 +7,7 @@ import com.ozcoin.cookiepang.domain.cookiehistory.CookieHistoryType
 object TextBinding {
 
     @JvmStatic
-    @BindingAdapter("bind:setCookieHistoryType")
+    @BindingAdapter("setCookieHistoryType")
     fun setCookieHistoryType(textView: TextView, cookieHistoryType: CookieHistoryType?) {
         if (cookieHistoryType != null) {
             val string = when (cookieHistoryType) {
