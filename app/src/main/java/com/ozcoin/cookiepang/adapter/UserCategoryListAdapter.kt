@@ -3,7 +3,6 @@ package com.ozcoin.cookiepang.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.ozcoin.cookiepang.adapter.viewholder.UserCategoryCategoryViewHolder
 import com.ozcoin.cookiepang.adapter.viewholder.UserCategoryResetViewHolder
 import com.ozcoin.cookiepang.adapter.viewholder.UserCategoryViewHolder
