@@ -5,13 +5,11 @@ import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.toEditCookie
-import com.ozcoin.cookiepang.ui.MainEvent
 import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.DialogUtil
 import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.EventObserver
-import com.ozcoin.cookiepang.utils.observer.MainEventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.delay
@@ -31,7 +29,6 @@ class CookieDetailViewModel @Inject constructor(
         get() = _cookieDetail
 
     lateinit var eventObserver: EventObserver
-    lateinit var mainEventObserver: MainEventObserver
     lateinit var uiStateObserver: UiStateObserver
 
     private lateinit var cookieId: String
@@ -115,8 +112,8 @@ class CookieDetailViewModel @Inject constructor(
     }
 
     private fun editPricingInfo() {
-        mainEventObserver.update(
-            MainEvent.NavigateToEditCookie(cookieDetail.value?.toEditCookie())
+        eventObserver.update(
+            Event.Nav.ToEditCookie(cookieDetail.value?.toEditCookie())
         )
     }
 

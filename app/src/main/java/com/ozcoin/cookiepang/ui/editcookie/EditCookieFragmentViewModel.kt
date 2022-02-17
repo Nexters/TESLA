@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.domain.editcookie.EditCookie
 import com.ozcoin.cookiepang.domain.editcookie.EditCookieRepository
+import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.utils.DataResult
@@ -26,6 +27,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditCookieFragmentViewModel @Inject constructor(
+    private val userRepository: UserRepository,
     private val userCategoryRepository: UserCategoryRepository,
     private val editCookieRepository: EditCookieRepository
 ) : BaseViewModel() {
@@ -75,7 +77,7 @@ class EditCookieFragmentViewModel @Inject constructor(
         uiStateObserver.update(UiState.OnLoading)
 
         viewModelScope.launch {
-            val result = userCategoryRepository.getUserCategory()
+            val result = userRepository.getLoginUser()?.let { userCategoryRepository.getUserCategory(it) }
             if (result is DataResult.OnSuccess) {
                 Timber.d("getUserCategoryList onSuccess")
                 _userCategoryList.emit(result.response)

@@ -25,7 +25,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/cb_add_category"
             android:textColor="@drawable/selector_et_double02_text_color"
-            android:text="Friendshipxxxxxxxxxxxxxxxxxx"
+            android:text="@{selectCategory.categoryName}"
             tools:text="Friendshipxxxxxxxxxxxxxxxxxx"
             android:enabled="@{selectCategory.isSelected}"
             tools:enabled="false"

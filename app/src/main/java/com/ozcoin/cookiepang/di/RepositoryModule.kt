@@ -18,6 +18,7 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Singleton
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -27,7 +28,8 @@ abstract class RepositoryModule {
     abstract fun bindThemeMode(impl: ThemeModeRepositoryImpl): ThemeModeRepository
 
     @Binds
-    abstract fun bindUserReg(impl: UserRepositoryImpl): UserRepository
+    @Singleton
+    abstract fun bindUserRepository(impl: UserRepositoryImpl): UserRepository
 
     @Binds
     abstract fun bindKlipAuthRepository(impl: KlipAuthRepositoryImpl): KlipAuthRepository

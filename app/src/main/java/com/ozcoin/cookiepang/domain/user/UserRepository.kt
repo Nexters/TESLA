@@ -4,7 +4,7 @@ interface UserRepository {
 
     suspend fun regUser(user: User): Boolean
 
-    suspend fun getUser(): User
+    suspend fun getLoginUser(): User?
 
     suspend fun checkDuplicateProfileID(profileID: String): Boolean
 }
