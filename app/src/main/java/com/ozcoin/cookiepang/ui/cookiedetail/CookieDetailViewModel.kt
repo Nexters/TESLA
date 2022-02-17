@@ -50,6 +50,7 @@ class CookieDetailViewModel @Inject constructor(
                 } else {
                     Timber.d("getCookieDetail($cookieId) is fail")
                     uiStateObserver.update(UiState.OnFail)
+                    navigateUp()
                 }
             }
         } else {

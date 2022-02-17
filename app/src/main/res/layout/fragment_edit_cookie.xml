@@ -202,8 +202,6 @@
                     app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
                     app:layout_constraintVertical_bias="0"
                     tools:listitem="@layout/item_user_category"
-                    android:focusable="@{editCookie.editPricingInfo ? false : true}"
-                    android:clickable="@{editCookie.editPricingInfo ? false : true}"
                     android:alpha="@{editCookie.editPricingInfo ? 0.5f : 1f}"
                     tools:itemCount="2"
                     android:overScrollMode="never"
@@ -221,7 +219,8 @@
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="40dp"
-            android:text="Make a Cookie"
+            tools:text="Make a Cookie"
+            android:text='@{editCookie.editPricingInfo ? "수정하기" : "Make a Cookie"}'
             android:onClick="@{() -> viewModel.clickEditCookie(editCookie)}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"

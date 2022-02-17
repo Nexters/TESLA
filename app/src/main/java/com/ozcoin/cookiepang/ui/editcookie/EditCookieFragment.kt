@@ -15,6 +15,7 @@ import com.ozcoin.cookiepang.adapter.UserCategoryListAdapter
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentEditCookieBinding
 import com.ozcoin.cookiepang.domain.editcookie.EditCookie
+import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.extensions.toDp
 import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.ui.divider.SpaceItemDecoration
@@ -93,8 +94,10 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
     }
 
     private fun setupSpinnerListener() {
-        spinnerClickListener = SpinnerClickListener(0, viewLifecycleScope)
+        val num = kotlin.runCatching { editCookie.hammerCost.toInt() }.getOrDefault(0)
+        spinnerClickListener = SpinnerClickListener(num, viewLifecycleScope)
         binding.spinnerListener = spinnerClickListener
+
         viewLifecycleScope.launch {
             spinnerClickListener.numValue.collect {
                 editCookie.hammerCost = it
@@ -146,12 +149,20 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
     private fun observeUserCategory() {
         viewLifecycleScope.launch {
             editCookieFragmentViewModel.userCategoryList.collect {
-                it.find { userCategory -> userCategory.isSelected }?.let { userCategory ->
-                    editCookie.selectedCategory = userCategory
-                }
+                matchUserCategoryListBySelectedCategory(it)
                 userCategoryListAdapter.updateList(it)
             }
         }
+    }
+
+    private fun matchUserCategoryListBySelectedCategory(list: List<UserCategory>): List<UserCategory> {
+        list.find { userCategory ->
+            editCookie.selectedCategory?.categoryName == userCategory.categoryName
+        }?.run {
+            isSelected = true
+        }
+
+        return list
     }
 
     override fun init() {

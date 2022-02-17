@@ -70,6 +70,17 @@
             app:argType="com.ozcoin.cookiepang.domain.editcookie.EditCookie"
             app:nullable="true" />
 
+        <action
+            android:id="@+id/action_cookieDetail"
+            app:destination="@id/cookieDetail_dest"
+            app:launchSingleTop="true"
+            app:popUpTo="@id/editCookie_dest"
+            app:popUpToInclusive="true"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
     </fragment>
 
 </navigation>

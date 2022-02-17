@@ -3,6 +3,7 @@ package com.ozcoin.cookiepang.ui.editcookie
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.domain.editcookie.EditCookie
+import com.ozcoin.cookiepang.domain.editcookie.EditCookieRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.utils.DataResult
@@ -25,7 +26,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditCookieFragmentViewModel @Inject constructor(
-    private val userCategoryRepository: UserCategoryRepository
+    private val userCategoryRepository: UserCategoryRepository,
+    private val editCookieRepository: EditCookieRepository
 ) : BaseViewModel() {
 
     private val _editCookieEventFlow = MutableEventFlow<EditCookieEvent>()
@@ -106,9 +108,40 @@ class EditCookieFragmentViewModel @Inject constructor(
         }
     }
 
-    private fun makeCookie(editCookie: EditCookie) {
-        if (isEssentialCookieInfoComplete(editCookie)) {
+    private fun getEditCookieInfoResult() {
+        viewModelScope.launch {
+            editCookieRepository.getResult()
+        }
+    }
 
+    private fun getMakeACookieResult() {
+        viewModelScope.launch {
+            if (editCookieRepository.getResult()) {
+                showMakeACookieSuccessDialog("haha")
+            }
+        }
+    }
+
+    private fun showMakeACookieSuccessDialog(cookieId: String) {
+        eventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getMakeCookieSuccess(),
+                callback = {
+                    if (it) {
+                        navigateTo(EditCookieFragmentDirections.actionCookieDetail(cookieId))
+                    }
+                }
+            )
+        )
+    }
+
+    private fun makeACookie(editCookie: EditCookie) {
+        if (isEssentialCookieInfoComplete(editCookie)) {
+            viewModelScope.launch {
+                editCookieRepository.makeACookie(editCookie)
+
+                getMakeACookieResult()
+            }
         } else {
             Timber.d("make a cookie fail(caused: isEssentialCookieInfoComplete false)")
         }
@@ -140,14 +173,20 @@ class EditCookieFragmentViewModel @Inject constructor(
     }
 
     private fun editCookieInfo(editCookie: EditCookie) {
-
+        if (isEssentialCookieInfoComplete(editCookie)) {
+            viewModelScope.launch {
+                editCookieRepository.editCookieInfo(editCookie)
+            }
+        } else {
+            Timber.d("edit cookie info fail(caused: isEssentialCookieInfoComplete false)")
+        }
     }
 
     fun clickEditCookie(editCookie: EditCookie) {
         if (editCookie.isEditPricingInfo) {
             editCookieInfo(editCookie)
         } else {
-            makeCookie(editCookie)
+            makeACookie(editCookie)
         }
     }
 }
