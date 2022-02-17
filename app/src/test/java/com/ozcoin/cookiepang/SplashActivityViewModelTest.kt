@@ -2,7 +2,7 @@ package com.ozcoin.cookiepang
 
 import com.ozcoin.cookiepang.domain.klip.KlipAuthRepository
 import com.ozcoin.cookiepang.domain.user.UserRepository
-import com.ozcoin.cookiepang.ui.splash.SplashActivityViewModel
+import com.ozcoin.cookiepang.ui.login.LoginViewModel
 import io.kotest.core.spec.style.BehaviorSpec
 import io.mockk.every
 import io.mockk.mockk
@@ -24,7 +24,7 @@ class SplashActivityViewModelTest : BehaviorSpec({
     val klipAuthRepository = mockk<KlipAuthRepository>()
     val userRepository = mockk<UserRepository>()
     val splashActivityViewModel = spyk(
-        SplashActivityViewModel(
+        LoginViewModel(
             userRepository, klipAuthRepository
         )
     )

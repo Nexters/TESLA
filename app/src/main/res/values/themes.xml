@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
     <style name="Base.Theme.CookiePang" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Primary brand color. -->
@@ -7,6 +7,8 @@
         <item name="colorOnPrimary">@color/white</item>
         <item name="colorControlActivated">#336FFF</item>
 
+        <!--  splash screen background color  -->
+        <item name="android:windowSplashScreenBackground" tools:targetApi="s">@color/gray_10_bg1</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor">@color/gray_10_bg1</item>
 

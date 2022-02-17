@@ -8,10 +8,15 @@ import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.adapter.viewholder.SelectCategoryViewHolder
 import com.ozcoin.cookiepang.databinding.ItemSelectCategoryBinding
 import com.ozcoin.cookiepang.domain.selectcategory.SelectCategory
+import com.ozcoin.cookiepang.domain.selectcategory.toUserCategory
+import com.ozcoin.cookiepang.domain.usercategory.UserCategory
+import kotlin.streams.toList
 
 class SelectCategoryListAdapter : RecyclerView.Adapter<SelectCategoryViewHolder>() {
 
     private var list = mutableListOf<SelectCategory>()
+
+    var onItemClick: ((List<UserCategory>) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SelectCategoryViewHolder {
         val binding: ItemSelectCategoryBinding = DataBindingUtil.inflate(
@@ -28,6 +33,7 @@ class SelectCategoryListAdapter : RecyclerView.Adapter<SelectCategoryViewHolder>
         holder.bind(item) {
             item.isSelected = !item.isSelected
             notifyItemChanged(position)
+            onItemClick?.invoke(getSelectedCategory())
         }
     }
 
@@ -39,9 +45,11 @@ class SelectCategoryListAdapter : RecyclerView.Adapter<SelectCategoryViewHolder>
         notifyItemRangeInserted(0, newList.size - 1)
     }
 
-    fun getSelectedCategory(): List<SelectCategory> {
-        return list.filter {
+    private fun getSelectedCategory(): List<UserCategory> {
+        return list.stream().filter {
             it.isSelected
-        }
+        }.map {
+            it.toUserCategory()
+        }.toList()
     }
 }

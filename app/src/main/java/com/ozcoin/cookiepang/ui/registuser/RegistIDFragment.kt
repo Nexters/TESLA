@@ -3,18 +3,17 @@ package com.ozcoin.cookiepang.ui.registuser
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.lifecycleScope
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentRegistIdBinding
-import com.ozcoin.cookiepang.ui.splash.SplashActivityViewModel
+import com.ozcoin.cookiepang.ui.login.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
 
-    private val splashActivityViewModel by activityViewModels<SplashActivityViewModel>()
+    private val loginViewModel by activityViewModels<LoginViewModel>()
     private val registIDFragmentViewModel by viewModels<RegistIDFragmentViewModel>()
 
     override fun getLayoutRes(): Int {
@@ -23,7 +22,7 @@ class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
 
     override fun initView() {
         with(binding) {
-            user = splashActivityViewModel.user
+            user = loginViewModel.user
             viewModel = registIDFragmentViewModel
             showSkipBtn = false
         }
@@ -44,7 +43,7 @@ class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
 
     override fun init() {
         registIDFragmentViewModel.getUserProfileID = {
-            splashActivityViewModel.user.profileID
+            loginViewModel.user.profileID
         }
     }
 }
