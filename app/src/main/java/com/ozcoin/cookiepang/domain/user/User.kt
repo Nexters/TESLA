@@ -3,6 +3,7 @@ package com.ozcoin.cookiepang.domain.user
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.ozcoin.cookiepang.BR
+import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 
 class User : BaseObservable() {
 
@@ -33,4 +34,13 @@ class User : BaseObservable() {
             field = value
             notifyPropertyChanged(BR.hobby)
         }
+
+    @get:Bindable
+    var walletAddress: String = ""
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.walletAddress)
+        }
+
+    var interestCategoryList: List<UserCategory>? = null
 }

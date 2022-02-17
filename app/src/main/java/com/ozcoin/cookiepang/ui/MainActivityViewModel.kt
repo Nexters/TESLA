@@ -16,7 +16,7 @@ class MainActivityViewModel @Inject constructor(
     val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
-    private val _isBtmNavViewVisible = MutableStateFlow(true)
+    private val _isBtmNavViewVisible = MutableStateFlow(false)
     val isBtmNavViewVisible: StateFlow<Boolean>
         get() = _isBtmNavViewVisible
 

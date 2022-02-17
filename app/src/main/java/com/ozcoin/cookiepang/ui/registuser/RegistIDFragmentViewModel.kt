@@ -17,10 +17,6 @@ class RegistIDFragmentViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    private val _profileID = MutableStateFlow("")
-    val profileID: StateFlow<String>
-        get() = _profileID
-
     private val _profileIDMaxLengthCaption = MutableStateFlow<String?>(null)
     val profileIDMaxLengthCaption: StateFlow<String?>
         get() = _profileIDMaxLengthCaption.asStateFlow()

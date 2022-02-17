@@ -1,17 +1,14 @@
 package com.ozcoin.cookiepang.ui.onboarding
 
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentOnBoarding01Binding
-import com.ozcoin.cookiepang.ui.splash.SplashActivityViewModel
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class OnBoarding01Fragment : BaseFragment<FragmentOnBoarding01Binding>() {
 
-    private val splashActivityViewModel by activityViewModels<SplashActivityViewModel>()
     private val onBoarding01FragmentViewModel by viewModels<OnBoarding01FragmentViewModel>()
 
     override fun getLayoutRes(): Int {
@@ -31,7 +28,6 @@ class OnBoarding01Fragment : BaseFragment<FragmentOnBoarding01Binding>() {
         }
         binding.includeTitleLayout.tvSkipBtn.setOnClickListener {
             onBoarding01FragmentViewModel.navigateToMain()
-            splashActivityViewModel.finishActivity()
         }
     }
 
