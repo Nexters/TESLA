@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class UserCategory(
     val categoryName: String,
     var isSelected: Boolean,
-    val categoryColorStyle : UserCategoryColorStyle = UserCategoryColorStyle.NONE
+    val categoryColorStyle: UserCategoryColorStyle = UserCategoryColorStyle.NONE
 ) : Parcelable {
     companion object {
         fun typeAll(): UserCategory {

@@ -6,7 +6,6 @@ import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -20,7 +19,9 @@ class LoginViewModel @Inject constructor(
     val user = User()
 
     suspend fun isUserLogin(): Boolean {
-        return userRepository.getLoginUser() != null
+        return (userRepository.getLoginUser() != null).also {
+            Timber.d("isUserLogin($it)")
+        }
     }
 
     fun setUserAddress(userAddress: String) {
