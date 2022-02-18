@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
 import androidx.annotation.LayoutRes
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
@@ -44,6 +45,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         binding = DataBindingUtil.inflate(localInflater, getLayoutRes(), container, false)
         binding.lifecycleOwner = viewLifecycleOwner
 
+        binding.root.background = ContextCompat.getDrawable(inflater.context, R.drawable.bg_gradient_basic_black)
         return binding.root
     }
 
@@ -79,7 +81,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
                         handleNavTo(event.action)
                     }
                     is Event.Nav.Up -> {
-                        handleNavUp()
+                        handleNavUp(event)
                     }
                 }
             }
@@ -92,8 +94,11 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         findNavController().navigate(action)
     }
 
-    private fun handleNavUp() {
+    private fun handleNavUp(event: Event.Nav.Up) {
         Timber.d("navigate Up")
+        if (event.key != null)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(event.key, event.value)
+
         findNavController().navigateUp()
     }
 

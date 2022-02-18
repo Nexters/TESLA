@@ -99,7 +99,6 @@
 
         </fragment>
 
-
         <fragment
             android:id="@+id/completeUserReg_dest"
             android:name="com.ozcoin.cookiepang.ui.registuser.CompleteUserRegFragment"
@@ -144,7 +143,7 @@
 
             <action
                 android:id="@+id/action_main"
-                app:destination="@id/home_dest"
+                app:destination="@id/nav_main"
                 app:popUpTo="@id/nav_on_boarding"
                 app:popUpToInclusive="true" />
 
@@ -166,7 +165,7 @@
 
             <action
                 android:id="@+id/action_main"
-                app:destination="@id/home_dest"
+                app:destination="@id/nav_main"
                 app:popUpTo="@id/nav_on_boarding"
                 app:popUpToInclusive="true" />
 
@@ -184,7 +183,7 @@
 
             <action
                 android:id="@+id/action_main"
-                app:destination="@id/home_dest"
+                app:destination="@id/nav_main"
                 app:popUpTo="@id/nav_on_boarding"
                 app:popUpToInclusive="true" />
 
@@ -209,11 +208,6 @@
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
-
-            <argument
-                android:name="refreshUserCategory"
-                android:defaultValue="false"
-                app:argType="boolean" />
 
             <action
                 android:id="@+id/action_cookieDetail"

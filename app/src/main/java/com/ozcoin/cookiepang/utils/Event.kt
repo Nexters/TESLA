@@ -8,7 +8,7 @@ sealed class Event {
 
     sealed class Nav : Event() {
         class To(val action: NavDirections) : Nav()
-        object Up : Nav()
+        data class Up(val key: String? = null, val value: Any? = null) : Nav()
         data class ToEditCookie(val editCookie: EditCookie? = null) : Nav()
     }
 

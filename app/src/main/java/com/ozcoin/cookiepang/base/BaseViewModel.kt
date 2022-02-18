@@ -26,7 +26,15 @@ abstract class BaseViewModel : ViewModel() {
     protected fun navigateUp() {
         viewModelScope.launch {
             _eventFlow.emit(
-                Event.Nav.Up
+                Event.Nav.Up()
+            )
+        }
+    }
+
+    protected fun navigateUp(key: String, value: Any) {
+        viewModelScope.launch {
+            _eventFlow.emit(
+                Event.Nav.Up(key, value)
             )
         }
     }
