@@ -226,7 +226,14 @@
         android:id="@+id/my_home_dest"
         android:name="com.ozcoin.cookiepang.ui.myhome.MyHomeFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_my_home" />
+        tools:layout="@layout/fragment_my_home" >
+
+        <argument
+            android:name="userId"
+            android:defaultValue='""'
+            app:argType="string" />
+
+    </fragment>
 
     <fragment
         android:id="@+id/selectCategory_dest"

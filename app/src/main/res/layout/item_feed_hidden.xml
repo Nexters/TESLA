@@ -122,8 +122,8 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 setCookieCardStyle="@{feed.cookieCardStyle}"
                 isHidden="@{feed.hidden}"
-                android:padding="8dp"
-                android:background="@drawable/ic_feed_hidden_cookie_blue"
+                android:scaleType="fitXY"
+                tools:src="@drawable/ic_feed_hidden_cookie_blue"
                 android:layout_width="160dp"
                 android:layout_height="112dp" />
 

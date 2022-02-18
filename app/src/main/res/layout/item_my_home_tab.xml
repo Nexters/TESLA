@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="count"
+            type="String" />
+        <variable
+            name="tabName"
+            type="String" />
+    </data>
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:gravity="center"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="71dp">
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_count"
+            style="@style/TextAppearance.title_02_bold"
+            android:text="@{count}"
+            tools:text="24"
+            android:textColor="@color/gray_90_t1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_tab_name"
+            style="@style/TextAppearance.caption_medium"
+            android:text="@{tabName}"
+            tools:text="Created"
+            android:textColor="@color/gray_90_t1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

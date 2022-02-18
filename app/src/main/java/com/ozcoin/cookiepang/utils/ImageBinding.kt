@@ -35,4 +35,13 @@ object ImageBinding {
             .error(errorImgDrawable)
             .into(imageView)
     }
+
+    @JvmStatic
+    @BindingAdapter(value = ["loadProfileBackgroundImg", "setErrorImg"], requireAll = false)
+    fun loadProfileBackgroundImg(imageView: ImageView, url: String?, errorImgDrawable: Drawable?) {
+        Glide.with(imageView.context)
+            .load(url)
+            .error(errorImgDrawable)
+            .into(imageView)
+    }
 }
