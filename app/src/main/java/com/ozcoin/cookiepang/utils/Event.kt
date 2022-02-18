@@ -2,20 +2,19 @@ package com.ozcoin.cookiepang.utils
 
 import androidx.navigation.NavDirections
 import com.ozcoin.cookiepang.domain.dialog.DialogContents
+import com.ozcoin.cookiepang.domain.editcookie.EditCookie
 
 sealed class Event {
-
-    sealed class FinishComponent : Event() {
-        object Activity : FinishComponent()
-    }
-
-    sealed class StartComponent : Event() {
-        class Activity(val target: Class<out Any>) : StartComponent()
-    }
 
     sealed class Nav : Event() {
         class To(val action: NavDirections) : Nav()
         object Up : Nav()
+        data class ToEditCookie(val editCookie: EditCookie? = null) : Nav()
+    }
+
+    sealed class FabAnim : Event() {
+        object Rotate0to405 : FabAnim()
+        object Rotate405to0 : FabAnim()
     }
 
     class ShowDialog(

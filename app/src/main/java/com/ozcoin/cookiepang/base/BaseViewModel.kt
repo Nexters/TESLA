@@ -6,15 +6,10 @@ import androidx.navigation.NavDirections
 import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.EventFlow
 import com.ozcoin.cookiepang.utils.MutableEventFlow
-import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.asEventFlow
 import kotlinx.coroutines.launch
 
 abstract class BaseViewModel : ViewModel() {
-
-    protected val _uiStateFlow = MutableEventFlow<UiState>()
-    val uiStateFlow: EventFlow<UiState>
-        get() = _uiStateFlow.asEventFlow()
 
     protected val _eventFlow = MutableEventFlow<Event>()
     val eventFlow: EventFlow<Event>

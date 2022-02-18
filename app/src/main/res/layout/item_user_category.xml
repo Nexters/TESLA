@@ -18,7 +18,8 @@
         <CheckBox
             android:id="@+id/tv_category_name"
             style="@style/ToggleAppearance.category_stroke"
-            android:background="@drawable/selector_btn_category_stroke_pink"
+            setUserCategoryColorStyle="@{userCategory.categoryColorStyle}"
+            tools:background="@drawable/selector_btn_category_stroke_orange"
             tools:text="Free Chat"
             android:text="@{userCategory.categoryName}"
             android:checked="@{userCategory.selected}"

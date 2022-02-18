@@ -6,19 +6,20 @@ import com.ozcoin.cookiepang.domain.cookiehistory.CookieHistoryType
 import com.ozcoin.cookiepang.domain.feed.CookieCardStyle
 import com.ozcoin.cookiepang.domain.feed.Feed
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
+import com.ozcoin.cookiepang.domain.usercategory.UserCategoryColorStyle
 import java.util.Random
 
 object DummyUtil {
 
     fun getUserCategoryList() = DataResult.OnSuccess(
         listOf(
-            UserCategory("Free Chat", false),
-            UserCategory("Money", false),
-            UserCategory("Friend", false),
-            UserCategory("Hobby", false),
-            UserCategory("Coffee", false),
-            UserCategory("Hiphop", false),
-            UserCategory("blah blah blah blah", false),
+            UserCategory("Free Chat", false, UserCategoryColorStyle.PINK),
+            UserCategory("Money", false, UserCategoryColorStyle.BLUE),
+            UserCategory("Friend", false, UserCategoryColorStyle.ORANGE),
+            UserCategory("Hobby", false, UserCategoryColorStyle.PURPLE),
+            UserCategory("Coffee", false, UserCategoryColorStyle.ORANGE),
+            UserCategory("Hiphop", false, UserCategoryColorStyle.BLUE),
+            UserCategory("blah blah blah blah", false, UserCategoryColorStyle.ORANGE),
             UserCategory("Coin", false)
         )
     )

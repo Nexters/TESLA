@@ -2,6 +2,7 @@ package com.ozcoin.cookiepang
 
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
+import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.ui.cookiedetail.CookieDetailViewModel
 import com.ozcoin.cookiepang.utils.DummyUtil
 import com.ozcoin.cookiepang.utils.Event
@@ -91,11 +92,13 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
         When("내 쿠키 상세 정보라면") {
 
             every { cookieDetailViewModel.cookieDetail.value?.isMine } returns true
+            every { cookieDetailViewModel.cookieDetail.value?.hammerPrice } returns 10
+            every { cookieDetailViewModel.cookieDetail.value?.userCategory } returns UserCategory.typeAll()
             cookieDetailViewModel.cookieDetail.value?.isMine shouldBe true
 
             Then("판매 정보 수정으로 이동") {
-
                 cookieDetailViewModel.clickCookieContentsBtn(cookieDetailViewModel.cookieDetail.value?.isMine!!)
+                event.shouldBeInstanceOf<Event.Nav.ToEditCookie>()
             }
         }
 

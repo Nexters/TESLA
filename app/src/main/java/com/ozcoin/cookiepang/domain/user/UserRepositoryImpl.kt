@@ -2,22 +2,24 @@ package com.ozcoin.cookiepang.domain.user
 
 import com.ozcoin.cookiepang.data.user.UserRegLocalDataSource
 import com.ozcoin.cookiepang.data.user.toData
-import com.ozcoin.cookiepang.data.user.toDomain
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
     private val userRegLocalDataSource: UserRegLocalDataSource
 ) : UserRepository {
 
-    private val user = User()
+//    private var user: User? = null
+    private var user: User? = User()
 
     override suspend fun regUser(user: User): Boolean {
         userRegLocalDataSource.regUser(user.toData())
+        this.user = user
         return true
     }
 
-    override suspend fun getUser(): User {
-        return userRegLocalDataSource.getUser().toDomain()
+    override suspend fun getLoginUser(): User? {
+//        return userRegLocalDataSource.getUser().toDomain()
+        return user
     }
 
     override suspend fun checkDuplicateProfileID(profileID: String): Boolean {

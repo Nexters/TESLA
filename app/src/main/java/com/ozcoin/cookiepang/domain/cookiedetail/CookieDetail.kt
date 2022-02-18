@@ -24,11 +24,11 @@ data class CookieDetail(
 )
 
 fun CookieDetail.toEditCookie(): EditCookie {
-    return EditCookie().also {
-        it.isEditPricingInfo = true
-        it.question = question
-        it.answer = answer ?: ""
-        it.hammerCost = hammerPrice.toString()
-        it.selectedCategory = userCategory
+    return EditCookie().apply {
+        isEditPricingInfo = true
+        question = question
+        answer = answer
+        hammerCost = hammerPrice.toString()
+        selectedCategory = userCategory
     }
 }

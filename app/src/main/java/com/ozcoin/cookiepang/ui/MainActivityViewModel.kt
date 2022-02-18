@@ -22,6 +22,10 @@ class MainActivityViewModel @Inject constructor(
     val savedStateHandle: SavedStateHandle
 ) : BaseViewModel() {
 
+    private val _uiStateFlow = MutableEventFlow<UiState>()
+    val uiStateFlow: EventFlow<UiState>
+        get() = _uiStateFlow.asEventFlow()
+
     private val _isBtmNavViewVisible = MutableStateFlow(false)
     val isBtmNavViewVisible: StateFlow<Boolean>
         get() = _isBtmNavViewVisible
@@ -29,10 +33,6 @@ class MainActivityViewModel @Inject constructor(
     private val _isEditingCookie = MutableStateFlow(false)
     val isEditingCookie: StateFlow<Boolean>
         get() = _isEditingCookie
-
-    private val _mainEventFlow = MutableEventFlow<MainEvent>()
-    val mainEventFlow: EventFlow<MainEvent>
-        get() = _mainEventFlow.asEventFlow()
 
     private var currentFragmentId = -1
         set(value) {
@@ -44,9 +44,9 @@ class MainActivityViewModel @Inject constructor(
             field = value
         }
 
-    private fun animFab(event: MainEvent.FabAnim) {
+    private fun animFab(event: Event.FabAnim) {
         viewModelScope.launch {
-            _mainEventFlow.emit(event)
+            _eventFlow.emit(event)
         }
     }
 
@@ -55,9 +55,9 @@ class MainActivityViewModel @Inject constructor(
             _isEditingCookie.emit(isEditingCookie)
 
             val mainEvent = if (isEditingCookie) {
-                MainEvent.FabAnim.Rotate0to405
+                Event.FabAnim.Rotate0to405
             } else {
-                MainEvent.FabAnim.Rotate405to0
+                Event.FabAnim.Rotate405to0
             }
             animFab(mainEvent)
         }
@@ -81,12 +81,6 @@ class MainActivityViewModel @Inject constructor(
         }
     }
 
-    fun updateMainEvent(event: MainEvent) {
-        viewModelScope.launch {
-            _mainEventFlow.emit(event)
-        }
-    }
-
     fun updateUiState(uiState: UiState) {
         viewModelScope.launch {
             _uiStateFlow.emit(uiState)
@@ -95,7 +89,7 @@ class MainActivityViewModel @Inject constructor(
 
     private fun navigateToEditCookie() {
         viewModelScope.launch {
-            _mainEventFlow.emit(MainEvent.NavigateToEditCookie())
+            _eventFlow.emit(Event.Nav.ToEditCookie())
         }
     }
 

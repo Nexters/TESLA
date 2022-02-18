@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.domain.feed.Feed
 import com.ozcoin.cookiepang.domain.feed.FeedRepository
+import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.utils.DataResult
@@ -20,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeFragmentViewModel @Inject constructor(
     private val userCategoryRepository: UserCategoryRepository,
+    private val userRepository: UserRepository,
     private val feedRepository: FeedRepository
 ) : BaseViewModel() {
 
@@ -37,16 +39,27 @@ class HomeFragmentViewModel @Inject constructor(
         uiStateObserver.update(UiState.OnLoading)
 
         viewModelScope.launch {
-            val result = userCategoryRepository.getUserCategory()
-            if (result is DataResult.OnSuccess) {
-                Timber.d("getUserCategoryList onSuccess")
+            val user = userRepository.getLoginUser()
+            if (user != null) {
+                val result = userCategoryRepository.getUserCategory(user)
+                if (result is DataResult.OnSuccess) {
+                    Timber.d("getUserCategoryList onSuccess")
 
-                val list = addAllTypeToUserCategoryList(result.response)
-                _userCategoryList.emit(list)
-                uiStateObserver.update(UiState.OnSuccess)
-                getFeedList(UserCategory.typeAll())
+                    val list = addAllTypeToUserCategoryList(result.response)
+                    _userCategoryList.emit(list)
+                    uiStateObserver.update(UiState.OnSuccess)
+                    getFeedList(UserCategory.typeAll())
+                } else {
+                    Timber.d("getUserCategoryList onFail(retryCnt: $retryCnt)")
+
+                    if (retryCnt == 0) {
+                        uiStateObserver.update(UiState.OnFail)
+                    } else {
+                        getUserCategoryList(retryCnt - 1)
+                    }
+                }
             } else {
-                Timber.d("getUserCategoryList onFail(retryCnt: $retryCnt)")
+                Timber.d("User is null(retryCnt: $retryCnt)")
 
                 if (retryCnt == 0) {
                     uiStateObserver.update(UiState.OnFail)

@@ -8,6 +8,8 @@ import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentRegistIdBinding
 import com.ozcoin.cookiepang.ui.login.LoginViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
@@ -38,6 +40,19 @@ class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
 
     override fun initObserve() {
         observeEvent(registIDFragmentViewModel)
+        observeRegistIdEvent()
+    }
+
+    private fun observeRegistIdEvent() {
+        viewLifecycleScope.launch {
+            registIDFragmentViewModel.registIdEventFlow.collect {
+                when (it) {
+                    is RegistIDEvent.ProfileIdNotAvailable -> {
+                        binding.etProfileId.requestFocus()
+                    }
+                }
+            }
+        }
     }
 
     override fun init() {

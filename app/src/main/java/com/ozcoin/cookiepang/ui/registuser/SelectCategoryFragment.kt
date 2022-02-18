@@ -7,14 +7,19 @@ import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.adapter.SelectCategoryListAdapter
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentSelectCategoryBinding
-import com.ozcoin.cookiepang.domain.selectcategory.SelectCategory
 import com.ozcoin.cookiepang.extensions.toDp
+import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.ui.divider.SingleLineItemDecoration
 import com.ozcoin.cookiepang.ui.login.LoginViewModel
+import com.ozcoin.cookiepang.utils.observer.UiStateObserver
+import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.launch
 
+@AndroidEntryPoint
 class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
 
     private val loginViewModel by activityViewModels<LoginViewModel>()
+    private val mainActivityViewModel by activityViewModels<MainActivityViewModel>()
     private val selectCategoryFragmentViewModel by viewModels<SelectCategoryFragmentViewModel>()
 
     private lateinit var selectCategoryListAdapter: SelectCategoryListAdapter
@@ -41,35 +46,28 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
             )
             selectCategoryListAdapter = SelectCategoryListAdapter().apply {
                 onItemClick = {
-                    loginViewModel.user.interestCategoryList = it
+                    selectCategoryFragmentViewModel.selectedCategories = it
                 }
             }
             adapter = selectCategoryListAdapter
         }
     }
 
-    private fun getSelectCategoryList(): List<SelectCategory> {
-        val list = mutableListOf<SelectCategory>()
-        repeat(10) {
-            list.add(SelectCategory("test$it", false))
-        }
-        return list
-    }
-
     override fun initObserve() {
         observeEvent(selectCategoryFragmentViewModel)
+        selectCategoryFragmentViewModel.uiStateObserver = UiStateObserver(mainActivityViewModel::updateUiState)
     }
 
     override fun initListener() {
         binding.includeTitleLayout.ivBackBtn.setOnClickListener {
             selectCategoryFragmentViewModel.clickBack()
         }
-        selectCategoryFragmentViewModel.getSelectedCategory = {
-            loginViewModel.user.interestCategoryList ?: emptyList()
-        }
     }
 
     override fun init() {
-        selectCategoryListAdapter.updateList(getSelectCategoryList())
+        selectCategoryFragmentViewModel.registrationUser = loginViewModel.user
+        viewLifecycleScope.launch {
+            selectCategoryListAdapter.updateList(selectCategoryFragmentViewModel.getCategoryList())
+        }
     }
 }
