@@ -68,7 +68,7 @@ class HomeFragmentViewModelBehavior : BehaviorSpec() {
             When("로드에 실패하면") {
 
                 coEvery {
-                    userCategoryRepository.getUserCategory(user)
+                    userCategoryRepository.getUserCategory(user.userId)
                 } coAnswers {
                     DataResult.OnFail
                 } coAndThen {
@@ -100,7 +100,7 @@ class HomeFragmentViewModelBehavior : BehaviorSpec() {
                 }
 
                 coEvery {
-                    userCategoryRepository.getUserCategory(user)
+                    userCategoryRepository.getUserCategory(user.userId)
                 } coAnswers {
                     DummyUtil.getUserCategoryList()
                 }

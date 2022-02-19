@@ -64,7 +64,7 @@ class SelectCategoryFragmentViewModel @Inject constructor(
         user: User,
         list: List<SelectCategory>
     ): List<SelectCategory> {
-        val result = userCategoryRepository.getUserCategory(user)
+        val result = userCategoryRepository.getUserCategory(user.userId)
         if (result is DataResult.OnSuccess) {
             val userList = result.response.map { it.toSelectCategory() }
             list.forEach { all ->
