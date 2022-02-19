@@ -13,6 +13,7 @@ import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navOptions
+import androidx.navigation.ui.setupWithNavController
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseActivity
 import com.ozcoin.cookiepang.databinding.ActivityMainBinding
@@ -47,6 +48,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun setUpBtmNav() {
         with(binding.includeBtmNavLayout.customBtmNav) {
+            setupWithNavController(navController)
             itemIconTintList = null
             setOnItemSelectedListener { menuItem ->
                 when (menuItem.itemId) {
@@ -63,6 +65,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun navigateToHome() {
+        Timber.d("navigateToHome()")
         val navOption = NavOptions.Builder().apply {
             setLaunchSingleTop(true)
             setPopUpTo(R.id.home_dest, false)
@@ -72,6 +75,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     private fun navigateToMyHome() {
+        Timber.d("navigateToMyHome()")
         val navOption = NavOptions.Builder().apply {
             setLaunchSingleTop(true)
             setPopUpTo(R.id.home_dest, false)

@@ -1,5 +1,7 @@
 package com.ozcoin.cookiepang.base
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.LayoutInflater
@@ -87,19 +89,46 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
                     is Event.Nav.ToAlarm -> {
                         navigateToAlarm()
                     }
+                    is Event.Nav.ToSetting -> {
+                        navigateToSetting()
+                    }
                 }
+            }
+            is Event.ShowWeb -> {
+                showWeb(event)
             }
             else -> {}
         }
     }
 
+    private fun showWeb(event: Event.ShowWeb) {
+        kotlin.runCatching {
+            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(event.url)))
+        }.onFailure {
+            Timber.e(it)
+        }
+    }
+
+    private fun navigateToSetting() {
+        val options = navOptions {
+            anim {
+                enter = R.anim.nav_default_enter_anim
+                exit = R.anim.nav_default_exit_anim
+                popEnter = R.anim.nav_default_pop_enter_anim
+                popExit = R.anim.nav_default_pop_exit_anim
+            }
+        }
+
+        findNavController().navigate(R.id.setting_dest, null, options)
+    }
+
     private fun navigateToAlarm() {
         val options = navOptions {
             anim {
-                enter = R.anim.slide_in_up
-                exit = R.anim.slide_out_down
-                popEnter = R.anim.slide_in_up
-                popExit = R.anim.slide_out_down
+                enter = R.anim.nav_default_enter_anim
+                exit = R.anim.nav_default_exit_anim
+                popEnter = R.anim.nav_default_pop_enter_anim
+                popExit = R.anim.nav_default_pop_exit_anim
             }
         }
 
