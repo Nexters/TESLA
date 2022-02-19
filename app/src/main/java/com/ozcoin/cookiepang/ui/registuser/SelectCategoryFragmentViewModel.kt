@@ -106,7 +106,7 @@ class SelectCategoryFragmentViewModel @Inject constructor(
             } else {
                 if (setUserInterestIn(userRepository.getLoginUser()!!)) {
                     uiStateObserver.update(UiState.OnSuccess)
-                    navigateUp()
+                    navigateUp(SelectCategoryFragment.KEY_RESET_USER_CATEGORY, true)
                 } else {
                     uiStateObserver.update(UiState.OnFail)
                 }
