@@ -11,6 +11,7 @@ sealed class Event {
         data class Up(val key: String? = null, val value: Any? = null) : Nav()
         data class ToEditCookie(val editCookie: EditCookie? = null) : Nav()
         object ToAlarm : Nav()
+        object ToSetting : Nav()
     }
 
     sealed class FabAnim : Event() {
@@ -18,8 +19,10 @@ sealed class Event {
         object Rotate405to0 : FabAnim()
     }
 
-    class ShowDialog(
+    data class ShowDialog(
         val dialogContents: DialogContents,
         val callback: (Boolean) -> Unit
     ) : Event()
+
+    data class ShowWeb(val url: String) : Event()
 }

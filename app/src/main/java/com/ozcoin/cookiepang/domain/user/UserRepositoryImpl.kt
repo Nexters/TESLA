@@ -10,11 +10,11 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
 //    private var user: User? = null
-    private var user: User? = User()
+    private var loginUser: User? = User()
 
     override suspend fun regUser(user: User): Boolean {
         userRegLocalDataSource.regUser(user.toData())
-        this.user = user
+        this.loginUser = user
         return true
     }
 
@@ -25,5 +25,9 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun checkDuplicateProfileID(profileID: String): Boolean {
         return true
+    }
+
+    override fun logOut() {
+        loginUser = null
     }
 }

@@ -50,4 +50,7 @@ class User : BaseObservable() {
         }
 
     var interestCategoryList: List<UserCategory>? = null
+    var numOfKlaytn = 0
+    var numOfHammer = 0
+    var isWalletApproved = false
 }
