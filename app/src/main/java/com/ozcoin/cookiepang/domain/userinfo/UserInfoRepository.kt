@@ -5,4 +5,6 @@ import com.ozcoin.cookiepang.utils.DataResult
 interface UserInfoRepository {
 
     suspend fun getUserInfo(userId: String): DataResult<UserInfo>
+
+    suspend fun updateUserInfo(userInfo: UserInfo): Boolean
 }

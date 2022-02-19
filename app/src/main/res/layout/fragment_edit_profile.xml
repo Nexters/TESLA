@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View" />
+
+        <variable
+            name="pageName"
+            type="String" />
+
+        <variable
+            name="viewModel"
+            type="com.ozcoin.cookiepang.ui.editprofile.EditProfileFragmentViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/include_title_layout"
+            layout="@layout/layout_title_back_title"
+            bind:pageName="@{pageName}" />
+
+        <include layout="@layout/layout_contents_guide_line" />
+
+        <ImageView
+            android:id="@+id/iv_profile_background_img"
+            tools:src="@drawable/ic_default_profile_background_img"
+            loadProfileBackgroundImg="@{viewModel.userInfo.profileBackgroundImgUrl}"
+            setErrorImg="@{@drawable/ic_default_profile_background_img}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="fitXY"
+            android:translationZ="-2dp"
+            android:layout_width="0dp"
+            android:layout_height="208dp" />
+
+        <View
+            android:id="@+id/view_profile_background_overlay"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_profile_background_img"
+            app:layout_constraintRight_toRightOf="@+id/iv_profile_background_img"
+            app:layout_constraintTop_toTopOf="@+id/iv_profile_background_img"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_profile_background_img"
+            android:background="@drawable/bg_profile_background_overlay_gradient"
+            android:translationZ="-1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_user_thumbnail_container"
+            app:layout_constraintTop_toBottomOf="@+id/include_title_layout"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:cardElevation="0dp"
+            app:cardCornerRadius="400dp"
+            android:layout_marginTop="16dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp" >
+
+            <ImageView
+                android:id="@+id/iv_user_thumbnail"
+                loadCircleImg="@{viewModel.userInfo.thumbnailUrl}"
+                setErrorImg="@{@drawable/ic_circle_user_profile_default}"
+                tools:background="@drawable/ic_circle_user_profile_default"
+                app:layout_constraintTop_toBottomOf="@+id/include_title_layout"
+                app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.cardview.widget.CardView>
+
+
+        <ImageView
+            android:id="@+id/iv_edit_thumbnail_img_btn"
+            android:src="@drawable/ic_profile_edit_pencil"
+            app:layout_constraintRight_toRightOf="@+id/cv_user_thumbnail_container"
+            app:layout_constraintBottom_toBottomOf="@+id/cv_user_thumbnail_container"
+            android:onClick="@{() -> viewModel.clickEditThumbnailImg()}"
+            android:layout_width="32dp"
+            android:layout_height="32dp" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_user_profileId"
+            style="@style/TextAppearance.large_bold"
+            android:textColor="@color/gray_90_t1"
+            android:text="@{viewModel.userInfo.profileId}"
+            tools:text="user_name"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintTop_toBottomOf="@+id/cv_user_thumbnail_container"
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/iv_edit_profile_background_img_btn"
+            android:src="@drawable/ic_profile_edit_pencil"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:layout_constraintBottom_toBottomOf="@+id/cv_user_thumbnail_container"
+            app:layout_constraintLeft_toRightOf="@+id/cv_user_thumbnail_container"
+            app:layout_constraintHorizontal_bias="1"
+            android:onClick="@{() -> viewModel.clickEditBackgroundImg()}"
+            android:layout_width="32dp"
+            android:layout_height="32dp" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_user_introduce_label"
+            style="@style/TextAppearance.caption_bold"
+            android:textColor="@color/gray_90_t1"
+            android:text="Introduce"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_profileId"
+            android:layout_marginTop="27dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_introduce_max_length_caption"
+            android:text="@{viewModel.introduceMaxLengthCaption}"
+            inputReachingTheLimit="@{viewModel.introduceMaxLengthCaption != null ? true : false}"
+            tools:text="20/25"
+            style="@style/TextAppearance.caption_regular"
+            android:textColor="@color/error30"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:layout_constraintTop_toTopOf="@+id/tv_user_introduce_label"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_user_introduce_label"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp" />
+
+        <EditText
+            android:id="@+id/et_user_introduce"
+            style="@style/EditTextAppearance.double_02"
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_introduce_label"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            android:hint="Input a Introduce"
+            android:text="@={viewModel.userInfo.introduce}"
+            android:gravity="center|start|top"
+            android:inputType="textMultiLine"
+            android:maxLength="25"
+            android:layout_marginTop="6dp"
+            android:layout_width="0dp"
+            android:layout_height="100dp" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_save_btn"
+            style="@style/TextAppearance.button_large_brand_normal"
+            android:layout_width="0dp"
+            android:layout_marginBottom="40dp"
+            android:text="Save"
+            android:onClick="@{() -> viewModel.clickSaveUserInfo()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

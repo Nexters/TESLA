@@ -49,7 +49,7 @@ class MyHomeFragmentViewModelBehavior : BehaviorSpec() {
             coroutineTestRule.afterTest(testDispatcher!!)
             MockUtil.clearMocks(
                 listOf(
-                    userInfoRepository, userRepository, viewModel, cookieRepository
+                    userInfoRepository, userRepository, viewModel, cookieRepository, questionRepository
                 )
             )
         }

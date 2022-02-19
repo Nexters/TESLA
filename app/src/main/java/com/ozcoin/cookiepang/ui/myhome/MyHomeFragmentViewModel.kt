@@ -131,9 +131,18 @@ class MyHomeFragmentViewModel @Inject constructor(
         navigateTo(MyHomeFragmentDirections.actionCookieDetail(cookieId))
     }
 
+    private fun navigateToEditProfile() {
+        navigateTo(MyHomeFragmentDirections.actionEditProfile())
+    }
+
+    private fun navigateToAsk() {
+    }
+
     fun clickAskMe() {
+        navigateToAsk()
     }
 
     fun clickEditProfile() {
+        navigateToEditProfile()
     }
 }

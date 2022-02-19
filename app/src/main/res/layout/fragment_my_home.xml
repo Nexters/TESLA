@@ -30,7 +30,7 @@
         <ImageView
             android:id="@+id/iv_profile_background_img"
             tools:src="@drawable/ic_default_profile_background_img"
-            loadProfileBackgroundImg="@{viewModel.userInfo.profileBackGroundImgUrl}"
+            loadProfileBackgroundImg="@{viewModel.userInfo.profileBackgroundImgUrl}"
             setErrorImg="@{@drawable/ic_default_profile_background_img}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -63,7 +63,7 @@
             android:layout_height="100dp" />
 
         <ImageView
-            android:src="@drawable/ic_profile_edit_btn"
+            android:src="@drawable/ic_profile_edit_plus"
             app:layout_constraintRight_toRightOf="@+id/iv_user_thumbnail"
             app:layout_constraintBottom_toBottomOf="@+id/iv_user_thumbnail"
             android:visibility="@{viewModel.userInfo.mine ? View.VISIBLE : View.GONE}"

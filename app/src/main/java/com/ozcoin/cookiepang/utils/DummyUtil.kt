@@ -108,7 +108,7 @@ object DummyUtil {
                 profileId = "Hi im back",
                 introduce = "jooooooon buuuuu",
                 thumbnailUrl = null,
-                profileBackGroundImgUrl = null,
+                profileBackgroundImgUrl = null,
                 collectedCnt = 10,
                 createdCnt = 291,
                 questionCnt = 291
