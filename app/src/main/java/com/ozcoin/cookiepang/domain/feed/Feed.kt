@@ -1,5 +1,9 @@
 package com.ozcoin.cookiepang.domain.feed
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+@Parcelize
 data class Feed(
     val isHidden: Boolean,
     val userThumbnailUrl: String,
@@ -11,4 +15,4 @@ data class Feed(
     val viewCount: Int,
     val hammerPrice: Int,
     val id: String = "($isHidden)$userProfileId/$question/$createdTimeStamp",
-)
+) : Parcelable

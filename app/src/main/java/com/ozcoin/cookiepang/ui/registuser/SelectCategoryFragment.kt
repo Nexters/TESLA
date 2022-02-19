@@ -18,6 +18,10 @@ import kotlinx.coroutines.launch
 @AndroidEntryPoint
 class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
 
+    companion object {
+        const val KEY_RESET_USER_CATEGORY = "KEY_RESET_USER_CATEGORY"
+    }
+
     private val loginViewModel by activityViewModels<LoginViewModel>()
     private val mainActivityViewModel by activityViewModels<MainActivityViewModel>()
     private val selectCategoryFragmentViewModel by viewModels<SelectCategoryFragmentViewModel>()

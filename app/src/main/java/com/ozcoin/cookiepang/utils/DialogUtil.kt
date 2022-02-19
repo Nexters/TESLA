@@ -60,4 +60,13 @@ object DialogUtil {
             cancel = "취소하기"
         )
     }
+
+    fun getChangeImg(): DialogContents {
+        return DialogContents(
+            title = "이미지를 변경하시겠어요?",
+            contents = "새로 촬영하거나 앨범에서 선택할 수 있어요.",
+            confirm = "앨범에서 선택",
+            cancel = "새로 촬영"
+        )
+    }
 }

@@ -3,7 +3,7 @@ package com.ozcoin.cookiepang.ui.home
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.navArgs
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.ozcoin.cookiepang.R
@@ -16,6 +16,7 @@ import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.extensions.toDp
 import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.ui.divider.SingleLineItemDecoration
+import com.ozcoin.cookiepang.ui.registuser.SelectCategoryFragment
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -102,8 +103,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
+    override fun onStop() {
+        super.onStop()
         saveListState()
     }
 
@@ -210,7 +211,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     override fun init() {
         if (itHaveToResetUserCategory()) {
-            Timber.d("is User reset Category")
+            binding.rvFeed.smoothScrollToPosition(0)
             homeFragmentViewModel.getUserCategoryList()
         } else {
             if (isViewDataLoaded()) {
@@ -229,14 +230,20 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun itHaveToResetUserCategory(): Boolean {
-        val args by navArgs<HomeFragmentArgs>()
-        return args.refreshUserCategory
+        val resetCategory = findNavController().currentBackStackEntry?.savedStateHandle?.let {
+            val result = it.get<Boolean>(SelectCategoryFragment.KEY_RESET_USER_CATEGORY)
+            it.set(SelectCategoryFragment.KEY_RESET_USER_CATEGORY, false)
+
+            result
+        } ?: false
+
+        return resetCategory.also { Timber.d("itHaveToResetUserCategory : $it") }
     }
 
     override fun onResume() {
         super.onResume()
         viewLifecycleScope.launch(Dispatchers.Default) {
-            delay(200)
+            delay(100)
             mainActivityViewModel.showBtmNavView()
         }
     }

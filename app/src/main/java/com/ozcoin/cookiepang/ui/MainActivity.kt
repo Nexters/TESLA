@@ -10,9 +10,9 @@ import android.view.animation.AnimationUtils
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navOptions
-import androidx.navigation.ui.setupWithNavController
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseActivity
 import com.ozcoin.cookiepang.databinding.ActivityMainBinding
@@ -47,9 +47,36 @@ open class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private fun setUpBtmNav() {
         with(binding.includeBtmNavLayout.customBtmNav) {
-            setupWithNavController(navController)
             itemIconTintList = null
+            setOnItemSelectedListener { menuItem ->
+                when (menuItem.itemId) {
+                    R.id.home_dest -> {
+                        navigateToHome()
+                    }
+                    R.id.my_home_dest -> {
+                        navigateToMyHome()
+                    }
+                }
+                return@setOnItemSelectedListener true
+            }
         }
+    }
+
+    private fun navigateToHome() {
+        val navOption = NavOptions.Builder().apply {
+            setLaunchSingleTop(true)
+            setPopUpTo(R.id.home_dest, false)
+        }
+
+        navController.navigate(R.id.home_dest, null, navOption.build())
+    }
+
+    private fun navigateToMyHome() {
+        val navOption = NavOptions.Builder().apply {
+            setLaunchSingleTop(true)
+            setPopUpTo(R.id.home_dest, false)
+        }
+        navController.navigate(R.id.my_home_dest, null, navOption.build())
     }
 
     override fun initListener() {
@@ -141,7 +168,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding>() {
                         handleNavTo(event.action)
                     }
                     is Event.Nav.Up -> {
-                        handleNavUp()
+                        handleNavUp(event)
                     }
                     is Event.Nav.ToEditCookie -> {
                         handleNavToEditCookie(event)
@@ -170,7 +197,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding>() {
         navController.navigate(action)
     }
 
-    private fun handleNavUp() {
+    private fun handleNavUp(event: Event.Nav.Up) {
         Timber.d("navigate Up")
         navController.navigateUp()
     }

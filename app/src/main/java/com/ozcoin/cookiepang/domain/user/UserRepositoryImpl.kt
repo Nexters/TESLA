@@ -2,6 +2,7 @@ package com.ozcoin.cookiepang.domain.user
 
 import com.ozcoin.cookiepang.data.user.UserRegLocalDataSource
 import com.ozcoin.cookiepang.data.user.toData
+import com.ozcoin.cookiepang.utils.DummyUtil
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -19,7 +20,7 @@ class UserRepositoryImpl @Inject constructor(
 
     override suspend fun getLoginUser(): User? {
 //        return userRegLocalDataSource.getUser().toDomain()
-        return user
+        return DummyUtil.getLoginUser()
     }
 
     override suspend fun checkDuplicateProfileID(profileID: String): Boolean {

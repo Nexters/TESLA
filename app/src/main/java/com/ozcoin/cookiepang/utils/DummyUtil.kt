@@ -2,13 +2,17 @@ package com.ozcoin.cookiepang.utils
 
 import com.ozcoin.cookiepang.domain.alarm.Alarm
 import com.ozcoin.cookiepang.domain.alarm.Alarms
+import com.ozcoin.cookiepang.domain.cookie.Cookie
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.cookiehistory.CookieHistory
 import com.ozcoin.cookiepang.domain.cookiehistory.CookieHistoryType
 import com.ozcoin.cookiepang.domain.feed.CookieCardStyle
 import com.ozcoin.cookiepang.domain.feed.Feed
+import com.ozcoin.cookiepang.domain.question.Question
+import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryColorStyle
+import com.ozcoin.cookiepang.domain.userinfo.UserInfo
 import java.util.Random
 
 object DummyUtil {
@@ -60,11 +64,7 @@ object DummyUtil {
                 userCategory = UserCategory("Free Chat", true),
                 viewCount = 423,
                 question = "나에게 가장 수치스러운 것은?",
-                answer = "아몰랑 없어 ㅎ3ㅎ\n" +
-                    ".　｡・｡∧_∧｡・｡\n" +
-                    "｡ﾟ 　( ﾟ´Д｀)　 ﾟ｡\n" +
-                    "　 　o( U U\n" +
-                    "　　　 'ｰ'ｰ'\n",
+                answer = "아몰랑 없어 ㅎ3ㅎ\n" + ".　｡・｡∧_∧｡・｡\n" + "｡ﾟ 　( ﾟ´Д｀)　 ﾟ｡\n" + "　 　o( U U\n" + "　　　 'ｰ'ｰ'\n",
                 hammerPrice = 24,
                 cookieCardStyle = getCookieCardStyle(),
                 collectorThumbnailUrl = "",
@@ -120,5 +120,78 @@ object DummyUtil {
         }
 
         return list
+    }
+    
+    fun getLoginUser(): User {
+        return User().apply {
+            profileID = ""
+            userId = "user"
+        }
+    }
+
+    fun getUserInfo(isMine: Boolean): DataResult<UserInfo> {
+        return DataResult.OnSuccess(
+            UserInfo(
+                isMine = isMine,
+                userId = "user",
+                profileId = "Hi im back",
+                introduce = "jooooooon buuuuu",
+                thumbnailUrl = null,
+                profileBackgroundImgUrl = null,
+                collectedCnt = 10,
+                createdCnt = 291,
+                questionCnt = 291
+            )
+        )
+    }
+
+    fun getQuestionList(): DataResult<List<Question>> {
+        val list = mutableListOf<Question>()
+
+        repeat(22) {
+            val question = Question(
+                it.toString(),
+                "(#$it)이거어슨 무슨 질문을 하기 위한 질문 ? ",
+                UserCategory.typeAll(),
+                it % 3 == 0
+            )
+            list.add(question)
+        }
+
+        return DataResult.OnSuccess(list.toList())
+    }
+
+    fun getCollectedCookieList(): DataResult<List<Cookie>> {
+        val list = mutableListOf<Cookie>()
+
+        repeat(22) {
+            val cookie = Cookie(
+                cookieId = "cookieId($it)",
+                isHidden = it % 2 == 0,
+                cookieBoxCoverImgUrl = "",
+                cookieBoxImgUrl = "",
+                cookieImgUrl = ""
+            )
+            list.add(cookie)
+        }
+
+        return DataResult.OnSuccess(list.toList())
+    }
+
+    fun getCreatedCookieList(): DataResult<List<Cookie>> {
+        val list = mutableListOf<Cookie>()
+
+        repeat(12) {
+            val cookie = Cookie(
+                cookieId = "cookieId($it)",
+                isHidden = it % 5 == 0,
+                cookieBoxCoverImgUrl = "",
+                cookieBoxImgUrl = "",
+                cookieImgUrl = ""
+            )
+            list.add(cookie)
+        }
+
+        return DataResult.OnSuccess(list.toList())
     }
 }

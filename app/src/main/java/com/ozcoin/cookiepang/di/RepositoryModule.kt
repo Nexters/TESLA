@@ -1,7 +1,10 @@
 package com.ozcoin.cookiepang.di
 
+
 import com.ozcoin.cookiepang.domain.alarm.AlarmsRepository
 import com.ozcoin.cookiepang.domain.alarm.AlarmsRepositoryImpl
+import com.ozcoin.cookiepang.domain.cookie.CookieRepository
+import com.ozcoin.cookiepang.domain.cookie.CookieRepositoryImpl
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepositoryImpl
 import com.ozcoin.cookiepang.domain.editcookie.EditCookieRepository
@@ -10,12 +13,16 @@ import com.ozcoin.cookiepang.domain.feed.FeedRepository
 import com.ozcoin.cookiepang.domain.feed.FeedRepositoryImpl
 import com.ozcoin.cookiepang.domain.klip.KlipAuthRepository
 import com.ozcoin.cookiepang.domain.klip.KlipAuthRepositoryImpl
+import com.ozcoin.cookiepang.domain.question.QuestionRepository
+import com.ozcoin.cookiepang.domain.question.QuestionRepositoryImpl
 import com.ozcoin.cookiepang.domain.thememode.ThemeModeRepository
 import com.ozcoin.cookiepang.domain.thememode.ThemeModeRepositoryImpl
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.domain.user.UserRepositoryImpl
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepositoryImpl
+import com.ozcoin.cookiepang.domain.userinfo.UserInfoRepository
+import com.ozcoin.cookiepang.domain.userinfo.UserInfoRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -50,4 +57,13 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindAlarmsRepository(impl: AlarmsRepositoryImpl): AlarmsRepository
+
+    @Binds
+    abstract fun bindUserInfoRepository(impl: UserInfoRepositoryImpl): UserInfoRepository
+
+    @Binds
+    abstract fun bindCookieRepository(impl: CookieRepositoryImpl): CookieRepository
+
+    @Binds
+    abstract fun bindQuestionRepository(impl: QuestionRepositoryImpl): QuestionRepository
 }

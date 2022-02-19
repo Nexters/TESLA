@@ -178,12 +178,12 @@
 
                         <ImageView
                             android:id="@+id/iv_ic_cookie_hidden"
-                            android:padding="8dp"
                             setCookieCardStyle="@{cookieDetail.cookieCardStyle}"
                             isHidden="@{true}"
                             tools:visibility="visible"
                             android:visibility="@{cookieDetail.mine ? View.GONE : View.VISIBLE}"
-                            android:background="@drawable/ic_feed_hidden_cookie_blue"
+                            tools:src="@drawable/ic_feed_hidden_cookie_blue"
+                            android:scaleType="fitXY"
                             android:layout_width="288dp"
                             android:layout_height="176dp" />
 
