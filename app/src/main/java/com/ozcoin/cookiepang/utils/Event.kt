@@ -10,6 +10,7 @@ sealed class Event {
         class To(val action: NavDirections) : Nav()
         object Up : Nav()
         data class ToEditCookie(val editCookie: EditCookie? = null) : Nav()
+        object ToAlarm : Nav()
     }
 
     sealed class FabAnim : Event() {

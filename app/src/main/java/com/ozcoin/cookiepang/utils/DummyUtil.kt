@@ -1,5 +1,7 @@
 package com.ozcoin.cookiepang.utils
 
+import com.ozcoin.cookiepang.domain.alarm.Alarm
+import com.ozcoin.cookiepang.domain.alarm.Alarms
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.cookiehistory.CookieHistory
 import com.ozcoin.cookiepang.domain.cookiehistory.CookieHistoryType
@@ -91,5 +93,32 @@ object DummyUtil {
                 isHidden = isHidden
             )
         )
+    }
+
+    fun getAlarmsList(): DataResult.OnSuccess<List<Alarms>> {
+        val list = mutableListOf<Alarms>()
+
+        repeat(10) {
+            val alarms = Alarms(
+                "2022-01-$it",
+                getAlarmList()
+            )
+            list.add(alarms)
+        }
+
+        return DataResult.OnSuccess(list)
+    }
+
+    fun getAlarmList(): List<Alarm> {
+        val list = mutableListOf<Alarm>()
+
+        repeat(4) {
+            val alarm = Alarm(
+                "Ask", "Questions($it)", "21:01"
+            )
+            list.add(alarm)
+        }
+
+        return list
     }
 }
