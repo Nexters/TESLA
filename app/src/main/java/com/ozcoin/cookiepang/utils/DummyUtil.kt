@@ -121,7 +121,7 @@ object DummyUtil {
 
         return list
     }
-    
+
     fun getLoginUser(): User {
         return User().apply {
             profileID = ""

@@ -12,5 +12,7 @@ interface KlipAuthRepository {
 
     suspend fun removeUserKlipAddress()
 
+    suspend fun approveWallet(approve: Boolean)
+
     fun getAuthResult(callback: (Boolean, String?) -> Unit)
 }
