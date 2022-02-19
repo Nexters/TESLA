@@ -7,7 +7,7 @@ import javax.inject.Inject
 
 class UserCategoryRepositoryImpl @Inject constructor() : UserCategoryRepository {
 
-    override suspend fun getUserCategory(user: User): DataResult<List<UserCategory>> {
+    override suspend fun getUserCategory(userId: String): DataResult<List<UserCategory>> {
 //        return DataResult.OnSuccess(emptyList())
         return DummyUtil.getUserCategoryList()
     }

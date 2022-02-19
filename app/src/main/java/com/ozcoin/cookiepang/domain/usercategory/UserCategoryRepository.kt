@@ -7,7 +7,7 @@ interface UserCategoryRepository {
 
     suspend fun getAllUserCategory(): DataResult<List<UserCategory>>
 
-    suspend fun getUserCategory(user: User): DataResult<List<UserCategory>>
+    suspend fun getUserCategory(userId: String): DataResult<List<UserCategory>>
 
     suspend fun setUserInterestIn(user: User, list: List<UserCategory>): Boolean
 }

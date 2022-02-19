@@ -77,7 +77,7 @@ class EditCookieFragmentViewModel @Inject constructor(
         uiStateObserver.update(UiState.OnLoading)
 
         viewModelScope.launch {
-            val result = userRepository.getLoginUser()?.let { userCategoryRepository.getUserCategory(it) }
+            val result = userRepository.getLoginUser()?.let { userCategoryRepository.getUserCategory(it.userId) }
             if (result is DataResult.OnSuccess) {
                 Timber.d("getUserCategoryList onSuccess")
                 _userCategoryList.emit(result.response)

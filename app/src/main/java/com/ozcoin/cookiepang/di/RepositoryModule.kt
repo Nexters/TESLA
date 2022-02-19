@@ -1,8 +1,9 @@
 package com.ozcoin.cookiepang.di
 
-
 import com.ozcoin.cookiepang.domain.alarm.AlarmsRepository
 import com.ozcoin.cookiepang.domain.alarm.AlarmsRepositoryImpl
+import com.ozcoin.cookiepang.domain.ask.AskRepository
+import com.ozcoin.cookiepang.domain.ask.AskRepositoryImpl
 import com.ozcoin.cookiepang.domain.cookie.CookieRepository
 import com.ozcoin.cookiepang.domain.cookie.CookieRepositoryImpl
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
@@ -66,4 +67,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindQuestionRepository(impl: QuestionRepositoryImpl): QuestionRepository
+
+    @Binds
+    abstract fun bindAskRepository(impl: AskRepositoryImpl): AskRepository
 }

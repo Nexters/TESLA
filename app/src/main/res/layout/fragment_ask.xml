@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="pageName"
+            type="String" />
+        <variable
+            name="ask"
+            type="com.ozcoin.cookiepang.domain.ask.Ask" />
+        <variable
+            name="viewModel"
+            type="com.ozcoin.cookiepang.ui.ask.AskFragmentViewModel" />
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <include
+            android:id="@+id/include_title_layout"
+            layout="@layout/layout_title_back_title"
+            bind:pageName="@{pageName}" />
+
+        <include layout="@layout/layout_contents_guide_line" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_user_name"
+            style="@style/TextAppearance.head_02_bold"
+            android:text="@{ask.userId}"
+            tools:text="UserName"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/include_title_layout"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            android:ellipsize="end"
+            android:lines="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_question_label"
+            style="@style/TextAppearance.caption_bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Question"
+            android:layout_marginTop="16dp"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_name" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_question_max_length_caption"
+            style="@style/TextAppearance.caption_regular"
+            tools:text="20/25"
+            android:text="@{viewModel.questionMaxLengthCaption}"
+            inputReachingTheLimit="@{viewModel.questionMaxLengthCaption != null ? true : false}"
+            android:textColor="@color/error30"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:layout_constraintTop_toTopOf="@+id/tv_question_label"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_question_label"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp" />
+
+        <EditText
+            android:id="@+id/et_question"
+            style="@style/EditTextAppearance.double_02"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_marginTop="6dp"
+            android:hint="Input a Question"
+            android:imeOptions="actionNext"
+            android:inputType="text"
+            android:maxLength="25"
+            android:text="@={ask.question}"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:layout_constraintTop_toBottomOf="@+id/tv_question_label" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_from_name"
+            style="@style/TextAppearance.body_02_regular"
+            android:text="From. Anonymous"
+            android:textColor="@color/gray_50_t3_ic1"
+            android:layout_marginTop="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/et_question"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_categories"
+            style="@style/TextAppearance.body_02_bold"
+            android:text="Categories"
+            android:textColor="@color/gray_90_t1"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:layout_constraintTop_toBottomOf="@+id/tv_from_name"
+            android:layout_marginTop="16dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_category"
+            android:layout_marginTop="6dp"
+            app:layout_constraintTop_toBottomOf="@+id/tv_categories"
+            app:layout_constraintBottom_toTopOf="@+id/tv_make_a_cookie_btn"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:layout_constraintVertical_bias="0"
+            tools:listitem="@layout/item_user_category"
+            tools:itemCount="2"
+            android:overScrollMode="never"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_make_a_cookie_btn"
+            style="@style/TextAppearance.button_large_brand_normal"
+            android:layout_width="0dp"
+            android:layout_marginBottom="40dp"
+            tools:text="Make a Cookie"
+            android:text="Make a Cookie"
+            android:onClick="@{() -> viewModel.clickMakeACookie()}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>
