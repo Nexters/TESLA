@@ -2,7 +2,7 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/nav_main"
+    android:id="@+id/nav_splash"
     app:startDestination="@id/splash_dest">
 
     <fragment
@@ -19,8 +19,8 @@
 
         <action
             android:id="@+id/action_main"
-            app:destination="@id/home_dest"
-            app:popUpTo="@id/splash_dest"
+            app:destination="@id/nav_main"
+            app:popUpTo="@id/nav_splash"
             app:popUpToInclusive="true" />
 
     </fragment>
@@ -94,11 +94,10 @@
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right"
-                app:popUpTo="@id/nav_main"
+                app:popUpTo="@id/nav_login"
                 app:popUpToInclusive="true" />
 
         </fragment>
-
 
         <fragment
             android:id="@+id/completeUserReg_dest"
@@ -116,8 +115,8 @@
 
             <action
                 android:id="@+id/action_main"
-                app:destination="@id/home_dest"
-                app:popUpTo="@id/nav_main"
+                app:destination="@id/nav_main"
+                app:popUpTo="@id/nav_login"
                 app:popUpToInclusive="true" />
 
         </fragment>
@@ -144,7 +143,7 @@
 
             <action
                 android:id="@+id/action_main"
-                app:destination="@id/home_dest"
+                app:destination="@id/nav_main"
                 app:popUpTo="@id/nav_on_boarding"
                 app:popUpToInclusive="true" />
 
@@ -166,7 +165,7 @@
 
             <action
                 android:id="@+id/action_main"
-                app:destination="@id/home_dest"
+                app:destination="@id/nav_main"
                 app:popUpTo="@id/nav_on_boarding"
                 app:popUpToInclusive="true" />
 
@@ -184,7 +183,7 @@
 
             <action
                 android:id="@+id/action_main"
-                app:destination="@id/home_dest"
+                app:destination="@id/nav_main"
                 app:popUpTo="@id/nav_on_boarding"
                 app:popUpToInclusive="true" />
 
@@ -192,84 +191,85 @@
 
     </navigation>
 
+    <navigation
+        android:id="@+id/nav_main"
+        app:startDestination="@id/home_dest">
 
-    <fragment
-        android:id="@+id/home_dest"
-        android:name="com.ozcoin.cookiepang.ui.home.HomeFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_home">
+        <fragment
+            android:id="@+id/home_dest"
+            android:name="com.ozcoin.cookiepang.ui.home.HomeFragment"
+            android:label="@string/app_name"
+            tools:layout="@layout/fragment_home">
 
-        <action
-            android:id="@+id/action_selectCategory"
-            app:destination="@id/selectCategory_dest"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            <action
+                android:id="@+id/action_selectCategory"
+                app:destination="@id/selectCategory_dest"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
 
-        <argument
-            android:name="refreshUserCategory"
-            android:defaultValue="false"
-            app:argType="boolean" />
+            <action
+                android:id="@+id/action_cookieDetail"
+                app:destination="@id/cookieDetail_dest"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
 
-        <action
-            android:id="@+id/action_cookieDetail"
-            app:destination="@id/cookieDetail_dest"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+        </fragment>
 
-    </fragment>
+        <fragment
+            android:id="@+id/my_home_dest"
+            android:name="com.ozcoin.cookiepang.ui.myhome.MyHomeFragment"
+            android:label="@string/app_name"
+            tools:layout="@layout/fragment_my_home" />
 
-    <fragment
-        android:id="@+id/my_home_dest"
-        android:name="com.ozcoin.cookiepang.ui.myhome.MyHomeFragment"
-        android:label="@string/app_name"
-        tools:layout="@layout/fragment_my_home" />
+        <fragment
+            android:id="@+id/selectCategory_dest"
+            android:name="com.ozcoin.cookiepang.ui.registuser.SelectCategoryFragment"
+            android:label="SelectCategoryFragment"
+            tools:layout="@layout/fragment_select_category" />
 
-    <fragment
-        android:id="@+id/selectCategory_dest"
-        android:name="com.ozcoin.cookiepang.ui.registuser.SelectCategoryFragment"
-        android:label="SelectCategoryFragment"
-        tools:layout="@layout/fragment_select_category" />
+        <fragment
+            android:id="@+id/cookieDetail_dest"
+            android:name="com.ozcoin.cookiepang.ui.cookiedetail.CookieDetailFragment"
+            android:label="CookieDetailFragment"
+            tools:layout="@layout/fragment_cookie_detail">
 
-    <fragment
-        android:id="@+id/cookieDetail_dest"
-        android:name="com.ozcoin.cookiepang.ui.cookiedetail.CookieDetailFragment"
-        android:label="CookieDetailFragment"
-        tools:layout="@layout/fragment_cookie_detail">
+            <argument
+                android:name="cookieId"
+                android:defaultValue='""'
+                app:argType="string" />
 
-        <argument
-            android:name="cookieId"
-            android:defaultValue='""'
-            app:argType="string" />
+        </fragment>
 
-    </fragment>
+        <fragment
+            android:id="@+id/editCookie_dest"
+            android:name="com.ozcoin.cookiepang.ui.editcookie.EditCookieFragment"
+            android:label="EditCookieFragment"
+            tools:layout="@layout/fragment_edit_cookie">
 
-    <fragment
-        android:id="@+id/editCookie_dest"
-        android:name="com.ozcoin.cookiepang.ui.editcookie.EditCookieFragment"
-        android:label="EditCookieFragment"
-        tools:layout="@layout/fragment_edit_cookie">
+            <argument
+                android:name="editCookie"
+                android:defaultValue="@null"
+                app:argType="com.ozcoin.cookiepang.domain.editcookie.EditCookie"
+                app:nullable="true" />
 
-        <argument
-            android:name="editCookie"
-            android:defaultValue="@null"
-            app:argType="com.ozcoin.cookiepang.domain.editcookie.EditCookie"
-            app:nullable="true" />
+            <action
+                android:id="@+id/action_cookieDetail"
+                app:destination="@id/cookieDetail_dest"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:launchSingleTop="true"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"
+                app:popUpTo="@id/editCookie_dest"
+                app:popUpToInclusive="true" />
 
-        <action
-            android:id="@+id/action_cookieDetail"
-            app:destination="@id/cookieDetail_dest"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:launchSingleTop="true"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"
-            app:popUpTo="@id/editCookie_dest"
-            app:popUpToInclusive="true" />
+        </fragment>
 
-    </fragment>
+    </navigation>
+
 
 </navigation>
