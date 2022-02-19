@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.navOptions
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.utils.Event
 import kotlinx.coroutines.CoroutineScope
@@ -83,10 +84,26 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
                     is Event.Nav.Up -> {
                         handleNavUp(event)
                     }
+                    is Event.Nav.ToAlarm -> {
+                        navigateToAlarm()
+                    }
                 }
             }
             else -> {}
         }
+    }
+
+    private fun navigateToAlarm() {
+        val options = navOptions {
+            anim {
+                enter = R.anim.slide_in_up
+                exit = R.anim.slide_out_down
+                popEnter = R.anim.slide_in_up
+                popExit = R.anim.slide_out_down
+            }
+        }
+
+        findNavController().navigate(R.id.alarm_dest, null, options)
     }
 
     private fun handleNavTo(action: NavDirections) {

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="pageName"
+            type="String" />
+    </data>
+
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_title_layout"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/title_bar_height"
+            android:padding="8dp">
+
+            <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+                android:id="@+id/tv_page_name"
+                style="@style/TextAppearance.title_02_bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{pageName}"
+                android:layout_marginStart="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Page_name"
+                tools:visibility="visible" />
+
+            <ImageView
+                android:id="@+id/iv_close_btn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_cancel_24px"
+                android:padding="8dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+        <View
+            android:background="@color/gray_30_sur2_bg2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp" />
+
+    </androidx.appcompat.widget.LinearLayoutCompat>
+
+</layout>

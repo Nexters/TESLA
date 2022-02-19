@@ -308,4 +308,10 @@
     </navigation>
 
 
+    <fragment
+        android:id="@+id/alarm_dest"
+        android:name="com.ozcoin.cookiepang.ui.alarm.AlarmFragment"
+        android:label="AlarmFragment"
+        tools:layout="@layout/fragment_alarm" />
+
 </navigation>
