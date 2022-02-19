@@ -8,6 +8,13 @@ import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 class User : BaseObservable() {
 
     @get:Bindable
+    var userId: String = ""
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.userId)
+        }
+
+    @get:Bindable
     var profileID: String = ""
         set(value) {
             field = value

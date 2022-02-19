@@ -1,15 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View" />
 
+        <variable
+            name="isShareAvailable"
+            type="Boolean" />
+
+        <variable
+            name="viewModel"
+            type="com.ozcoin.cookiepang.ui.myhome.MyHomeFragmentViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <include
+            android:id="@+id/include_title_layout"
+            layout="@layout/layout_title_back"
+            bind:isShareAvailable="@{isShareAvailable}" />
+
+        <include layout="@layout/layout_contents_guide_line" />
+
+        <ImageView
+            android:id="@+id/iv_profile_background_img"
+            tools:src="@drawable/ic_default_profile_background_img"
+            loadProfileBackgroundImg="@{viewModel.userInfo.profileBackgroundImgUrl}"
+            setErrorImg="@{@drawable/ic_default_profile_background_img}"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="fitXY"
+            android:translationZ="-2dp"
+            android:layout_width="0dp"
+            android:layout_height="208dp" />
+
+        <View
+            android:id="@+id/view_profile_background_overlay"
+            app:layout_constraintLeft_toLeftOf="@+id/iv_profile_background_img"
+            app:layout_constraintRight_toRightOf="@+id/iv_profile_background_img"
+            app:layout_constraintTop_toTopOf="@+id/iv_profile_background_img"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_profile_background_img"
+            android:background="@drawable/bg_profile_background_overlay_gradient"
+            android:translationZ="-1dp"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
+
+        <ImageView
+            android:id="@+id/iv_user_thumbnail"
+            loadCircleImg="@{viewModel.userInfo.thumbnailUrl}"
+            setErrorImg="@{@drawable/ic_circle_user_profile_default}"
+            tools:background="@drawable/ic_circle_user_profile_default"
+            app:layout_constraintTop_toBottomOf="@+id/include_title_layout"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            android:layout_marginTop="16dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
+        <ImageView
+            android:src="@drawable/ic_profile_edit_plus"
+            app:layout_constraintRight_toRightOf="@+id/iv_user_thumbnail"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_user_thumbnail"
+            android:visibility="@{viewModel.userInfo.mine ? View.VISIBLE : View.GONE}"
+            android:onClick="@{() -> viewModel.clickEditProfile()}"
+            android:layout_width="32dp"
+            android:layout_height="32dp" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_user_profileId"
+            style="@style/TextAppearance.large_bold"
+            android:textColor="@color/gray_90_t1"
+            android:text="@{viewModel.userInfo.profileId}"
+            tools:text="user_name"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintTop_toBottomOf="@+id/iv_user_thumbnail"
+            android:layout_marginTop="12dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_user_introduce"
+            style="@style/TextAppearance.body_02_regular"
+            android:textColor="@color/gray_90_t1"
+            android:text="@{viewModel.userInfo.introduce}"
+            tools:text="Hello, NFT Cookie PPPPang World~!!!. LuvUxxxxx"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_profileId"
+            android:lines="1"
+            android:ellipsize="end"
+            android:layout_marginTop="3dp"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_ask_btn"
+            style="@style/TextAppearance.button_large_brand_normal"
+            android:visibility="@{viewModel.userInfo.mine ? View.GONE : View.VISIBLE}"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:layout_constraintBottom_toBottomOf="@+id/iv_user_thumbnail"
+            app:layout_constraintLeft_toRightOf="@+id/iv_user_thumbnail"
+            app:layout_constraintHorizontal_bias="1"
+            android:onClick="@{() -> viewModel.clickAskMe()}"
+            android:layout_width="160dp"
+            android:text="Ask Me" />
+
+        <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tl_tab_layout"
+            app:layout_constraintTop_toBottomOf="@+id/tv_user_introduce"
+            app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+            app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
+            app:tabIndicatorColor="#553EF5"
+            app:tabTextColor="@color/gray_90_t1"
+            app:tabGravity="fill"
+            app:tabMode="fixed"
+            android:layout_marginTop="16dp"
+            android:layout_width="0dp"
+            android:layout_height="70dp" />
+
+        <androidx.viewpager2.widget.ViewPager2
+            android:id="@+id/vp_pager"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tl_tab_layout"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
