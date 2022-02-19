@@ -12,6 +12,7 @@ import com.ozcoin.cookiepang.domain.userinfo.UserInfo
 import com.ozcoin.cookiepang.domain.userinfo.UserInfoRepository
 import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.Event
+import com.ozcoin.cookiepang.utils.TitleClickListener
 import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
@@ -47,6 +48,12 @@ class MyHomeFragmentViewModel @Inject constructor(
     private val _userInfo = MutableStateFlow<UserInfo?>(null)
     val userInfo: StateFlow<UserInfo?>
         get() = _userInfo
+
+    val titleClickListener = TitleClickListener(
+        EventObserver {
+            viewModelScope.launch { _eventFlow.emit(it) }
+        }
+    )
 
     lateinit var eventObserver: EventObserver
     lateinit var uiStateObserver: UiStateObserver
@@ -136,6 +143,7 @@ class MyHomeFragmentViewModel @Inject constructor(
     }
 
     private fun navigateToAsk() {
+        _userInfo.value?.userId?.let { navigateTo(MyHomeFragmentDirections.actionAsk(it)) }
     }
 
     fun clickAskMe() {

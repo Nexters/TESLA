@@ -9,6 +9,11 @@
         <variable
             name="pageName"
             type="String" />
+
+        <variable
+            name="titleClickListener"
+            type="com.ozcoin.cookiepang.utils.TitleClickListener" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,22 +22,23 @@
 
         <include
             android:id="@+id/include_title_layout"
+            layout="@layout/layout_title_close"
             bind:pageName="@{pageName}"
-            layout="@layout/layout_title_close" />
+            bind:titleClickListener="@{titleClickListener}" />
 
         <include layout="@layout/layout_contents_guide_line" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_alarms"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/include_title_layout"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="4"
-            tools:listitem="@layout/item_alarms"
-            android:layout_width="0dp"
-            android:layout_height="0dp" />
+            tools:listitem="@layout/item_alarms" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

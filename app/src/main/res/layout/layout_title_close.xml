@@ -7,6 +7,10 @@
         <variable
             name="pageName"
             type="String" />
+
+        <variable
+            name="titleClickListener"
+            type="com.ozcoin.cookiepang.utils.TitleClickListener" />
     </data>
 
 
@@ -41,6 +45,7 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_cancel_24px"
                 android:padding="8dp"
+                android:onClick="@{() -> titleClickListener.clickClose()}"
                 app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />

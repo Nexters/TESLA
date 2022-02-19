@@ -177,6 +177,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun initView() {
+        with(binding) {
+            titleClickListener = homeFragmentViewModel.titleClickListener
+        }
         setUpUserCategoryList()
         setUpFeedList()
     }

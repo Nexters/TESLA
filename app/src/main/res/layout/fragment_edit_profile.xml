@@ -23,6 +23,7 @@
         <include
             android:id="@+id/include_title_layout"
             layout="@layout/layout_title_back_title"
+            bind:titleClickListener="@{viewModel.titleClickListener}"
             bind:pageName="@{pageName}" />
 
         <include layout="@layout/layout_contents_guide_line" />

@@ -8,6 +8,7 @@ import com.ozcoin.cookiepang.domain.cookiedetail.toEditCookie
 import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.DialogUtil
 import com.ozcoin.cookiepang.utils.Event
+import com.ozcoin.cookiepang.utils.TitleClickListener
 import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
@@ -27,6 +28,12 @@ class CookieDetailViewModel @Inject constructor(
     private val _cookieDetail = MutableStateFlow<CookieDetail?>(null)
     val cookieDetail: StateFlow<CookieDetail?>
         get() = _cookieDetail
+
+    val titleClickListener = TitleClickListener(
+        EventObserver {
+            viewModelScope.launch { _eventFlow.emit(it) }
+        }
+    )
 
     lateinit var eventObserver: EventObserver
     lateinit var uiStateObserver: UiStateObserver

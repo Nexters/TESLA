@@ -14,6 +14,10 @@
         <variable
             name="isShareAvailable"
             type="Boolean" />
+
+        <variable
+            name="titleClickListener"
+            type="com.ozcoin.cookiepang.utils.TitleClickListener" />
     </data>
 
 
@@ -29,6 +33,7 @@
             android:layout_height="40dp"
             android:padding="8dp"
             android:src="@drawable/ic_left"
+            android:onClick="@{() -> titleClickListener.clickBack()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -53,6 +58,7 @@
             android:src="@drawable/ic_share"
             android:padding="8dp"
             tools:visibility="visible"
+            android:onClick="@{() -> titleClickListener.clickShare()}"
             android:visibility="@{isShareAvailable ? View.VISIBLE : View.GONE}"
             app:layout_constraintHorizontal_bias="1"
             app:layout_constraintHorizontal_chainStyle="packed"
@@ -68,6 +74,7 @@
             android:src="@drawable/ic_alarm_on_24px"
             android:padding="8dp"
             tools:visibility="visible"
+            android:onClick="@{() -> titleClickListener.clickAlarm()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@id/iv_share_btn"
             app:layout_constraintRight_toLeftOf="@+id/iv_setting_btn"
@@ -79,6 +86,7 @@
             android:layout_height="wrap_content"
             android:src="@drawable/ic_setting"
             android:padding="8dp"
+            android:onClick="@{() -> titleClickListener.clickSetting()}"
             app:layout_constraintLeft_toRightOf="@+id/iv_alarm_btn"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"

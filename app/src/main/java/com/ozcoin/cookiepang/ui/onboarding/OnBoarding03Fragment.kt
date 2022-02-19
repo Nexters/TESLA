@@ -16,11 +16,14 @@ class OnBoarding03Fragment : BaseFragment<FragmentOnBoarding03Binding>() {
     }
 
     override fun initView() {
+        with(binding) {
+            viewModel = onBoarding03FragmentViewModel
+        }
     }
 
     override fun initListener() {
-        binding.includeTitleLayout.tvSkipBtn.setOnClickListener {
-            onBoarding03FragmentViewModel.clickSkip()
+        binding.includeTitleLayout.ivBackBtn.setOnClickListener {
+            onBoarding03FragmentViewModel.clickBack()
         }
     }
 

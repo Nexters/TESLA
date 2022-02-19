@@ -22,6 +22,7 @@ class AlarmFragment : BaseFragment<FragmentAlarmBinding>() {
     override fun initView() {
         with(binding) {
             pageName = "Alarm"
+            titleClickListener = alarmFragmentViewModel.titleClickListener
         }
         setupAlarmsList()
     }
@@ -37,9 +38,6 @@ class AlarmFragment : BaseFragment<FragmentAlarmBinding>() {
     }
 
     override fun initListener() {
-        binding.includeTitleLayout.ivCloseBtn.setOnClickListener {
-            alarmFragmentViewModel.clickBack()
-        }
     }
 
     override fun initObserve() {

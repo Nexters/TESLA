@@ -9,6 +9,8 @@ import com.ozcoin.cookiepang.domain.klip.KlipAuthRepository
 import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.utils.Event
+import com.ozcoin.cookiepang.utils.TitleClickListener
+import com.ozcoin.cookiepang.utils.observer.EventObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -24,6 +26,12 @@ class SettingFragmentViewModel @Inject constructor(
             loginUser = userRepository.getLoginUser()
         }
     }
+
+    val titleClickListener = TitleClickListener(
+        EventObserver {
+            viewModelScope.launch { _eventFlow.emit(it) }
+        }
+    )
 
     var loginUser: User? = null
         private set

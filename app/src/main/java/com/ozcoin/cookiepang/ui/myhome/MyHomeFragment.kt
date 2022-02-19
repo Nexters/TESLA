@@ -46,9 +46,6 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
     }
 
     override fun initListener() {
-        binding.includeTitleLayout.ivBackBtn.setOnClickListener {
-            myHomeFragmentViewModel.clickBack()
-        }
     }
 
     override fun init() {

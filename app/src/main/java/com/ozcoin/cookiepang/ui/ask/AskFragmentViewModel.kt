@@ -8,6 +8,8 @@ import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.TextInputUtil
+import com.ozcoin.cookiepang.utils.TitleClickListener
+import com.ozcoin.cookiepang.utils.observer.EventObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -28,6 +30,12 @@ class AskFragmentViewModel @Inject constructor(
     private val _questionMaxLengthCaption = MutableStateFlow<String?>(null)
     val questionMaxLengthCaption: StateFlow<String?>
         get() = _questionMaxLengthCaption.asStateFlow()
+
+    val titleClickListener = TitleClickListener(
+        EventObserver {
+            viewModelScope.launch { _eventFlow.emit(it) }
+        }
+    )
 
     var ask: Ask? = null
         private set

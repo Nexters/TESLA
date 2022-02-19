@@ -10,9 +10,6 @@
             name="pageName"
             type="String" />
         <variable
-            name="ask"
-            type="com.ozcoin.cookiepang.domain.ask.Ask" />
-        <variable
             name="viewModel"
             type="com.ozcoin.cookiepang.ui.ask.AskFragmentViewModel" />
 
@@ -25,6 +22,7 @@
         <include
             android:id="@+id/include_title_layout"
             layout="@layout/layout_title_back_title"
+            bind:titleClickListener="@{viewModel.titleClickListener}"
             bind:pageName="@{pageName}" />
 
         <include layout="@layout/layout_contents_guide_line" />
@@ -32,7 +30,7 @@
         <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
             android:id="@+id/tv_user_name"
             style="@style/TextAppearance.head_02_bold"
-            android:text="@{ask.userId}"
+            android:text="@{viewModel.ask.userId}"
             tools:text="UserName"
             android:layout_marginTop="16dp"
             app:layout_constraintTop_toBottomOf="@+id/include_title_layout"
@@ -76,7 +74,7 @@
             android:imeOptions="actionNext"
             android:inputType="text"
             android:maxLength="25"
-            android:text="@={ask.question}"
+            android:text="@={viewModel.ask.question}"
             app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
             app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
             app:layout_constraintTop_toBottomOf="@+id/tv_question_label" />

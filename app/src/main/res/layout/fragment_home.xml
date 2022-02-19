@@ -5,10 +5,12 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="isShareAvailable"
             type="Boolean" />
+        <variable
+            name="titleClickListener"
+            type="com.ozcoin.cookiepang.utils.TitleClickListener" />
     </data>
 
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -18,7 +20,8 @@
             <include
                 android:id="@+id/include_title_layout"
                 layout="@layout/layout_title_main"
-                bind:isShareAvailable="@{isShareAvailable}" />
+                bind:isShareAvailable="@{isShareAvailable}"
+                bind:titleClickListener="@{titleClickListener}" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_category"

@@ -13,6 +13,7 @@ import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.EventFlow
 import com.ozcoin.cookiepang.utils.MutableEventFlow
 import com.ozcoin.cookiepang.utils.TextInputUtil
+import com.ozcoin.cookiepang.utils.TitleClickListener
 import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.asEventFlow
 import com.ozcoin.cookiepang.utils.observer.EventObserver
@@ -47,6 +48,12 @@ class EditCookieFragmentViewModel @Inject constructor(
     private val _answerMaxLengthCaption = MutableStateFlow<String?>(null)
     val answerMaxLengthCaption: StateFlow<String?>
         get() = _answerMaxLengthCaption.asStateFlow()
+
+    val titleClickListener = TitleClickListener(
+        EventObserver {
+            showCloseEditingCookieDialog()
+        }
+    )
 
     lateinit var uiStateObserver: UiStateObserver
     lateinit var eventObserver: EventObserver

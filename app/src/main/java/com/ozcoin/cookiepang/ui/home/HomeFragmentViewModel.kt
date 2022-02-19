@@ -8,7 +8,9 @@ import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.utils.DataResult
+import com.ozcoin.cookiepang.utils.TitleClickListener
 import com.ozcoin.cookiepang.utils.UiState
+import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,6 +34,12 @@ class HomeFragmentViewModel @Inject constructor(
     private val _feedList = MutableStateFlow<List<Feed>>(emptyList())
     val feedList: StateFlow<List<Feed>>
         get() = _feedList
+
+    val titleClickListener = TitleClickListener(
+        EventObserver {
+            viewModelScope.launch { _eventFlow.emit(it) }
+        }
+    )
 
     lateinit var uiStateObserver: UiStateObserver
 

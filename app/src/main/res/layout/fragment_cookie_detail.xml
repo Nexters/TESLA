@@ -28,7 +28,8 @@
         <include
             android:id="@+id/include_title_layout"
             layout="@layout/layout_title_back"
-            bind:isShareAvailable="@{isShareAvailable}" />
+            bind:isShareAvailable="@{isShareAvailable}"
+            bind:titleClickListener="@{viewModel.titleClickListener}" />
 
         <androidx.core.widget.NestedScrollView
             android:fillViewport="true"

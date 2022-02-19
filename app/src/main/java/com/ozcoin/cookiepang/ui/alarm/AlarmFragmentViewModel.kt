@@ -6,6 +6,8 @@ import com.ozcoin.cookiepang.domain.alarm.Alarms
 import com.ozcoin.cookiepang.domain.alarm.AlarmsRepository
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.utils.DataResult
+import com.ozcoin.cookiepang.utils.TitleClickListener
+import com.ozcoin.cookiepang.utils.observer.EventObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -23,6 +25,12 @@ class AlarmFragmentViewModel @Inject constructor(
             loadAlarmsList()
         }
     }
+
+    val titleClickListener = TitleClickListener(
+        EventObserver {
+            viewModelScope.launch { _eventFlow.emit(it) }
+        }
+    )
 
     private val _alarmsList = MutableStateFlow(emptyList<Alarms>())
     val alarmsList: StateFlow<List<Alarms>>

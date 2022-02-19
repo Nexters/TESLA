@@ -12,6 +12,7 @@ import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.EventFlow
 import com.ozcoin.cookiepang.utils.MutableEventFlow
 import com.ozcoin.cookiepang.utils.TextInputUtil
+import com.ozcoin.cookiepang.utils.TitleClickListener
 import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.asEventFlow
 import com.ozcoin.cookiepang.utils.observer.EventObserver
@@ -41,6 +42,12 @@ class EditProfileFragmentViewModel @Inject constructor(
     private val _userInfo = MutableStateFlow<UserInfo?>(null)
     val userInfo: StateFlow<UserInfo?>
         get() = _userInfo
+
+    val titleClickListener = TitleClickListener(
+        EventObserver {
+            viewModelScope.launch { _eventFlow.emit(it) }
+        }
+    )
 
     lateinit var eventObserver: EventObserver
     lateinit var uiStateObserver: UiStateObserver

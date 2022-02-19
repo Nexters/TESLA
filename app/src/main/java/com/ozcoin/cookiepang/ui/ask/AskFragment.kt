@@ -2,6 +2,7 @@ package com.ozcoin.cookiepang.ui.ask
 
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
@@ -28,6 +29,7 @@ class AskFragment : BaseFragment<FragmentAskBinding>() {
     override fun initView() {
         with(binding) {
             pageName = "Ask"
+            viewModel = askFragmentViewModel
         }
         setupUserCategoryList()
     }
@@ -77,9 +79,11 @@ class AskFragment : BaseFragment<FragmentAskBinding>() {
     }
 
     override fun init() {
-        askFragmentViewModel.getUserCategoryList()
+        askFragmentViewModel.getUserCategoryList(getUserId())
     }
 
-    private fun getUserId() {
+    private fun getUserId(): String {
+        val args by navArgs<AskFragmentArgs>()
+        return args.userId
     }
 }

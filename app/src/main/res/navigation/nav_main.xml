@@ -251,13 +251,13 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
-        <action
-            android:id="@+id/action_ask"
-            app:destination="@id/ask_dest"
-            app:enterAnim="@anim/slide_in_right"
-            app:exitAnim="@anim/slide_out_left"
-            app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right" />
+            <action
+                android:id="@+id/action_ask"
+                app:destination="@id/ask_dest"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
 
 
         </fragment>
@@ -316,7 +316,7 @@
             android:id="@+id/ask_dest"
             android:name="com.ozcoin.cookiepang.ui.ask.AskFragment"
             android:label="AskFragment"
-            tools:layout="@layout/fragment_ask" >
+            tools:layout="@layout/fragment_ask">
 
             <argument
                 android:name="userId"
@@ -324,8 +324,8 @@
                 app:argType="string" />
 
         </fragment>
-      
-      <fragment
+
+        <fragment
             android:id="@+id/alarm_dest"
             android:name="com.ozcoin.cookiepang.ui.alarm.AlarmFragment"
             android:label="AlarmFragment"
@@ -336,7 +336,7 @@
             android:id="@+id/setting_dest"
             android:name="com.ozcoin.cookiepang.ui.setting.SettingFragment"
             android:label="SettingFragment"
-            tools:layout="@layout/fragment_setting" >
+            tools:layout="@layout/fragment_setting">
 
             <action
                 android:id="@+id/action_edit_profile"
@@ -348,5 +348,5 @@
 
         </fragment>
     </navigation>
-  
+
 </navigation>

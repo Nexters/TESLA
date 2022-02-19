@@ -11,10 +11,6 @@ class OnBoarding03FragmentViewModel @Inject constructor() : BaseViewModel() {
         navigateTo(OnBoarding03FragmentDirections.actionMain())
     }
 
-    fun clickSkip() {
-        navigateToMain()
-    }
-
     fun clickConfirm() {
         navigateToMain()
     }
