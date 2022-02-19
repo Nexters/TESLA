@@ -7,6 +7,8 @@ import com.ozcoin.cookiepang.adapter.CookieListAdapter
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentCollectedCookieBinding
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CollectedCookieFragment : BaseFragment<FragmentCollectedCookieBinding>() {
@@ -26,6 +28,7 @@ class CollectedCookieFragment : BaseFragment<FragmentCollectedCookieBinding>() {
         with(binding.rvCollectedCookie) {
             cookieListAdapter.apply {
                 onItemClick = {
+                    myHomeFragmentViewModel.navigateToCookieDetail(it.cookieId)
                 }
             }
 
@@ -38,6 +41,15 @@ class CollectedCookieFragment : BaseFragment<FragmentCollectedCookieBinding>() {
     }
 
     override fun initObserve() {
+        observeCollectedCookieList()
+    }
+
+    private fun observeCollectedCookieList() {
+        viewLifecycleScope.launch {
+            myHomeFragmentViewModel.collectedCookieList.collect {
+                cookieListAdapter.updateList(it)
+            }
+        }
     }
 
     override fun init() {

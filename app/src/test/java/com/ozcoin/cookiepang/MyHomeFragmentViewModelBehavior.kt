@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang
 
 import com.ozcoin.cookiepang.domain.cookie.CookieRepository
+import com.ozcoin.cookiepang.domain.question.QuestionRepository
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.domain.userinfo.UserInfoRepository
 import com.ozcoin.cookiepang.ui.myhome.MyHomeFragmentViewModel
@@ -28,9 +29,10 @@ class MyHomeFragmentViewModelBehavior : BehaviorSpec() {
         val userInfoRepository = mockk<UserInfoRepository>()
         val userRepository = mockk<UserRepository>()
         val cookieRepository = mockk<CookieRepository>()
+        val questionRepository = mockk<QuestionRepository>()
         val viewModel = spyk(
             MyHomeFragmentViewModel(
-                userRepository, userInfoRepository, cookieRepository
+                userRepository, userInfoRepository, cookieRepository, questionRepository
             )
         )
 
@@ -100,7 +102,7 @@ class MyHomeFragmentViewModelBehavior : BehaviorSpec() {
 
                     coEvery { cookieRepository.getCreatedCookieList(loginUser.userId) } coAnswers { DummyUtil.getCreatedCookieList() }
                     coEvery { cookieRepository.getCollectedCookieList(loginUser.userId) } coAnswers { DummyUtil.getCollectedCookieList() }
-                    coEvery { userRepository.getQuestionList(loginUser.userId) } coAnswers { DummyUtil.getQuestionList(false) }
+                    coEvery { questionRepository.getQuestionList(loginUser.userId) } coAnswers { DummyUtil.getQuestionList() }
 
                     Then("로그인된 유저의 아이디로 유저 정보 로드") {
                         testDispatcher?.runBlockingTest {
@@ -128,7 +130,7 @@ class MyHomeFragmentViewModelBehavior : BehaviorSpec() {
 
                 coEvery { cookieRepository.getCreatedCookieList(userId) } coAnswers { DummyUtil.getCreatedCookieList() }
                 coEvery { cookieRepository.getCollectedCookieList(userId) } coAnswers { DummyUtil.getCollectedCookieList() }
-                coEvery { userRepository.getQuestionList(userId) } coAnswers { DummyUtil.getQuestionList(false) }
+                coEvery { questionRepository.getQuestionList(userId) } coAnswers { DummyUtil.getQuestionList() }
 
                 Then("유저 정보 로드 시도") {
                     testDispatcher?.runBlockingTest {
@@ -180,7 +182,7 @@ class MyHomeFragmentViewModelBehavior : BehaviorSpec() {
 
                 coEvery { cookieRepository.getCreatedCookieList(userId) } coAnswers { DummyUtil.getCreatedCookieList() }
                 coEvery { cookieRepository.getCollectedCookieList(userId) } coAnswers { DummyUtil.getCollectedCookieList() }
-                coEvery { userRepository.getQuestionList(userId) } coAnswers { DummyUtil.getQuestionList(false) }
+                coEvery { questionRepository.getQuestionList(userId) } coAnswers { DummyUtil.getQuestionList() }
 
                 Then("수집/만든 쿠키, 질문 리스트 로드 시도") {
                     testDispatcher?.runBlockingTest {

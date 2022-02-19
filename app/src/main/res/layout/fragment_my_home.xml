@@ -122,21 +122,7 @@
             app:tabMode="fixed"
             android:layout_marginTop="16dp"
             android:layout_width="0dp"
-            android:layout_height="70dp" >
-
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:id="@+id/ti_payroll_tab_tab1"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout="@layout/your_custom_layout" />-->
-
-<!--            <com.google.android.material.tabs.TabItem-->
-<!--                android:id="@+id/ti_payroll_tab_tab2"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout="@layout/your_custom_layout" />-->
-
-        </com.google.android.material.tabs.TabLayout>
+            android:layout_height="70dp" />
 
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/vp_pager"

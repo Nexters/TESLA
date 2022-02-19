@@ -1,5 +1,6 @@
 package com.ozcoin.cookiepang.ui.myhome
 
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.tabs.TabLayoutMediator
@@ -8,12 +9,19 @@ import com.ozcoin.cookiepang.adapter.MyHomeViewPagerAdapter
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentMyHomeBinding
 import com.ozcoin.cookiepang.databinding.ItemMyHomeTabBinding
+import com.ozcoin.cookiepang.domain.userinfo.UserInfo
+import com.ozcoin.cookiepang.ui.MainActivityViewModel
+import com.ozcoin.cookiepang.utils.observer.EventObserver
+import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
 class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
 
+    private val mainActivityViewModel by activityViewModels<MainActivityViewModel>()
     private val myHomeFragmentViewModel by viewModels<MyHomeFragmentViewModel>()
     private lateinit var myHomeViewPagerAdapter: MyHomeViewPagerAdapter
 
@@ -24,34 +32,17 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
     override fun initView() {
         with(binding) {
             isShareAvailable = true
+            viewModel = myHomeFragmentViewModel
         }
         setupViewPager()
-        setupTabLayout()
-        bindTabWithViewPager()
-    }
-
-    private fun setupTabLayout() {
-        TabLayoutMediator(binding.tlTabLayout, binding.vpPager) { tab, position ->
-            val binding = ItemMyHomeTabBinding.inflate(layoutInflater, null, false)
-            binding.count = "100"
-            binding.tabName = when (position) {
-                0 -> "Collected"
-                1 -> "Created"
-                2 -> "Questions"
-                else -> ""
-            }
-            tab.customView = binding.root
-        }.attach()
     }
 
     private fun setupViewPager() {
         with(binding.vpPager) {
             myHomeViewPagerAdapter = MyHomeViewPagerAdapter(this@MyHomeFragment)
+            isUserInputEnabled = false
             adapter = myHomeViewPagerAdapter
         }
-    }
-
-    private fun bindTabWithViewPager() {
     }
 
     override fun initListener() {
@@ -73,5 +64,40 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
 
     override fun initObserve() {
         observeEvent(myHomeFragmentViewModel)
+        observeUserInfo()
+        myHomeFragmentViewModel.uiStateObserver =
+            UiStateObserver(mainActivityViewModel::updateUiState)
+        myHomeFragmentViewModel.eventObserver = EventObserver(mainActivityViewModel::updateEvent)
+    }
+
+    private fun observeUserInfo() {
+        viewLifecycleScope.launch {
+            myHomeFragmentViewModel.userInfo.first { it != null }?.let {
+                setupTabLayout(it)
+            }
+        }
+    }
+
+    private fun setupTabLayout(userInfo: UserInfo) {
+        TabLayoutMediator(binding.tlTabLayout, binding.vpPager) { tab, position ->
+            val binding = ItemMyHomeTabBinding.inflate(layoutInflater, null, false)
+            when (position) {
+                0 -> {
+                    binding.count = userInfo.collectedCnt.toString()
+                    binding.tabName = "Collected"
+                }
+                1 -> {
+                    binding.count = userInfo.createdCnt.toString()
+                    binding.tabName = "Created"
+                }
+                2 -> {
+                    binding.count = userInfo.questionCnt.toString()
+                    binding.tabName = "Questions"
+                }
+                else -> {}
+            }
+
+            tab.customView = binding.root
+        }.attach()
     }
 }

@@ -19,12 +19,12 @@ class CookieListAdapter : RecyclerView.Adapter<CookieListViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: CookieListViewHolder, position: Int) {
-//        holder.bind(list[position]) {
-//            onItemClick?.invoke(it)
-//        }
+        holder.bind(list[position]) {
+            onItemClick?.invoke(it)
+        }
     }
 
-    override fun getItemCount(): Int = 10
+    override fun getItemCount(): Int = list.size
 
     fun updateList(newList: List<Cookie>) {
         list.clear()

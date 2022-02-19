@@ -9,5 +9,5 @@ data class UserInfo(
     val profileBackGroundImgUrl: String? = null,
     val collectedCnt: Int,
     val createdCnt: Int,
-    val questions: Int
+    val questionCnt: Int
 )

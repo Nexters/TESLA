@@ -8,8 +8,10 @@ import com.ozcoin.cookiepang.databinding.FragmentQuestionsBinding
 import com.ozcoin.cookiepang.extensions.toDp
 import com.ozcoin.cookiepang.ui.divider.SpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import timber.log.Timber
 
 @AndroidEntryPoint
 class QuestionsFragment : BaseFragment<FragmentQuestionsBinding>() {
@@ -29,14 +31,16 @@ class QuestionsFragment : BaseFragment<FragmentQuestionsBinding>() {
         with(binding.rvQuestions) {
             viewLifecycleScope.launch {
                 val isMine = myHomeFragmentViewModel.userInfo.first()?.isMine ?: false
-//                val isMine = false
+                Timber.d("this questions is mine $isMine")
                 questionListAdapter = QuestionListAdapter(isMine)
 
                 if (isMine) {
                     questionListAdapter.apply {
                         acceptClick = {
+                            myHomeFragmentViewModel.acceptQuestion(it)
                         }
                         ignoreClick = {
+                            myHomeFragmentViewModel.ignoreQuestion(it)
                         }
                     }
                 }
@@ -51,6 +55,15 @@ class QuestionsFragment : BaseFragment<FragmentQuestionsBinding>() {
     }
 
     override fun initObserve() {
+        observeQuestionList()
+    }
+
+    private fun observeQuestionList() {
+        viewLifecycleScope.launch {
+            myHomeFragmentViewModel.questionList.collect {
+                questionListAdapter.updateList(it)
+            }
+        }
     }
 
     override fun init() {

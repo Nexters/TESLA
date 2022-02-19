@@ -111,16 +111,21 @@ object DummyUtil {
                 profileBackGroundImgUrl = null,
                 collectedCnt = 10,
                 createdCnt = 291,
-                questions = 291
+                questionCnt = 291
             )
         )
     }
 
-    fun getQuestionList(needToRespond: Boolean): DataResult<List<Question>> {
+    fun getQuestionList(): DataResult<List<Question>> {
         val list = mutableListOf<Question>()
 
         repeat(22) {
-            val question = Question("(#$it)이거어슨 무슨 질문을 하기 위한 질문 ? ", needToRespond)
+            val question = Question(
+                it.toString(),
+                "(#$it)이거어슨 무슨 질문을 하기 위한 질문 ? ",
+                UserCategory.typeAll(),
+                it % 3 == 0
+            )
             list.add(question)
         }
 
@@ -133,7 +138,7 @@ object DummyUtil {
         repeat(22) {
             val cookie = Cookie(
                 cookieId = "cookieId($it)",
-                isHidden = it / 2 == 0,
+                isHidden = it % 2 == 0,
                 cookieBoxCoverImgUrl = "",
                 cookieBoxImgUrl = "",
                 cookieImgUrl = ""
@@ -150,7 +155,7 @@ object DummyUtil {
         repeat(12) {
             val cookie = Cookie(
                 cookieId = "cookieId($it)",
-                isHidden = it / 2 == 0,
+                isHidden = it % 5 == 0,
                 cookieBoxCoverImgUrl = "",
                 cookieBoxImgUrl = "",
                 cookieImgUrl = ""

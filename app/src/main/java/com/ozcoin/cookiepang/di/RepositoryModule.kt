@@ -10,6 +10,8 @@ import com.ozcoin.cookiepang.domain.feed.FeedRepository
 import com.ozcoin.cookiepang.domain.feed.FeedRepositoryImpl
 import com.ozcoin.cookiepang.domain.klip.KlipAuthRepository
 import com.ozcoin.cookiepang.domain.klip.KlipAuthRepositoryImpl
+import com.ozcoin.cookiepang.domain.question.QuestionRepository
+import com.ozcoin.cookiepang.domain.question.QuestionRepositoryImpl
 import com.ozcoin.cookiepang.domain.thememode.ThemeModeRepository
 import com.ozcoin.cookiepang.domain.thememode.ThemeModeRepositoryImpl
 import com.ozcoin.cookiepang.domain.user.UserRepository
@@ -55,4 +57,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindCookieRepository(impl: CookieRepositoryImpl): CookieRepository
+
+    @Binds
+    abstract fun bindQuestionRepository(impl: QuestionRepositoryImpl): QuestionRepository
 }
