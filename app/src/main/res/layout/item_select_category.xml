@@ -5,8 +5,8 @@
 
     <data>
         <variable
-            name="selectCategory"
-            type="com.ozcoin.cookiepang.domain.selectcategory.SelectCategory" />
+            name="userCategory"
+            type="com.ozcoin.cookiepang.domain.usercategory.UserCategory" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -25,9 +25,9 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/cb_add_category"
             android:textColor="@drawable/selector_et_double02_text_color"
-            android:text="@{selectCategory.categoryName}"
+            android:text="@{userCategory.categoryName}"
             tools:text="Friendshipxxxxxxxxxxxxxxxxxx"
-            android:enabled="@{selectCategory.isSelected}"
+            android:enabled="@{userCategory.isSelected}"
             tools:enabled="false"
             android:layout_width="0dp"
             android:layout_height="wrap_content" />
@@ -36,7 +36,7 @@
             android:id="@+id/cb_add_category"
             tools:checked="false"
             android:button="@null"
-            android:checked="@{selectCategory.isSelected}"
+            android:checked="@{userCategory.isSelected}"
             android:background="@drawable/selector_btn_add_category"
             android:clickable="false"
             app:layout_constraintRight_toRightOf="parent"

@@ -56,8 +56,6 @@ class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
     }
 
     override fun init() {
-        registIDFragmentViewModel.getUserProfileID = {
-            loginViewModel.user.profileID
-        }
+        registIDFragmentViewModel.user = loginViewModel.user
     }
 }

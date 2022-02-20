@@ -2,7 +2,9 @@ package com.ozcoin.cookiepang.ui.registuser
 
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
+import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.UserRepository
+import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.EventFlow
 import com.ozcoin.cookiepang.utils.MutableEventFlow
 import com.ozcoin.cookiepang.utils.TextInputUtil
@@ -27,7 +29,7 @@ class RegistIDFragmentViewModel @Inject constructor(
     val profileIDMaxLengthCaption: StateFlow<String?>
         get() = _profileIDMaxLengthCaption.asStateFlow()
 
-    lateinit var getUserProfileID: () -> String
+    lateinit var user: User
 
     private fun navigateToRegistInfo() {
         navigateTo(RegistIDFragmentDirections.actionRegistUserInfo())
@@ -43,17 +45,14 @@ class RegistIDFragmentViewModel @Inject constructor(
         }
     }
 
-    private suspend fun isAvailableProfileId(profileId: String): Boolean {
-        return userRepository.checkDuplicateProfileID(profileId).also {
-            Timber.d("isAvailableProfileId result($it)")
-        }
+    private suspend fun isAvailableProfileId(): Boolean {
+        return userRepository.regUser(user)
     }
 
     private suspend fun checkAvailableProfileId(): Boolean {
         var result = false
-        val profileId = getUserProfileID.invoke()
-        if (profileId.isNotBlank()) {
-            result = isAvailableProfileId(profileId)
+        if (user.profileID.isNotBlank()) {
+            result = isAvailableProfileId()
         } else {
             Timber.d("profileId is empty")
         }
@@ -67,6 +66,7 @@ class RegistIDFragmentViewModel @Inject constructor(
                 navigateToRegistInfo()
             } else {
                 _registIdEventFlow.emit(RegistIDEvent.ProfileIdNotAvailable)
+                _eventFlow.emit(Event.ShowToast("사용할 수 없습니다."))
             }
         }
     }

@@ -3,10 +3,14 @@ package com.ozcoin.cookiepang.data.provider
 import android.content.Context
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.emptyPreferences
+import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.ozcoin.cookiepang.common.PREF_NAME_USER
-import com.ozcoin.cookiepang.common.PREF_USER_KLIP_ADDRESS
+import com.ozcoin.cookiepang.common.PREF_USER_ID
+import com.ozcoin.cookiepang.common.PREF_USER_WALLET_ADDRESS
+import com.ozcoin.cookiepang.data.user.UserEntity
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import java.io.IOException
@@ -17,15 +21,17 @@ class UserPrefProvider @Inject constructor(
 ) {
 
     private val Context.userPref by preferencesDataStore(PREF_NAME_USER)
-    private val userKlipAddressKey = stringPreferencesKey(PREF_USER_KLIP_ADDRESS)
+    private val userWalletAddressKey = stringPreferencesKey(PREF_USER_WALLET_ADDRESS)
+    private val userIdKey = intPreferencesKey(PREF_USER_ID)
 
-    suspend fun setUserKlipAddress(userKlipAddress: String) {
+    suspend fun setUserEntity(userEntity: UserEntity) {
         context.userPref.edit {
-            it[userKlipAddressKey] = userKlipAddress
+            it[userWalletAddressKey] = userEntity.walletAddress
+            it[userIdKey] = userEntity.id
         }
     }
 
-    fun getUserKlipAddress() = context.userPref.data
+    fun getUserEntity(): Flow<UserEntity?> = context.userPref.data
         .catch { exception ->
             if (exception is IOException) {
                 emit(emptyPreferences())
@@ -33,7 +39,17 @@ class UserPrefProvider @Inject constructor(
                 throw exception
             }
         }.map {
-            it[userKlipAddressKey] ?: ""
-            "asdf"
+            val walletAddress = it[userWalletAddressKey]
+            val userId = it[userIdKey]
+            if (userId != null) {
+                UserEntity(
+                    id = userId,
+                    walletAddress = walletAddress ?: "",
+                    nickname = "",
+                    introduction = ""
+                )
+            } else {
+                null
+            }
         }
 }

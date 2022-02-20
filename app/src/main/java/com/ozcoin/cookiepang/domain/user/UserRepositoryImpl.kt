@@ -1,24 +1,41 @@
 package com.ozcoin.cookiepang.domain.user
 
-import com.ozcoin.cookiepang.data.user.UserRegLocalDataSource
+import com.ozcoin.cookiepang.data.request.NetworkResult
+import com.ozcoin.cookiepang.data.user.UserLocalDataSource
+import com.ozcoin.cookiepang.data.user.UserRemoteDataSource
 import com.ozcoin.cookiepang.data.user.toData
+import com.ozcoin.cookiepang.data.user.toDomain
+import kotlinx.coroutines.flow.first
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
-    private val userRegLocalDataSource: UserRegLocalDataSource
+    private val userRemoteDataSource: UserRemoteDataSource,
+    private val userLocalDataSource: UserLocalDataSource
 ) : UserRepository {
 
     private var loginUser: User? = null
-//    private var loginUser: User? = User()
 
     override suspend fun regUser(user: User): Boolean {
-        userRegLocalDataSource.regUser(user.toData())
-        this.loginUser = user
-        return true
+        var regUserResult = false
+        val result = userRemoteDataSource.registrationUser(user.toData())
+        if (result is NetworkResult.Success) {
+            userLocalDataSource.saveUserEntity(result.response)
+            loginUser = result.response.toDomain()
+            regUserResult = true
+        }
+
+        return regUserResult
     }
 
     override suspend fun getLoginUser(): User? {
-//        return userRegLocalDataSource.getUser().toDomain()
+        if (loginUser == null) {
+            val userEntity = userLocalDataSource.getUserEntity().first()?.let {
+                val result = userRemoteDataSource.getUser(it.id)
+                if (result is NetworkResult.Success) result.response else null
+            }
+            userEntity?.let { loginUser = it.toDomain() }
+        }
+
         return loginUser
     }
 

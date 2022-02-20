@@ -38,7 +38,7 @@ class SettingFragmentViewModel @Inject constructor(
 
     private fun approveWallet() {
         loginUser?.let {
-            if (!it.isWalletApproved) {
+            if (!it.walletApproved) {
                 viewModelScope.launch {
                     klipAuthRepository.approveWallet(true)
                 }

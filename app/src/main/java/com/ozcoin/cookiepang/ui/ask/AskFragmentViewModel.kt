@@ -4,6 +4,7 @@ import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.domain.ask.Ask
 import com.ozcoin.cookiepang.domain.ask.AskRepository
+import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.utils.DataResult
@@ -20,6 +21,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AskFragmentViewModel @Inject constructor(
     private val userCategoryRepository: UserCategoryRepository,
+    private val userRepository: UserRepository,
     private val askRepository: AskRepository
 ) : BaseViewModel() {
 
@@ -51,12 +53,13 @@ class AskFragmentViewModel @Inject constructor(
         }
     }
 
-    fun getUserCategoryList(userId: String) {
+    fun getUserCategoryList(receiverUserId: String) {
         viewModelScope.launch {
-            val result = userCategoryRepository.getUserCategory(userId)
+            val result = userCategoryRepository.getUserCategory(receiverUserId)
             if (result is DataResult.OnSuccess) {
                 _userCategoryList.emit(result.response)
-                ask = Ask(userId, "")
+                val senderUserId = userRepository.getLoginUser()?.userId ?: ""
+                ask = Ask(receiverUserId, senderUserId, "")
             }
         }
     }

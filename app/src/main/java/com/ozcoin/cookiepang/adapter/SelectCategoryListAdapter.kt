@@ -7,14 +7,12 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.adapter.viewholder.SelectCategoryViewHolder
 import com.ozcoin.cookiepang.databinding.ItemSelectCategoryBinding
-import com.ozcoin.cookiepang.domain.selectcategory.SelectCategory
-import com.ozcoin.cookiepang.domain.selectcategory.toUserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import kotlin.streams.toList
 
 class SelectCategoryListAdapter : RecyclerView.Adapter<SelectCategoryViewHolder>() {
 
-    private var list = mutableListOf<SelectCategory>()
+    private var list = mutableListOf<UserCategory>()
 
     var onItemClick: ((List<UserCategory>) -> Unit)? = null
 
@@ -39,7 +37,7 @@ class SelectCategoryListAdapter : RecyclerView.Adapter<SelectCategoryViewHolder>
 
     override fun getItemCount(): Int = list.size
 
-    fun updateList(newList: List<SelectCategory>) {
+    fun updateList(newList: List<UserCategory>) {
         list.clear()
         list.addAll(newList)
         notifyItemRangeInserted(0, newList.size - 1)
@@ -48,8 +46,6 @@ class SelectCategoryListAdapter : RecyclerView.Adapter<SelectCategoryViewHolder>
     private fun getSelectedCategory(): List<UserCategory> {
         return list.stream().filter {
             it.isSelected
-        }.map {
-            it.toUserCategory()
         }.toList()
     }
 }

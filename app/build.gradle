@@ -7,6 +7,7 @@ plugins {
     id "org.jlleitschuh.gradle.ktlint" version "10.2.1"
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.6.10'
 }
 
 android {
@@ -89,6 +90,8 @@ dependencies {
     implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:$rootProject.retrofitKotlinConverterVersion"
     implementation "com.squareup.retrofit2:adapter-rxjava2:$rootProject.retrofitVersion"
     implementation "com.squareup.okhttp3:logging-interceptor:$rootProject.okhttpLoggingVersion"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.1.0"
 
     // Timber
     implementation "com.jakewharton.timber:timber:$rootProject.timberVersion"

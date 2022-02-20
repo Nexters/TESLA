@@ -25,4 +25,6 @@ sealed class Event {
     ) : Event()
 
     data class ShowWeb(val url: String) : Event()
+
+    data class ShowToast(val msg: String) : Event()
 }
