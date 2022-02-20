@@ -1,22 +1,28 @@
 package com.ozcoin.cookiepang.di
 
+import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import com.ozcoin.cookiepang.data.request.ApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.UnstableDefault
+import kotlinx.serialization.json.Json
+import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import java.util.concurrent.TimeUnit
 import javax.inject.Singleton
 
+@UnstableDefault
+@ExperimentalSerializationApi
 @InstallIn(SingletonComponent::class)
 @Module
 object NetworkModule {
 
-    private const val baseUrl = ""
+    private const val baseUrl = "http://api.cookiepang.site"
 
     private val okHttpClient: OkHttpClient
         get() {
@@ -35,10 +41,11 @@ object NetworkModule {
     @Singleton
     @Provides
     fun provideApiService(): ApiService {
+        val contentType = "application/json".toMediaType()
         val retrofit = Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)
-            .addConverterFactory(GsonConverterFactory.create())
+            .addConverterFactory(Json.asConverterFactory(contentType))
             .build()
 
         return retrofit.create(ApiService::class.java)
