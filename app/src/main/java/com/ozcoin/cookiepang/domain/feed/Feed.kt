@@ -14,5 +14,5 @@ data class Feed(
     val cookieCardStyle: CookieCardStyle,
     val viewCount: Int,
     val hammerPrice: Int,
-    val id: String = "($isHidden)$userProfileId/$question/$createdTimeStamp",
+    val cookieId: Int
 ) : Parcelable

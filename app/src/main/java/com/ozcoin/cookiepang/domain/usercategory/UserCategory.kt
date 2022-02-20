@@ -12,7 +12,11 @@ data class UserCategory(
 ) : Parcelable {
     companion object {
         fun typeAll(): UserCategory {
-            return UserCategory("All", true, UserCategoryColorStyle.BLUE)
+            return UserCategory("전체", true, UserCategoryColorStyle.BLUE)
         }
     }
+}
+
+fun UserCategory.isTypeAll(): Boolean {
+    return categoryName == "전체"
 }

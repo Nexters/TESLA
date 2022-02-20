@@ -4,5 +4,5 @@ import com.ozcoin.cookiepang.utils.DataResult
 
 interface CookieDetailRepository {
 
-    suspend fun getCookieDetail(cookieId: String): DataResult<CookieDetail>
+    suspend fun getCookieDetail(userId: String, cookieId: String): DataResult<CookieDetail>
 }

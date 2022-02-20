@@ -1,25 +1,24 @@
 package com.ozcoin.cookiepang.domain.cookiedetail
 
+import com.ozcoin.cookiepang.data.cookiedetail.CookieDetailRemoteDataSource
+import com.ozcoin.cookiepang.data.cookiedetail.toDomain
+import com.ozcoin.cookiepang.data.request.NetworkResult
 import com.ozcoin.cookiepang.utils.DataResult
-import com.ozcoin.cookiepang.utils.DummyUtil
-import kotlinx.coroutines.delay
 import javax.inject.Inject
 
-class CookieDetailRepositoryImpl @Inject constructor() : CookieDetailRepository {
+class CookieDetailRepositoryImpl @Inject constructor(
+    private val cookieDetailRemoteDataSource: CookieDetailRemoteDataSource
+) : CookieDetailRepository {
 
-    private var count = 0
-
-    override suspend fun getCookieDetail(cookieId: String): DataResult<CookieDetail> {
-        delay(1000L)
-
-        val result = if (count == 0) {
-            DummyUtil.getCookieDetail(false, isHidden = true)
+    override suspend fun getCookieDetail(
+        userId: String,
+        cookieId: String
+    ): DataResult<CookieDetail> {
+        val response = cookieDetailRemoteDataSource.getCookieDetail(userId, cookieId)
+        return if (response is NetworkResult.Success) {
+            DataResult.OnSuccess(response.response.toDomain())
         } else {
-            DummyUtil.getCookieDetail(true, isHidden = false)
+            DataResult.OnFail
         }
-
-        count++
-
-        return result
     }
 }

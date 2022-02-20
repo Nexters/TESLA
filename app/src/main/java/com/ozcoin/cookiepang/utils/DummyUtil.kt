@@ -45,6 +45,7 @@ object DummyUtil {
                 cookieCardStyle = getCookieCardStyle(),
                 viewCount = it * (random.nextInt(291) + 1),
                 hammerPrice = it * (random.nextInt(8) + 1),
+                cookieId = it
             )
             list.add(feed)
         }
@@ -90,7 +91,8 @@ object DummyUtil {
                         "2022-10-32 20:00"
                     )
                 ),
-                isHidden = isHidden
+                isHidden = isHidden,
+                cookieId = 10
             )
         )
     }

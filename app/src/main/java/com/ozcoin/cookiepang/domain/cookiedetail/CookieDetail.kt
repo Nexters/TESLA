@@ -20,7 +20,8 @@ data class CookieDetail(
     val contractAddress: String,
     val tokenAddress: String,
     val cookieHistory: List<CookieHistory>,
-    val isHidden: Boolean
+    val isHidden: Boolean,
+    val cookieId: Int
 )
 
 fun CookieDetail.toEditCookie(): EditCookie {

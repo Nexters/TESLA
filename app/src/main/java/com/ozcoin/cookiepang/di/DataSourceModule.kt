@@ -2,12 +2,14 @@ package com.ozcoin.cookiepang.di
 
 import android.content.Context
 import com.ozcoin.cookiepang.data.category.CategoryRemoteDataSource
+import com.ozcoin.cookiepang.data.cookiedetail.CookieDetailRemoteDataSource
 import com.ozcoin.cookiepang.data.klip.KlipAuthDataSource
 import com.ozcoin.cookiepang.data.provider.AppSettingPrefProvider
 import com.ozcoin.cookiepang.data.provider.ResourceProvider
 import com.ozcoin.cookiepang.data.provider.UserPrefProvider
 import com.ozcoin.cookiepang.data.request.ApiService
 import com.ozcoin.cookiepang.data.thememode.ThemeModeLocalDataSource
+import com.ozcoin.cookiepang.data.timeline.TimeLineRemoteDataSource
 import com.ozcoin.cookiepang.data.user.UserLocalDataSource
 import com.ozcoin.cookiepang.data.user.UserRemoteDataSource
 import dagger.Module
@@ -47,5 +49,15 @@ object DataSourceModule {
     @Provides
     fun provideCategoryRemote(apiService: ApiService): CategoryRemoteDataSource {
         return CategoryRemoteDataSource(apiService)
+    }
+
+    @Provides
+    fun provideTimeLineRemote(apiService: ApiService): TimeLineRemoteDataSource {
+        return TimeLineRemoteDataSource(apiService)
+    }
+
+    @Provides
+    fun provideCookieDetailRemote(apiService: ApiService): CookieDetailRemoteDataSource {
+        return CookieDetailRemoteDataSource(apiService)
     }
 }

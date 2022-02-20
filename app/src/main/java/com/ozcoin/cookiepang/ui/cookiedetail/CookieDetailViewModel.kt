@@ -5,6 +5,7 @@ import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.toEditCookie
+import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.DialogUtil
 import com.ozcoin.cookiepang.utils.Event
@@ -22,6 +23,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CookieDetailViewModel @Inject constructor(
+    private val userRepository: UserRepository,
     private val cookieDetailRepository: CookieDetailRepository
 ) : BaseViewModel() {
 
@@ -46,7 +48,7 @@ class CookieDetailViewModel @Inject constructor(
             uiStateObserver.update(UiState.OnLoading)
 
             viewModelScope.launch {
-                val result = cookieDetailRepository.getCookieDetail(cookieId)
+                val result = userRepository.getLoginUser()?.let { cookieDetailRepository.getCookieDetail(it.userId, cookieId) }
                 if (result is DataResult.OnSuccess) {
                     Timber.d("getCookieDetail($cookieId) is success")
                     uiStateObserver.update(UiState.OnSuccess)

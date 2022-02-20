@@ -55,7 +55,7 @@ class AskFragmentViewModel @Inject constructor(
 
     fun getUserCategoryList(receiverUserId: String) {
         viewModelScope.launch {
-            val result = userCategoryRepository.getUserCategory(receiverUserId)
+            val result = userCategoryRepository.getAllUserCategory()
             if (result is DataResult.OnSuccess) {
                 _userCategoryList.emit(result.response)
                 val senderUserId = userRepository.getLoginUser()?.userId ?: ""

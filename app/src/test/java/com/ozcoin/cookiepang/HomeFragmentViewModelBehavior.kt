@@ -94,7 +94,7 @@ class HomeFragmentViewModelBehavior : BehaviorSpec() {
             When("로드에 성공하면") {
 
                 coEvery {
-                    feedRepository.getFeedList(UserCategory.typeAll())
+                    feedRepository.getFeedList(user.userId, UserCategory.typeAll())
                 } coAnswers {
                     DummyUtil.getFeedList()
                 }

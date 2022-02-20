@@ -49,7 +49,8 @@ class HomeFragmentViewModel @Inject constructor(
         viewModelScope.launch {
             val user = userRepository.getLoginUser()
             if (user != null) {
-                val result = userCategoryRepository.getUserCategory(user.userId)
+//                val result = userCategoryRepository.getUserCategory(user.userId)
+                val result = userCategoryRepository.getAllUserCategory()
                 if (result is DataResult.OnSuccess) {
                     Timber.d("getUserCategoryList onSuccess")
 
@@ -100,7 +101,7 @@ class HomeFragmentViewModel @Inject constructor(
         viewModelScope.launch {
             uiStateObserver.update(UiState.OnLoading)
 
-            val result = feedRepository.getFeedList(userCategory)
+            val result = userRepository.getLoginUser()?.let { feedRepository.getFeedList(it.userId, userCategory) }
             if (result is DataResult.OnSuccess) {
                 Timber.d("getFeedList onSuccess")
 

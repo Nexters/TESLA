@@ -77,7 +77,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             )
             feedListAdapter = FeedListAdapter().apply {
                 onItemClick = {
-                    homeFragmentViewModel.navigateToCookieDetail(it.id)
+                    homeFragmentViewModel.navigateToCookieDetail(it.cookieId.toString())
                 }
             }
             adapter = feedListAdapter

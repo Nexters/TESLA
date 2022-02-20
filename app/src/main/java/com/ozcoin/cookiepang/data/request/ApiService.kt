@@ -3,8 +3,8 @@ package com.ozcoin.cookiepang.data.request
 import com.ozcoin.cookiepang.data.ask.AskEntity
 import com.ozcoin.cookiepang.data.category.CategoryEntity
 import com.ozcoin.cookiepang.data.cookie.CookieEntity
-import com.ozcoin.cookiepang.data.cookiedetail.CookieDetail
-import com.ozcoin.cookiepang.data.timeline.TimeLine
+import com.ozcoin.cookiepang.data.cookiedetail.CookieDetailEntity
+import com.ozcoin.cookiepang.data.timeline.TimeLineEntity
 import com.ozcoin.cookiepang.data.user.UserEntity
 import retrofit2.Response
 import retrofit2.http.Body
@@ -13,6 +13,7 @@ import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
+import retrofit2.http.Query
 
 interface ApiService {
 
@@ -68,21 +69,21 @@ interface ApiService {
     @GET("/users/{userId}/categories/all/cookies")
     suspend fun getAllCookieList(
         @Path("userId") userId: String,
-        @Path("page") page: Int,
-        @Path("size") size: Int
-    ): Response<List<TimeLine>>
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 50
+    ): Response<List<TimeLineEntity>>
 
     @GET("/users/{userId}/categories/{categoryId}/cookies")
     suspend fun getCookieList(
         @Path("userId") userId: String,
         @Path("categoryId") categoryId: String,
-        @Path("page") page: Int,
-        @Path("size") size: Int
-    ): Response<List<TimeLine>>
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 50
+    ): Response<List<TimeLineEntity>>
 
     @GET("/users/{userId}/cookies/{cookieId}/detail")
     suspend fun getCookieDetail(
         @Path("userId") userId: String,
         @Path("cookieId") cookieId: String
-    ): Response<CookieDetail>
+    ): Response<CookieDetailEntity>
 }
