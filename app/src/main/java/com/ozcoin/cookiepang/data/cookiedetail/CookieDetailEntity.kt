@@ -37,7 +37,7 @@ fun CookieDetailEntity.toDomain(): CookieDetail {
         creatorName = creatorName,
         creatorThumbnailUrl = creatorProfileUrl ?: "",
         contractAddress = contractAddress,
-        tokenAddress = contractAddress,
+        tokenAddress = nftTokenId.toString(),
         cookieHistory = histories.map { it.toDomain() },
         isHidden = false,
         cookieId = nftTokenId
