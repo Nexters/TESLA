@@ -23,8 +23,7 @@ class LoginFragmentViewModel @Inject constructor(
 
     fun clickLogin() {
         viewModelScope.launch {
-//            klipAuthRepository.requestAuth(null)
-            navigateToRegistID()
+            klipAuthRepository.requestAuth(null)
         }
     }
 

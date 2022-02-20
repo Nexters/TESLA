@@ -1,12 +1,15 @@
 package com.ozcoin.cookiepang.di
 
 import android.content.Context
+import com.ozcoin.cookiepang.data.category.CategoryRemoteDataSource
 import com.ozcoin.cookiepang.data.klip.KlipAuthDataSource
 import com.ozcoin.cookiepang.data.provider.AppSettingPrefProvider
 import com.ozcoin.cookiepang.data.provider.ResourceProvider
 import com.ozcoin.cookiepang.data.provider.UserPrefProvider
+import com.ozcoin.cookiepang.data.request.ApiService
 import com.ozcoin.cookiepang.data.thememode.ThemeModeLocalDataSource
-import com.ozcoin.cookiepang.data.user.UserRegLocalDataSource
+import com.ozcoin.cookiepang.data.user.UserLocalDataSource
+import com.ozcoin.cookiepang.data.user.UserRemoteDataSource
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -23,8 +26,13 @@ object DataSourceModule {
     }
 
     @Provides
-    fun provideUserRegLocal(userPrefProvider: UserPrefProvider): UserRegLocalDataSource {
-        return UserRegLocalDataSource(userPrefProvider)
+    fun provideUserLocal(userPrefProvider: UserPrefProvider): UserLocalDataSource {
+        return UserLocalDataSource(userPrefProvider)
+    }
+
+    @Provides
+    fun provideUserRemote(apiService: ApiService): UserRemoteDataSource {
+        return UserRemoteDataSource(apiService)
     }
 
     @Provides
@@ -34,5 +42,10 @@ object DataSourceModule {
         userPrefProvider: UserPrefProvider
     ): KlipAuthDataSource {
         return KlipAuthDataSource(context, resourceProvider, userPrefProvider)
+    }
+
+    @Provides
+    fun provideCategoryRemote(apiService: ApiService): CategoryRemoteDataSource {
+        return CategoryRemoteDataSource(apiService)
     }
 }

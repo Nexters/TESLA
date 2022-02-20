@@ -2,13 +2,10 @@ package com.ozcoin.cookiepang.ui.registuser
 
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
-import com.ozcoin.cookiepang.domain.selectcategory.SelectCategory
-import com.ozcoin.cookiepang.domain.selectcategory.toUserCategory
 import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
-import com.ozcoin.cookiepang.domain.usercategory.toSelectCategory
 import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
@@ -28,28 +25,22 @@ class SelectCategoryFragmentViewModel @Inject constructor(
     var registrationUser: User? = null
 
     private fun checkUserSelectedCategories(): Boolean {
-        return selectedCategories != null && selectedCategories!!.size >= 3
+//        return selectedCategories != null && selectedCategories!!.size >= 3
+        return selectedCategories != null
     }
 
     private fun navigateToCompleteUserReg() {
         navigateTo(SelectCategoryFragmentDirections.actionCompleteUserReg())
     }
 
-    private suspend fun registUser(): Boolean {
-        return if (registrationUser != null)
-            userRepository.regUser(registrationUser!!)
-        else
-            false
-    }
-
     private suspend fun isUserRegistration(): Boolean {
         return userRepository.getLoginUser() == null
     }
 
-    suspend fun getCategoryList(): List<SelectCategory> {
+    suspend fun getCategoryList(): List<UserCategory> {
         val result = userCategoryRepository.getAllUserCategory()
         val categories = if (result is DataResult.OnSuccess) {
-            val categoryList = result.response.map { it.toSelectCategory() }.toList()
+            val categoryList = result.response
             if (isUserRegistration())
                 categoryList
             else
@@ -62,11 +53,11 @@ class SelectCategoryFragmentViewModel @Inject constructor(
 
     private suspend fun matchSelectedUserCategory(
         user: User,
-        list: List<SelectCategory>
-    ): List<SelectCategory> {
+        list: List<UserCategory>
+    ): List<UserCategory> {
         val result = userCategoryRepository.getUserCategory(user.userId)
         if (result is DataResult.OnSuccess) {
-            val userList = result.response.map { it.toSelectCategory() }
+            val userList = result.response
             list.forEach { all ->
                 val find = userList.find { it.categoryName == all.categoryName }
                 if (find != null)
@@ -74,8 +65,7 @@ class SelectCategoryFragmentViewModel @Inject constructor(
             }
         }
 
-        selectedCategories = list.map { it.toUserCategory() }
-        return list
+        return list.also { selectedCategories = it }
     }
 
     private suspend fun setUserInterestIn(user: User): Boolean {
@@ -94,12 +84,8 @@ class SelectCategoryFragmentViewModel @Inject constructor(
         viewModelScope.launch {
             if (isUserRegistration()) {
                 if (setUserInterestIn(registrationUser!!)) {
-                    if (registUser()) {
-                        uiStateObserver.update(UiState.OnSuccess)
-                        navigateToCompleteUserReg()
-                    } else {
-                        uiStateObserver.update(UiState.OnFail)
-                    }
+                    uiStateObserver.update(UiState.OnSuccess)
+                    navigateToCompleteUserReg()
                 } else {
                     uiStateObserver.update(UiState.OnFail)
                 }

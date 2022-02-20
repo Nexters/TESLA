@@ -51,13 +51,9 @@ class KlipAuthDataSource @Inject constructor(
         }
     }
 
-    fun getUserKlipAddress() = userPrefProvider.getUserKlipAddress()
-
     suspend fun saveUserKlipAddress(userKlipAddress: String) {
-        userPrefProvider.setUserKlipAddress(userKlipAddress)
     }
 
     suspend fun removeUserKlipAddress() {
-        userPrefProvider.setUserKlipAddress("")
     }
 }

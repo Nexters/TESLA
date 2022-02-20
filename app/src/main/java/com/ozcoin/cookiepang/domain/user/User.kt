@@ -49,8 +49,31 @@ class User : BaseObservable() {
             notifyPropertyChanged(BR.walletAddress)
         }
 
+    @get: Bindable
     var interestCategoryList: List<UserCategory>? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.interestCategoryList)
+        }
+
+    @get:Bindable
     var numOfKlaytn = 0
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.numOfKlaytn)
+        }
+
+    @get:Bindable
     var numOfHammer = 0
-    var isWalletApproved = false
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.numOfHammer)
+        }
+
+    @get:Bindable
+    var walletApproved = false
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.walletApproved)
+        }
 }

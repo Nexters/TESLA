@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import android.widget.Toast
 import androidx.annotation.LayoutRes
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
@@ -97,8 +98,15 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
             is Event.ShowWeb -> {
                 showWeb(event)
             }
+            is Event.ShowToast -> {
+                showToast(event.msg)
+            }
             else -> {}
         }
+    }
+
+    private fun showToast(msg: String) {
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
     }
 
     private fun showWeb(event: Event.ShowWeb) {
