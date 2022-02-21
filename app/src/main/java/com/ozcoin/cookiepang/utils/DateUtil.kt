@@ -16,7 +16,7 @@ object DateUtil {
 
     @SuppressLint("SimpleDateFormat")
     fun convertToFeedTimeStamp(createdAt: String): String {
-        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
         val date = kotlin.runCatching { format.parse(createdAt) }.getOrNull()
 
         if (date != null) {

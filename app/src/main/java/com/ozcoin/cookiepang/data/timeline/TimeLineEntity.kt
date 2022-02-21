@@ -3,10 +3,8 @@ package com.ozcoin.cookiepang.data.timeline
 import com.ozcoin.cookiepang.data.category.CategoryEntity
 import com.ozcoin.cookiepang.domain.feed.CookieCardStyle
 import com.ozcoin.cookiepang.domain.feed.Feed
-import com.ozcoin.cookiepang.utils.DateSerializer
 import com.ozcoin.cookiepang.utils.DateUtil
 import kotlinx.serialization.Serializable
-import java.util.Date
 
 @Serializable
 data class TimeLineEntity(
@@ -23,8 +21,7 @@ data class TimeLineEntity(
     val price: Int,
     val myCookie: Boolean,
     val category: CategoryEntity,
-    @Serializable(DateSerializer::class)
-    val createdAt: Date
+    val createdAt: String
 )
 
 fun TimeLineEntity.toDomain(): Feed {
@@ -32,7 +29,7 @@ fun TimeLineEntity.toDomain(): Feed {
         isHidden = answer == null,
         question = question,
         cookieId = cookieId,
-        createdTimeStamp = DateUtil.convertToFeedTimeStamp(createdAt),
+        createdTimeStamp = DateUtil.convertToFeedTimeStamp(createdAt.split(".")[0]),
         viewCount = viewCount,
         hammerPrice = price,
         userProfileId = creatorName,

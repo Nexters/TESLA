@@ -23,6 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -116,7 +117,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         setViewDataUserCategoryList(true)
     }
 
-    private fun isViewDataLoaded(): Boolean {
+    private suspend fun isViewDataLoaded(): Boolean = withContext(Dispatchers.Default) {
         val feedList = mainActivityViewModel.savedStateHandle.get<List<Feed>>(
             KEY_VIEW_DATA_USER_CATEGORY_LIST
         )
@@ -124,7 +125,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             KEY_VIEW_DATA_USER_CATEGORY_LIST
         )
 
-        return feedList != null && feedList.isNotEmpty() &&
+        feedList != null && feedList.isNotEmpty() &&
             userCategoryList != null && userCategoryList.isNotEmpty()
     }
 
@@ -185,7 +186,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun initListener() {
-        homeFragmentViewModel.uiStateObserver = UiStateObserver(mainActivityViewModel::updateUiState)
+        homeFragmentViewModel.uiStateObserver =
+            UiStateObserver(mainActivityViewModel::updateUiState)
     }
 
     override fun initObserve() {
@@ -213,21 +215,23 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun init() {
-        if (itHaveToResetUserCategory()) {
-            binding.rvFeed.smoothScrollToPosition(0)
-            homeFragmentViewModel.getUserCategoryList()
-        } else {
-            if (isViewDataLoaded()) {
-                Timber.d("is view data loaded")
-                if (homeFragmentViewModel.userCategoryList.value.isEmpty()) {
-                    Timber.d("viewModel data not exist, restore list")
-                    restoreListState()
-                } else {
-                    Timber.d("viewModel data exist")
-                }
-            } else {
-                Timber.d("is not view data loaded, so get list data")
+        viewLifecycleScope.launch {
+            if (itHaveToResetUserCategory()) {
+                binding.rvFeed.smoothScrollToPosition(0)
                 homeFragmentViewModel.getUserCategoryList()
+            } else {
+                if (isViewDataLoaded()) {
+                    Timber.d("is view data loaded")
+                    if (homeFragmentViewModel.userCategoryList.value.isEmpty()) {
+                        Timber.d("viewModel data not exist, restore list")
+                        restoreListState()
+                    } else {
+                        Timber.d("viewModel data exist")
+                    }
+                } else {
+                    Timber.d("is not view data loaded, so get list data")
+                    homeFragmentViewModel.getUserCategoryList()
+                }
             }
         }
     }
@@ -246,7 +250,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onResume() {
         super.onResume()
         viewLifecycleScope.launch(Dispatchers.Default) {
-            delay(100)
+            delay(100L)
             mainActivityViewModel.showBtmNavView()
         }
     }

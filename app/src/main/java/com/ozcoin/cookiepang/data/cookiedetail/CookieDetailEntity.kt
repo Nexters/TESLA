@@ -10,6 +10,7 @@ import kotlinx.serialization.Serializable
 data class CookieDetailEntity(
     val answer: String?,
     val category: CategoryEntity,
+    val collectorId: Int,
     val collectorName: String,
     val collectorProfileUrl: String?,
     val contractAddress: String,
