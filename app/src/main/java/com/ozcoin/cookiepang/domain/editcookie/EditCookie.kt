@@ -12,6 +12,7 @@ class EditCookie constructor() : BaseObservable(), Parcelable {
     constructor(parcel: Parcel) : this() {
         parcel.run {
             isEditPricingInfo = readInt() == 1
+            cookieId = readInt()
             userId = readString() ?: ""
             question = readString() ?: ""
             answer = readString() ?: ""
@@ -22,6 +23,7 @@ class EditCookie constructor() : BaseObservable(), Parcelable {
     }
 
     var isEditPricingInfo = false
+    var cookieId: Int = -1
     var userId: String = ""
     var tx_hash: String = ""
 
@@ -51,6 +53,7 @@ class EditCookie constructor() : BaseObservable(), Parcelable {
             writeInt(
                 if (isEditPricingInfo) 1 else 0
             )
+            writeInt(cookieId)
             writeString(userId)
             writeString(tx_hash)
             writeString(question)

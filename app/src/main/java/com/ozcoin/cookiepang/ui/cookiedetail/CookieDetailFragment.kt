@@ -58,6 +58,7 @@ class CookieDetailFragment : BaseFragment<FragmentCookieDetailBinding>() {
     override fun initObserve() {
         observeEvent(cookieDetailViewModel)
         with(cookieDetailViewModel) {
+            lifecycle.addObserver(this)
             eventObserver = EventObserver(mainActivityViewModel::updateEvent)
             uiStateObserver = UiStateObserver(mainActivityViewModel::updateUiState)
 

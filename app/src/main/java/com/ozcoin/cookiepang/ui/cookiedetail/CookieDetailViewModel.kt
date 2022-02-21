@@ -1,11 +1,15 @@
 package com.ozcoin.cookiepang.ui.cookiedetail
 
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.domain.cookie.CookieRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.toEditCookie
+import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepository
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.DialogUtil
@@ -25,8 +29,9 @@ import javax.inject.Inject
 class CookieDetailViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val cookieRepository: CookieRepository,
-    private val cookieDetailRepository: CookieDetailRepository
-) : BaseViewModel() {
+    private val cookieDetailRepository: CookieDetailRepository,
+    private val klipContractTxRepository: KlipContractTxRepository
+) : BaseViewModel(), LifecycleEventObserver {
 
     private val _cookieDetail = MutableStateFlow<CookieDetail?>(null)
     val cookieDetail: StateFlow<CookieDetail?>
@@ -71,14 +76,10 @@ class CookieDetailViewModel @Inject constructor(
 
         viewModelScope.launch {
             if (cookieDetail.value != null && userRepository.getLoginUser() != null) {
-
-                if (cookieRepository.purchaseCookie(userRepository.getLoginUser()!!.userId, cookieDetail.value!!)) {
-                    uiStateObserver.update(UiState.OnSuccess)
-                    showPurchaseCookieSuccessDialog()
-                } else {
+                if (!klipContractTxRepository.requestBuyACookie(cookieDetail.value!!))
                     uiStateObserver.update(UiState.OnFail)
-                }
             } else {
+                Timber.d("cookieDetail or loginUser is null")
                 uiStateObserver.update(UiState.OnFail)
             }
         }
@@ -147,5 +148,27 @@ class CookieDetailViewModel @Inject constructor(
 
     fun clickDeleteCookie() {
         showDeleteCookieDialog()
+    }
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        if (event == Lifecycle.Event.ON_RESUME) {
+            klipContractTxRepository.getResult { result, tx_hash ->
+                Timber.d("requestBuyACookie result($result, tx_hash=$tx_hash)")
+                if (result && tx_hash != null && cookieDetail.value != null) {
+                    viewModelScope.launch {
+                        val purchaserUserId = userRepository.getLoginUser()?.userId ?: ""
+                        if (cookieRepository.purchaseCookie(purchaserUserId, cookieDetail.value!!)) {
+                            uiStateObserver.update(UiState.OnSuccess)
+                            showPurchaseCookieSuccessDialog()
+                        } else {
+                            uiStateObserver.update(UiState.OnFail)
+                        }
+                    }
+                } else {
+                    Timber.d("requestBuyACookie result($result, tx_hash=$tx_hash)")
+                    uiStateObserver.update(UiState.OnFail)
+                }
+            }
+        }
     }
 }

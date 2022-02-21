@@ -3,6 +3,7 @@ package com.ozcoin.cookiepang.domain.klip
 import android.content.Context
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.data.klip.KlipContractTxDataSource
+import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.editcookie.EditCookie
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -29,26 +30,70 @@ class KlipContractTxRepositoryImpl @Inject constructor(
         private const val CONTRACT_TYPE_HAMMER = 811
     }
 
-    override suspend fun requestMakeACookie(editCookie: EditCookie) {
+    override suspend fun requestMakeACookie(editCookie: EditCookie): Boolean =
+        withContext(Dispatchers.IO) {
+            val response = CompletableDeferred<Boolean>()
+            val to = getContractAddress(CONTRACT_TYPE_COOKIE) ?: ""
+            val from = userRepository.getLoginUser()?.walletAddress ?: ""
+            val value = "0"
+            val abi = getContractFunc(CONTRACT_TYPE_COOKIE, "mintCookieByHammer")
+            val params = editCookie.toMintCookieByHammer().toKlipParams()
+
+            klipContractTxDataSource.prepareRequest(to, from, value, abi, params) {
+                response.complete(it)
+            }
+
+            val result = response.await()
+            if (result) {
+                withContext(Dispatchers.Main) {
+                    klipContractTxDataSource.request()
+                }
+            }
+            result
+        }
+
+    override suspend fun requestBuyACookie(cookieDetail: CookieDetail): Boolean =
+        withContext(Dispatchers.IO) {
+            val response = CompletableDeferred<Boolean>()
+            val to = getContractAddress(CONTRACT_TYPE_COOKIE) ?: ""
+            val from = userRepository.getLoginUser()?.walletAddress ?: ""
+            val value = "0"
+            val abi = getContractFunc(CONTRACT_TYPE_COOKIE, "buyCookie")
+            val params = ArrayList<Any>().apply {
+                add(cookieDetail.cookieId.toString())
+            }
+
+            klipContractTxDataSource.prepareRequest(to, from, value, abi, params) {
+                response.complete(it)
+            }
+            val result = response.await()
+            if (result) {
+                withContext(Dispatchers.Main) {
+                    klipContractTxDataSource.request()
+                }
+            }
+            result
+        }
+
+    override suspend fun approveWallet(approve: Boolean): Boolean = withContext(Dispatchers.IO) {
         val response = CompletableDeferred<Boolean>()
-        val to = getContractAddress(CONTRACT_TYPE_COOKIE) ?: ""
+        val to = getContractAddress(CONTRACT_TYPE_HAMMER) ?: ""
         val from = userRepository.getLoginUser()?.walletAddress ?: ""
         val value = "0"
-        val abi = getContractFunc(CONTRACT_TYPE_COOKIE, "mintCookieByHammer")
-        val params = editCookie.toMintCookieByHammer().toKlipParams()
+        val abi = getContractFunc(CONTRACT_TYPE_HAMMER, "maxApprove")
+        val params = ArrayList<Any>()
 
         klipContractTxDataSource.prepareRequest(to, from, value, abi, params) {
             response.complete(it)
         }
 
-        if (response.await()) {
+        val result = response.await()
+        if (result) {
             withContext(Dispatchers.Main) {
                 klipContractTxDataSource.request()
             }
         }
-    }
-
-    override suspend fun approveWallet(approve: Boolean) {
+        result
     }
 
     override fun getResult(callback: (Boolean, String?) -> Unit) {

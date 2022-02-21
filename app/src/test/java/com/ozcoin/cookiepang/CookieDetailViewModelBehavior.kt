@@ -1,7 +1,9 @@
 package com.ozcoin.cookiepang
 
+import com.ozcoin.cookiepang.domain.cookie.CookieRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
+import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepository
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.ui.cookiedetail.CookieDetailViewModel
@@ -27,11 +29,13 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 @ExperimentalCoroutinesApi
 class CookieDetailViewModelBehavior : BehaviorSpec({
 
+    val cookieRepository = mockk<CookieRepository>()
     val cookieDetailRepository = mockk<CookieDetailRepository>()
     val userRepository = mockk<UserRepository>()
+    val klipContractTxRepository = mockk<KlipContractTxRepository>()
     val cookieDetailViewModel = spyk(
         CookieDetailViewModel(
-            userRepository, cookieDetailRepository
+            userRepository, cookieRepository, cookieDetailRepository, klipContractTxRepository
         )
     )
 

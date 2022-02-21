@@ -20,7 +20,7 @@ suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>): NetworkResul
             NetworkResult.Fail(response.code(), response.errorBody()?.toString() ?: "")
         }
     } else {
-        NetworkResult.Fail(0, exception?.message!!)
+        NetworkResult.Fail(0, exception?.message ?: "")
     }
 }
 

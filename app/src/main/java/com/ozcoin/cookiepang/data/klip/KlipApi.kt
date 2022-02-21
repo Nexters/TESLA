@@ -50,6 +50,7 @@ abstract class KlipApi(
             object : KlipCallback<KlipResponse> {
                 override fun onSuccess(p0: KlipResponse?) {
                     Timber.d("Klip Request Success")
+                    Timber.d(p0?.toString())
                     p0?.let { res ->
                         requestKey = res.requestKey
                         resultCallback(true)
@@ -58,6 +59,7 @@ abstract class KlipApi(
 
                 override fun onFail(p0: KlipErrorResponse?) {
                     Timber.d("Klip Request Fail")
+                    Timber.d(p0?.toString())
                     requestKey = ""
                     resultCallback(false)
                 }

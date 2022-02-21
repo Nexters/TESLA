@@ -139,7 +139,8 @@ class EditCookieFragmentViewModel @Inject constructor(
 
         if (isEssentialCookieInfoComplete(editCookie)) {
             viewModelScope.launch {
-                klipContractTxRepository.requestMakeACookie(editCookie)
+                if (!klipContractTxRepository.requestMakeACookie(editCookie))
+                    uiStateObserver.update(UiState.OnFail)
             }
         } else {
             Timber.d("make a cookie fail(caused: isEssentialCookieInfoComplete false)")
@@ -175,6 +176,8 @@ class EditCookieFragmentViewModel @Inject constructor(
     private fun editCookieInfo(editCookie: EditCookie) {
         if (isEssentialCookieInfoComplete(editCookie)) {
             viewModelScope.launch {
+                val loginUserId = userRepository.getLoginUser()?.userId ?: ""
+                editCookie.userId = loginUserId
                 editCookieRepository.editCookieInfo(editCookie)
             }
         } else {

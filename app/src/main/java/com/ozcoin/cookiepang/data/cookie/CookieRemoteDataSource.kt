@@ -11,5 +11,22 @@ class CookieRemoteDataSource @Inject constructor(
         safeApiCall { apiService.makeACookie(makeACookieRequestParam) }
 
     suspend fun purchaseCookie(cookieId: String, price: Int, purchaserUserId: Int) =
-        safeApiCall { apiService.updateCookieInfo(cookieId, price, CookieStatusType.ACTIVE.name, purchaserUserId) }
+        safeApiCall {
+            apiService.updateCookieInfo(
+                cookieId,
+                UpdateCookieInfoRequestParam(
+                    price, CookieStatusType.ACTIVE.name, purchaserUserId
+                )
+            )
+        }
+
+    suspend fun updateCookieInfo(cookieId: String, price: Int, userId: Int) =
+        safeApiCall {
+            apiService.updateCookieInfo(
+                cookieId,
+                UpdateCookieInfoRequestParam(
+                    price, CookieStatusType.ACTIVE.name, userId
+                )
+            )
+        }
 }

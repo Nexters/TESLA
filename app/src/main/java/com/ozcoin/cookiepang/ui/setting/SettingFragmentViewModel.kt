@@ -1,5 +1,8 @@
 package com.ozcoin.cookiepang.ui.setting
 
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.common.URL_ANNOUNCEMENT_SERVICE
@@ -10,16 +13,19 @@ import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.TitleClickListener
+import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.EventObserver
+import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class SettingFragmentViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val klipContractTxRepository: KlipContractTxRepository
-) : BaseViewModel() {
+) : BaseViewModel(), LifecycleEventObserver {
 
     init {
         viewModelScope.launch {
@@ -36,11 +42,16 @@ class SettingFragmentViewModel @Inject constructor(
     var loginUser: User? = null
         private set
 
+    lateinit var uiStateObserver: UiStateObserver
+
     private fun approveWallet() {
         loginUser?.let {
             if (!it.walletApproved) {
+                uiStateObserver.update(UiState.OnLoading)
+
                 viewModelScope.launch {
-                    klipContractTxRepository.approveWallet(true)
+                    if (!klipContractTxRepository.approveWallet(true))
+                        uiStateObserver.update(UiState.OnFail)
                 }
             }
         }
@@ -84,5 +95,22 @@ class SettingFragmentViewModel @Inject constructor(
 
     fun clickRelease() {
         releaseUser()
+    }
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        if (event == Lifecycle.Event.ON_RESUME) {
+            klipContractTxRepository.getResult { result, tx_hash ->
+                Timber.d("requestApproveWallet result($result, tx_hash=$tx_hash)")
+                if (result && tx_hash != null) {
+                    viewModelScope.launch {
+
+                        uiStateObserver.update(UiState.OnSuccess)
+                    }
+                } else {
+                    Timber.d("requestApproveWallet result($result, tx_hash=$tx_hash)")
+                    uiStateObserver.update(UiState.OnFail)
+                }
+            }
+        }
     }
 }

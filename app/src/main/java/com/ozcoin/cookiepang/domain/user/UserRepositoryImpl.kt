@@ -5,7 +5,9 @@ import com.ozcoin.cookiepang.data.user.UserLocalDataSource
 import com.ozcoin.cookiepang.data.user.UserRemoteDataSource
 import com.ozcoin.cookiepang.data.user.toData
 import com.ozcoin.cookiepang.data.user.toDomain
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
@@ -16,7 +18,7 @@ class UserRepositoryImpl @Inject constructor(
 
     private var loginUser: User? = null
 
-    override suspend fun regUser(user: User): Boolean {
+    override suspend fun regUser(user: User): Boolean = withContext(Dispatchers.IO) {
         var regUserResult = false
         val result = userRemoteDataSource.registrationUser(user.toData())
         if (result is NetworkResult.Success) {
@@ -25,10 +27,10 @@ class UserRepositoryImpl @Inject constructor(
             regUserResult = true
         }
 
-        return regUserResult
+        regUserResult
     }
 
-    override suspend fun getLoginUser(): User? {
+    override suspend fun getLoginUser(): User? = withContext(Dispatchers.IO) {
         if (loginUser == null) {
             Timber.d("is LoginUser null")
             val userEntity = userLocalDataSource.getUserEntity().first()?.let {
@@ -38,8 +40,7 @@ class UserRepositoryImpl @Inject constructor(
             }
             userEntity?.let { loginUser = it.toDomain() }
         }
-
-        return loginUser
+        loginUser
     }
 
     override suspend fun checkDuplicateProfileID(profileID: String): Boolean {

@@ -30,7 +30,7 @@ class KlipContractTxDataSource(
                 requestKey,
                 object : KlipCallback<KlipResponse> {
                     override fun onSuccess(p0: KlipResponse?) {
-                        Timber.d("Klip Auth Request Success")
+                        Timber.d("Klip Request Success")
                         Timber.d(p0?.toString())
                         p0?.let { res ->
                             if (res.result != null) {
@@ -47,8 +47,9 @@ class KlipContractTxDataSource(
                     }
 
                     override fun onFail(p0: KlipErrorResponse?) {
-                        Timber.d("Klip Auth Request Fail")
+                        Timber.d("Klip Request Fail")
                         Timber.d(p0?.toString())
+                        callback(requestResult, null)
                         requestKey = ""
                     }
                 }
