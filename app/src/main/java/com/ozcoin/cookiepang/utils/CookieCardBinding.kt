@@ -28,6 +28,7 @@ object CookieCardBinding {
             CookieCardStyle.BLUE -> R.drawable.bg_feed_contents_answer_blue
             CookieCardStyle.PINK -> R.drawable.bg_feed_contents_answer_pink
             CookieCardStyle.YELLOW -> R.drawable.bg_feed_contents_answer_yellow
+            CookieCardStyle.PURPLE -> R.drawable.bg_feed_contents_answer_pink
         }
 
         val drawable = ContextCompat.getDrawable(view.context, cookieCardResId)
@@ -39,6 +40,7 @@ object CookieCardBinding {
             CookieCardStyle.BLUE -> R.drawable.ic_feed_hidden_cookie_blue
             CookieCardStyle.PINK -> R.drawable.ic_feed_hidden_cookie_pink
             CookieCardStyle.YELLOW -> R.drawable.ic_feed_hidden_cookie_yellow
+            CookieCardStyle.PURPLE -> R.drawable.ic_feed_hidden_cookie_pink
         }
 
         if (view is ImageView) {

@@ -3,6 +3,7 @@ package com.ozcoin.cookiepang.data.request
 import com.ozcoin.cookiepang.data.ask.AskEntity
 import com.ozcoin.cookiepang.data.category.CategoryEntity
 import com.ozcoin.cookiepang.data.cookie.CookieEntity
+import com.ozcoin.cookiepang.data.cookie.MakeACookieRequestParam
 import com.ozcoin.cookiepang.data.cookiedetail.CookieDetailEntity
 import com.ozcoin.cookiepang.data.timeline.TimeLineEntity
 import com.ozcoin.cookiepang.data.user.UserEntity
@@ -44,8 +45,13 @@ interface ApiService {
     @POST("/asks")
     suspend fun sendAsk(@Body askEntity: AskEntity): Response<AskEntity>
 
-    @PUT("/cookies/{cookieId}")
+    @POST("/cookies")
     suspend fun makeACookie(
+        @Body makeACookieRequestParam: MakeACookieRequestParam
+    ): Response<CookieEntity>
+
+    @PUT("/cookies/{cookieId}")
+    suspend fun updateCookieInfo(
         @Path("cookieId") cookieId: String,
         @Body price: Int,
         @Body status: String,

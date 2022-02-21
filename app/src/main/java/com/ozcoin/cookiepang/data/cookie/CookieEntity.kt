@@ -13,7 +13,7 @@ data class CookieEntity(
     val nftTokenId: Int,
     val ownedUserId: Int,
     val price: Int,
-    val status: String,
+    val status: CookieStatusType,
     val title: String,
     val txHash: String
 )

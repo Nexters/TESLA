@@ -23,17 +23,6 @@ class KlipAuthRepositoryImpl @Inject constructor(
         }
     }
 
-    override suspend fun saveUserKlipAddress(userKlipAddress: String) {
-        klipAuthDataSource.saveUserKlipAddress(userKlipAddress)
-    }
-
-    override suspend fun removeUserKlipAddress() {
-        klipAuthDataSource.removeUserKlipAddress()
-    }
-
-    override suspend fun approveWallet(approve: Boolean) {
-    }
-
     override fun getAuthResult(callback: (Boolean, String?) -> Unit) {
         klipAuthDataSource.getResult(callback)
     }

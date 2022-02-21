@@ -2,8 +2,10 @@ package com.ozcoin.cookiepang.di
 
 import android.content.Context
 import com.ozcoin.cookiepang.data.category.CategoryRemoteDataSource
+import com.ozcoin.cookiepang.data.cookie.CookieRemoteDataSource
 import com.ozcoin.cookiepang.data.cookiedetail.CookieDetailRemoteDataSource
 import com.ozcoin.cookiepang.data.klip.KlipAuthDataSource
+import com.ozcoin.cookiepang.data.klip.KlipContractTxDataSource
 import com.ozcoin.cookiepang.data.provider.AppSettingPrefProvider
 import com.ozcoin.cookiepang.data.provider.ResourceProvider
 import com.ozcoin.cookiepang.data.provider.UserPrefProvider
@@ -40,10 +42,17 @@ object DataSourceModule {
     @Provides
     fun provideKlipAuth(
         @ApplicationContext context: Context,
-        resourceProvider: ResourceProvider,
-        userPrefProvider: UserPrefProvider
+        resourceProvider: ResourceProvider
     ): KlipAuthDataSource {
-        return KlipAuthDataSource(context, resourceProvider, userPrefProvider)
+        return KlipAuthDataSource(context, resourceProvider)
+    }
+
+    @Provides
+    fun provideKlipContractTx(
+        @ApplicationContext context: Context,
+        resourceProvider: ResourceProvider
+    ): KlipContractTxDataSource {
+        return KlipContractTxDataSource(context, resourceProvider)
     }
 
     @Provides
@@ -54,6 +63,11 @@ object DataSourceModule {
     @Provides
     fun provideTimeLineRemote(apiService: ApiService): TimeLineRemoteDataSource {
         return TimeLineRemoteDataSource(apiService)
+    }
+
+    @Provides
+    fun provideCookieRemote(apiService: ApiService): CookieRemoteDataSource {
+        return CookieRemoteDataSource(apiService)
     }
 
     @Provides

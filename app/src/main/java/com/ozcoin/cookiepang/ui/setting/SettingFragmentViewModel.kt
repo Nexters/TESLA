@@ -5,7 +5,7 @@ import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.common.URL_ANNOUNCEMENT_SERVICE
 import com.ozcoin.cookiepang.common.URL_OFTEN_ASK_QUESTIONS
 import com.ozcoin.cookiepang.common.URL_TERMS_OF_USE
-import com.ozcoin.cookiepang.domain.klip.KlipAuthRepository
+import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepository
 import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.utils.Event
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingFragmentViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val klipAuthRepository: KlipAuthRepository
+    private val klipContractTxRepository: KlipContractTxRepository
 ) : BaseViewModel() {
 
     init {
@@ -40,7 +40,7 @@ class SettingFragmentViewModel @Inject constructor(
         loginUser?.let {
             if (!it.walletApproved) {
                 viewModelScope.launch {
-                    klipAuthRepository.approveWallet(true)
+                    klipContractTxRepository.approveWallet(true)
                 }
             }
         }
@@ -78,7 +78,7 @@ class SettingFragmentViewModel @Inject constructor(
 
     private fun releaseUser() {
         viewModelScope.launch {
-            klipAuthRepository.removeUserKlipAddress()
+            userRepository.logOut()
         }
     }
 

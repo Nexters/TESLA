@@ -14,6 +14,8 @@ import com.ozcoin.cookiepang.domain.feed.FeedRepository
 import com.ozcoin.cookiepang.domain.feed.FeedRepositoryImpl
 import com.ozcoin.cookiepang.domain.klip.KlipAuthRepository
 import com.ozcoin.cookiepang.domain.klip.KlipAuthRepositoryImpl
+import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepository
+import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepositoryImpl
 import com.ozcoin.cookiepang.domain.question.QuestionRepository
 import com.ozcoin.cookiepang.domain.question.QuestionRepositoryImpl
 import com.ozcoin.cookiepang.domain.thememode.ThemeModeRepository
@@ -43,6 +45,9 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindKlipAuthRepository(impl: KlipAuthRepositoryImpl): KlipAuthRepository
+
+    @Binds
+    abstract fun bindKlipContractTxRepository(impl: KlipContractTxRepositoryImpl): KlipContractTxRepository
 
     @Binds
     abstract fun bindUserCategoryRepository(impl: UserCategoryRepositoryImpl): UserCategoryRepository

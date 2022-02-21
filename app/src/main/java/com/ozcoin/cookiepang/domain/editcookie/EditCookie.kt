@@ -12,14 +12,18 @@ class EditCookie constructor() : BaseObservable(), Parcelable {
     constructor(parcel: Parcel) : this() {
         parcel.run {
             isEditPricingInfo = readInt() == 1
+            userId = readString() ?: ""
             question = readString() ?: ""
             answer = readString() ?: ""
             hammerCost = readString() ?: ""
             selectedCategory = readParcelable(EditCookie::class.java.classLoader)
+            tx_hash = readString() ?: ""
         }
     }
 
     var isEditPricingInfo = false
+    var userId: String = ""
+    var tx_hash: String = ""
 
     @get:Bindable
     var question: String = ""
@@ -47,6 +51,8 @@ class EditCookie constructor() : BaseObservable(), Parcelable {
             writeInt(
                 if (isEditPricingInfo) 1 else 0
             )
+            writeString(userId)
+            writeString(tx_hash)
             writeString(question)
             writeString(answer)
             writeString(hammerCost)

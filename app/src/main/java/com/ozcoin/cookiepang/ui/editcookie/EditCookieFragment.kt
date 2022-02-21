@@ -129,6 +129,7 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
 
     override fun initObserve() {
         with(editCookieFragmentViewModel) {
+            lifecycle.addObserver(this)
             eventObserver = EventObserver(mainActivityViewModel::updateEvent)
             uiStateObserver = UiStateObserver(mainActivityViewModel::updateUiState)
         }

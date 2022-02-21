@@ -13,33 +13,46 @@ class KlipContractTxDataSource(
     private val resourceProvider: ResourceProvider
 ) : KlipApi(context, resourceProvider) {
 
-    fun prepareRequest(to: String, from: String, value: String, abi: String) {
+    fun prepareRequest(to: String, from: String, value: String, abi: String, params: ArrayList<Any>, resultCallback: (Boolean) -> Unit) {
         klipRequest = ContractTxRequest.Builder()
             .to(to)
             .from(from)
             .value(value)
             .abi(abi)
-            .params(ArrayList())
+            .params(params)
             .build()
+        prepare(null, resultCallback)
     }
 
     override fun getResult(callback: (Boolean, String?) -> Unit) {
-        klip.getResult(
-            requestKey,
-            object : KlipCallback<KlipResponse> {
-                override fun onSuccess(p0: KlipResponse?) {
-                    Timber.d("Klip Auth Request Success")
-                    p0?.let { res ->
-                        requestKey = res.requestKey
-                        requestResult = res.status.equals("completed")
+        if (requestKey.isNotEmpty()) {
+            klip.getResult(
+                requestKey,
+                object : KlipCallback<KlipResponse> {
+                    override fun onSuccess(p0: KlipResponse?) {
+                        Timber.d("Klip Auth Request Success")
+                        Timber.d(p0?.toString())
+                        p0?.let { res ->
+                            if (res.result != null) {
+                                requestResult = res.result.txHash.isNotBlank()
+                            }
+
+                            if (requestResult) {
+                                requestKey = ""
+                                callback(requestResult, res.result.txHash)
+                            } else {
+                                callback(requestResult, null)
+                            }
+                        }
+                    }
+
+                    override fun onFail(p0: KlipErrorResponse?) {
+                        Timber.d("Klip Auth Request Fail")
+                        Timber.d(p0?.toString())
+                        requestKey = ""
                     }
                 }
-
-                override fun onFail(p0: KlipErrorResponse?) {
-                    Timber.d("Klip Auth Request Fail")
-                    requestKey = ""
-                }
-            }
-        )
+            )
+        }
     }
 }

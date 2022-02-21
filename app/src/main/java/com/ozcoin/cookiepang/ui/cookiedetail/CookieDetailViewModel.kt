@@ -2,6 +2,7 @@ package com.ozcoin.cookiepang.ui.cookiedetail
 
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
+import com.ozcoin.cookiepang.domain.cookie.CookieRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.toEditCookie
@@ -14,7 +15,6 @@ import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
@@ -24,6 +24,7 @@ import javax.inject.Inject
 @HiltViewModel
 class CookieDetailViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val cookieRepository: CookieRepository,
     private val cookieDetailRepository: CookieDetailRepository
 ) : BaseViewModel() {
 
@@ -66,14 +67,20 @@ class CookieDetailViewModel @Inject constructor(
 
     private fun purchaseCookie() {
         Timber.d("purchaseCookie() called")
-
         uiStateObserver.update(UiState.OnLoading)
 
         viewModelScope.launch {
-            delay(1000L)
+            if (cookieDetail.value != null && userRepository.getLoginUser() != null) {
 
-            uiStateObserver.update(UiState.OnSuccess)
-            showPurchaseCookieSuccessDialog()
+                if (cookieRepository.purchaseCookie(userRepository.getLoginUser()!!.userId, cookieDetail.value!!)) {
+                    uiStateObserver.update(UiState.OnSuccess)
+                    showPurchaseCookieSuccessDialog()
+                } else {
+                    uiStateObserver.update(UiState.OnFail)
+                }
+            } else {
+                uiStateObserver.update(UiState.OnFail)
+            }
         }
     }
 

@@ -1,9 +1,14 @@
 package com.ozcoin.cookiepang.ui.editcookie
 
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.domain.editcookie.EditCookie
 import com.ozcoin.cookiepang.domain.editcookie.EditCookieRepository
+import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepository
+import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.utils.DataResult
@@ -27,9 +32,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditCookieFragmentViewModel @Inject constructor(
+    private val userRepository: UserRepository,
     private val userCategoryRepository: UserCategoryRepository,
-    private val editCookieRepository: EditCookieRepository
-) : BaseViewModel() {
+    private val editCookieRepository: EditCookieRepository,
+    private val klipContractTxRepository: KlipContractTxRepository
+) : BaseViewModel(), LifecycleEventObserver {
 
     private val _editCookieEventFlow = MutableEventFlow<EditCookieEvent>()
     val editCookieEventFlow: EventFlow<EditCookieEvent>
@@ -114,20 +121,6 @@ class EditCookieFragmentViewModel @Inject constructor(
         }
     }
 
-    private fun getEditCookieInfoResult() {
-        viewModelScope.launch {
-            editCookieRepository.getResult()
-        }
-    }
-
-    private fun getMakeACookieResult() {
-        viewModelScope.launch {
-            if (editCookieRepository.getResult()) {
-                showMakeACookieSuccessDialog("haha")
-            }
-        }
-    }
-
     private fun showMakeACookieSuccessDialog(cookieId: String) {
         eventObserver.update(
             Event.ShowDialog(
@@ -142,14 +135,15 @@ class EditCookieFragmentViewModel @Inject constructor(
     }
 
     private fun makeACookie(editCookie: EditCookie) {
+        uiStateObserver.update(UiState.OnLoading)
+
         if (isEssentialCookieInfoComplete(editCookie)) {
             viewModelScope.launch {
-                editCookieRepository.makeACookie(editCookie)
-
-                getMakeACookieResult()
+                klipContractTxRepository.requestMakeACookie(editCookie)
             }
         } else {
             Timber.d("make a cookie fail(caused: isEssentialCookieInfoComplete false)")
+            uiStateObserver.update(UiState.OnFail)
         }
     }
 
@@ -188,11 +182,39 @@ class EditCookieFragmentViewModel @Inject constructor(
         }
     }
 
+    private var editCookie: EditCookie? = null
+
     fun clickEditCookie(editCookie: EditCookie) {
+        this.editCookie = editCookie
         if (editCookie.isEditPricingInfo) {
             editCookieInfo(editCookie)
         } else {
             makeACookie(editCookie)
+        }
+    }
+
+    override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
+        if (event == Lifecycle.Event.ON_RESUME) {
+            klipContractTxRepository.getResult { result, tx_hash ->
+                if (result && tx_hash != null && editCookie != null) {
+                    viewModelScope.launch {
+                        editCookie?.let {
+                            it.tx_hash = tx_hash
+                            it.userId = userRepository.getLoginUser()?.userId ?: ""
+                        }
+                        val resultCookieId = editCookieRepository.makeACookie(editCookie!!)
+                        if (resultCookieId.isNotBlank()) {
+                            uiStateObserver.update(UiState.OnSuccess)
+                            showMakeACookieSuccessDialog(resultCookieId)
+                        } else {
+                            uiStateObserver.update(UiState.OnFail)
+                        }
+                    }
+                } else {
+                    Timber.d("requestMakeACookie result($result, tx_hash=$tx_hash)")
+                    uiStateObserver.update(UiState.OnFail)
+                }
+            }
         }
     }
 }
