@@ -234,7 +234,7 @@
 
             <argument
                 android:name="userId"
-                android:defaultValue='""'
+                android:defaultValue=""
                 app:argType="string" />
 
             <action
@@ -284,7 +284,7 @@
 
             <argument
                 android:name="cookieId"
-                android:defaultValue='""'
+                android:defaultValue=""
                 app:argType="string" />
 
         </fragment>

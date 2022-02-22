@@ -4,7 +4,7 @@ import com.ozcoin.cookiepang.domain.editcookie.EditCookie
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 
 data class Question(
-    val questionId: String,
+    val questionId: Int,
     val question: String,
     val category: UserCategory,
     val needToRespond: Boolean

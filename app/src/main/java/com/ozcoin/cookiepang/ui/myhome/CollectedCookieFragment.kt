@@ -20,6 +20,11 @@ class CollectedCookieFragment : BaseFragment<FragmentCollectedCookieBinding>() {
         return R.layout.fragment_collected_cookie
     }
 
+    override fun onStart() {
+        super.onStart()
+        binding.root.background = null
+    }
+
     override fun initView() {
         setupCollectedCookieList()
     }

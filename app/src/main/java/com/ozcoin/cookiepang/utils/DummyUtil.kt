@@ -153,7 +153,7 @@ object DummyUtil {
 
         repeat(22) {
             val question = Question(
-                it.toString(),
+                it,
                 "(#$it)이거어슨 무슨 질문을 하기 위한 질문 ? ",
                 UserCategory.typeAll(),
                 it % 3 == 0

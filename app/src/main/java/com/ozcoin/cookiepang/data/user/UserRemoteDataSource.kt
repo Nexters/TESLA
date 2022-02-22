@@ -20,4 +20,9 @@ class UserRemoteDataSource @Inject constructor(
     suspend fun isUserRegistration(walletAddress: String) = safeApiCall {
         apiService.login(LoginRequestParam(walletAddress))
     }
+
+    suspend fun updateUserEntity(user: UserEntity, userUpdateRequestParam: UserUpdateRequestParam) =
+        safeApiCall {
+            apiService.updateUser(user.id, user.introduction, userUpdateRequestParam)
+        }
 }

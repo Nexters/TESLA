@@ -141,7 +141,7 @@ class MyHomeFragmentViewModelBehavior : BehaviorSpec() {
                         resumeDispatcher()
 
                         uiState.shouldBeInstanceOf<UiState.OnSuccess>()
-                        viewModel.userInfo.first() shouldBe (userInfo as DataResult.OnSuccess).response
+                        viewModel.user.first() shouldBe (userInfo as DataResult.OnSuccess).response
                     }
                 }
             }

@@ -20,6 +20,11 @@ class CreatedCookieFragment : BaseFragment<FragmentCreatedCookieBinding>() {
         return R.layout.fragment_created_cookie
     }
 
+    override fun onStart() {
+        super.onStart()
+        binding.root.background = null
+    }
+
     override fun initView() {
         setupCreatedCookieList()
     }

@@ -39,7 +39,7 @@ class AskFragmentViewModel @Inject constructor(
         }
     )
 
-    var ask: Ask? = null
+    lateinit var ask: Ask
         private set
 
     fun emitQuestionLength(length: Int) {
@@ -59,19 +59,23 @@ class AskFragmentViewModel @Inject constructor(
             if (result is DataResult.OnSuccess) {
                 _userCategoryList.emit(result.response)
                 val senderUserId = userRepository.getLoginUser()?.userId ?: ""
-                ask = Ask(receiverUserId, senderUserId, "")
+                ask = Ask(
+                    senderUserId = senderUserId,
+                    receiverUserId = receiverUserId,
+                    question = ""
+                )
             }
         }
     }
 
     private fun sendAsk() {
         viewModelScope.launch {
-            askRepository.askToUser(ask!!)
+            askRepository.askToUser(ask)
         }
     }
 
     fun selectCategory(userCategory: UserCategory) {
-        ask?.selectedCategory = userCategory
+        ask.selectedCategory = userCategory
     }
 
     fun clickMakeACookie() {

@@ -5,6 +5,7 @@ import com.ozcoin.cookiepang.data.user.UserLocalDataSource
 import com.ozcoin.cookiepang.data.user.UserRemoteDataSource
 import com.ozcoin.cookiepang.data.user.toData
 import com.ozcoin.cookiepang.data.user.toDomain
+import com.ozcoin.cookiepang.utils.DataResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
@@ -17,6 +18,15 @@ class UserRepositoryImpl @Inject constructor(
 ) : UserRepository {
 
     private var loginUser: User? = null
+
+    override suspend fun getUser(userId: String): DataResult<User> {
+        val result = userRemoteDataSource.getUser(userId.toDataUserId())
+        return if (result is NetworkResult.Success) {
+            DataResult.OnSuccess(result.response.toDomain())
+        } else {
+            DataResult.OnFail
+        }
+    }
 
     override suspend fun regUser(user: User): Boolean = withContext(Dispatchers.IO) {
         var regUserResult = false
@@ -44,6 +54,11 @@ class UserRepositoryImpl @Inject constructor(
             }
         }
         loginUser
+    }
+
+    override suspend fun updateUser(user: User): Boolean {
+
+        TODO("")
     }
 
     override suspend fun isUserRegistration(walletAddress: String): Boolean =

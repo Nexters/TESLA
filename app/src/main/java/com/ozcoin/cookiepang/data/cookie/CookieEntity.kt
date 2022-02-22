@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.data.cookie
 
 import androidx.annotation.Keep
+import com.ozcoin.cookiepang.domain.cookie.Cookie
 import kotlinx.serialization.Serializable
 
 @Keep
@@ -19,3 +20,13 @@ data class CookieEntity(
     val status: CookieStatusType,
     val txHash: String
 )
+
+fun CookieEntity.toDomain(): Cookie {
+    return Cookie(
+        cookieId = id.toString(),
+        isHidden = false,
+        cookieBoxImgUrl = "",
+        cookieBoxCoverImgUrl = "",
+        cookieImgUrl = ""
+    )
+}

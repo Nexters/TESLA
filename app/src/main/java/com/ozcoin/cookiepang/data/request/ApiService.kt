@@ -18,6 +18,7 @@ import com.ozcoin.cookiepang.data.response.UserIdResponse
 import com.ozcoin.cookiepang.data.timeline.TimeLineEntity
 import com.ozcoin.cookiepang.data.user.LoginRequestParam
 import com.ozcoin.cookiepang.data.user.UserEntity
+import com.ozcoin.cookiepang.data.user.UserUpdateRequestParam
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
@@ -45,7 +46,8 @@ interface ApiService {
     @PUT("/users/{userId}")
     suspend fun updateUser(
         @Path("userId") userId: Int,
-        @Body introduction: String
+        @Query("introduction") introduction: String,
+        @Body userUpdateRequestParam: UserUpdateRequestParam
     ): Response<UserEntity>
 
     /*

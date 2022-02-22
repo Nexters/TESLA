@@ -17,18 +17,25 @@ data class UserEntity(
     val status: String? = null
 )
 
-fun UserEntity.toDomain(): User = User().apply {
-    userId = id.toString()
-    walletAddress = this.walletAddress
-    profileID = nickname
+fun UserEntity.toDomain(): User {
+    val user = User()
+    user.let {
+        it.userId = id.toString()
+        it.walletAddress = walletAddress
+        it.profileID = nickname
+        it.introduction = introduction
+        it.profileUrl = profileUrl
+        it.backgroundUrl = backgroundUrl
+    }
+    return user
 }
 
 fun User.toData(): UserEntity = UserEntity(
     id = userId.toDataUserId(),
     walletAddress = this.walletAddress,
     nickname = profileID,
-    introduction = "",
-    profileUrl = null,
-    backgroundUrl = null,
+    introduction = introduction,
+    profileUrl = profileUrl,
+    backgroundUrl = backgroundUrl,
     status = null
 )

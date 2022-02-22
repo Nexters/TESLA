@@ -9,17 +9,22 @@ import com.ozcoin.cookiepang.adapter.MyHomeViewPagerAdapter
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentMyHomeBinding
 import com.ozcoin.cookiepang.databinding.ItemMyHomeTabBinding
-import com.ozcoin.cookiepang.domain.userinfo.UserInfo
 import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
 @AndroidEntryPoint
 class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
+
+    companion object {
+        private const val TAB_TYPE_COLLECTED = 0
+        private const val TAB_TYPE_CREATED = 1
+        private const val TAB_TYPE_QUESTION = 2
+    }
 
     private val mainActivityViewModel by activityViewModels<MainActivityViewModel>()
     private val myHomeFragmentViewModel by viewModels<MyHomeFragmentViewModel>()
@@ -35,6 +40,7 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
             viewModel = myHomeFragmentViewModel
         }
         setupViewPager()
+        setupTabLayout()
     }
 
     private fun setupViewPager() {
@@ -61,40 +67,75 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
 
     override fun initObserve() {
         observeEvent(myHomeFragmentViewModel)
-        observeUserInfo()
+        observeCollectedCookieList()
+        observeCreatedCookieList()
+        observeQuestionList()
         myHomeFragmentViewModel.uiStateObserver =
             UiStateObserver(mainActivityViewModel::updateUiState)
         myHomeFragmentViewModel.eventObserver = EventObserver(mainActivityViewModel::updateEvent)
     }
 
-    private fun observeUserInfo() {
+    private fun observeCollectedCookieList() {
         viewLifecycleScope.launch {
-            myHomeFragmentViewModel.userInfo.first { it != null }?.let {
-                setupTabLayout(it)
+            myHomeFragmentViewModel.collectedCookieList.collect {
+                updateTabCount(TAB_TYPE_COLLECTED, it.size.toString())
             }
         }
     }
 
-    private fun setupTabLayout(userInfo: UserInfo) {
+    private fun observeCreatedCookieList() {
+        viewLifecycleScope.launch {
+            myHomeFragmentViewModel.createdCookieList.collect {
+                updateTabCount(TAB_TYPE_CREATED, it.size.toString())
+            }
+        }
+    }
+
+    private fun observeQuestionList() {
+        viewLifecycleScope.launch {
+            myHomeFragmentViewModel.questionList.collect {
+                updateTabCount(TAB_TYPE_QUESTION, it.size.toString())
+            }
+        }
+    }
+
+    private fun updateTabCount(tabType: Int, count: String) {
+        val binding = when (tabType) {
+            TAB_TYPE_COLLECTED -> {
+                binding.tlTabLayout.getTabAt(0)?.customView?.tag as? ItemMyHomeTabBinding
+            }
+            TAB_TYPE_CREATED -> {
+                binding.tlTabLayout.getTabAt(1)?.customView?.tag as? ItemMyHomeTabBinding
+            }
+            TAB_TYPE_QUESTION -> {
+                binding.tlTabLayout.getTabAt(2)?.customView?.tag as? ItemMyHomeTabBinding
+            }
+            else -> null
+        }
+        binding?.count = count
+    }
+
+    private fun setupTabLayout() {
         TabLayoutMediator(binding.tlTabLayout, binding.vpPager) { tab, position ->
             val binding = ItemMyHomeTabBinding.inflate(layoutInflater, null, false)
             when (position) {
                 0 -> {
-                    binding.count = userInfo.collectedCnt.toString()
+                    binding.count = ""
                     binding.tabName = "Collected"
                 }
                 1 -> {
-                    binding.count = userInfo.createdCnt.toString()
+                    binding.count = ""
                     binding.tabName = "Created"
                 }
                 2 -> {
-                    binding.count = userInfo.questionCnt.toString()
+                    binding.count = ""
                     binding.tabName = "Questions"
                 }
                 else -> {}
             }
 
             tab.customView = binding.root
+            tab.customView?.tag = binding
         }.attach()
     }
 }

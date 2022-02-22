@@ -9,7 +9,6 @@ import com.ozcoin.cookiepang.extensions.toDp
 import com.ozcoin.cookiepang.ui.divider.SpaceItemDecoration
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -23,6 +22,11 @@ class QuestionsFragment : BaseFragment<FragmentQuestionsBinding>() {
         return R.layout.fragment_questions
     }
 
+    override fun onStart() {
+        super.onStart()
+        binding.root.background = null
+    }
+
     override fun initView() {
         setupQuestionList()
     }
@@ -30,7 +34,7 @@ class QuestionsFragment : BaseFragment<FragmentQuestionsBinding>() {
     private fun setupQuestionList() {
         with(binding.rvQuestions) {
             viewLifecycleScope.launch {
-                val isMine = myHomeFragmentViewModel.userInfo.first()?.isMine ?: false
+                val isMine = myHomeFragmentViewModel.isMyPage.value
                 Timber.d("this questions is mine $isMine")
                 questionListAdapter = QuestionListAdapter(isMine)
 

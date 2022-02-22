@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
+import com.ozcoin.cookiepang.common.TRANSITION_ANIM_DURATION
 import com.ozcoin.cookiepang.domain.cookie.CookieRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
@@ -66,7 +67,7 @@ class CookieDetailViewModel @Inject constructor(
                     ?.let { cookieDetailRepository.getCookieDetail(it.userId, cookieId) }
                 if (result is DataResult.OnSuccess) {
                     Timber.d("getCookieDetail($cookieId) is success")
-                    delay(400L)
+                    delay(TRANSITION_ANIM_DURATION)
                     uiStateObserver.update(UiState.OnSuccess)
                     _cookieDetail.emit(result.response)
                 } else {

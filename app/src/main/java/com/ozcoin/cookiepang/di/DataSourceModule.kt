@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.di
 
 import android.content.Context
+import com.ozcoin.cookiepang.data.ask.AskRemoteDataSource
 import com.ozcoin.cookiepang.data.category.CategoryRemoteDataSource
 import com.ozcoin.cookiepang.data.cookie.CookieRemoteDataSource
 import com.ozcoin.cookiepang.data.cookiedetail.CookieDetailRemoteDataSource
@@ -73,5 +74,10 @@ object DataSourceModule {
     @Provides
     fun provideCookieDetailRemote(apiService: ApiService): CookieDetailRemoteDataSource {
         return CookieDetailRemoteDataSource(apiService)
+    }
+
+    @Provides
+    fun provideAskRemote(apiService: ApiService): AskRemoteDataSource {
+        return AskRemoteDataSource(apiService)
     }
 }

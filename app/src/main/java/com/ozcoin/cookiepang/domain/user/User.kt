@@ -76,6 +76,27 @@ class User : BaseObservable() {
             field = value
             notifyPropertyChanged(BR.walletApproved)
         }
+
+    @get:Bindable
+    var introduction = ""
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.introduction)
+        }
+
+    @get:Bindable
+    var profileUrl: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.profileUrl)
+        }
+
+    @get:Bindable
+    var backgroundUrl: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.backgroundUrl)
+        }
 }
 
 fun String.toDataUserId(): Int {
