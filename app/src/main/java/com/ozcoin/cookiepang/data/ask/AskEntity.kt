@@ -31,6 +31,6 @@ fun Ask.toData(): AskEntity {
         title = question,
         senderUserId = senderUserId.toDataUserId(),
         receiverUserId = receiverUserId.toDataUserId(),
-        status = status?.toData() ?: AskEntityStateType.DELETED
+        status = status?.toData() ?: AskEntityStateType.PENDING
     )
 }

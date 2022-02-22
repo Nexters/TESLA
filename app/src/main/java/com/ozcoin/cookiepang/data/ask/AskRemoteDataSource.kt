@@ -11,7 +11,7 @@ class AskRemoteDataSource @Inject constructor(
 
     suspend fun getAskList(userId: String) =
         safeApiCall {
-            apiService.getAskList(userId.toDataUserId(), "SENDER")
+            apiService.getAskList(userId.toDataUserId(), "RECEIVER")
         }
 
     suspend fun askToUser(askEntity: AskEntity) = safeApiCall { apiService.sendAsk(askEntity) }

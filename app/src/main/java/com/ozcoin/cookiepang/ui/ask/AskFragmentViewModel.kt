@@ -10,7 +10,9 @@ import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.TextInputUtil
 import com.ozcoin.cookiepang.utils.TitleClickListener
+import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.EventObserver
+import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -38,6 +40,8 @@ class AskFragmentViewModel @Inject constructor(
             viewModelScope.launch { _eventFlow.emit(it) }
         }
     )
+
+    lateinit var uiStateObserver: UiStateObserver
 
     var ask: Ask? = null
         private set
@@ -69,8 +73,16 @@ class AskFragmentViewModel @Inject constructor(
     }
 
     private fun sendAsk() {
+        uiStateObserver.update(UiState.OnLoading)
+
         viewModelScope.launch {
-            ask?.let { askRepository.askToUser(it) }
+            ask?.let {
+                if (askRepository.askToUser(it)) {
+                    uiStateObserver.update(UiState.OnSuccess)
+                    navigateUp()
+                } else
+                    uiStateObserver.update(UiState.OnFail)
+            } ?: uiStateObserver.update(UiState.OnFail)
         }
     }
 
