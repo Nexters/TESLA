@@ -121,7 +121,7 @@ object DummyUtil {
 
         repeat(4) {
             val alarm = Alarm(
-                "Ask", "Questions($it)", "21:01"
+                it, "Ask", "Questions($it)", "21:01"
             )
             list.add(alarm)
         }
