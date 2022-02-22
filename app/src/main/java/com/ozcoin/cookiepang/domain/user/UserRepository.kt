@@ -6,6 +6,8 @@ interface UserRepository {
 
     suspend fun getLoginUser(): User?
 
+    suspend fun isUserRegistration(walletAddress: String): Boolean
+
     suspend fun checkDuplicateProfileID(profileID: String): Boolean
 
     fun logOut()

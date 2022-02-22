@@ -1,11 +1,13 @@
 package com.ozcoin.cookiepang.data.cookiedetail
 
+import androidx.annotation.Keep
 import com.ozcoin.cookiepang.data.category.CategoryEntity
 import com.ozcoin.cookiepang.data.category.toDomain
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.feed.CookieCardStyle
 import kotlinx.serialization.Serializable
 
+@Keep
 @Serializable
 data class CookieDetailEntity(
     val answer: String?,

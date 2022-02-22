@@ -43,6 +43,12 @@
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
+            <action
+                android:id="@+id/action_main"
+                app:destination="@id/nav_main"
+                app:popUpTo="@id/nav_login"
+                app:popUpToInclusive="true" />
+
         </fragment>
 
 

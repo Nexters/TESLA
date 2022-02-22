@@ -2,11 +2,13 @@ package com.ozcoin.cookiepang.domain.editcookie
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.ozcoin.cookiepang.BR
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 
+@Keep
 class EditCookie constructor() : BaseObservable(), Parcelable {
 
     constructor(parcel: Parcel) : this() {

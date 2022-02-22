@@ -1,9 +1,11 @@
 package com.ozcoin.cookiepang.data.ask
 
+import androidx.annotation.Keep
 import com.ozcoin.cookiepang.domain.ask.Ask
 import com.ozcoin.cookiepang.domain.user.toDataUserId
 import kotlinx.serialization.Serializable
 
+@Keep
 @Serializable
 data class AskEntity(
     val id: Int? = null,

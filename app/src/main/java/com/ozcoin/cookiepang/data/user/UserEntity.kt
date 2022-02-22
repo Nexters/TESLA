@@ -1,9 +1,11 @@
 package com.ozcoin.cookiepang.data.user
 
+import androidx.annotation.Keep
 import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.toDataUserId
 import kotlinx.serialization.Serializable
 
+@Keep
 @Serializable
 data class UserEntity(
     val id: Int,

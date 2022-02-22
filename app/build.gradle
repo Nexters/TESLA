@@ -10,6 +10,10 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.6.10'
 }
 
+def keystorePropertiesFile = rootProject.file('keystore.properties')
+def keystoreProperties = new Properties()
+keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+
 android {
     compileSdk 31
 
@@ -18,15 +22,25 @@ android {
         minSdk 24
         targetSdk 31
         versionCode 1
-        versionName "1.0"
+        versionName "1.0.0"
 
         testInstrumentationRunner "com.ozcoin.cookiepang.HiltTestRunner"
+    }
+
+    signingConfigs {
+        ReleaseKey {
+            keyAlias keystoreProperties['SIGNED_KEY_ALIAS']
+            keyPassword keystoreProperties['SIGNED_KEY_PASSWORD']
+            storeFile file(keystoreProperties['SIGNED_STORE_FILE'])
+            storePassword keystoreProperties['SIGNED_STORE_PASSWORD']
+        }
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.ReleaseKey
         }
     }
 

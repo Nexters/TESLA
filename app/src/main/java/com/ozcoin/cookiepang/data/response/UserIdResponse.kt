@@ -5,6 +5,4 @@ import kotlinx.serialization.Serializable
 
 @Keep
 @Serializable
-data class PriceResponse(
-    val price: Int
-)
+data class UserIdResponse(val userId: Int)

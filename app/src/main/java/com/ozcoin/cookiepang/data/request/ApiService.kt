@@ -14,7 +14,9 @@ import com.ozcoin.cookiepang.data.response.AmountResponse
 import com.ozcoin.cookiepang.data.response.AnswerResponse
 import com.ozcoin.cookiepang.data.response.PriceResponse
 import com.ozcoin.cookiepang.data.response.TokenAddressResponse
+import com.ozcoin.cookiepang.data.response.UserIdResponse
 import com.ozcoin.cookiepang.data.timeline.TimeLineEntity
+import com.ozcoin.cookiepang.data.user.LoginRequestParam
 import com.ozcoin.cookiepang.data.user.UserEntity
 import retrofit2.Response
 import retrofit2.http.Body
@@ -103,6 +105,13 @@ interface ApiService {
 
     @GET("/categories")
     suspend fun getAllCategoryList(): Response<List<CategoryEntity>>
+
+    /*
+        login-controller
+     */
+
+    @POST("/login")
+    suspend fun login(@Body loginRequestParam: LoginRequestParam): Response<UserIdResponse>
 
     /*
         notification-controller

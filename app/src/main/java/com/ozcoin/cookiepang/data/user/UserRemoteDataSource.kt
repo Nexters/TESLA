@@ -16,4 +16,8 @@ class UserRemoteDataSource @Inject constructor(
     suspend fun getUser(userId: Int): NetworkResult<UserEntity> {
         return safeApiCall { apiService.getUser(userId) }
     }
+
+    suspend fun isUserRegistration(walletAddress: String) = safeApiCall {
+        apiService.login(LoginRequestParam(walletAddress))
+    }
 }

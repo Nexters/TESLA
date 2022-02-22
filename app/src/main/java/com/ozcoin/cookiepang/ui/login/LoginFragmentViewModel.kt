@@ -6,12 +6,14 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.domain.klip.KlipAuthRepository
+import com.ozcoin.cookiepang.domain.user.UserRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
 class LoginFragmentViewModel @Inject constructor(
+    private val userRepository: UserRepository,
     private val klipAuthRepository: KlipAuthRepository
 ) : BaseViewModel(), LifecycleEventObserver {
 
@@ -32,7 +34,13 @@ class LoginFragmentViewModel @Inject constructor(
             klipAuthRepository.getAuthResult { result, address ->
                 if (result && address != null) {
                     regUserAddress?.invoke(address)
-                    navigateToRegistID()
+                    viewModelScope.launch {
+                        if (userRepository.isUserRegistration(address)) {
+                            navigateTo(LoginFragmentDirections.actionMain())
+                        } else {
+                            navigateToRegistID()
+                        }
+                    }
                 }
             }
         }
