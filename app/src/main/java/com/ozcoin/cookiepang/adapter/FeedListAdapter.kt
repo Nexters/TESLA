@@ -18,6 +18,7 @@ class FeedListAdapter : RecyclerView.Adapter<FeedViewHolder>() {
     private val list = mutableListOf<Feed>()
 
     var onItemClick: ((Feed) -> Unit)? = null
+    var onUserProfileClick: ((Feed) -> Unit)? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
         return if (viewType == FeedViewHolder.VIEW_TYPE_OPENED) {
@@ -32,9 +33,14 @@ class FeedListAdapter : RecyclerView.Adapter<FeedViewHolder>() {
     }
 
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
-        holder.bind(list[position]) {
-            onItemClick?.invoke(it)
+        holder.bind(
+            list[position],
+            onClick = {
+                onItemClick?.invoke(it)
+            }, onUserProfileClick = {
+            onUserProfileClick?.invoke(it)
         }
+        )
     }
 
     override fun getItemCount(): Int {

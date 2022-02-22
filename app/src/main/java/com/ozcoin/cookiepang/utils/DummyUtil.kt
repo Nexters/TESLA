@@ -45,7 +45,8 @@ object DummyUtil {
                 cookieCardStyle = getCookieCardStyle(),
                 viewCount = it * (random.nextInt(291) + 1),
                 hammerPrice = it * (random.nextInt(8) + 1),
-                cookieId = it
+                cookieId = it,
+                feedUserId = it.toString()
             )
             list.add(feed)
         }
@@ -92,8 +93,11 @@ object DummyUtil {
                     )
                 ),
                 isHidden = isHidden,
-                cookieId = 10,
-                isOnSale = true
+                nftTokenId = 10,
+                isOnSale = true,
+                collectorUserId = "11",
+                creatorUserId = "12",
+                cookieId = 10
             )
         )
     }

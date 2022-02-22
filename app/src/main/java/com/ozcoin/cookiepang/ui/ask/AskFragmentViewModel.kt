@@ -39,7 +39,7 @@ class AskFragmentViewModel @Inject constructor(
         }
     )
 
-    lateinit var ask: Ask
+    var ask: Ask? = null
         private set
 
     fun emitQuestionLength(length: Int) {
@@ -70,12 +70,12 @@ class AskFragmentViewModel @Inject constructor(
 
     private fun sendAsk() {
         viewModelScope.launch {
-            askRepository.askToUser(ask)
+            ask?.let { askRepository.askToUser(it) }
         }
     }
 
     fun selectCategory(userCategory: UserCategory) {
-        ask.selectedCategory = userCategory
+        ask?.selectedCategory = userCategory
     }
 
     fun clickMakeACookie() {

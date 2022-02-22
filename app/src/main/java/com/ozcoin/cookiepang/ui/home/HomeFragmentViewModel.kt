@@ -116,4 +116,8 @@ class HomeFragmentViewModel @Inject constructor(
     fun navigateToCookieDetail(cookieId: String) {
         navigateTo(HomeFragmentDirections.actionCookieDetail(cookieId))
     }
+
+    fun navigateToUserProfile(userId: String) {
+        navigateTo(HomeFragmentDirections.actionMyHome(userId))
+    }
 }

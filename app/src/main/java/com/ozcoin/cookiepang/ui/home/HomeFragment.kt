@@ -80,6 +80,9 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                 onItemClick = {
                     homeFragmentViewModel.navigateToCookieDetail(it.cookieId.toString())
                 }
+                onUserProfileClick = {
+                    homeFragmentViewModel.navigateToUserProfile(it.feedUserId)
+                }
             }
             adapter = feedListAdapter
         }

@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Feed(
     val isHidden: Boolean,
     val userThumbnailUrl: String,
+    val feedUserId: String,
     val userProfileId: String,
     val createdTimeStamp: String,
     val question: String,

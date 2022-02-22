@@ -12,13 +12,12 @@ data class CookieEntity(
     val price: Int,
     val imageUrl: String?,
     val authorUserId: Int,
-    val categoryId: Int,
-    val createdAt: String,
-    val fromBlockAddress: Int,
-    val nftTokenId: Int,
     val ownedUserId: Int,
+    val createdAt: String,
     val status: CookieStatusType,
-    val txHash: String
+    val nftTokenId: Int,
+    val fromBlockAddress: Int,
+    val categoryId: Int
 )
 
 fun CookieEntity.toDomain(): Cookie {

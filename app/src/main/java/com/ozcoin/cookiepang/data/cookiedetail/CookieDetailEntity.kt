@@ -45,6 +45,9 @@ fun CookieDetailEntity.toDomain(): CookieDetail {
         cookieHistory = histories.map { it.toDomain() },
         isHidden = false,
         isOnSale = true,
-        cookieId = nftTokenId
+        collectorUserId = collectorId.toString(),
+        creatorUserId = creatorId.toString(),
+        nftTokenId = nftTokenId,
+        cookieId = 10
     )
 }

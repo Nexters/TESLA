@@ -194,15 +194,16 @@ class CookieDetailViewModel @Inject constructor(
         )
     }
 
-    private fun editPricingInfo() {
-        eventObserver.update(
-            Event.Nav.ToEditCookie(cookieDetail.value?.toEditCookie())
-        )
+    private fun navigateToEditCookie() {
+        cookieDetail.value?.toEditCookie()?.let {
+            it.cookieId = cookieId.toInt()
+            eventObserver.update(Event.Nav.ToEditCookie(it))
+        }
     }
 
     fun clickCookieContentsBtn(isMine: Boolean) {
         if (isMine) {
-            editPricingInfo()
+            navigateToEditCookie()
         } else {
             showPurchaseCookieDialog()
         }
@@ -214,6 +215,22 @@ class CookieDetailViewModel @Inject constructor(
 
     fun clickDeleteCookie() {
         showDeleteCookieDialog()
+    }
+
+    fun clickCollectorProfile() {
+        cookieDetail.value?.collectorUserId?.let {
+            navigateToUserProfile(it)
+        }
+    }
+
+    fun clickCreatorProfile() {
+        cookieDetail.value?.creatorUserId?.let {
+            navigateToUserProfile(it)
+        }
+    }
+
+    private fun navigateToUserProfile(userId: String) {
+        navigateTo(CookieDetailFragmentDirections.actionMyHome(userId))
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {

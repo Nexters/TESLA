@@ -37,6 +37,7 @@ fun TimeLineEntity.toDomain(): Feed {
         userProfileId = creatorName,
         userThumbnailUrl = creatorProfileUrl ?: "",
         answer = answer,
-        cookieCardStyle = CookieCardStyle.BLUE
+        cookieCardStyle = CookieCardStyle.BLUE,
+        feedUserId = creatorId.toString()
     )
 }
