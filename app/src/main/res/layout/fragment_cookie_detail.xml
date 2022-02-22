@@ -6,6 +6,7 @@
 
     <data>
         <import type="android.view.View"/>
+        <import type="com.ozcoin.cookiepang.domain.feed.CookieCardStyle" />
 
         <variable
             name="cookieDetail"
@@ -153,7 +154,7 @@
                                 style="@style/TextAppearance.body_01_bold"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/gray_90_t1"
+                                android:textColor="@{cookieDetail.cookieCardStyle == CookieCardStyle.YELLOW ? @color/gray_10_bg1 : @color/gray_90_t1}"
                                 app:layout_constraintLeft_toLeftOf="parent"
                                 app:layout_constraintLeft_toRightOf="@+id/tv_answer_label"
                                 app:layout_constraintTop_toTopOf="parent"
@@ -164,7 +165,7 @@
                                 style="@style/TextAppearance.body_01_medium"
                                 android:layout_width="0dp"
                                 android:layout_height="wrap_content"
-                                android:textColor="@color/gray_90_t1"
+                                android:textColor="@{cookieDetail.cookieCardStyle == CookieCardStyle.YELLOW ? @color/gray_10_bg1 : @color/gray_90_t1}"
                                 android:layout_marginStart="4dp"
                                 android:maxLines="5"
                                 android:ellipsize="end"

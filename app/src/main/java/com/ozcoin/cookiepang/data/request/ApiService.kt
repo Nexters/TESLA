@@ -58,7 +58,7 @@ interface ApiService {
     @PUT("/cookies/{cookieId}")
     suspend fun updateCookieInfo(
         @Path("cookieId") cookieId: String,
-        @Body updateCookieInfoRequestParam: UpdateCookieInfoRequestParam
+        @Query("updateCookie") updateCookieInfoRequestParam: UpdateCookieInfoRequestParam
     ): Response<CookieEntity>
 
     @DELETE("/cookies/{cookieId}")

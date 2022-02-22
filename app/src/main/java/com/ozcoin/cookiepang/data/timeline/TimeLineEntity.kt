@@ -26,7 +26,7 @@ data class TimeLineEntity(
 
 fun TimeLineEntity.toDomain(): Feed {
     return Feed(
-        isHidden = answer == null,
+        isHidden = !myCookie,
         question = question,
         cookieId = cookieId,
         createdTimeStamp = DateUtil.convertToFeedTimeStamp(createdAt.split(".")[0]),

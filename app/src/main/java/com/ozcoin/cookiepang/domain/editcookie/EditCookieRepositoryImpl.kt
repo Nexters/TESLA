@@ -3,6 +3,7 @@ package com.ozcoin.cookiepang.domain.editcookie
 import com.ozcoin.cookiepang.data.cookie.CookieRemoteDataSource
 import com.ozcoin.cookiepang.data.cookie.toMakeRequestRemote
 import com.ozcoin.cookiepang.data.request.NetworkResult
+import com.ozcoin.cookiepang.domain.user.toDataUserId
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -25,7 +26,7 @@ class EditCookieRepositoryImpl @Inject constructor(
             val response = cookieRemoteDataSource.updateCookieInfo(
                 editCookie.cookieId.toString(),
                 editCookie.hammerCost.toInt(),
-                editCookie.userId.toInt()
+                editCookie.userId.toDataUserId()
             )
             if (response is NetworkResult.Success)
                 editCookieInfoResult = true

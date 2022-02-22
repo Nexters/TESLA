@@ -92,7 +92,8 @@ object DummyUtil {
                     )
                 ),
                 isHidden = isHidden,
-                cookieId = 10
+                cookieId = 10,
+                isOnSale = true
             )
         )
     }

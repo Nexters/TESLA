@@ -3,6 +3,7 @@ package com.ozcoin.cookiepang.utils
 import android.annotation.SuppressLint
 import java.text.SimpleDateFormat
 import java.util.Date
+import java.util.TimeZone
 
 object DateUtil {
 
@@ -17,6 +18,7 @@ object DateUtil {
     @SuppressLint("SimpleDateFormat")
     fun convertToFeedTimeStamp(createdAt: String): String {
         val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
+        format.timeZone = TimeZone.getTimeZone("Asia/Seoul")
         val date = kotlin.runCatching { format.parse(createdAt) }.getOrNull()
 
         if (date != null) {

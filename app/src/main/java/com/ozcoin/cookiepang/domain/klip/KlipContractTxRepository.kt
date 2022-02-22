@@ -9,6 +9,8 @@ interface KlipContractTxRepository {
 
     suspend fun requestBuyACookie(cookieDetail: CookieDetail): Boolean
 
+    suspend fun requestSaleOnACookie(cookieDetail: CookieDetail): Boolean
+
     suspend fun approveWallet(approve: Boolean): Boolean
 
     fun getResult(callback: (Boolean, String?) -> Unit)

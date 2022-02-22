@@ -21,6 +21,7 @@ data class CookieDetail(
     val tokenAddress: String,
     val cookieHistory: List<CookieHistory>,
     val isHidden: Boolean,
+    val isOnSale: Boolean,
     val cookieId: Int
 )
 

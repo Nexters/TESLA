@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.data.ask
 
 import com.ozcoin.cookiepang.domain.ask.Ask
+import com.ozcoin.cookiepang.domain.user.toDataUserId
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -24,7 +25,7 @@ fun AskEntity.toDomain(): Ask {
 fun Ask.toData(): AskEntity {
     return AskEntity(
         title = question,
-        senderUserId = senderUserId.toInt(),
-        receiverUserId = receiverUserId.toInt()
+        senderUserId = senderUserId.toDataUserId(),
+        receiverUserId = receiverUserId.toDataUserId()
     )
 }

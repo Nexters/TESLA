@@ -77,3 +77,7 @@ class User : BaseObservable() {
             notifyPropertyChanged(BR.walletApproved)
         }
 }
+
+fun String.toDataUserId(): Int {
+    return kotlin.runCatching { this.toInt() }.getOrDefault(-1)
+}

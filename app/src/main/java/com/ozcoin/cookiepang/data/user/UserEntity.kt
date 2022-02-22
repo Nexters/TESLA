@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.data.user
 
 import com.ozcoin.cookiepang.domain.user.User
+import com.ozcoin.cookiepang.domain.user.toDataUserId
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -21,7 +22,7 @@ fun UserEntity.toDomain(): User = User().apply {
 }
 
 fun User.toData(): UserEntity = UserEntity(
-    id = kotlin.runCatching { userId.toInt() }.getOrDefault(0),
+    id = userId.toDataUserId(),
     walletAddress = this.walletAddress,
     nickname = profileID,
     introduction = "",

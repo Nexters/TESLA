@@ -9,18 +9,20 @@ import com.bumptech.glide.request.RequestOptions
 object ImageBinding {
 
     @JvmStatic
-    @BindingAdapter(value = ["loadCircleImg", "setErrorImg"], requireAll = false)
+    @BindingAdapter(value = ["loadCircleImg", "setErrorImg"], requireAll = true)
     fun loadCircleImg(imageView: ImageView, drawable: Drawable?, errorImgDrawable: Drawable?) {
-        setCircleImg(imageView, drawable, errorImgDrawable)
+        if (errorImgDrawable != null)
+            setCircleImg(imageView, drawable, errorImgDrawable)
     }
 
     @JvmStatic
-    @BindingAdapter(value = ["loadCircleImg", "setErrorImg"], requireAll = false)
+    @BindingAdapter(value = ["loadCircleImg", "setErrorImg"], requireAll = true)
     fun loadCircleImg(imageView: ImageView, url: String?, errorImgDrawable: Drawable?) {
-        setCircleImg(imageView, url, errorImgDrawable)
+        if (errorImgDrawable != null)
+            setCircleImg(imageView, url, errorImgDrawable)
     }
 
-    private fun setCircleImg(imageView: ImageView, drawable: Drawable?, errorImgDrawable: Drawable?) {
+    private fun setCircleImg(imageView: ImageView, drawable: Drawable?, errorImgDrawable: Drawable) {
         Glide.with(imageView.context)
             .load(drawable)
             .apply(RequestOptions().circleCrop().centerCrop())
@@ -28,7 +30,7 @@ object ImageBinding {
             .into(imageView)
     }
 
-    private fun setCircleImg(imageView: ImageView, url: String?, errorImgDrawable: Drawable?) {
+    private fun setCircleImg(imageView: ImageView, url: String?, errorImgDrawable: Drawable) {
         Glide.with(imageView.context)
             .load(url)
             .apply(RequestOptions().circleCrop().centerCrop())
@@ -37,11 +39,12 @@ object ImageBinding {
     }
 
     @JvmStatic
-    @BindingAdapter(value = ["loadProfileBackgroundImg", "setErrorImg"], requireAll = false)
+    @BindingAdapter(value = ["loadProfileBackgroundImg", "setErrorImg"], requireAll = true)
     fun loadProfileBackgroundImg(imageView: ImageView, url: String?, errorImgDrawable: Drawable?) {
-        Glide.with(imageView.context)
-            .load(url)
-            .error(errorImgDrawable)
-            .into(imageView)
+        if (errorImgDrawable != null)
+            Glide.with(imageView.context)
+                .load(url)
+                .error(errorImgDrawable)
+                .into(imageView)
     }
 }

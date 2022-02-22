@@ -14,6 +14,7 @@ data class CookieDetailEntity(
     val collectorName: String,
     val collectorProfileUrl: String?,
     val contractAddress: String,
+    val creatorId: Int,
     val creatorName: String,
     val creatorProfileUrl: String?,
     val histories: List<HistoryEntity>,
@@ -41,6 +42,7 @@ fun CookieDetailEntity.toDomain(): CookieDetail {
         tokenAddress = nftTokenId.toString(),
         cookieHistory = histories.map { it.toDomain() },
         isHidden = false,
+        isOnSale = true,
         cookieId = nftTokenId
     )
 }

@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.data.cookie
 
 import com.ozcoin.cookiepang.domain.editcookie.EditCookie
+import com.ozcoin.cookiepang.domain.user.toDataUserId
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -17,8 +18,8 @@ data class MakeACookieRequestParam(
 fun EditCookie.toMakeRequestRemote(): MakeACookieRequestParam {
     return MakeACookieRequestParam(
         answer = answer,
-        authorUserId = userId.toInt(),
-        ownedUserId = userId.toInt(),
+        authorUserId = userId.toDataUserId(),
+        ownedUserId = userId.toDataUserId(),
         categoryId = selectedCategory?.categoryId ?: -1,
         price = hammerCost.toInt(),
         question = question,

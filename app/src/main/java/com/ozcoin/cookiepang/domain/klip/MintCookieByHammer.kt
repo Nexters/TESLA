@@ -1,7 +1,7 @@
 package com.ozcoin.cookiepang.domain.klip
 
 import com.ozcoin.cookiepang.domain.editcookie.EditCookie
-import com.ozcoin.cookiepang.domain.feed.CookieCardStyle
+import com.ozcoin.cookiepang.domain.usercategory.toCookieCardStyle
 import timber.log.Timber
 
 data class MintCookieByHammer(
@@ -16,7 +16,7 @@ fun EditCookie.toMintCookieByHammer(): MintCookieByHammer {
     return MintCookieByHammer(
         title = question,
         content = answer,
-        imageUrl = CookieCardStyle.YELLOW.imageUrl,
+        imageUrl = selectedCategory?.categoryColorStyle?.toCookieCardStyle()?.imageUrl ?: "",
         tag = selectedCategory?.categoryName ?: "",
         hammerPrice = hammerCost.toInt()
     )

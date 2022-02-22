@@ -5,6 +5,7 @@ import com.ozcoin.cookiepang.data.category.toData
 import com.ozcoin.cookiepang.data.category.toDomain
 import com.ozcoin.cookiepang.data.request.NetworkResult
 import com.ozcoin.cookiepang.domain.user.User
+import com.ozcoin.cookiepang.domain.user.toDataUserId
 import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.DummyUtil
 import kotlinx.coroutines.Dispatchers
@@ -25,13 +26,14 @@ class UserCategoryRepositoryImpl @Inject constructor(
             var result = false
             kotlin.runCatching {
                 val response = categoryRemoteDataSource.setInterestInCategoryList(
-                    user.userId.toInt(),
+                    user.userId.toDataUserId(),
                     list.map { it.toData() }
                 )
                 if (response is NetworkResult.Success) {
                     result = true
                 }
             }
+
             result
         }
 
