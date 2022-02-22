@@ -2,6 +2,7 @@ package com.ozcoin.cookiepang.data.cookiedetail
 
 import com.ozcoin.cookiepang.data.cookie.CookieStatusType
 import com.ozcoin.cookiepang.data.cookie.UpdateCookieInfoRequestParam
+import com.ozcoin.cookiepang.data.cookie.toQueryMap
 import com.ozcoin.cookiepang.data.request.ApiService
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.user.toDataUserId
@@ -18,7 +19,7 @@ class CookieDetailRemoteDataSource @Inject constructor(
                 cookieDetail.hammerPrice,
                 CookieStatusType.ACTIVE.name,
                 userId.toDataUserId()
-            )
+            ).toQueryMap()
         )
     }
 
@@ -29,7 +30,7 @@ class CookieDetailRemoteDataSource @Inject constructor(
                 cookieDetail.hammerPrice,
                 CookieStatusType.HIDDEN.name,
                 userId.toDataUserId()
-            )
+            ).toQueryMap()
         )
     }
 

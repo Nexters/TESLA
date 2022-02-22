@@ -22,8 +22,8 @@ data class CookieDetail(
     val contractAddress: String,
     val tokenAddress: String,
     val cookieHistory: List<CookieHistory>,
-    val isHidden: Boolean,
-    val isOnSale: Boolean,
+    var isHidden: Boolean,
+    var isOnSale: Boolean,
     val nftTokenId: Int,
     val cookieId: Int
 )

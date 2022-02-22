@@ -41,7 +41,7 @@ class UserPrefProvider @Inject constructor(
         }.map {
             val walletAddress = it[userWalletAddressKey]
             val userId = it[userIdKey]
-            if (userId != null) {
+            if (userId != null && userId != -1) {
                 UserEntity(
                     id = userId,
                     walletAddress = walletAddress ?: "",

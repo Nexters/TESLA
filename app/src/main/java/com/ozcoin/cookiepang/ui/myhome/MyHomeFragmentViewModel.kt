@@ -81,7 +81,18 @@ class MyHomeFragmentViewModel @Inject constructor(
                 userRepository.getLoginUser()
             } else {
                 userRepository.getUser(userId).let {
-                    if (it is DataResult.OnSuccess) it.response else null
+                    if (it is DataResult.OnSuccess) {
+                        val getUser = it.response
+                        val loginUser = userRepository.getLoginUser()
+                        if (getUser.userId == loginUser?.userId) {
+                            isMyPage = true
+                            loginUser
+                        } else {
+                            getUser
+                        }
+                    } else {
+                        null
+                    }
                 }
             }
             if (user != null) {

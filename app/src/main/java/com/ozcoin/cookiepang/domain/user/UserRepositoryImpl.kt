@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.domain.user
 
 import com.ozcoin.cookiepang.data.request.NetworkResult
+import com.ozcoin.cookiepang.data.user.UserEntity
 import com.ozcoin.cookiepang.data.user.UserLocalDataSource
 import com.ozcoin.cookiepang.data.user.UserRemoteDataSource
 import com.ozcoin.cookiepang.data.user.toData
@@ -82,7 +83,8 @@ class UserRepositoryImpl @Inject constructor(
         return true
     }
 
-    override fun logOut() {
+    override suspend fun logOut() {
+        userLocalDataSource.saveUserEntity(UserEntity.empty())
         loginUser = null
     }
 }

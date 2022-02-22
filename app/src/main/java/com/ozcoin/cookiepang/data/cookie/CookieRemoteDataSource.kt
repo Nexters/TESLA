@@ -17,7 +17,7 @@ class CookieRemoteDataSource @Inject constructor(
             cookieId,
             UpdateCookieInfoRequestParam(
                 price, CookieStatusType.ACTIVE.name, purchaserUserId
-            )
+            ).toQueryMap()
         )
     }
 
@@ -26,7 +26,7 @@ class CookieRemoteDataSource @Inject constructor(
             cookieId,
             UpdateCookieInfoRequestParam(
                 price, CookieStatusType.ACTIVE.name, userId
-            )
+            ).toQueryMap()
         )
     }
 

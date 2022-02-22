@@ -14,8 +14,13 @@ data class UserEntity(
     val introduction: String,
     val profileUrl: String? = null,
     val backgroundUrl: String? = null,
-    val status: String? = null
-)
+    val status: String? = null,
+    val finishOnboard: Boolean? = null
+) {
+    companion object {
+        fun empty() = UserEntity(-1, "", "", "")
+    }
+}
 
 fun UserEntity.toDomain(): User {
     val user = User()

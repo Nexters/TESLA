@@ -8,6 +8,7 @@ import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.common.URL_ANNOUNCEMENT_SERVICE
 import com.ozcoin.cookiepang.common.URL_OFTEN_ASK_QUESTIONS
 import com.ozcoin.cookiepang.common.URL_TERMS_OF_USE
+import com.ozcoin.cookiepang.domain.contract.ContractRepository
 import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepository
 import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.UserRepository
@@ -24,12 +25,13 @@ import javax.inject.Inject
 @HiltViewModel
 class SettingFragmentViewModel @Inject constructor(
     private val userRepository: UserRepository,
+    private val contractRepository: ContractRepository,
     private val klipContractTxRepository: KlipContractTxRepository
 ) : BaseViewModel(), LifecycleEventObserver {
 
     init {
         viewModelScope.launch {
-            loginUser = userRepository.getLoginUser()
+            loadUserInfo()
         }
     }
 
@@ -44,14 +46,22 @@ class SettingFragmentViewModel @Inject constructor(
 
     lateinit var uiStateObserver: UiStateObserver
 
+    private suspend fun loadUserInfo() {
+        loginUser = userRepository.getLoginUser()?.apply {
+            numOfHammer = contractRepository.getNumOfHammer()
+            numOfKlaytn = contractRepository.getNumOfKlaytn()
+        }
+    }
+
     private fun approveWallet() {
         loginUser?.let {
-            if (!it.walletApproved) {
-                uiStateObserver.update(UiState.OnLoading)
-
-                viewModelScope.launch {
+            uiStateObserver.update(UiState.OnLoading)
+            viewModelScope.launch {
+                if (contractRepository.getIsWalletApproved()) {
                     if (!klipContractTxRepository.approveWallet(true))
                         uiStateObserver.update(UiState.OnFail)
+                } else {
+                    uiStateObserver.update(UiState.OnFail)
                 }
             }
         }
@@ -90,6 +100,7 @@ class SettingFragmentViewModel @Inject constructor(
     private fun releaseUser() {
         viewModelScope.launch {
             userRepository.logOut()
+            navigateTo(SettingFragmentDirections.actionSplash())
         }
     }
 
@@ -103,7 +114,6 @@ class SettingFragmentViewModel @Inject constructor(
                 Timber.d("requestApproveWallet result($result, tx_hash=$tx_hash)")
                 if (result && tx_hash != null) {
                     viewModelScope.launch {
-
                         uiStateObserver.update(UiState.OnSuccess)
                     }
                 } else {

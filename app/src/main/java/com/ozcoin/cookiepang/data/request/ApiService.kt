@@ -6,7 +6,6 @@ import com.ozcoin.cookiepang.data.category.CategoryEntity
 import com.ozcoin.cookiepang.data.cookie.CookieEntity
 import com.ozcoin.cookiepang.data.cookie.CookieListResponse
 import com.ozcoin.cookiepang.data.cookie.MakeACookieRequestParam
-import com.ozcoin.cookiepang.data.cookie.UpdateCookieInfoRequestParam
 import com.ozcoin.cookiepang.data.cookiedetail.CookieDetailEntity
 import com.ozcoin.cookiepang.data.notification.NotificationEntity
 import com.ozcoin.cookiepang.data.response.AddressResponse
@@ -27,6 +26,7 @@ import retrofit2.http.POST
 import retrofit2.http.PUT
 import retrofit2.http.Path
 import retrofit2.http.Query
+import retrofit2.http.QueryMap
 
 interface ApiService {
 
@@ -59,10 +59,11 @@ interface ApiService {
         @Body makeACookieRequestParam: MakeACookieRequestParam
     ): Response<CookieEntity>
 
+    @JvmSuppressWildcards
     @PUT("/cookies/{cookieId}")
     suspend fun updateCookieInfo(
         @Path("cookieId") cookieId: String,
-        @Query("updateCookie") updateCookieInfoRequestParam: UpdateCookieInfoRequestParam
+        @QueryMap updateCookie: Map<String, Any>
     ): Response<CookieEntity>
 
     @DELETE("/cookies/{cookieId}")
@@ -157,12 +158,12 @@ interface ApiService {
 
     @GET("/contract/hammers/users/{userId}/count")
     suspend fun getNumOfHammer(
-        @Path("userId") userId: Int
+        @Path("userId") userId: String
     ): Response<AmountResponse>
 
     @GET("/contract/hammers/users/{userId}/approve")
     suspend fun getIsWalletApproved(
-        @Path("userId") userId: Int
+        @Path("userId") userId: String
     ): Response<AnswerResponse>
 
     @GET("/contract/hammers/address")
@@ -174,7 +175,7 @@ interface ApiService {
 
     @GET("/contract/cookies/{id}/sale")
     suspend fun isOnSaleCookie(
-        @Path("id") id: Int
+        @Path("id") id: String
     ): Response<AnswerResponse>
 
     @GET("/contract/cookies/{id}/price")

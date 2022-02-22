@@ -10,3 +10,11 @@ data class UpdateCookieInfoRequestParam(
     val status: String,
     val purchaserUserId: Int
 )
+
+fun UpdateCookieInfoRequestParam.toQueryMap(): Map<String, Any> {
+    val map = HashMap<String, Any>()
+    map["price"] = price
+    map["status"] = status
+    map["purchaserUserId"] = purchaserUserId
+    return map
+}
