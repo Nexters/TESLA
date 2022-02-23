@@ -11,6 +11,8 @@ interface KlipContractTxRepository {
 
     suspend fun requestSaleOnACookie(cookieDetail: CookieDetail): Boolean
 
+    suspend fun requestRemoveACookie(nftTokenId: Int): Boolean
+
     suspend fun approveWallet(approve: Boolean): Boolean
 
     fun getResult(callback: (Boolean, String?) -> Unit)

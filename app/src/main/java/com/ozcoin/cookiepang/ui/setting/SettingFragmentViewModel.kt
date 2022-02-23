@@ -18,6 +18,8 @@ import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import javax.inject.Inject
@@ -41,23 +43,26 @@ class SettingFragmentViewModel @Inject constructor(
         }
     )
 
-    var loginUser: User? = null
-        private set
+    private val _loginUser = MutableStateFlow<User?>(null)
+    val loginUser: StateFlow<User?>
+        get() = _loginUser
 
+    lateinit var hideBtmMenu: () -> Unit
     lateinit var uiStateObserver: UiStateObserver
 
     private suspend fun loadUserInfo() {
-        loginUser = userRepository.getLoginUser()?.apply {
-            numOfHammer = contractRepository.getNumOfHammer()
-            numOfKlaytn = contractRepository.getNumOfKlaytn()
+        val loginUser = userRepository.getLoginUser()?.apply {
+            numOfHammer = contractRepository.getNumOfHammer(userId)
+            numOfKlaytn = contractRepository.getNumOfKlaytn(userId)
         }
+        _loginUser.emit(loginUser)
     }
 
     private fun approveWallet() {
-        loginUser?.let {
+        loginUser.value?.let {
             uiStateObserver.update(UiState.OnLoading)
             viewModelScope.launch {
-                if (contractRepository.getIsWalletApproved()) {
+                if (contractRepository.issWalletApproved(it.userId)) {
                     if (!klipContractTxRepository.approveWallet(true))
                         uiStateObserver.update(UiState.OnFail)
                 } else {
@@ -100,6 +105,7 @@ class SettingFragmentViewModel @Inject constructor(
     private fun releaseUser() {
         viewModelScope.launch {
             userRepository.logOut()
+            hideBtmMenu()
             navigateTo(SettingFragmentDirections.actionSplash())
         }
     }

@@ -3,6 +3,7 @@ package com.ozcoin.cookiepang.domain.klip
 import android.content.Context
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.data.klip.KlipContractTxDataSource
+import com.ozcoin.cookiepang.domain.contract.ContractRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.editcookie.EditCookie
 import com.ozcoin.cookiepang.domain.user.UserRepository
@@ -22,6 +23,7 @@ import javax.inject.Inject
 class KlipContractTxRepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val userRepository: UserRepository,
+    private val contractRepository: ContractRepository,
     private val klipContractTxDataSource: KlipContractTxDataSource
 ) : KlipContractTxRepository {
 
@@ -33,7 +35,8 @@ class KlipContractTxRepositoryImpl @Inject constructor(
     override suspend fun requestMakeACookie(editCookie: EditCookie): Boolean =
         withContext(Dispatchers.IO) {
             val response = CompletableDeferred<Boolean>()
-            val to = getContractAddress(CONTRACT_TYPE_COOKIE) ?: ""
+
+            val to = contractRepository.getCookieContractAddress()
             val from = userRepository.getLoginUser()?.walletAddress ?: ""
             val value = "0"
             val abi = getContractFunc(CONTRACT_TYPE_COOKIE, "mintCookieByHammer")
@@ -55,12 +58,12 @@ class KlipContractTxRepositoryImpl @Inject constructor(
     override suspend fun requestBuyACookie(cookieDetail: CookieDetail): Boolean =
         withContext(Dispatchers.IO) {
             val response = CompletableDeferred<Boolean>()
-            val to = getContractAddress(CONTRACT_TYPE_COOKIE) ?: ""
+            val to = contractRepository.getCookieContractAddress()
             val from = userRepository.getLoginUser()?.walletAddress ?: ""
             val value = "0"
             val abi = getContractFunc(CONTRACT_TYPE_COOKIE, "buyCookie")
             val params = ArrayList<Any>().apply {
-                add(cookieDetail.cookieId.toString())
+                add(cookieDetail.nftTokenId.toString())
             }
 
             klipContractTxDataSource.prepareRequest(to, from, value, abi, params) {
@@ -78,7 +81,7 @@ class KlipContractTxRepositoryImpl @Inject constructor(
     override suspend fun requestSaleOnACookie(cookieDetail: CookieDetail): Boolean =
         withContext(Dispatchers.IO) {
             val response = CompletableDeferred<Boolean>()
-            val to = getContractAddress(CONTRACT_TYPE_COOKIE) ?: ""
+            val to = contractRepository.getCookieContractAddress()
             val from = userRepository.getLoginUser()?.walletAddress ?: ""
             val value = "0"
             val abi = getContractFunc(CONTRACT_TYPE_COOKIE, "saleCookie")
@@ -99,9 +102,32 @@ class KlipContractTxRepositoryImpl @Inject constructor(
             result
         }
 
+    override suspend fun requestRemoveACookie(nftTokenId: Int): Boolean =
+        withContext(Dispatchers.IO) {
+            val response = CompletableDeferred<Boolean>()
+            val to = contractRepository.getCookieContractAddress()
+            val from = userRepository.getLoginUser()?.walletAddress ?: ""
+            val value = "0"
+            val abi = getContractFunc(CONTRACT_TYPE_COOKIE, "burnCookie")
+            val params = ArrayList<Any>().apply {
+                add(nftTokenId.toString())
+            }
+
+            klipContractTxDataSource.prepareRequest(to, from, value, abi, params) {
+                response.complete(it)
+            }
+            val result = response.await()
+            if (result) {
+                withContext(Dispatchers.Main) {
+                    klipContractTxDataSource.request()
+                }
+            }
+            result
+        }
+
     override suspend fun approveWallet(approve: Boolean): Boolean = withContext(Dispatchers.IO) {
         val response = CompletableDeferred<Boolean>()
-        val to = getContractAddress(CONTRACT_TYPE_HAMMER) ?: ""
+        val to = contractRepository.getHammerContractAddress()
         val from = userRepository.getLoginUser()?.walletAddress ?: ""
         val value = "0"
         val abi = getContractFunc(CONTRACT_TYPE_HAMMER, "maxApprove")

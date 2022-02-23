@@ -39,5 +39,5 @@ class CookieDetailRemoteDataSource @Inject constructor(
     }
 
     suspend fun getCookieDetail(userId: String, cookieId: String) =
-        safeApiCall { apiService.getCookieDetail(userId, cookieId) }
+        safeApiCall { apiService.getCookieDetail(userId.toDataUserId(), cookieId) }
 }

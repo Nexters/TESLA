@@ -69,7 +69,7 @@ class CookieDetailViewModel @Inject constructor(
                     Timber.d("getCookieDetail($cookieId) is success")
                     delay(TRANSITION_ANIM_DURATION)
                     uiStateObserver.update(UiState.OnSuccess)
-                    _cookieDetail.emit(result.response)
+                    _cookieDetail.emit(result.response.apply { this.cookieId = cookieId.toInt() })
                 } else {
                     Timber.d("getCookieDetail($cookieId) is fail")
                     uiStateObserver.update(UiState.OnFail)
@@ -175,7 +175,17 @@ class CookieDetailViewModel @Inject constructor(
     }
 
     private fun deleteCookie() {
-        TODO("deleteCookie")
+        cookieDetail.value?.let {
+            uiStateObserver.update(UiState.OnLoading)
+
+            viewModelScope.launch {
+                if (klipContractTxRepository.requestRemoveACookie(it.nftTokenId)) {
+                    klipPendingType = KLIP_PENDING_TYPE_REMOVE
+                } else {
+                    uiStateObserver.update(UiState.OnFail)
+                }
+            }
+        }
     }
 
     private fun refreshCookieDetail() {

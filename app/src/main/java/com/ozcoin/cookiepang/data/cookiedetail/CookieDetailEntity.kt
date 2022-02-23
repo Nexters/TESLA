@@ -48,6 +48,6 @@ fun CookieDetailEntity.toDomain(): CookieDetail {
         collectorUserId = collectorId.toString(),
         creatorUserId = creatorId.toString(),
         nftTokenId = nftTokenId,
-        cookieId = 10
+        cookieId = -1
     )
 }

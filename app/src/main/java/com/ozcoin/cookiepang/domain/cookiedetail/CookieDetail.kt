@@ -25,7 +25,7 @@ data class CookieDetail(
     var isHidden: Boolean,
     var isOnSale: Boolean,
     val nftTokenId: Int,
-    val cookieId: Int
+    var cookieId: Int
 )
 
 fun CookieDetail.toEditCookie(): EditCookie {

@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.data.contract
 
 import com.ozcoin.cookiepang.data.request.ApiService
+import com.ozcoin.cookiepang.domain.user.toDataUserId
 import com.ozcoin.cookiepang.extensions.safeApiCall
 import javax.inject.Inject
 
@@ -8,9 +9,9 @@ class ContractRemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) {
 
-    suspend fun isWalletApproved(userId: Int) =
+    suspend fun isWalletApproved(userId: String) =
         safeApiCall {
-            apiService.getIsWalletApproved(userId)
+            apiService.getIsWalletApproved(userId.toDataUserId())
         }
 
     suspend fun isOnSaleCookie(nftTokenId: Int) =
@@ -33,13 +34,13 @@ class ContractRemoteDataSource @Inject constructor(
             apiService.getHammerContractAddress()
         }
 
-    suspend fun getNumOfHammer(userId: Int) =
+    suspend fun getNumOfHammer(userId: String) =
         safeApiCall {
-            apiService.getNumOfHammer(userId)
+            apiService.getNumOfHammer(userId.toDataUserId())
         }
 
-    suspend fun getNumOfKlay(userId: Int) =
+    suspend fun getNumOfKlay(userId: String) =
         safeApiCall {
-            apiService.getNumOfKlay(userId)
+            apiService.getNumOfKlay(userId.toDataUserId())
         }
 }

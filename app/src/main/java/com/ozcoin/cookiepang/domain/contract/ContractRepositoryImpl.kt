@@ -1,29 +1,50 @@
 package com.ozcoin.cookiepang.domain.contract
 
+import com.ozcoin.cookiepang.data.contract.ContractRemoteDataSource
+import com.ozcoin.cookiepang.extensions.getDataResult
+import com.ozcoin.cookiepang.utils.CoinUnitUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class ContractRepositoryImpl @Inject constructor() : ContractRepository {
+class ContractRepositoryImpl @Inject constructor(
+    private val contractRemoteDataSource: ContractRemoteDataSource
+) : ContractRepository {
 
-    override suspend fun getNumOfHammer(): Int =
+    override suspend fun getNumOfHammer(userId: String): Int =
         withContext(Dispatchers.IO) {
-            1
+            var result = 0
+            getDataResult(contractRemoteDataSource.getNumOfHammer(userId)) {
+                result = CoinUnitUtil.convertToKlaytnUnit(it.amount)
+            }
+            result
         }
 
-    override suspend fun getNumOfKlaytn(): Int =
+    override suspend fun getNumOfKlaytn(userId: String): Int =
         withContext(Dispatchers.IO) {
-            1
+            var result = 0
+            getDataResult(contractRemoteDataSource.getNumOfKlay(userId)) {
+                result = CoinUnitUtil.convertToKlaytnUnit(it.amount)
+            }
+            result
         }
 
-    override suspend fun getIsWalletApproved(): Boolean =
+    override suspend fun issWalletApproved(userId: String): Boolean =
         withContext(Dispatchers.IO) {
-            false
+            var result = false
+            getDataResult(contractRemoteDataSource.isWalletApproved(userId)) {
+                result = true
+            }
+            result
         }
 
-    override suspend fun isOnSaleCookie(): Boolean =
+    override suspend fun isOnSaleCookie(nftTokenId: Int): Boolean =
         withContext(Dispatchers.IO) {
-            false
+            var result = false
+            getDataResult(contractRemoteDataSource.isOnSaleCookie(nftTokenId)) {
+                result = true
+            }
+            result
         }
 
     override suspend fun isCookieHidden(cookieId: Int): Boolean =
@@ -31,13 +52,21 @@ class ContractRepositoryImpl @Inject constructor() : ContractRepository {
             false
         }
 
-    override suspend fun getCookieContractAddress(): String? =
+    override suspend fun getCookieContractAddress(): String =
         withContext(Dispatchers.IO) {
-            ""
+            var result = ""
+            getDataResult(contractRemoteDataSource.getCookieContractAddress()) {
+                result = it.address
+            }
+            result
         }
 
-    override suspend fun getHammerContractAddress(): String? =
+    override suspend fun getHammerContractAddress(): String =
         withContext(Dispatchers.IO) {
-            ""
+            var result = ""
+            getDataResult(contractRemoteDataSource.getCookieContractAddress()) {
+                result = it.address
+            }
+            result
         }
 }

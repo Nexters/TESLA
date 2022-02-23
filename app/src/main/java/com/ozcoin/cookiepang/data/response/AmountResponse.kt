@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Keep
 @Serializable
 data class AmountResponse(
-    val amount: Int
+    val amount: Double
 )

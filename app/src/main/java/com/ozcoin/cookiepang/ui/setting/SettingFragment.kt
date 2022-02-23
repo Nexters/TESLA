@@ -36,5 +36,6 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
     }
 
     override fun init() {
+        settingFragmentViewModel.hideBtmMenu = mainActivityViewModel::hideBtmNavView
     }
 }

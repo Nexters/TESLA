@@ -16,6 +16,7 @@ class CookieRepositoryImpl @Inject constructor(
     private val categoryRepository: UserCategoryRepository,
     private val cookieRemoteDataSource: CookieRemoteDataSource
 ) : CookieRepository {
+
     override suspend fun purchaseCookie(
         purchaserUserId: String,
         cookieDetail: CookieDetail

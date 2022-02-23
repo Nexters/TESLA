@@ -26,7 +26,7 @@ class EditProfileViewModelBehavior : BehaviorSpec() {
         val userRepository = mockk<UserRepository>()
         val viewModel = spyk(
             EditProfileFragmentViewModel(
-                userRepository, userInfoRepository
+                userRepository
             )
         )
 
@@ -110,7 +110,7 @@ class EditProfileViewModelBehavior : BehaviorSpec() {
 
             When("저장 버튼 클릭하면") {
 
-                coEvery { viewModel.user.value } coAnswers { userInfo }
+                coEvery { viewModel.user.value } coAnswers { mockk() }
 
                 coEvery {
                     userInfoRepository.updateUserInfo(userInfo)
