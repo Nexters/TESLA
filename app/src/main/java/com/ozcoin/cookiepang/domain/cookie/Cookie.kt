@@ -5,9 +5,8 @@ import com.ozcoin.cookiepang.domain.feed.CookieCardStyle
 data class Cookie(
     val cookieId: String,
     val isHidden: Boolean,
-    var cookieCardStyle: CookieCardStyle? = null,
+    var cookieCardStyle: CookieCardStyle,
     val cookieBoxImgUrl: String?,
     val cookieBoxCoverImgUrl: String?,
-    val cookieImgUrl: String?,
-    val categoryId: Int
+    val cookieImgUrl: String?
 )

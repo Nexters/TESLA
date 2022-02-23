@@ -5,6 +5,6 @@ import kotlinx.serialization.Serializable
 
 @Keep
 @Serializable
-data class AmountResponse(
-    val amount: Double
+data class BalanceResponse(
+    val balance: Double
 )

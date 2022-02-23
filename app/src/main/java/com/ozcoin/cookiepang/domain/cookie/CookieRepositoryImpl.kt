@@ -5,7 +5,6 @@ import com.ozcoin.cookiepang.data.cookie.toDomain
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.user.toDataUserId
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
-import com.ozcoin.cookiepang.domain.usercategory.toCookieCardStyle
 import com.ozcoin.cookiepang.extensions.getDataResult
 import com.ozcoin.cookiepang.utils.DataResult
 import kotlinx.coroutines.Dispatchers
@@ -38,14 +37,7 @@ class CookieRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             val response = cookieRemoteDataSource.getCollectedCookieList(userId)
             getDataResult(response) { res ->
-                val list = res.contents.map { it.toDomain() }
-                val categoryList = categoryRepository.getAllUserCategory().let { if (it is DataResult.OnSuccess) it.response else null }
-                if (categoryList != null) {
-                    list.map { cookie ->
-                        cookie.cookieCardStyle = categoryList.find { it.categoryId == cookie.categoryId }?.categoryColorStyle?.toCookieCardStyle()
-                    }
-                }
-                list
+                res.contents.map { it.toDomain() }
             }
         }
 
@@ -53,14 +45,7 @@ class CookieRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             val response = cookieRemoteDataSource.getCreatedCookieList(userId)
             getDataResult(response) { res ->
-                val list = res.contents.map { it.toDomain() }
-                val categoryList = categoryRepository.getAllUserCategory().let { if (it is DataResult.OnSuccess) it.response else null }
-                if (categoryList != null) {
-                    list.map { cookie ->
-                        cookie.cookieCardStyle = categoryList.find { it.categoryId == cookie.categoryId }?.categoryColorStyle?.toCookieCardStyle()
-                    }
-                }
-                list
+                res.contents.map { it.toDomain() }
             }
         }
 }

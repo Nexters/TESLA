@@ -13,6 +13,8 @@ interface KlipContractTxRepository {
 
     suspend fun requestRemoveACookie(nftTokenId: Int): Boolean
 
+    suspend fun requestChangeCookiePrice(nftTokenId: Int, hammerPrice: Int): Boolean
+
     suspend fun approveWallet(approve: Boolean): Boolean
 
     fun getResult(callback: (Boolean, String?) -> Unit)

@@ -178,7 +178,7 @@ object DummyUtil {
                 cookieBoxCoverImgUrl = "",
                 cookieBoxImgUrl = "",
                 cookieImgUrl = "",
-                categoryId = it
+                cookieCardStyle = CookieCardStyle.BLUE
             )
             list.add(cookie)
         }
@@ -196,7 +196,7 @@ object DummyUtil {
                 cookieBoxCoverImgUrl = "",
                 cookieBoxImgUrl = "",
                 cookieImgUrl = "",
-                categoryId = it
+                cookieCardStyle = CookieCardStyle.BLUE
             )
             list.add(cookie)
         }

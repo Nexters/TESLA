@@ -2,7 +2,6 @@ package com.ozcoin.cookiepang.data.cookie
 
 import androidx.annotation.Keep
 import com.ozcoin.cookiepang.domain.editcookie.EditCookie
-import com.ozcoin.cookiepang.domain.user.toDataUserId
 import kotlinx.serialization.Serializable
 
 @Keep
@@ -17,14 +16,14 @@ data class MakeACookieRequestParam(
     val txHash: String
 )
 
-fun EditCookie.toMakeRequestRemote(): MakeACookieRequestParam {
+fun EditCookie.toMakeRequestRemote(userId: Int, txHash: String): MakeACookieRequestParam {
     return MakeACookieRequestParam(
         answer = answer,
-        authorUserId = userId.toDataUserId(),
-        ownedUserId = userId.toDataUserId(),
+        authorUserId = userId,
+        ownedUserId = userId,
         categoryId = selectedCategory?.categoryId ?: -1,
         price = hammerCost.toInt(),
         question = question,
-        txHash = tx_hash
+        txHash = txHash
     )
 }

@@ -125,26 +125,52 @@ class KlipContractTxRepositoryImpl @Inject constructor(
             result
         }
 
-    override suspend fun approveWallet(approve: Boolean): Boolean = withContext(Dispatchers.IO) {
-        val response = CompletableDeferred<Boolean>()
-        val to = contractRepository.getHammerContractAddress()
-        val from = userRepository.getLoginUser()?.walletAddress ?: ""
-        val value = "0"
-        val abi = getContractFunc(CONTRACT_TYPE_HAMMER, "maxApprove")
-        val params = ArrayList<Any>()
-
-        klipContractTxDataSource.prepareRequest(to, from, value, abi, params) {
-            response.complete(it)
-        }
-
-        val result = response.await()
-        if (result) {
-            withContext(Dispatchers.Main) {
-                klipContractTxDataSource.request()
+    override suspend fun requestChangeCookiePrice(nftTokenId: Int, hammerPrice: Int): Boolean =
+        withContext(Dispatchers.IO) {
+            val response = CompletableDeferred<Boolean>()
+            val to = contractRepository.getCookieContractAddress()
+            val from = userRepository.getLoginUser()?.walletAddress ?: ""
+            val value = "0"
+            val abi = getContractFunc(CONTRACT_TYPE_COOKIE, "changeHammerPrice")
+            val params = ArrayList<Any>().apply {
+                add(nftTokenId.toString())
+                add(hammerPrice.toString())
             }
+
+            klipContractTxDataSource.prepareRequest(to, from, value, abi, params) {
+                response.complete(it)
+            }
+
+            val result = response.await()
+            if (result) {
+                withContext(Dispatchers.Main) {
+                    klipContractTxDataSource.request()
+                }
+            }
+            result
         }
-        result
-    }
+
+    override suspend fun approveWallet(approve: Boolean): Boolean =
+        withContext(Dispatchers.IO) {
+            val response = CompletableDeferred<Boolean>()
+            val to = contractRepository.getHammerContractAddress()
+            val from = userRepository.getLoginUser()?.walletAddress ?: ""
+            val value = "0"
+            val abi = getContractFunc(CONTRACT_TYPE_HAMMER, "maxApprove")
+            val params = ArrayList<Any>()
+
+            klipContractTxDataSource.prepareRequest(to, from, value, abi, params) {
+                response.complete(it)
+            }
+
+            val result = response.await()
+            if (result) {
+                withContext(Dispatchers.Main) {
+                    klipContractTxDataSource.request()
+                }
+            }
+            result
+        }
 
     override fun getResult(callback: (Boolean, String?) -> Unit) {
         klipContractTxDataSource.getResult(callback)

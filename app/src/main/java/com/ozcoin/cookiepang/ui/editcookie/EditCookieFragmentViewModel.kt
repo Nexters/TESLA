@@ -38,6 +38,11 @@ class EditCookieFragmentViewModel @Inject constructor(
     private val klipContractTxRepository: KlipContractTxRepository
 ) : BaseViewModel(), LifecycleEventObserver {
 
+    companion object {
+        private const val KLIP_PENDING_TYPE_MAKE = 910
+        private const val KLIP_PENDING_TYPE_EDIT = 911
+    }
+
     private val _editCookieEventFlow = MutableEventFlow<EditCookieEvent>()
     val editCookieEventFlow: EventFlow<EditCookieEvent>
         get() = _editCookieEventFlow.asEventFlow()
@@ -54,11 +59,17 @@ class EditCookieFragmentViewModel @Inject constructor(
     val answerMaxLengthCaption: StateFlow<String?>
         get() = _answerMaxLengthCaption.asStateFlow()
 
+    private val _editCookie = MutableStateFlow(EditCookie())
+    val editCookie: StateFlow<EditCookie>
+        get() = _editCookie
+
     val titleClickListener = TitleClickListener(
         EventObserver {
             showCloseEditingCookieDialog()
         }
     )
+
+    private var klipPendingType = -1
 
     lateinit var uiStateObserver: UiStateObserver
     lateinit var eventObserver: EventObserver
@@ -82,6 +93,12 @@ class EditCookieFragmentViewModel @Inject constructor(
 
         viewModelScope.launch {
             _answerMaxLengthCaption.emit(caption)
+        }
+    }
+
+    fun setEditCookie(editCookie: EditCookie) {
+        viewModelScope.launch {
+            _editCookie.emit(editCookie)
         }
     }
 
@@ -139,8 +156,11 @@ class EditCookieFragmentViewModel @Inject constructor(
 
         if (isEssentialCookieInfoComplete(editCookie)) {
             viewModelScope.launch {
-                if (!klipContractTxRepository.requestMakeACookie(editCookie))
+                if (klipContractTxRepository.requestMakeACookie(editCookie)) {
+                    klipPendingType = KLIP_PENDING_TYPE_MAKE
+                } else {
                     uiStateObserver.update(UiState.OnFail)
+                }
             }
         } else {
             Timber.d("make a cookie fail(caused: isEssentialCookieInfoComplete false)")
@@ -175,48 +195,71 @@ class EditCookieFragmentViewModel @Inject constructor(
 
     private fun editCookieInfo(editCookie: EditCookie) {
         if (isEssentialCookieInfoComplete(editCookie)) {
+            uiStateObserver.update(UiState.OnLoading)
+
             viewModelScope.launch {
-                val loginUserId = userRepository.getLoginUser()?.userId ?: ""
-                editCookie.userId = loginUserId
-                editCookieRepository.editCookieInfo(editCookie)
+                if (klipContractTxRepository.requestMakeACookie(editCookie)) {
+                    klipPendingType = KLIP_PENDING_TYPE_MAKE
+                } else {
+                    uiStateObserver.update(UiState.OnFail)
+                }
             }
         } else {
             Timber.d("edit cookie info fail(caused: isEssentialCookieInfoComplete false)")
         }
     }
 
-    private var editCookie: EditCookie? = null
-
-    fun clickEditCookie(editCookie: EditCookie) {
-        this.editCookie = editCookie
-        if (editCookie.isEditPricingInfo) {
-            editCookieInfo(editCookie)
-        } else {
-            makeACookie(editCookie)
+    fun clickEditCookie() {
+        editCookie.value.let {
+            if (it.isEditPricingInfo) {
+                editCookieInfo(it)
+            } else {
+                makeACookie(it)
+            }
         }
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
         if (event == Lifecycle.Event.ON_RESUME) {
             klipContractTxRepository.getResult { result, tx_hash ->
-                if (result && tx_hash != null && editCookie != null) {
-                    viewModelScope.launch {
-                        editCookie?.let {
-                            it.tx_hash = tx_hash
-                            it.userId = userRepository.getLoginUser()?.userId ?: ""
-                        }
-                        val resultCookieId = editCookieRepository.makeACookie(editCookie!!)
-                        if (resultCookieId.isNotBlank()) {
-                            uiStateObserver.update(UiState.OnSuccess)
-                            showMakeACookieSuccessDialog(resultCookieId)
-                        } else {
-                            uiStateObserver.update(UiState.OnFail)
-                        }
+                if (result && tx_hash != null) {
+                    when (klipPendingType) {
+                        KLIP_PENDING_TYPE_MAKE -> handleMakeACookieResult(tx_hash)
+                        KLIP_PENDING_TYPE_EDIT -> handleEditCookiePriceResult(tx_hash)
                     }
+                    klipPendingType = -1
                 } else {
                     Timber.d("requestMakeACookie result($result, tx_hash=$tx_hash)")
                     uiStateObserver.update(UiState.OnFail)
                 }
+            }
+        }
+    }
+
+    private fun handleMakeACookieResult(tx_hash: String) {
+        viewModelScope.launch {
+            val resultCookieId = editCookieRepository.makeACookie(
+                userRepository.getLoginUser()?.userId ?: "",
+                tx_hash,
+                editCookie.value
+            )
+            if (resultCookieId.isNotBlank()) {
+                uiStateObserver.update(UiState.OnSuccess)
+                showMakeACookieSuccessDialog(resultCookieId)
+            } else {
+                uiStateObserver.update(UiState.OnFail)
+            }
+        }
+    }
+
+    private fun handleEditCookiePriceResult(tx_hash: String) {
+        viewModelScope.launch {
+            val loginUserId = userRepository.getLoginUser()?.userId ?: ""
+            if (editCookieRepository.editCookieInfo(loginUserId, editCookie.value)) {
+                navigateUp()
+                uiStateObserver.update(UiState.OnSuccess)
+            } else {
+                uiStateObserver.update(UiState.OnFail)
             }
         }
     }

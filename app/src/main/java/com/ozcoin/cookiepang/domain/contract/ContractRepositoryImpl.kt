@@ -15,7 +15,7 @@ class ContractRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             var result = 0
             getDataResult(contractRemoteDataSource.getNumOfHammer(userId)) {
-                result = CoinUnitUtil.convertToKlaytnUnit(it.amount)
+                result = CoinUnitUtil.convertToKlaytnUnit(it.balance)
             }
             result
         }
@@ -24,7 +24,7 @@ class ContractRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             var result = 0
             getDataResult(contractRemoteDataSource.getNumOfKlay(userId)) {
-                result = CoinUnitUtil.convertToKlaytnUnit(it.amount)
+                result = CoinUnitUtil.convertToKlaytnUnit(it.balance)
             }
             result
         }

@@ -11,22 +11,32 @@ import javax.inject.Inject
 class EditCookieRepositoryImpl @Inject constructor(
     private val cookieRemoteDataSource: CookieRemoteDataSource
 ) : EditCookieRepository {
-    override suspend fun makeACookie(editCookie: EditCookie): String = withContext(Dispatchers.IO) {
+    override suspend fun makeACookie(
+        userId: String,
+        txHash: String,
+        editCookie: EditCookie
+    ): String = withContext(Dispatchers.IO) {
         var makeACookieResult = ""
-        getDataResult(cookieRemoteDataSource.makeACookie(editCookie.toMakeRequestRemote())) {
-            makeACookieResult = it.id.toString()
+        val response = cookieRemoteDataSource.makeACookie(
+            editCookie.toMakeRequestRemote(
+                userId.toDataUserId(),
+                txHash
+            )
+        )
+        getDataResult(response) {
+            makeACookieResult = it.cookieId.toString()
         }
 
         makeACookieResult
     }
 
-    override suspend fun editCookieInfo(editCookie: EditCookie): Boolean =
+    override suspend fun editCookieInfo(userId: String, editCookie: EditCookie): Boolean =
         withContext(Dispatchers.IO) {
             var editCookieInfoResult = false
             val response = cookieRemoteDataSource.updateCookieInfo(
                 editCookie.cookieId.toString(),
                 editCookie.hammerCost.toInt(),
-                editCookie.userId.toDataUserId()
+                userId.toDataUserId()
             )
             getDataResult(response) {
                 editCookieInfoResult = true

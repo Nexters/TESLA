@@ -10,21 +10,22 @@ import kotlinx.serialization.Serializable
 @Keep
 @Serializable
 data class CookieDetailEntity(
+    val cookieId: Int,
+    val question: String,
     val answer: String?,
-    val category: CategoryEntity,
     val collectorId: Int,
     val collectorName: String,
     val collectorProfileUrl: String?,
-    val contractAddress: String,
     val creatorId: Int,
     val creatorName: String,
     val creatorProfileUrl: String?,
+    val contractAddress: String,
     val histories: List<HistoryEntity>,
-    val myCookie: Boolean,
     val nftTokenId: Int,
+    val viewCount: Int,
     val price: Int,
-    val question: String,
-    val viewCount: Int
+    val myCookie: Boolean,
+    val category: CategoryEntity
 )
 
 fun CookieDetailEntity.toDomain(): CookieDetail {

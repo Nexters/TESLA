@@ -2,7 +2,7 @@ package com.ozcoin.cookiepang.domain.editcookie
 
 interface EditCookieRepository {
 
-    suspend fun makeACookie(editCookie: EditCookie): String
+    suspend fun makeACookie(userId: String, txHash: String, editCookie: EditCookie): String
 
-    suspend fun editCookieInfo(editCookie: EditCookie): Boolean
+    suspend fun editCookieInfo(userId: String, editCookie: EditCookie): Boolean
 }

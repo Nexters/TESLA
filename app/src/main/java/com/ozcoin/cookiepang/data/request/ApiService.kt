@@ -8,8 +8,8 @@ import com.ozcoin.cookiepang.data.cookie.MakeACookieRequestParam
 import com.ozcoin.cookiepang.data.cookiedetail.CookieDetailEntity
 import com.ozcoin.cookiepang.data.notification.NotificationEntity
 import com.ozcoin.cookiepang.data.response.AddressResponse
-import com.ozcoin.cookiepang.data.response.AmountResponse
 import com.ozcoin.cookiepang.data.response.AnswerResponse
+import com.ozcoin.cookiepang.data.response.BalanceResponse
 import com.ozcoin.cookiepang.data.response.PageListResponse
 import com.ozcoin.cookiepang.data.response.PriceResponse
 import com.ozcoin.cookiepang.data.response.TokenAddressResponse
@@ -163,16 +163,16 @@ interface ApiService {
     @GET("/contract/klay/users/{userId}/balance")
     suspend fun getNumOfKlay(
         @Path("userId") userId: Int
-    ): Response<AmountResponse>
+    ): Response<BalanceResponse>
 
     /*
         contract-hammer-controller
      */
 
-    @GET("/contract/hammers/users/{userId}/count")
+    @GET("/contract/hammers/users/{userId}/balance")
     suspend fun getNumOfHammer(
         @Path("userId") userId: Int
-    ): Response<AmountResponse>
+    ): Response<BalanceResponse>
 
     @GET("/contract/hammers/users/{userId}/approve")
     suspend fun getIsWalletApproved(
