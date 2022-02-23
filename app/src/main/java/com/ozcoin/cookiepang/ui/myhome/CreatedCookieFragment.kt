@@ -33,7 +33,7 @@ class CreatedCookieFragment : BaseFragment<FragmentCreatedCookieBinding>() {
         with(binding.rvCreatedCookie) {
             cookieListAdapter.apply {
                 onItemClick = {
-                    myHomeFragmentViewModel.navigateToCookieDetail(it.cookieId)
+                    myHomeFragmentViewModel.navigateToCookieDetail(it)
                 }
             }
 

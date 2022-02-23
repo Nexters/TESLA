@@ -148,8 +148,12 @@ class MyHomeFragmentViewModel @Inject constructor(
         }
     }
 
-    fun navigateToCookieDetail(cookieId: String) {
-        navigateTo(MyHomeFragmentDirections.actionCookieDetail(cookieId))
+    fun navigateToCookieDetail(cookie: Cookie) {
+        if (cookie.isHidden && !isMyPage.value) {
+            Timber.d("남의 숨겨진 쿠키는 못봐요 ~ ")
+        } else {
+            navigateTo(MyHomeFragmentDirections.actionCookieDetail(cookie.cookieId))
+        }
     }
 
     private fun navigateToEditProfile() {

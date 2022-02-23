@@ -33,7 +33,7 @@ class CollectedCookieFragment : BaseFragment<FragmentCollectedCookieBinding>() {
         with(binding.rvCollectedCookie) {
             cookieListAdapter.apply {
                 onItemClick = {
-                    myHomeFragmentViewModel.navigateToCookieDetail(it.cookieId)
+                    myHomeFragmentViewModel.navigateToCookieDetail(it)
                 }
             }
 
