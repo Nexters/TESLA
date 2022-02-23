@@ -74,7 +74,7 @@ interface ApiService {
     suspend fun deleteCookie(@Path("cookieId") cookieId: String): Response<Unit>
 
     @GET("/users/{userId}/cookies")
-    suspend fun getCookieList(
+    suspend fun getUserCookieList(
         @Path("userId") userId: Int,
         @Query("target") target: String,
         @Query("page") page: Int = 0,
@@ -87,12 +87,6 @@ interface ApiService {
 
     @POST("/asks")
     suspend fun sendAsk(@Body askEntity: AskEntity): Response<AskEntity>
-
-    @GET("/users/{userId}/asks")
-    suspend fun getAskList(
-        @Path("userId") userId: Int,
-        @Query("target") target: String
-    ): Response<PageListResponse<AskEntity>>
 
     @PUT("/asks/{askId}")
     suspend fun updateAsk(
@@ -137,13 +131,13 @@ interface ApiService {
 
     @GET("/users/{userId}/cookies/{cookieId}/detail")
     suspend fun getCookieDetail(
-        @Path("userId") userId: String,
+        @Path("userId") userId: Int,
         @Path("cookieId") cookieId: String
     ): Response<CookieDetailEntity>
 
     @GET("/users/{userId}/categories/{categoryId}/cookies")
     suspend fun getCookieList(
-        @Path("userId") userId: String,
+        @Path("userId") userId: Int,
         @Path("categoryId") categoryId: String,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 3
@@ -151,10 +145,25 @@ interface ApiService {
 
     @GET("/users/{userId}/categories/all/cookies")
     suspend fun getAllCookieList(
-        @Path("userId") userId: String,
+        @Path("userId") userId: Int,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 3
     ): Response<PageListResponse<TimeLineEntity>>
+
+    @GET("/users/{userId}/asks")
+    suspend fun getAskList(
+        @Path("userId") userId: Int,
+        @Query("target") target: String
+    ): Response<PageListResponse<AskEntity>>
+
+    /*
+        klay-controller
+     */
+
+    @GET("/contract/klay/users/{userId}/balance")
+    suspend fun getNumOfKlay(
+        @Path("userId") userId: Int
+    ): Response<AmountResponse>
 
     /*
         contract-hammer-controller
@@ -162,12 +171,12 @@ interface ApiService {
 
     @GET("/contract/hammers/users/{userId}/count")
     suspend fun getNumOfHammer(
-        @Path("userId") userId: String
+        @Path("userId") userId: Int
     ): Response<AmountResponse>
 
     @GET("/contract/hammers/users/{userId}/approve")
     suspend fun getIsWalletApproved(
-        @Path("userId") userId: String
+        @Path("userId") userId: Int
     ): Response<AnswerResponse>
 
     @GET("/contract/hammers/address")
@@ -177,19 +186,19 @@ interface ApiService {
         contract-cookie-controller
      */
 
-    @GET("/contract/cookies/{id}/sale")
+    @GET("/contract/cookies/{nftTokenId}/sale")
     suspend fun isOnSaleCookie(
-        @Path("id") id: String
+        @Path("nftTokenId") nftTokenId: Int
     ): Response<AnswerResponse>
 
-    @GET("/contract/cookies/{id}/price")
+    @GET("/contract/cookies/{nftTokenId}/price")
     suspend fun getCookiePrice(
-        @Query("nftTokenId") nftTokenId: String
+        @Query("nftTokenId") nftTokenId: Int
     ): Response<PriceResponse>
 
-    @GET("/contract/cookies/{id}/hide")
+    @GET("/contract/cookies/{nftTokenId}/hide")
     suspend fun isCookieHidden(
-        @Query("id") id: String
+        @Query("nftTokenId") nftTokenId: Int
     ): Response<AnswerResponse>
 
     @GET("/contract/cookies/users/{userId}/nftTokenId")

@@ -8,14 +8,19 @@ class ContractRemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) {
 
-    suspend fun isOnSaleCookie(cookieId: Int) =
+    suspend fun isWalletApproved(userId: Int) =
         safeApiCall {
-            apiService.isOnSaleCookie("")
+            apiService.getIsWalletApproved(userId)
         }
 
-    suspend fun isCookieHidden(cookieId: Int) =
+    suspend fun isOnSaleCookie(nftTokenId: Int) =
         safeApiCall {
-            apiService.isCookieHidden("")
+            apiService.isOnSaleCookie(nftTokenId)
+        }
+
+    suspend fun isCookieHidden(nftTokenId: Int) =
+        safeApiCall {
+            apiService.isCookieHidden(nftTokenId)
         }
 
     suspend fun getCookieContractAddress() =
@@ -25,6 +30,16 @@ class ContractRemoteDataSource @Inject constructor(
 
     suspend fun getHammerContractAddress() =
         safeApiCall {
-            apiService.getCookieContractAddress()
+            apiService.getHammerContractAddress()
+        }
+
+    suspend fun getNumOfHammer(userId: Int) =
+        safeApiCall {
+            apiService.getNumOfHammer(userId)
+        }
+
+    suspend fun getNumOfKlay(userId: Int) =
+        safeApiCall {
+            apiService.getNumOfKlay(userId)
         }
 }
