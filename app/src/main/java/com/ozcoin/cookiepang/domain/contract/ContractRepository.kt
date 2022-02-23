@@ -6,7 +6,7 @@ interface ContractRepository {
 
     suspend fun getNumOfKlaytn(userId: String): Int
 
-    suspend fun issWalletApproved(userId: String): Boolean
+    suspend fun isWalletApproved(userId: String): Boolean
 
     suspend fun isOnSaleCookie(nftTokenId: Int): Boolean
 

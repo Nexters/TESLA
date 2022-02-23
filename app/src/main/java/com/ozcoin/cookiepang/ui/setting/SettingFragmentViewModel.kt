@@ -62,7 +62,7 @@ class SettingFragmentViewModel @Inject constructor(
         loginUser.value?.let {
             uiStateObserver.update(UiState.OnLoading)
             viewModelScope.launch {
-                if (contractRepository.issWalletApproved(it.userId)) {
+                if (contractRepository.isWalletApproved(it.userId)) {
                     if (!klipContractTxRepository.approveWallet(true))
                         uiStateObserver.update(UiState.OnFail)
                 } else {

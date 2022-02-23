@@ -78,7 +78,7 @@ class KlipContractTxRepositoryImpl @Inject constructor(
             result
         }
 
-    override suspend fun requestSaleOnACookie(cookieDetail: CookieDetail): Boolean =
+    override suspend fun requestSaleOnACookie(nftTokenId: Int): Boolean =
         withContext(Dispatchers.IO) {
             val response = CompletableDeferred<Boolean>()
             val to = contractRepository.getCookieContractAddress()
@@ -86,7 +86,7 @@ class KlipContractTxRepositoryImpl @Inject constructor(
             val value = "0"
             val abi = getContractFunc(CONTRACT_TYPE_COOKIE, "saleCookie")
             val params = ArrayList<Any>().apply {
-                add(cookieDetail.cookieId.toString())
+                add(nftTokenId.toString())
                 add(true.toString())
             }
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.common.TRANSITION_ANIM_DURATION
+import com.ozcoin.cookiepang.domain.contract.ContractRepository
 import com.ozcoin.cookiepang.domain.cookie.CookieRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
@@ -31,6 +32,7 @@ import javax.inject.Inject
 class CookieDetailViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val cookieRepository: CookieRepository,
+    private val contractRepository: ContractRepository,
     private val cookieDetailRepository: CookieDetailRepository,
     private val klipContractTxRepository: KlipContractTxRepository
 ) : BaseViewModel(), LifecycleEventObserver {
@@ -121,6 +123,34 @@ class CookieDetailViewModel @Inject constructor(
         )
     }
 
+    private fun showApproveWalletDialog() {
+        TODO("")
+    }
+
+    private fun notEnoughEnergy() {
+        TODO("")
+    }
+
+    private fun executePurchaseACookie() {
+        viewModelScope.launch {
+            val loginUser = userRepository.getLoginUser()
+            val cookieDetail = cookieDetail.value
+            if (loginUser != null && cookieDetail != null) {
+                if (contractRepository.isWalletApproved(loginUser.userId)) {
+                    if (cookieDetail.hammerPrice <= contractRepository.getNumOfHammer(loginUser.userId)) {
+                        showPurchaseCookieDialog()
+                    } else {
+                        Timber.d("보유 해머 부족")
+                        notEnoughEnergy()
+                    }
+                } else {
+                    Timber.d("지갑 권한 미허용")
+                    showApproveWalletDialog()
+                }
+            }
+        }
+    }
+
     private fun hideCookie() {
         cookieDetail.value?.let {
             uiStateObserver.update(UiState.OnLoading)
@@ -140,16 +170,21 @@ class CookieDetailViewModel @Inject constructor(
     }
 
     private fun openCookie() {
-        cookieDetail.value?.let {
-            if (it.isOnSale) {
-                requestOpenCookie()
-            } else {
-                uiStateObserver.update(UiState.OnLoading)
-                viewModelScope.launch {
-                    if (klipContractTxRepository.requestSaleOnACookie(it)) {
-                        klipPendingType = KLIP_PENDING_TYPE_SALE_ON
-                    } else {
-                        uiStateObserver.update(UiState.OnFail)
+        val cookieDetail = cookieDetail.value
+        if (cookieDetail != null) {
+            viewModelScope.launch {
+                if (contractRepository.isOnSaleCookie(cookieDetail.nftTokenId)) {
+                    Timber.d("해당 쿠키 현재 판매 중 상태")
+                    requestOpenCookie()
+                } else {
+                    Timber.d("해당 쿠키 현재 판매 중 상태 아님")
+                    uiStateObserver.update(UiState.OnLoading)
+                    viewModelScope.launch {
+                        if (klipContractTxRepository.requestSaleOnACookie(cookieDetail.nftTokenId)) {
+                            klipPendingType = KLIP_PENDING_TYPE_SALE_ON
+                        } else {
+                            uiStateObserver.update(UiState.OnFail)
+                        }
                     }
                 }
             }

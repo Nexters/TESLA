@@ -9,7 +9,7 @@ interface KlipContractTxRepository {
 
     suspend fun requestBuyACookie(cookieDetail: CookieDetail): Boolean
 
-    suspend fun requestSaleOnACookie(cookieDetail: CookieDetail): Boolean
+    suspend fun requestSaleOnACookie(nftTokenId: Int): Boolean
 
     suspend fun requestRemoveACookie(nftTokenId: Int): Boolean
 

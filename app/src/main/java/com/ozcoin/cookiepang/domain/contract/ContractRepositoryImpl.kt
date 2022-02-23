@@ -29,7 +29,7 @@ class ContractRepositoryImpl @Inject constructor(
             result
         }
 
-    override suspend fun issWalletApproved(userId: String): Boolean =
+    override suspend fun isWalletApproved(userId: String): Boolean =
         withContext(Dispatchers.IO) {
             var result = false
             getDataResult(contractRemoteDataSource.isWalletApproved(userId)) {
