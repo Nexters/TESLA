@@ -45,7 +45,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
     var event: Event? = null
     var uiState: UiState? = null
     cookieDetailViewModel.uiStateObserver = UiStateObserver { uiState = it }
-    cookieDetailViewModel.eventObserver = EventObserver { event = it }
+    cookieDetailViewModel.activityEventObserver = EventObserver { event = it }
 
     var userId = ""
     var cookieId = ""

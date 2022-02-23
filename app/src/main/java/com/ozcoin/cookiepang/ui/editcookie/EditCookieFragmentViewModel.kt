@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
+import com.ozcoin.cookiepang.domain.contract.ContractRepository
 import com.ozcoin.cookiepang.domain.editcookie.EditCookie
 import com.ozcoin.cookiepang.domain.editcookie.EditCookieRepository
 import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepository
@@ -36,6 +37,7 @@ class EditCookieFragmentViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val userCategoryRepository: UserCategoryRepository,
     private val editCookieRepository: EditCookieRepository,
+    private val contractRepository: ContractRepository,
     private val questionRepository: QuestionRepository,
     private val klipContractTxRepository: KlipContractTxRepository
 ) : BaseViewModel(), LifecycleEventObserver {
@@ -77,10 +79,11 @@ class EditCookieFragmentViewModel @Inject constructor(
     lateinit var eventObserver: EventObserver
 
     fun emitQuestionLength(length: Int) {
-        val caption = if (length >= 20)
+        val caption = if (length >= 20) {
             TextInputUtil.getMaxLengthFormattedString(length, 25)
-        else
+        } else {
             null
+        }
 
         viewModelScope.launch {
             _questionMaxLengthCaption.emit(caption)
@@ -88,10 +91,11 @@ class EditCookieFragmentViewModel @Inject constructor(
     }
 
     fun emitAnswerLength(length: Int) {
-        val caption = if (length >= 45)
+        val caption = if (length >= 45) {
             TextInputUtil.getMaxLengthFormattedString(length, 50)
-        else
+        } else {
             null
+        }
 
         viewModelScope.launch {
             _answerMaxLengthCaption.emit(caption)
@@ -122,7 +126,7 @@ class EditCookieFragmentViewModel @Inject constructor(
 
     fun showCloseEditingCookieDialog() {
         val event = Event.ShowDialog(
-            DialogUtil.getCloseEditingCookie(),
+            DialogUtil.getCloseEditingCookieContetns(),
             callback = {
                 Timber.d("CloseEditingCookieDialog result($it)")
                 if (it) navigateUp()
@@ -143,10 +147,50 @@ class EditCookieFragmentViewModel @Inject constructor(
     private fun showMakeACookieSuccessDialog(cookieId: String) {
         eventObserver.update(
             Event.ShowDialog(
-                DialogUtil.getMakeCookieSuccess(),
+                DialogUtil.getMakeCookieSuccessContents(),
                 callback = {
                     if (it) {
                         navigateTo(EditCookieFragmentDirections.actionCookieDetail(cookieId))
+                    } else {
+                        navigateUp()
+                    }
+                }
+            )
+        )
+    }
+
+    private fun showMakeACookiePreAlertDialog() {
+        eventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getMakeCookiePreAlertContents(),
+                callback = {
+                    if (it) {
+                        uiStateObserver.update(UiState.OnLoading)
+
+                        viewModelScope.launch {
+                            if (klipContractTxRepository.requestMakeACookie(editCookie.value)) {
+                                klipPendingType = KLIP_PENDING_TYPE_MAKE
+                            } else {
+                                uiStateObserver.update(UiState.OnFail)
+                            }
+                        }
+                    }
+                }
+            )
+        )
+    }
+
+    private fun showWalletApproveDialog() {
+        TODO("")
+    }
+
+    private fun showNotEnoughHammer() {
+        eventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getNotEnoughHammerContents(),
+                callback = {
+                    if (it) {
+                        TODO("클레이튼 충전 진행해야함")
                     }
                 }
             )
@@ -154,19 +198,23 @@ class EditCookieFragmentViewModel @Inject constructor(
     }
 
     private fun makeACookie(editCookie: EditCookie) {
-        uiStateObserver.update(UiState.OnLoading)
-
         if (isEssentialCookieInfoComplete(editCookie)) {
             viewModelScope.launch {
-                if (klipContractTxRepository.requestMakeACookie(editCookie)) {
-                    klipPendingType = KLIP_PENDING_TYPE_MAKE
+                val userId = userRepository.getLoginUser()?.userId ?: ""
+                if (contractRepository.isWalletApproved(userId)) {
+                    Timber.d("지갑 권한 허용된 상태")
+                    if (contractRepository.getMakeCookieTaxPrice() >= contractRepository.getNumOfHammerBalance(userId)) {
+                        Timber.d("쿠키 만들기 수수료 이상 해머 보유 중")
+                        showMakeACookiePreAlertDialog()
+                    } else {
+                        showNotEnoughHammer()
+                    }
                 } else {
-                    uiStateObserver.update(UiState.OnFail)
+                    showWalletApproveDialog()
                 }
             }
         } else {
             Timber.d("make a cookie fail(caused: isEssentialCookieInfoComplete false)")
-            uiStateObserver.update(UiState.OnFail)
         }
     }
 

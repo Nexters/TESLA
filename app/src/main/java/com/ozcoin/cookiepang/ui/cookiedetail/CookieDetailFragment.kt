@@ -59,7 +59,7 @@ class CookieDetailFragment : BaseFragment<FragmentCookieDetailBinding>() {
         observeEvent(cookieDetailViewModel)
         with(cookieDetailViewModel) {
             lifecycle.addObserver(this)
-            eventObserver = EventObserver(mainActivityViewModel::updateEvent)
+            activityEventObserver = EventObserver(mainActivityViewModel::updateEvent)
             uiStateObserver = UiStateObserver(mainActivityViewModel::updateUiState)
 
             viewLifecycleScope.launch {

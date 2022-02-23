@@ -9,6 +9,11 @@ class ContractRemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) {
 
+    suspend fun getMakeCookieTaxPrice() =
+        safeApiCall {
+            apiService.getMakeCookieTaxPrice()
+        }
+
     suspend fun isWalletApproved(userId: String) =
         safeApiCall {
             apiService.getIsWalletApproved(userId.toDataUserId())

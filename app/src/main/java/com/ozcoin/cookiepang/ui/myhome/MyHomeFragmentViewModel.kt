@@ -149,7 +149,7 @@ class MyHomeFragmentViewModel @Inject constructor(
     }
 
     fun navigateToCookieDetail(cookie: Cookie) {
-        if (cookie.isHidden && !isMyPage.value) {
+        if (cookie.isHidden && cookie.ownedUserId != user.value?.userId) {
             Timber.d("남의 숨겨진 쿠키는 못봐요 ~ ")
         } else {
             navigateTo(MyHomeFragmentDirections.actionCookieDetail(cookie.cookieId))

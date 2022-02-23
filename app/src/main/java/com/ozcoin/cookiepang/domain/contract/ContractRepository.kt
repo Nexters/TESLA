@@ -2,9 +2,11 @@ package com.ozcoin.cookiepang.domain.contract
 
 interface ContractRepository {
 
-    suspend fun getNumOfHammer(userId: String): Int
+    suspend fun getMakeCookieTaxPrice(): Int
 
-    suspend fun getNumOfKlaytn(userId: String): Int
+    suspend fun getNumOfHammerBalance(userId: String): Int
+
+    suspend fun getNumOfKlaytnBalance(userId: String): Int
 
     suspend fun isWalletApproved(userId: String): Boolean
 

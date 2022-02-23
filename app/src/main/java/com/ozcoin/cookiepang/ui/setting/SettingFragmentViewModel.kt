@@ -12,6 +12,7 @@ import com.ozcoin.cookiepang.domain.contract.ContractRepository
 import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepository
 import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.UserRepository
+import com.ozcoin.cookiepang.utils.DialogUtil
 import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.TitleClickListener
 import com.ozcoin.cookiepang.utils.UiState
@@ -48,12 +49,13 @@ class SettingFragmentViewModel @Inject constructor(
         get() = _loginUser
 
     lateinit var hideBtmMenu: () -> Unit
+    lateinit var activityEventObserver: EventObserver
     lateinit var uiStateObserver: UiStateObserver
 
     private suspend fun loadUserInfo() {
         val loginUser = userRepository.getLoginUser()?.apply {
-            numOfHammer = contractRepository.getNumOfHammer(userId)
-            numOfKlaytn = contractRepository.getNumOfKlaytn(userId)
+            numOfHammer = contractRepository.getNumOfHammerBalance(userId)
+            numOfKlaytn = contractRepository.getNumOfKlaytnBalance(userId)
         }
         _loginUser.emit(loginUser)
     }
@@ -63,13 +65,22 @@ class SettingFragmentViewModel @Inject constructor(
             uiStateObserver.update(UiState.OnLoading)
             viewModelScope.launch {
                 if (contractRepository.isWalletApproved(it.userId)) {
+                    uiStateObserver.update(UiState.OnSuccess)
+                    showWalletApprovedSuccessDialog()
+                } else {
                     if (!klipContractTxRepository.approveWallet(true))
                         uiStateObserver.update(UiState.OnFail)
-                } else {
-                    uiStateObserver.update(UiState.OnFail)
                 }
             }
         }
+    }
+
+    private fun showWalletApprovedSuccessDialog() {
+        activityEventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getIsWalletApproveSuccessContents(), callback = { }
+            )
+        )
     }
 
     fun clickAllowWalletPermission() {
@@ -110,8 +121,19 @@ class SettingFragmentViewModel @Inject constructor(
         }
     }
 
+    private fun showLogOutDialog() {
+        activityEventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getCheckKlipLogOutContents(),
+                callback = {
+                    if (it) releaseUser()
+                }
+            )
+        )
+    }
+
     fun clickRelease() {
-        releaseUser()
+        showLogOutDialog()
     }
 
     override fun onStateChanged(source: LifecycleOwner, event: Lifecycle.Event) {
@@ -121,6 +143,7 @@ class SettingFragmentViewModel @Inject constructor(
                 if (result && tx_hash != null) {
                     viewModelScope.launch {
                         uiStateObserver.update(UiState.OnSuccess)
+                        showWalletApprovedSuccessDialog()
                     }
                 } else {
                     Timber.d("requestApproveWallet result($result, tx_hash=$tx_hash)")

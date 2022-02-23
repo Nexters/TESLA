@@ -74,7 +74,7 @@ class EditProfileFragmentViewModel @Inject constructor(
     private fun showChangeImgDialog(isThumbnail: Boolean) {
         eventObserver.update(
             Event.ShowDialog(
-                DialogUtil.getChangeImg(),
+                DialogUtil.getChangeImgContents(),
                 callback = {
                     if (it) openGallery(isThumbnail) else openCamera(isThumbnail)
                 }

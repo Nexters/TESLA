@@ -61,7 +61,9 @@ android {
         dataBinding true
     }
     packagingOptions {
-        exclude 'META-INF/rxjava.properties'
+        resources {
+            excludes += ['META-INF/rxjava.properties']
+        }
     }
 
     task copyGitHooks(type: Copy) {

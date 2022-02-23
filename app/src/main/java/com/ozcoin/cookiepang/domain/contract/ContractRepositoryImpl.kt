@@ -11,7 +11,16 @@ class ContractRepositoryImpl @Inject constructor(
     private val contractRemoteDataSource: ContractRemoteDataSource
 ) : ContractRepository {
 
-    override suspend fun getNumOfHammer(userId: String): Int =
+    override suspend fun getMakeCookieTaxPrice(): Int =
+        withContext(Dispatchers.IO) {
+            var result = 0
+            getDataResult(contractRemoteDataSource.getMakeCookieTaxPrice()) {
+                result = it.price
+            }
+            result
+        }
+
+    override suspend fun getNumOfHammerBalance(userId: String): Int =
         withContext(Dispatchers.IO) {
             var result = 0
             getDataResult(contractRemoteDataSource.getNumOfHammer(userId)) {
@@ -20,7 +29,7 @@ class ContractRepositoryImpl @Inject constructor(
             result
         }
 
-    override suspend fun getNumOfKlaytn(userId: String): Int =
+    override suspend fun getNumOfKlaytnBalance(userId: String): Int =
         withContext(Dispatchers.IO) {
             var result = 0
             getDataResult(contractRemoteDataSource.getNumOfKlay(userId)) {

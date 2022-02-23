@@ -17,7 +17,7 @@ object DateUtil {
     }
 
     private val serverFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").apply {
-        timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        timeZone = TimeZone.getTimeZone("UTC")
     }
 
     fun convertToAppTimeStamp(date: Date): String {
@@ -51,7 +51,6 @@ object DateUtil {
     fun convertToAppTimeStamp(createdAt: String): String {
         val createdAt = createdAt.split(".")[0]
 
-        serverFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
         val date = kotlin.runCatching { serverFormat.parse(createdAt) }.getOrNull()
 
         if (date != null) {
@@ -89,7 +88,7 @@ object DateUtil {
         val createdAt = createdAt.split(".")[0]
         val date = kotlin.runCatching { serverFormat.parse(createdAt) }.getOrNull()
         val format = SimpleDateFormat("yyyy-MM-dd")
-        format.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        format.timeZone = TimeZone.getDefault()
         return if (date != null) {
             format.format(date)
         } else {
@@ -101,7 +100,7 @@ object DateUtil {
         val createdAt = createdAt.split(".")[0]
         val date = kotlin.runCatching { serverFormat.parse(createdAt) }.getOrNull()
         val format = SimpleDateFormat("HH:mm")
-        format.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        format.timeZone = TimeZone.getDefault()
         return if (date != null) {
             format.format(date)
         } else {

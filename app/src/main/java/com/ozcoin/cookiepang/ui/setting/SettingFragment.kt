@@ -6,6 +6,7 @@ import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentSettingBinding
 import com.ozcoin.cookiepang.ui.MainActivityViewModel
+import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -37,5 +38,6 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
 
     override fun init() {
         settingFragmentViewModel.hideBtmMenu = mainActivityViewModel::hideBtmNavView
+        settingFragmentViewModel.activityEventObserver = EventObserver(mainActivityViewModel::updateEvent)
     }
 }

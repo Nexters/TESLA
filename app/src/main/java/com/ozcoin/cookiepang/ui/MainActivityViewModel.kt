@@ -97,7 +97,7 @@ class MainActivityViewModel @Inject constructor(
         viewModelScope.launch {
             _eventFlow.emit(
                 Event.ShowDialog(
-                    DialogUtil.getCloseEditingCookie(),
+                    DialogUtil.getCloseEditingCookieContetns(),
                     callback = {
                         Timber.d("CancelToEditingCookieDialog result($it)")
                         if (it) navigateUp()

@@ -194,12 +194,12 @@ interface ApiService {
 
     @GET("/contract/cookies/{nftTokenId}/price")
     suspend fun getCookiePrice(
-        @Query("nftTokenId") nftTokenId: Int
+        @Path("nftTokenId") nftTokenId: Int
     ): Response<PriceResponse>
 
     @GET("/contract/cookies/{nftTokenId}/hide")
     suspend fun isCookieHidden(
-        @Query("nftTokenId") nftTokenId: Int
+        @Path("nftTokenId") nftTokenId: Int
     ): Response<AnswerResponse>
 
     @GET("/contract/cookies/users/{userId}/nftTokenId")
@@ -207,6 +207,9 @@ interface ApiService {
         @Path("userId") userId: String,
         @Query("index") index: String
     ): Response<TokenAddressResponse>
+
+    @GET("/contract/cookies/prices/hammer")
+    suspend fun getMakeCookieTaxPrice(): Response<PriceResponse>
 
     @GET("/contract/cookies/address")
     suspend fun getCookieContractAddress(): Response<AddressResponse>

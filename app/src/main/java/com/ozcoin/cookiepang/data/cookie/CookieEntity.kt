@@ -25,6 +25,7 @@ fun CookieEntity.toDomain(): Cookie {
         cookieBoxImgUrl = null,
         cookieBoxCoverImgUrl = null,
         cookieImgUrl = null,
-        cookieCardStyle = category.toDomain().categoryColorStyle.toCookieCardStyle()
+        cookieCardStyle = category.toDomain().categoryColorStyle.toCookieCardStyle(),
+        ownedUserId = ownedUserId.toString()
     )
 }

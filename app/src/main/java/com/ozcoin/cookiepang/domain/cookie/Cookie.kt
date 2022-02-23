@@ -8,5 +8,6 @@ data class Cookie(
     var cookieCardStyle: CookieCardStyle,
     val cookieBoxImgUrl: String?,
     val cookieBoxCoverImgUrl: String?,
-    val cookieImgUrl: String?
+    val cookieImgUrl: String?,
+    val ownedUserId: String
 )

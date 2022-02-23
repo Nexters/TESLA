@@ -53,7 +53,7 @@ class CookieDetailViewModel @Inject constructor(
         }
     )
 
-    lateinit var eventObserver: EventObserver
+    lateinit var activityEventObserver: EventObserver
     lateinit var uiStateObserver: UiStateObserver
 
     private lateinit var cookieId: String
@@ -75,12 +75,27 @@ class CookieDetailViewModel @Inject constructor(
                 } else {
                     Timber.d("getCookieDetail($cookieId) is fail")
                     uiStateObserver.update(UiState.OnFail)
-                    navigateUp()
+                    if (result is DataResult.OnFail && result.errorCode == 403) {
+                        showIsHiddenCookie()
+                    } else {
+                        navigateUp()
+                    }
                 }
             }
         } else {
             navigateUp()
         }
+    }
+
+    private fun showIsHiddenCookie() {
+        activityEventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getIsHiddenCookieContents(),
+                callback = {
+                    if (it) navigateUp()
+                }
+            )
+        )
     }
 
     private fun purchaseCookie() {
@@ -102,7 +117,7 @@ class CookieDetailViewModel @Inject constructor(
     }
 
     private fun showPurchaseCookieSuccessDialog() {
-        eventObserver.update(
+        activityEventObserver.update(
             Event.ShowDialog(
                 DialogUtil.getPurchaseCookieSuccessContents(),
                 callback = {
@@ -113,7 +128,7 @@ class CookieDetailViewModel @Inject constructor(
     }
 
     private fun showPurchaseCookieDialog() {
-        eventObserver.update(
+        activityEventObserver.update(
             Event.ShowDialog(
                 DialogUtil.getConfirmPurchaseCookieContents(cookieDetail.value),
                 callback = {
@@ -137,7 +152,7 @@ class CookieDetailViewModel @Inject constructor(
             val cookieDetail = cookieDetail.value
             if (loginUser != null && cookieDetail != null) {
                 if (contractRepository.isWalletApproved(loginUser.userId)) {
-                    if (cookieDetail.hammerPrice <= contractRepository.getNumOfHammer(loginUser.userId)) {
+                    if (cookieDetail.hammerPrice <= contractRepository.getNumOfHammerBalance(loginUser.userId)) {
                         showPurchaseCookieDialog()
                     } else {
                         Timber.d("보유 해머 부족")
@@ -228,7 +243,7 @@ class CookieDetailViewModel @Inject constructor(
     }
 
     private fun showDeleteCookieDialog() {
-        eventObserver.update(
+        activityEventObserver.update(
             Event.ShowDialog(
                 DialogUtil.getDeleteCookieContents(),
                 callback = {
@@ -242,7 +257,7 @@ class CookieDetailViewModel @Inject constructor(
     private fun navigateToEditCookie() {
         cookieDetail.value?.toEditCookie()?.let {
             it.cookieId = cookieId.toInt()
-            eventObserver.update(Event.Nav.ToEditCookie(it))
+            activityEventObserver.update(Event.Nav.ToEditCookie(it))
         }
     }
 

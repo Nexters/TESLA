@@ -4,7 +4,11 @@ import androidx.appcompat.app.AppCompatActivity
 import com.ozcoin.cookiepang.domain.dialog.DialogContents
 import com.ozcoin.cookiepang.ui.dialog.TwoBtnDialog
 
-fun AppCompatActivity.showTwoBtnDialog(dialogContents: DialogContents, callback: (Boolean) -> Unit) {
-    TwoBtnDialog(dialogContents, callback)
-        .show(supportFragmentManager, "")
+fun AppCompatActivity.showTwoBtnDialog(
+    dialogContents: DialogContents,
+    callback: (Boolean) -> Unit
+) {
+    TwoBtnDialog(dialogContents, callback).apply {
+        isCancelable = false
+    }.show(supportFragmentManager, "")
 }
