@@ -4,6 +4,7 @@ import com.ozcoin.cookiepang.data.ask.AskEntity
 import com.ozcoin.cookiepang.data.ask.AskUpdateRequestParam
 import com.ozcoin.cookiepang.data.category.CategoryEntity
 import com.ozcoin.cookiepang.data.cookie.CookieEntity
+import com.ozcoin.cookiepang.data.cookie.CookieResponse
 import com.ozcoin.cookiepang.data.cookie.MakeACookieRequestParam
 import com.ozcoin.cookiepang.data.cookiedetail.CookieDetailEntity
 import com.ozcoin.cookiepang.data.notification.NotificationEntity
@@ -61,14 +62,14 @@ interface ApiService {
     @POST("/cookies")
     suspend fun makeACookie(
         @Body makeACookieRequestParam: MakeACookieRequestParam
-    ): Response<CookieEntity>
+    ): Response<CookieResponse>
 
     @JvmSuppressWildcards
     @PUT("/cookies/{cookieId}")
     suspend fun updateCookieInfo(
         @Path("cookieId") cookieId: String,
         @QueryMap updateCookie: Map<String, Any>
-    ): Response<CookieEntity>
+    ): Response<CookieResponse>
 
     @DELETE("/cookies/{cookieId}")
     suspend fun deleteCookie(@Path("cookieId") cookieId: String): Response<Unit>

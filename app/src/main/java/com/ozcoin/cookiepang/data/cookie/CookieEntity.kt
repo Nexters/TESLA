@@ -15,6 +15,7 @@ data class CookieEntity(
     val cookieImageUrl: String?,
     val cookieStatus: CookieStatusType,
     val category: CategoryEntity
+
 )
 
 fun CookieEntity.toDomain(): Cookie {

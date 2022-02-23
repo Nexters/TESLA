@@ -199,7 +199,7 @@ class EditCookieFragmentViewModel @Inject constructor(
 
             viewModelScope.launch {
                 if (klipContractTxRepository.requestMakeACookie(editCookie)) {
-                    klipPendingType = KLIP_PENDING_TYPE_MAKE
+                    klipPendingType = KLIP_PENDING_TYPE_EDIT
                 } else {
                     uiStateObserver.update(UiState.OnFail)
                 }
