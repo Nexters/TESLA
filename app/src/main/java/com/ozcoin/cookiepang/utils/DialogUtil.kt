@@ -46,8 +46,7 @@ object DialogUtil {
         return DialogContents(
             title = "쿠키가 성공적으로 구워졌습니다.",
             contents = "구운 쿠키를 확인하시겠어요?",
-            confirm = "확인하러 가기",
-            cancel = "취소하기"
+            confirm = "확인하러 가기"
         )
     }
 

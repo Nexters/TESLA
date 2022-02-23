@@ -13,9 +13,9 @@ data class CookieEntity(
     val cookieId: Int,
     val nftTokenId: Int,
     val cookieImageUrl: String?,
+    val ownedUserId: Int,
     val cookieStatus: CookieStatusType,
     val category: CategoryEntity
-
 )
 
 fun CookieEntity.toDomain(): Cookie {
