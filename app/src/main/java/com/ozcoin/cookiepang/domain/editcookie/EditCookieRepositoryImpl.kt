@@ -2,8 +2,8 @@ package com.ozcoin.cookiepang.domain.editcookie
 
 import com.ozcoin.cookiepang.data.cookie.CookieRemoteDataSource
 import com.ozcoin.cookiepang.data.cookie.toMakeRequestRemote
-import com.ozcoin.cookiepang.data.request.NetworkResult
 import com.ozcoin.cookiepang.domain.user.toDataUserId
+import com.ozcoin.cookiepang.extensions.getDataResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -13,10 +13,10 @@ class EditCookieRepositoryImpl @Inject constructor(
 ) : EditCookieRepository {
     override suspend fun makeACookie(editCookie: EditCookie): String = withContext(Dispatchers.IO) {
         var makeACookieResult = ""
-        val response = cookieRemoteDataSource.makeACookie(editCookie.toMakeRequestRemote())
-        if (response is NetworkResult.Success) {
-            makeACookieResult = response.response.id.toString()
+        getDataResult(cookieRemoteDataSource.makeACookie(editCookie.toMakeRequestRemote())) {
+            makeACookieResult = it.id.toString()
         }
+
         makeACookieResult
     }
 
@@ -28,8 +28,10 @@ class EditCookieRepositoryImpl @Inject constructor(
                 editCookie.hammerCost.toInt(),
                 editCookie.userId.toDataUserId()
             )
-            if (response is NetworkResult.Success)
+            getDataResult(response) {
                 editCookieInfoResult = true
+            }
+
             editCookieInfoResult
         }
 }

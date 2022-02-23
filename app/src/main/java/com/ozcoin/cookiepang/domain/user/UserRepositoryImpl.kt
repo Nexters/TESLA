@@ -6,6 +6,7 @@ import com.ozcoin.cookiepang.data.user.UserLocalDataSource
 import com.ozcoin.cookiepang.data.user.UserRemoteDataSource
 import com.ozcoin.cookiepang.data.user.toData
 import com.ozcoin.cookiepang.data.user.toDomain
+import com.ozcoin.cookiepang.extensions.getDataResult
 import com.ozcoin.cookiepang.utils.DataResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -20,26 +21,23 @@ class UserRepositoryImpl @Inject constructor(
 
     private var loginUser: User? = null
 
-    override suspend fun getUser(userId: String): DataResult<User> {
-        val result = userRemoteDataSource.getUser(userId.toDataUserId())
-        return if (result is NetworkResult.Success) {
-            DataResult.OnSuccess(result.response.toDomain())
-        } else {
-            DataResult.OnFail
-        }
-    }
-
-    override suspend fun regUser(user: User): Boolean = withContext(Dispatchers.IO) {
-        var regUserResult = false
-        val result = userRemoteDataSource.registrationUser(user.toData())
-        if (result is NetworkResult.Success) {
-            userLocalDataSource.saveUserEntity(result.response)
-            loginUser = result.response.toDomain()
-            regUserResult = true
+    override suspend fun getUser(userId: String): DataResult<User> =
+        withContext(Dispatchers.IO) {
+            getDataResult(userRemoteDataSource.getUser(userId.toDataUserId())) {
+                it.toDomain()
+            }
         }
 
-        regUserResult
-    }
+    override suspend fun regUser(user: User): Boolean =
+        withContext(Dispatchers.IO) {
+            var regUserResult = false
+            getDataResult(userRemoteDataSource.registrationUser(user.toData())) { res ->
+                regUserResult = true
+                userLocalDataSource.saveUserEntity(res)
+                loginUser = res.toDomain()
+            }
+            regUserResult
+        }
 
     override suspend fun getLoginUser(): User? = withContext(Dispatchers.IO) {
         if (loginUser == null) {
@@ -60,8 +58,8 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun updateUser(user: User): Boolean =
         withContext(Dispatchers.IO) {
             var updateUserResult = false
-            val response = userRemoteDataSource.updateUserEntity(user)
-            if (response is NetworkResult.Success) {
+            getDataResult(userRemoteDataSource.updateUserEntity(user)) {
+                loginUser = it.toDomain()
                 updateUserResult = true
             }
             updateUserResult
@@ -70,13 +68,10 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun isUserRegistration(walletAddress: String): Boolean =
         withContext(Dispatchers.IO) {
             var userRegistrationResult = false
-            val response = userRemoteDataSource.isUserRegistration(walletAddress)
-            if (response is NetworkResult.Success) {
-                val result = userRemoteDataSource.getUser(response.response.userId)
-                if (result is NetworkResult.Success) {
-                    val userEntity = result.response
-                    userLocalDataSource.saveUserEntity(userEntity)
-                    loginUser = userEntity.toDomain()
+            getDataResult(userRemoteDataSource.isUserRegistration(walletAddress)) { res ->
+                getDataResult(userRemoteDataSource.getUser(res.userId)) { user ->
+                    userLocalDataSource.saveUserEntity(user)
+                    loginUser = user.toDomain()
                     userRegistrationResult = true
                 }
             }

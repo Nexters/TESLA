@@ -43,7 +43,7 @@ class UserCategoryRepositoryImpl @Inject constructor(
             val result = if (response is NetworkResult.Success) {
                 DataResult.OnSuccess(response.response.map { it.toDomain() })
             } else {
-                DataResult.OnFail
+                DataResult.OnFail()
             }
             result
         }

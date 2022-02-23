@@ -27,7 +27,7 @@ class UserInfoRepositoryImpl @Inject constructor(
                     if (it is NetworkResult.Success) it.response else null
                 }
                 val questions = askRemoteDataSource.getAskList(user.userId).let {
-                    if (it is NetworkResult.Success) it.response else emptyList()
+                    if (it is NetworkResult.Success) it.response else null
                 }
 
                 val loginUser = userRepository.getLoginUser()?.userId ?: ""
@@ -40,12 +40,12 @@ class UserInfoRepositoryImpl @Inject constructor(
                     profileBackgroundImgUrl = user.backgroundUrl,
                     collectedCnt = collectedList?.totalCount ?: 0,
                     createdCnt = createdList?.totalCount ?: 0,
-                    questionCnt = questions.size
+                    questionCnt = questions?.contents?.size ?: 0
                 )
 
                 DataResult.OnSuccess(userInfo)
             } else {
-                DataResult.OnFail
+                DataResult.OnFail()
             }
         }
 

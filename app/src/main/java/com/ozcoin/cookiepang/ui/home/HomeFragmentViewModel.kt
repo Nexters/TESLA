@@ -48,7 +48,6 @@ class HomeFragmentViewModel @Inject constructor(
         viewModelScope.launch(Dispatchers.IO) {
             val user = userRepository.getLoginUser()
             if (user != null) {
-//                val result = userCategoryRepository.getUserCategory(user.userId)
                 val result = userCategoryRepository.getAllUserCategory()
                 if (result is DataResult.OnSuccess) {
                     Timber.d("getUserCategoryList onSuccess")

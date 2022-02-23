@@ -33,7 +33,7 @@ class CookieRemoteDataSource @Inject constructor(
     suspend fun getCollectedCookieList(userId: String) = safeApiCall {
         apiService.getCookieList(
             userId.toDataUserId(),
-            CookieQueryTargetType.COLLECTED.name,
+            CookieQueryTargetType.OWNED.name,
             0,
             100
         )
@@ -42,7 +42,7 @@ class CookieRemoteDataSource @Inject constructor(
     suspend fun getCreatedCookieList(userId: String) = safeApiCall {
         apiService.getCookieList(
             userId.toDataUserId(),
-            CookieQueryTargetType.COOKIES.name,
+            CookieQueryTargetType.AUTHOR.name,
             0,
             100
         )

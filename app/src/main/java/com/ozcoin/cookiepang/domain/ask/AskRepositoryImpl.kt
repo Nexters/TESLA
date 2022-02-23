@@ -2,7 +2,7 @@ package com.ozcoin.cookiepang.domain.ask
 
 import com.ozcoin.cookiepang.data.ask.AskRemoteDataSource
 import com.ozcoin.cookiepang.data.ask.toData
-import com.ozcoin.cookiepang.data.request.NetworkResult
+import com.ozcoin.cookiepang.extensions.getDataResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import timber.log.Timber
@@ -15,8 +15,8 @@ class AskRepositoryImpl @Inject constructor(
     override suspend fun askToUser(ask: Ask): Boolean = withContext(Dispatchers.IO) {
         Timber.d(ask.toString())
         var askResult = false
-        val response = askRemoteDataSource.askToUser(ask.toData())
-        if (response is NetworkResult.Success) {
+
+        getDataResult(askRemoteDataSource.askToUser(ask.toData())) {
             askResult = true
         }
 

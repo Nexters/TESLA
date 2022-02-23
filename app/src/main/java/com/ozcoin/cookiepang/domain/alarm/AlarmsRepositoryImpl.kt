@@ -2,7 +2,7 @@ package com.ozcoin.cookiepang.domain.alarm
 
 import com.ozcoin.cookiepang.data.notification.NotificationRemoteDataSource
 import com.ozcoin.cookiepang.data.notification.toDomain
-import com.ozcoin.cookiepang.data.request.NetworkResult
+import com.ozcoin.cookiepang.extensions.getDataResult
 import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.DateUtil
 import kotlinx.coroutines.Dispatchers
@@ -15,14 +15,11 @@ class AlarmsRepositoryImpl @Inject constructor(
 
     override suspend fun getAlarmsList(userId: String): DataResult<List<Alarms>> =
         withContext(Dispatchers.IO) {
-            val response = notificationRemoteDataSource.getNotificationList(userId)
-            if (response is NetworkResult.Success) {
+            getDataResult(notificationRemoteDataSource.getNotificationList(userId)) { res ->
                 val result = convertNotificationListToAlarmsList(
-                    response.response.map { it.toDomain() }
+                    res.map { it.toDomain() }
                 )
-                DataResult.OnSuccess(result)
-            } else {
-                DataResult.OnFail
+                result
             }
         }
 

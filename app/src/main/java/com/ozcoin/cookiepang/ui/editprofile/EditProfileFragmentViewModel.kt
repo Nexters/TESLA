@@ -132,4 +132,12 @@ class EditProfileFragmentViewModel @Inject constructor(
     fun clickSaveUserInfo() {
         updateUserInfo()
     }
+
+    override fun onCleared() {
+        super.onCleared()
+        user.value?.let {
+            it.updateProfileBackgroundImg = null
+            it.updateThumbnailImg = null
+        }
+    }
 }

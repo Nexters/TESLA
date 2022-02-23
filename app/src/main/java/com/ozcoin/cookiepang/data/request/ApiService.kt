@@ -4,17 +4,17 @@ import com.ozcoin.cookiepang.data.ask.AskEntity
 import com.ozcoin.cookiepang.data.ask.AskUpdateRequestParam
 import com.ozcoin.cookiepang.data.category.CategoryEntity
 import com.ozcoin.cookiepang.data.cookie.CookieEntity
-import com.ozcoin.cookiepang.data.cookie.CookieListResponse
 import com.ozcoin.cookiepang.data.cookie.MakeACookieRequestParam
 import com.ozcoin.cookiepang.data.cookiedetail.CookieDetailEntity
 import com.ozcoin.cookiepang.data.notification.NotificationEntity
 import com.ozcoin.cookiepang.data.response.AddressResponse
 import com.ozcoin.cookiepang.data.response.AmountResponse
 import com.ozcoin.cookiepang.data.response.AnswerResponse
+import com.ozcoin.cookiepang.data.response.PageListResponse
 import com.ozcoin.cookiepang.data.response.PriceResponse
 import com.ozcoin.cookiepang.data.response.TokenAddressResponse
 import com.ozcoin.cookiepang.data.response.UserIdResponse
-import com.ozcoin.cookiepang.data.timeline.TimeLineResponse
+import com.ozcoin.cookiepang.data.timeline.TimeLineEntity
 import com.ozcoin.cookiepang.data.user.LoginRequestParam
 import com.ozcoin.cookiepang.data.user.UserEntity
 import okhttp3.MultipartBody
@@ -79,7 +79,7 @@ interface ApiService {
         @Query("target") target: String,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 3
-    ): Response<CookieListResponse>
+    ): Response<PageListResponse<CookieEntity>>
 
     /*
         ask-controller
@@ -92,7 +92,7 @@ interface ApiService {
     suspend fun getAskList(
         @Path("userId") userId: Int,
         @Query("target") target: String
-    ): Response<List<AskEntity>>
+    ): Response<PageListResponse<AskEntity>>
 
     @PUT("/asks/{askId}")
     suspend fun updateAsk(
@@ -147,14 +147,14 @@ interface ApiService {
         @Path("categoryId") categoryId: String,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 3
-    ): Response<TimeLineResponse>
+    ): Response<PageListResponse<TimeLineEntity>>
 
     @GET("/users/{userId}/categories/all/cookies")
     suspend fun getAllCookieList(
         @Path("userId") userId: String,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 3
-    ): Response<TimeLineResponse>
+    ): Response<PageListResponse<TimeLineEntity>>
 
     /*
         contract-hammer-controller

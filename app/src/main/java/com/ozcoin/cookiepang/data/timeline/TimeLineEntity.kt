@@ -2,8 +2,9 @@ package com.ozcoin.cookiepang.data.timeline
 
 import androidx.annotation.Keep
 import com.ozcoin.cookiepang.data.category.CategoryEntity
-import com.ozcoin.cookiepang.domain.feed.CookieCardStyle
+import com.ozcoin.cookiepang.data.category.toDomain
 import com.ozcoin.cookiepang.domain.feed.Feed
+import com.ozcoin.cookiepang.domain.usercategory.toCookieCardStyle
 import com.ozcoin.cookiepang.utils.DateUtil
 import kotlinx.serialization.Serializable
 
@@ -12,8 +13,8 @@ import kotlinx.serialization.Serializable
 data class TimeLineEntity(
     val cookieId: Int,
     val creatorId: Int,
-    val creatorName: String,
     val creatorProfileUrl: String?,
+    val creatorName: String,
     val question: String,
     val answer: String?,
     val contractAddress: String,
@@ -37,7 +38,7 @@ fun TimeLineEntity.toDomain(): Feed {
         userProfileId = creatorName,
         userThumbnailUrl = creatorProfileUrl ?: "",
         answer = answer,
-        cookieCardStyle = CookieCardStyle.BLUE,
+        cookieCardStyle = category.toDomain().categoryColorStyle.toCookieCardStyle(),
         feedUserId = creatorId.toString()
     )
 }

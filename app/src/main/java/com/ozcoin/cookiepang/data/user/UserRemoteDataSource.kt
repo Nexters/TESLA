@@ -1,13 +1,15 @@
 package com.ozcoin.cookiepang.data.user
 
-import android.R.attr.bitmap
 import android.graphics.Bitmap
 import com.ozcoin.cookiepang.data.request.ApiService
 import com.ozcoin.cookiepang.data.request.NetworkResult
 import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.toDataUserId
 import com.ozcoin.cookiepang.extensions.safeApiCall
-import com.ozcoin.cookiepang.utils.FormDataUtil
+import com.ozcoin.cookiepang.utils.BitmapRequestBody
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.MultipartBody
+import okhttp3.RequestBody
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -32,17 +34,33 @@ class UserRemoteDataSource @Inject constructor(
 
     suspend fun updateUserEntity(user: User) =
         safeApiCall {
+            val profilePicture = user.updateThumbnailImg?.let {
+                MultipartBody.Part.createFormData(
+                    "image",
+                    "profilePicture",
+                    BitmapRequestBody(it)
+                )
+            } ?: kotlin.run {
+                val content = RequestBody.create("text/plain".toMediaTypeOrNull(), "")
+                MultipartBody.Part.createFormData("profilePicture", "", content)
+            }
+
+            val backgroundPicture = user.updateProfileBackgroundImg?.let {
+                MultipartBody.Part.createFormData(
+                    "image",
+                    "backgroundPicture",
+                    BitmapRequestBody(it)
+                )
+            } ?: kotlin.run {
+                val content = RequestBody.create("text/plain".toMediaTypeOrNull(), "")
+                MultipartBody.Part.createFormData("backgroundPicture", "", content)
+            }
+
             apiService.updateUser(
                 user.userId.toDataUserId(),
                 user.introduction,
-                FormDataUtil.getImageBody(
-                    "profilePicture",
-                    convertBitmapToFile("profilePicture", user.updateThumbnailImg)
-                ),
-                FormDataUtil.getImageBody(
-                    "backgroundPicture",
-                    convertBitmapToFile("backgroundPicture", user.updateProfileBackgroundImg)
-                )
+                profilePicture,
+                backgroundPicture
             )
         }
 

@@ -1,12 +1,12 @@
-package com.ozcoin.cookiepang.data.timeline
+package com.ozcoin.cookiepang.data.response
 
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class TimeLineResponse(
+data class PageListResponse<T>(
     val totalCount: Int,
     val totalPageIndex: Int,
     val nowPageIndex: Int,
     val isLastPage: Boolean,
-    val contents: List<Content>
+    val contents: List<T>
 )

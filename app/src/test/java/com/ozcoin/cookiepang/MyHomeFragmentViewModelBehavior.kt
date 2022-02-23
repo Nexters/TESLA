@@ -32,7 +32,7 @@ class MyHomeFragmentViewModelBehavior : BehaviorSpec() {
         val questionRepository = mockk<QuestionRepository>()
         val viewModel = spyk(
             MyHomeFragmentViewModel(
-                userRepository, userInfoRepository, cookieRepository, questionRepository
+                userRepository, cookieRepository, questionRepository
             )
         )
 
@@ -154,7 +154,7 @@ class MyHomeFragmentViewModelBehavior : BehaviorSpec() {
                 coEvery {
                     userInfoRepository.getUserInfo(userId)
                 } coAnswers {
-                    DataResult.OnFail
+                    DataResult.OnFail()
                 }
 
                 Then("이전 화면으로 이동") {

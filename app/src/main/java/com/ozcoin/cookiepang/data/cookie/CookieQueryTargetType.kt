@@ -6,5 +6,5 @@ import kotlinx.serialization.Serializable
 @Keep
 @Serializable
 enum class CookieQueryTargetType {
-    COLLECTED, COOKIES
+    OWNED, AUTHOR
 }

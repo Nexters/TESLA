@@ -2,11 +2,11 @@ package com.ozcoin.cookiepang.domain.cookie
 
 import com.ozcoin.cookiepang.data.cookie.CookieRemoteDataSource
 import com.ozcoin.cookiepang.data.cookie.toDomain
-import com.ozcoin.cookiepang.data.request.NetworkResult
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.user.toDataUserId
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.domain.usercategory.toCookieCardStyle
+import com.ozcoin.cookiepang.extensions.getDataResult
 import com.ozcoin.cookiepang.utils.DataResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -26,44 +26,40 @@ class CookieRepositoryImpl @Inject constructor(
             cookieDetail.hammerPrice,
             purchaserUserId.toDataUserId()
         )
-        if (response is NetworkResult.Success)
+        getDataResult(response) {
             purchaseCookieResult = true
+        }
+
         purchaseCookieResult
     }
 
     override suspend fun getCollectedCookieList(userId: String): DataResult<List<Cookie>> =
         withContext(Dispatchers.IO) {
             val response = cookieRemoteDataSource.getCollectedCookieList(userId)
-            if (response is NetworkResult.Success) {
-                val list = response.response.cookies.map { it.toDomain() }
+            getDataResult(response) { res ->
+                val list = res.contents.map { it.toDomain() }
                 val categoryList = categoryRepository.getAllUserCategory().let { if (it is DataResult.OnSuccess) it.response else null }
                 if (categoryList != null) {
                     list.map { cookie ->
                         cookie.cookieCardStyle = categoryList.find { it.categoryId == cookie.categoryId }?.categoryColorStyle?.toCookieCardStyle()
                     }
                 }
-
-                DataResult.OnSuccess(list)
-            } else {
-                DataResult.OnFail
+                list
             }
         }
 
     override suspend fun getCreatedCookieList(userId: String): DataResult<List<Cookie>> =
         withContext(Dispatchers.IO) {
             val response = cookieRemoteDataSource.getCreatedCookieList(userId)
-            if (response is NetworkResult.Success) {
-                val list = response.response.cookies.map { it.toDomain() }
+            getDataResult(response) { res ->
+                val list = res.contents.map { it.toDomain() }
                 val categoryList = categoryRepository.getAllUserCategory().let { if (it is DataResult.OnSuccess) it.response else null }
                 if (categoryList != null) {
                     list.map { cookie ->
                         cookie.cookieCardStyle = categoryList.find { it.categoryId == cookie.categoryId }?.categoryColorStyle?.toCookieCardStyle()
                     }
                 }
-
-                DataResult.OnSuccess(list)
-            } else {
-                DataResult.OnFail
+                list
             }
         }
 }

@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.data.cookie
 
 import androidx.annotation.Keep
+import com.ozcoin.cookiepang.data.category.CategoryEntity
 import com.ozcoin.cookiepang.domain.cookie.Cookie
 import kotlinx.serialization.Serializable
 
@@ -8,6 +9,7 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class CookieEntity(
     val id: Int,
+    val cookieId: Int,
     val title: String,
     val price: Int,
     val imageUrl: String?,
@@ -17,7 +19,7 @@ data class CookieEntity(
     val status: CookieStatusType,
     val nftTokenId: Int,
     val fromBlockAddress: Int,
-    val categoryId: Int
+    val category: CategoryEntity
 )
 
 fun CookieEntity.toDomain(): Cookie {
@@ -27,6 +29,6 @@ fun CookieEntity.toDomain(): Cookie {
         cookieBoxImgUrl = imageUrl,
         cookieBoxCoverImgUrl = imageUrl,
         cookieImgUrl = imageUrl,
-        categoryId = categoryId,
+        categoryId = category.id
     )
 }

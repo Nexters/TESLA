@@ -70,11 +70,11 @@ class HomeFragmentViewModelBehavior : BehaviorSpec() {
                 coEvery {
                     userCategoryRepository.getUserCategory(user.userId)
                 } coAnswers {
-                    DataResult.OnFail
+                    DataResult.OnFail()
                 } coAndThen {
-                    DataResult.OnFail
+                    DataResult.OnFail()
                 } coAndThen {
-                    DataResult.OnFail
+                    DataResult.OnFail()
                 }
 
                 Then("재시도 한다") {
