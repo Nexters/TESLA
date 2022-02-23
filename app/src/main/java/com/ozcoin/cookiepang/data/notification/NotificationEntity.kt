@@ -19,7 +19,7 @@ data class NotificationEntity(
 fun NotificationEntity.toDomain(): Alarm {
     return Alarm(
         alarmId = id ?: 0,
-        title = type.name,
+        title = title,
         contents = content,
         time = createdAt
     )

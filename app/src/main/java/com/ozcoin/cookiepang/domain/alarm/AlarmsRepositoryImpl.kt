@@ -26,13 +26,15 @@ class AlarmsRepositoryImpl @Inject constructor(
         val alarmsList = mutableListOf<Alarms>()
 
         if (noticeList.isNotEmpty()) {
-            val dateMap = HashMap<String, String>()
+            val dateMap = HashMap<String, Boolean>()
             for (n in noticeList) {
                 val alarmList = mutableListOf<Alarm>()
 
                 val date = DateUtil.convertToAlarmsTimeStamp(n.time)
                 if (dateMap[date] != null)
                     continue
+
+                dateMap[date] = true
 
                 for (a in noticeList) {
                     if (DateUtil.convertToAlarmsTimeStamp(a.time) == date) {
