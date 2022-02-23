@@ -177,7 +177,8 @@ object DummyUtil {
                 isHidden = it % 2 == 0,
                 cookieBoxCoverImgUrl = "",
                 cookieBoxImgUrl = "",
-                cookieImgUrl = ""
+                cookieImgUrl = "",
+                categoryId = it
             )
             list.add(cookie)
         }
@@ -194,7 +195,8 @@ object DummyUtil {
                 isHidden = it % 5 == 0,
                 cookieBoxCoverImgUrl = "",
                 cookieBoxImgUrl = "",
-                cookieImgUrl = ""
+                cookieImgUrl = "",
+                categoryId = it
             )
             list.add(cookie)
         }

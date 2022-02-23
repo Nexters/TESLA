@@ -14,6 +14,7 @@ import com.ozcoin.cookiepang.databinding.FragmentAskBinding
 import com.ozcoin.cookiepang.extensions.toDp
 import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.ui.divider.SpaceItemDecoration
+import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -71,6 +72,7 @@ class AskFragment : BaseFragment<FragmentAskBinding>() {
     override fun initObserve() {
         observeEvent(askFragmentViewModel)
         observeUserCategory()
+        askFragmentViewModel.uiStateObserver = UiStateObserver(mainActivityViewModel::updateUiState)
     }
 
     private fun observeUserCategory() {

@@ -1,5 +1,6 @@
 package com.ozcoin.cookiepang.domain.user
 
+import android.graphics.Bitmap
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.ozcoin.cookiepang.BR
@@ -97,6 +98,9 @@ class User : BaseObservable() {
             field = value
             notifyPropertyChanged(BR.backgroundUrl)
         }
+
+    var updateThumbnailImg: Bitmap? = null
+    var updateProfileBackgroundImg: Bitmap? = null
 }
 
 fun String.toDataUserId(): Int {

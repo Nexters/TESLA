@@ -99,7 +99,7 @@ class EditProfileViewModelBehavior : BehaviorSpec() {
                         resumeDispatcher()
 
                         uiState.shouldBeInstanceOf<UiState.OnSuccess>()
-                        viewModel.userInfo.first() shouldBe (userInfo as DataResult.OnSuccess).response
+                        viewModel.user.first() shouldBe (userInfo as DataResult.OnSuccess).response
                     }
                 }
             }
@@ -110,7 +110,7 @@ class EditProfileViewModelBehavior : BehaviorSpec() {
 
             When("저장 버튼 클릭하면") {
 
-                coEvery { viewModel.userInfo.value } coAnswers { userInfo }
+                coEvery { viewModel.user.value } coAnswers { userInfo }
 
                 coEvery {
                     userInfoRepository.updateUserInfo(userInfo)

@@ -57,10 +57,15 @@ class UserRepositoryImpl @Inject constructor(
         loginUser
     }
 
-    override suspend fun updateUser(user: User): Boolean {
-
-        TODO("")
-    }
+    override suspend fun updateUser(user: User): Boolean =
+        withContext(Dispatchers.IO) {
+            var updateUserResult = false
+            val response = userRemoteDataSource.updateUserEntity(user)
+            if (response is NetworkResult.Success) {
+                updateUserResult = true
+            }
+            updateUserResult
+        }
 
     override suspend fun isUserRegistration(walletAddress: String): Boolean =
         withContext(Dispatchers.IO) {

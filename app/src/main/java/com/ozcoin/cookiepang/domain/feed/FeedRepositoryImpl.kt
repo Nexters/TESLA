@@ -24,7 +24,7 @@ class FeedRepositoryImpl @Inject constructor(
             } else {
                 val response = timeLineRemoteDataSource.getTimeLine(userId, userCategory.toData())
                 if (response is NetworkResult.Success) {
-                    DataResult.OnSuccess(response.response.map { it.toDomain() })
+                    DataResult.OnSuccess(response.response.contents.map { it.toDomain() })
                 } else {
                     DataResult.OnFail
                 }
@@ -35,7 +35,7 @@ class FeedRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             val response = timeLineRemoteDataSource.getAllTimeLine(userId)
             if (response is NetworkResult.Success) {
-                DataResult.OnSuccess(response.response.map { it.toDomain() })
+                DataResult.OnSuccess(response.response.contents.map { it.toDomain() })
             } else {
                 DataResult.OnFail
             }

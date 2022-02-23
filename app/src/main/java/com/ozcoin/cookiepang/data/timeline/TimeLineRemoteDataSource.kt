@@ -10,8 +10,10 @@ class TimeLineRemoteDataSource @Inject constructor(
 ) {
 
     suspend fun getAllTimeLine(userId: String) =
-        safeApiCall { apiService.getAllCookieList(userId) }
+        safeApiCall { apiService.getAllCookieList(userId, 0, 100) }
 
     suspend fun getTimeLine(userId: String, categoryEntity: CategoryEntity) =
-        safeApiCall { apiService.getCookieList(userId, categoryId = categoryEntity.id.toString()) }
+        safeApiCall {
+            apiService.getCookieList(userId, categoryId = categoryEntity.id.toString(), 0, 100)
+        }
 }

@@ -31,7 +31,7 @@
         <ImageView
             android:id="@+id/iv_profile_background_img"
             tools:src="@drawable/ic_default_profile_background_img"
-            loadProfileBackgroundImg="@{viewModel.userInfo.profileBackgroundImgUrl}"
+            loadProfileBackgroundImg="@{viewModel.user.backgroundUrl}"
             setErrorImg="@{@drawable/ic_default_profile_background_img}"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
@@ -64,7 +64,7 @@
 
             <ImageView
                 android:id="@+id/iv_user_thumbnail"
-                loadCircleImg="@{viewModel.userInfo.thumbnailUrl}"
+                loadCircleImg="@{viewModel.user.profileUrl}"
                 setErrorImg="@{@drawable/ic_circle_user_profile_default}"
                 tools:background="@drawable/ic_circle_user_profile_default"
                 app:layout_constraintTop_toBottomOf="@+id/include_title_layout"
@@ -73,7 +73,6 @@
                 android:layout_height="match_parent" />
 
         </androidx.cardview.widget.CardView>
-
 
         <ImageView
             android:id="@+id/iv_edit_thumbnail_img_btn"
@@ -88,7 +87,7 @@
             android:id="@+id/tv_user_profileId"
             style="@style/TextAppearance.large_bold"
             android:textColor="@color/gray_90_t1"
-            android:text="@{viewModel.userInfo.profileId}"
+            android:text="@{viewModel.user.profileID}"
             tools:text="user_name"
             app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
             app:layout_constraintTop_toBottomOf="@+id/cv_user_thumbnail_container"
@@ -138,7 +137,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
             app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
             android:hint="Input a Introduce"
-            android:text="@={viewModel.userInfo.introduce}"
+            android:text="@={viewModel.user.introduction}"
             android:gravity="center|start|top"
             android:inputType="textMultiLine"
             android:maxLength="25"

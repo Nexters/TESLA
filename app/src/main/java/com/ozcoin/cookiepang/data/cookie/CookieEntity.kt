@@ -23,9 +23,10 @@ data class CookieEntity(
 fun CookieEntity.toDomain(): Cookie {
     return Cookie(
         cookieId = id.toString(),
-        isHidden = false,
-        cookieBoxImgUrl = "",
-        cookieBoxCoverImgUrl = "",
-        cookieImgUrl = ""
+        isHidden = status == CookieStatusType.HIDDEN,
+        cookieBoxImgUrl = imageUrl,
+        cookieBoxCoverImgUrl = imageUrl,
+        cookieImgUrl = imageUrl,
+        categoryId = categoryId,
     )
 }

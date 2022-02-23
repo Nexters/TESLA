@@ -14,16 +14,18 @@ import com.ozcoin.cookiepang.data.response.AnswerResponse
 import com.ozcoin.cookiepang.data.response.PriceResponse
 import com.ozcoin.cookiepang.data.response.TokenAddressResponse
 import com.ozcoin.cookiepang.data.response.UserIdResponse
-import com.ozcoin.cookiepang.data.timeline.TimeLineEntity
+import com.ozcoin.cookiepang.data.timeline.TimeLineResponse
 import com.ozcoin.cookiepang.data.user.LoginRequestParam
 import com.ozcoin.cookiepang.data.user.UserEntity
-import com.ozcoin.cookiepang.data.user.UserUpdateRequestParam
+import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.DELETE
 import retrofit2.http.GET
+import retrofit2.http.Multipart
 import retrofit2.http.POST
 import retrofit2.http.PUT
+import retrofit2.http.Part
 import retrofit2.http.Path
 import retrofit2.http.Query
 import retrofit2.http.QueryMap
@@ -43,11 +45,13 @@ interface ApiService {
     @GET("/users/{userId}")
     suspend fun getUser(@Path("userId") userId: Int): Response<UserEntity>
 
+    @Multipart
     @PUT("/users/{userId}")
     suspend fun updateUser(
         @Path("userId") userId: Int,
         @Query("introduction") introduction: String,
-        @Body userUpdateRequestParam: UserUpdateRequestParam
+        @Part profilePicture: MultipartBody.Part,
+        @Part backgroundPicture: MultipartBody.Part
     ): Response<UserEntity>
 
     /*
@@ -143,14 +147,14 @@ interface ApiService {
         @Path("categoryId") categoryId: String,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 3
-    ): Response<List<TimeLineEntity>>
+    ): Response<TimeLineResponse>
 
     @GET("/users/{userId}/categories/all/cookies")
     suspend fun getAllCookieList(
         @Path("userId") userId: String,
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 3
-    ): Response<List<TimeLineEntity>>
+    ): Response<TimeLineResponse>
 
     /*
         contract-hammer-controller
