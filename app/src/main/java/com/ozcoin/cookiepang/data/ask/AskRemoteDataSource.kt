@@ -1,6 +1,9 @@
 package com.ozcoin.cookiepang.data.ask
 
 import com.ozcoin.cookiepang.data.request.ApiService
+import com.ozcoin.cookiepang.domain.ask.Ask
+import com.ozcoin.cookiepang.domain.ask.AskStatusType
+import com.ozcoin.cookiepang.domain.question.Question
 import com.ozcoin.cookiepang.domain.user.toDataUserId
 import com.ozcoin.cookiepang.extensions.safeApiCall
 import javax.inject.Inject
@@ -14,5 +17,17 @@ class AskRemoteDataSource @Inject constructor(
             apiService.getAskList(userId.toDataUserId(), "RECEIVER")
         }
 
-    suspend fun askToUser(askEntity: AskEntity) = safeApiCall { apiService.sendAsk(askEntity) }
+    suspend fun askToUser(ask: Ask) = safeApiCall { apiService.sendAsk(ask.toData()) }
+
+    suspend fun updateAsk(question: Question, askStatusType: AskStatusType) =
+        safeApiCall {
+            apiService.updateAsk(
+                question.questionId,
+                AskUpdateRequestBody(
+                    question.question,
+                    askStatusType.toData(),
+                    question.category.categoryId
+                )
+            )
+        }
 }

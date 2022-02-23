@@ -5,19 +5,20 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class NotificationEntity(
-    val askId: Int,
+    val id: Int?,
+    val type: NotificationEntityType,
+    val title: String,
     val content: String,
-    val cookieId: Int,
+    val receiverUserId: Int?,
+    val senderUserId: Int?,
     val createdAt: String,
-    val id: Int,
-    val receiverUserId: Int,
-    val senderUserId: Int,
-    val type: NotificationEntityType
+    val askId: Int?,
+    val cookieId: Int?
 )
 
 fun NotificationEntity.toDomain(): Alarm {
     return Alarm(
-        alarmId = id,
+        alarmId = id ?: 0,
         title = type.name,
         contents = content,
         time = createdAt

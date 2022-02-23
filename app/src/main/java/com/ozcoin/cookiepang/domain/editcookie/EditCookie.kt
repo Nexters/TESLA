@@ -6,6 +6,7 @@ import androidx.annotation.Keep
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.ozcoin.cookiepang.BR
+import com.ozcoin.cookiepang.domain.question.Question
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 
 @Keep
@@ -18,10 +19,11 @@ class EditCookie constructor() : BaseObservable(), Parcelable {
             question = readString() ?: ""
             answer = readString() ?: ""
             hammerCost = readString() ?: ""
+            receivedQuestion = readParcelable(EditCookie::class.java.classLoader)
             selectedCategory = readParcelable(EditCookie::class.java.classLoader)
         }
     }
-
+    var receivedQuestion: Question? = null
     var isEditPricingInfo = false
     var cookieId: Int = -1
 
@@ -56,6 +58,7 @@ class EditCookie constructor() : BaseObservable(), Parcelable {
             writeString(answer)
             writeString(hammerCost)
             writeParcelable(selectedCategory, flags)
+            writeParcelable(receivedQuestion, flags)
         }
     }
 

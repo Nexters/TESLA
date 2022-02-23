@@ -30,7 +30,7 @@ fun Content.toDomain(): Feed {
         isHidden = !myCookie,
         question = question,
         cookieId = cookieId,
-        createdTimeStamp = DateUtil.convertToFeedTimeStamp(createdAt.split(".")[0]),
+        createdTimeStamp = DateUtil.convertToAppTimeStamp(createdAt),
         viewCount = viewCount,
         hammerPrice = price,
         userProfileId = creatorName,

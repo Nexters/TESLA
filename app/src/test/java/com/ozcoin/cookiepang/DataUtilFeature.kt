@@ -28,7 +28,7 @@ class DataUtilFeature : FeatureSpec() {
 
                 time = format.format(date)
 
-                DateUtil.convertToFeedTimeStamp(time) shouldBe "23시간 전"
+                DateUtil.convertToAppTimeStamp(time) shouldBe "23시간 전"
             }
 
             scenario("24시간 전에 생성되었으면 1일 전") {
@@ -38,7 +38,7 @@ class DataUtilFeature : FeatureSpec() {
 
                 time = format.format(date)
 
-                DateUtil.convertToFeedTimeStamp(time) shouldBe "1일 전"
+                DateUtil.convertToAppTimeStamp(time) shouldBe "1일 전"
             }
         }
     }

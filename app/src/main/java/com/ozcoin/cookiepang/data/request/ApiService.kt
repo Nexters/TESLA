@@ -1,7 +1,7 @@
 package com.ozcoin.cookiepang.data.request
 
 import com.ozcoin.cookiepang.data.ask.AskEntity
-import com.ozcoin.cookiepang.data.ask.AskUpdateRequestParam
+import com.ozcoin.cookiepang.data.ask.AskUpdateRequestBody
 import com.ozcoin.cookiepang.data.category.CategoryEntity
 import com.ozcoin.cookiepang.data.cookie.CookieEntity
 import com.ozcoin.cookiepang.data.cookie.CookieResponse
@@ -91,8 +91,8 @@ interface ApiService {
 
     @PUT("/asks/{askId}")
     suspend fun updateAsk(
-        @Path("askId") askId: String,
-        @Query("updateAsk") updateRequestParam: AskUpdateRequestParam
+        @Path("askId") askId: Int,
+        @Body askUpdateRequestBody: AskUpdateRequestBody
     ): Response<AskEntity>
 
     /*

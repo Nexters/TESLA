@@ -164,6 +164,8 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
         if (editCookie != null) {
             setupSpinnerListener(editCookie)
             editCookieFragmentViewModel.setEditCookie(editCookie)
+        } else {
+            setupSpinnerListener(editCookieFragmentViewModel.editCookie.value)
         }
     }
 

@@ -8,6 +8,7 @@ import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.domain.editcookie.EditCookie
 import com.ozcoin.cookiepang.domain.editcookie.EditCookieRepository
 import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepository
+import com.ozcoin.cookiepang.domain.question.QuestionRepository
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
@@ -35,6 +36,7 @@ class EditCookieFragmentViewModel @Inject constructor(
     private val userRepository: UserRepository,
     private val userCategoryRepository: UserCategoryRepository,
     private val editCookieRepository: EditCookieRepository,
+    private val questionRepository: QuestionRepository,
     private val klipContractTxRepository: KlipContractTxRepository
 ) : BaseViewModel(), LifecycleEventObserver {
 
@@ -244,6 +246,16 @@ class EditCookieFragmentViewModel @Inject constructor(
                 editCookie.value
             )
             if (resultCookieId.isNotBlank()) {
+                val question = editCookie.value.receivedQuestion
+                if (question != null) {
+                    Timber.d("ask 로 만든 쿠키라 ask 상태 변경 중 ~")
+                    if (questionRepository.acceptQuestion(question)) {
+                        Timber.d("ask 상태 변경 성공 .. !")
+                    } else {
+                        Timber.d("ask 상태 변경 실패 .. ")
+                    }
+                }
+
                 uiStateObserver.update(UiState.OnSuccess)
                 showMakeACookieSuccessDialog(resultCookieId)
             } else {

@@ -16,10 +16,9 @@ class AlarmsRepositoryImpl @Inject constructor(
     override suspend fun getAlarmsList(userId: String): DataResult<List<Alarms>> =
         withContext(Dispatchers.IO) {
             getDataResult(notificationRemoteDataSource.getNotificationList(userId)) { res ->
-                val result = convertNotificationListToAlarmsList(
+                convertNotificationListToAlarmsList(
                     res.map { it.toDomain() }
                 )
-                result
             }
         }
 
@@ -27,13 +26,17 @@ class AlarmsRepositoryImpl @Inject constructor(
         val alarmsList = mutableListOf<Alarms>()
 
         if (noticeList.isNotEmpty()) {
+            val dateMap = HashMap<String, String>()
             for (n in noticeList) {
                 val alarmList = mutableListOf<Alarm>()
 
                 val date = DateUtil.convertToAlarmsTimeStamp(n.time)
+                if (dateMap[date] != null)
+                    continue
+
                 for (a in noticeList) {
-                    if (DateUtil.convertToAlarmTimeStamp(a.time) == date) {
-                        val alarm = Alarm(a.alarmId, a.title, a.contents, a.time)
+                    if (DateUtil.convertToAlarmsTimeStamp(a.time) == date) {
+                        val alarm = Alarm(a.alarmId, a.title, a.contents, DateUtil.convertToAlarmTimeStamp(a.time))
                         alarmList.add(alarm)
                     }
                 }

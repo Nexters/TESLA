@@ -24,7 +24,7 @@ class EditCookieRepositoryImpl @Inject constructor(
             )
         )
         getDataResult(response) {
-            makeACookieResult = it.cookieId.toString()
+            makeACookieResult = it.id.toString()
         }
 
         makeACookieResult

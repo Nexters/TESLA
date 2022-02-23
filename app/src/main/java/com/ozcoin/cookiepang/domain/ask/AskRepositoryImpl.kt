@@ -1,7 +1,6 @@
 package com.ozcoin.cookiepang.domain.ask
 
 import com.ozcoin.cookiepang.data.ask.AskRemoteDataSource
-import com.ozcoin.cookiepang.data.ask.toData
 import com.ozcoin.cookiepang.extensions.getDataResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -16,7 +15,7 @@ class AskRepositoryImpl @Inject constructor(
         Timber.d(ask.toString())
         var askResult = false
 
-        getDataResult(askRemoteDataSource.askToUser(ask.toData())) {
+        getDataResult(askRemoteDataSource.askToUser(ask)) {
             askResult = true
         }
 

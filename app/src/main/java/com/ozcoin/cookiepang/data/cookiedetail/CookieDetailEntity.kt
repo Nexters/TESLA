@@ -3,6 +3,7 @@ package com.ozcoin.cookiepang.data.cookiedetail
 import androidx.annotation.Keep
 import com.ozcoin.cookiepang.data.category.CategoryEntity
 import com.ozcoin.cookiepang.data.category.toDomain
+import com.ozcoin.cookiepang.data.cookie.CookieStatusType
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.feed.CookieCardStyle
 import kotlinx.serialization.Serializable
@@ -13,6 +14,7 @@ data class CookieDetailEntity(
     val cookieId: Int,
     val question: String,
     val answer: String?,
+    val cookieStatus: CookieStatusType,
     val collectorId: Int,
     val collectorName: String,
     val collectorProfileUrl: String?,
@@ -44,11 +46,11 @@ fun CookieDetailEntity.toDomain(): CookieDetail {
         contractAddress = contractAddress,
         tokenAddress = nftTokenId.toString(),
         cookieHistory = histories.map { it.toDomain() },
-        isHidden = false,
+        isHidden = cookieStatus == CookieStatusType.HIDDEN,
         isOnSale = true,
         collectorUserId = collectorId.toString(),
         creatorUserId = creatorId.toString(),
         nftTokenId = nftTokenId,
-        cookieId = -1
+        cookieId = cookieId
     )
 }

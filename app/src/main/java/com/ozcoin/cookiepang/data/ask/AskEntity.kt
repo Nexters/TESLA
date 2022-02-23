@@ -11,15 +11,16 @@ data class AskEntity(
     val id: Int? = null,
     val title: String,
     val status: AskEntityStateType,
-    val receiverUserId: Int,
-    val senderUserId: Int
+    val receiverId: Int,
+    val senderId: Int,
+    val categoryId: Int
 )
 
 fun AskEntity.toDomain(): Ask {
     return Ask(
         askId = id ?: -1,
-        senderUserId = senderUserId.toString(),
-        receiverUserId = receiverUserId.toString(),
+        senderUserId = senderId.toString(),
+        receiverUserId = receiverId.toString(),
         question = title,
         status = status.toDomain(),
         selectedCategory = null
@@ -29,8 +30,9 @@ fun AskEntity.toDomain(): Ask {
 fun Ask.toData(): AskEntity {
     return AskEntity(
         title = question,
-        senderUserId = senderUserId.toDataUserId(),
-        receiverUserId = receiverUserId.toDataUserId(),
-        status = status?.toData() ?: AskEntityStateType.PENDING
+        senderId = senderUserId.toDataUserId(),
+        receiverId = receiverUserId.toDataUserId(),
+        status = status?.toData() ?: AskEntityStateType.PENDING,
+        categoryId = selectedCategory?.categoryId ?: 0
     )
 }

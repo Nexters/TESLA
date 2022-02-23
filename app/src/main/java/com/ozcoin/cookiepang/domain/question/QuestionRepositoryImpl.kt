@@ -7,7 +7,6 @@ import com.ozcoin.cookiepang.domain.ask.toQuestion
 import com.ozcoin.cookiepang.extensions.getDataResult
 import com.ozcoin.cookiepang.utils.DataResult
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 import kotlin.streams.toList
@@ -29,8 +28,21 @@ class QuestionRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun ignoreQuestion(question: Question): Boolean = withContext(Dispatchers.IO) {
-        delay(500L)
-        true
-    }
+    override suspend fun ignoreQuestion(question: Question): Boolean =
+        withContext(Dispatchers.IO) {
+            var ignoreResult = false
+            getDataResult(askRemoteDataSource.updateAsk(question, AskStatusType.IGNORED)) {
+                ignoreResult = true
+            }
+            ignoreResult
+        }
+
+    override suspend fun acceptQuestion(question: Question): Boolean =
+        withContext(Dispatchers.IO) {
+            var ignoreResult = false
+            getDataResult(askRemoteDataSource.updateAsk(question, AskStatusType.ACCEPTED)) {
+                ignoreResult = true
+            }
+            ignoreResult
+        }
 }

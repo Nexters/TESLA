@@ -31,6 +31,6 @@ class AlarmsListAdapter : RecyclerView.Adapter<AlarmsViewHolder>() {
         list.clear()
         list.addAll(newList)
 
-        notifyItemRangeInserted(0, newList.size - 1)
+        notifyItemRangeInserted(0, newList.size)
     }
 }

@@ -16,7 +16,11 @@ object DateUtil {
         const val MONTH = 12
     }
 
-    fun convertToFeedTimeStamp(date: Date): String {
+    private val serverFormat = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss").apply {
+        timeZone = TimeZone.getTimeZone("Asia/Seoul")
+    }
+
+    fun convertToAppTimeStamp(date: Date): String {
         val curTime = System.currentTimeMillis()
         val regTime: Long = date.time
         var diffTime = (curTime - regTime) / 1000
@@ -44,10 +48,11 @@ object DateUtil {
         return msg
     }
 
-    fun convertToFeedTimeStamp(createdAt: String): String {
-        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss")
-        format.timeZone = TimeZone.getTimeZone("Asia/Seoul")
-        val date = kotlin.runCatching { format.parse(createdAt) }.getOrNull()
+    fun convertToAppTimeStamp(createdAt: String): String {
+        val createdAt = createdAt.split(".")[0]
+
+        serverFormat.timeZone = TimeZone.getTimeZone("Asia/Seoul")
+        val date = kotlin.runCatching { serverFormat.parse(createdAt) }.getOrNull()
 
         if (date != null) {
             val curTime = System.currentTimeMillis()
@@ -81,9 +86,10 @@ object DateUtil {
     }
 
     fun convertToAlarmsTimeStamp(createdAt: String): String {
+        val createdAt = createdAt.split(".")[0]
+        val date = kotlin.runCatching { serverFormat.parse(createdAt) }.getOrNull()
         val format = SimpleDateFormat("yyyy-MM-dd")
         format.timeZone = TimeZone.getTimeZone("Asia/Seoul")
-        val date = kotlin.runCatching { format.parse(createdAt) }.getOrNull()
         return if (date != null) {
             format.format(date)
         } else {
@@ -92,9 +98,10 @@ object DateUtil {
     }
 
     fun convertToAlarmTimeStamp(createdAt: String): String {
+        val createdAt = createdAt.split(".")[0]
+        val date = kotlin.runCatching { serverFormat.parse(createdAt) }.getOrNull()
         val format = SimpleDateFormat("HH:mm")
         format.timeZone = TimeZone.getTimeZone("Asia/Seoul")
-        val date = kotlin.runCatching { format.parse(createdAt) }.getOrNull()
         return if (date != null) {
             format.format(date)
         } else {

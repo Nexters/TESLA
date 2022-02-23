@@ -2,6 +2,7 @@ package com.ozcoin.cookiepang.data.cookiedetail
 
 import androidx.annotation.Keep
 import com.ozcoin.cookiepang.domain.cookiehistory.CookieHistory
+import com.ozcoin.cookiepang.utils.DateUtil
 import kotlinx.serialization.Serializable
 
 @Keep
@@ -16,6 +17,6 @@ fun HistoryEntity.toDomain(): CookieHistory {
     return CookieHistory(
         cookieHistoryType = action.toDomain(),
         contents = content,
-        timeStamp = createdAt
+        timeStamp = DateUtil.convertToAppTimeStamp(createdAt)
     )
 }
