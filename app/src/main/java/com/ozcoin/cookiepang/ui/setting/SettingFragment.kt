@@ -37,7 +37,10 @@ class SettingFragment : BaseFragment<FragmentSettingBinding>() {
     }
 
     override fun init() {
-        settingFragmentViewModel.hideBtmMenu = mainActivityViewModel::hideBtmNavView
-        settingFragmentViewModel.activityEventObserver = EventObserver(mainActivityViewModel::updateEvent)
+        with(settingFragmentViewModel) {
+            hideBtmMenu = mainActivityViewModel::hideBtmNavView
+            activityEventObserver = EventObserver(mainActivityViewModel::updateEvent)
+            loadUserInfo()
+        }
     }
 }

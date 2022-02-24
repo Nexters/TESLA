@@ -5,6 +5,7 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
+import com.ozcoin.cookiepang.common.TRANSITION_ANIM_DURATION
 import com.ozcoin.cookiepang.domain.contract.ContractRepository
 import com.ozcoin.cookiepang.domain.editcookie.EditCookie
 import com.ozcoin.cookiepang.domain.editcookie.EditCookieRepository
@@ -25,6 +26,7 @@ import com.ozcoin.cookiepang.utils.asEventFlow
 import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -32,6 +34,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.math.BigInteger
 import javax.inject.Inject
+import kotlin.system.measureTimeMillis
 
 @HiltViewModel
 class EditCookieFragmentViewModel @Inject constructor(
@@ -77,7 +80,7 @@ class EditCookieFragmentViewModel @Inject constructor(
     private var klipPendingType = -1
 
     lateinit var uiStateObserver: UiStateObserver
-    lateinit var eventObserver: EventObserver
+    lateinit var activityEventObserver: EventObserver
 
     fun emitQuestionLength(length: Int) {
         val caption = if (length >= 20) {
@@ -113,11 +116,15 @@ class EditCookieFragmentViewModel @Inject constructor(
         uiStateObserver.update(UiState.OnLoading)
 
         viewModelScope.launch {
-            val result = userCategoryRepository.getAllUserCategory()
+            val result: DataResult<List<UserCategory>>
+            val loadingTime = measureTimeMillis {
+                result = userCategoryRepository.getAllUserCategory()
+            }
             if (result is DataResult.OnSuccess) {
                 Timber.d("getUserCategoryList onSuccess")
-                _userCategoryList.emit(result.response)
+                delay(TRANSITION_ANIM_DURATION - loadingTime)
                 uiStateObserver.update(UiState.OnSuccess)
+                _userCategoryList.emit(result.response)
             } else {
                 Timber.d("getUserCategoryList onFail")
                 uiStateObserver.update(UiState.OnFail)
@@ -135,7 +142,7 @@ class EditCookieFragmentViewModel @Inject constructor(
         )
 
         viewModelScope.launch {
-            eventObserver.update(event)
+            activityEventObserver.update(event)
         }
     }
 
@@ -146,7 +153,7 @@ class EditCookieFragmentViewModel @Inject constructor(
     }
 
     private fun showMakeACookieSuccessDialog(cookieId: String) {
-        eventObserver.update(
+        activityEventObserver.update(
             Event.ShowDialog(
                 DialogUtil.getMakeCookieSuccessContents(),
                 callback = {
@@ -161,7 +168,7 @@ class EditCookieFragmentViewModel @Inject constructor(
     }
 
     private fun showMakeACookieFailDialog() {
-        eventObserver.update(
+        activityEventObserver.update(
             Event.ShowDialog(
                 DialogUtil.getMakeCookieFailContents(),
                 callback = {
@@ -187,7 +194,7 @@ class EditCookieFragmentViewModel @Inject constructor(
     }
 
     private fun showMakeACookiePreAlertDialog() {
-        eventObserver.update(
+        activityEventObserver.update(
             Event.ShowDialog(
                 DialogUtil.getMakeCookiePreAlertContents(),
                 callback = {
@@ -199,12 +206,19 @@ class EditCookieFragmentViewModel @Inject constructor(
         )
     }
 
-    private fun showWalletApproveDialog() {
-        TODO("")
+    private fun showWalletApproveRequiredDialog() {
+        activityEventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getWalletApproveRequiredContents(),
+                callback = {
+                    if (it) navigateTo(EditCookieFragmentDirections.actionSetting())
+                }
+            )
+        )
     }
 
     private fun showNotEnoughHammerDialog() {
-        eventObserver.update(
+        activityEventObserver.update(
             Event.ShowDialog(
                 DialogUtil.getNotEnoughHammerContents(),
                 callback = {
@@ -218,18 +232,23 @@ class EditCookieFragmentViewModel @Inject constructor(
 
     private fun makeACookie(editCookie: EditCookie) {
         if (isEssentialCookieInfoComplete(editCookie)) {
+            uiStateObserver.update(UiState.OnLoading)
+
             viewModelScope.launch {
                 val userId = userRepository.getLoginUser()?.userId ?: "-1"
-                if (contractRepository.isWalletApproved(userId)) {
+                if (!contractRepository.isWalletApproved(userId)) {
                     Timber.d("지갑 권한 허용된 상태")
                     if (BigInteger(contractRepository.getMakeCookieTaxPrice().toString()) >= contractRepository.getNumOfHammerBalance(userId)) {
                         Timber.d("쿠키 만들기 수수료 이상 해머 보유 중")
+                        uiStateObserver.update(UiState.OnSuccess)
                         showMakeACookiePreAlertDialog()
                     } else {
+                        uiStateObserver.update(UiState.OnSuccess)
                         showNotEnoughHammerDialog()
                     }
                 } else {
-                    showWalletApproveDialog()
+                    uiStateObserver.update(UiState.OnSuccess)
+                    showWalletApproveRequiredDialog()
                 }
             }
         } else {

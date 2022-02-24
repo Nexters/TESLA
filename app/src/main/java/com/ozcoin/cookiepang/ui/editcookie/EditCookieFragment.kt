@@ -24,6 +24,7 @@ import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -123,7 +124,7 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
     override fun initObserve() {
         with(editCookieFragmentViewModel) {
             lifecycle.addObserver(this)
-            eventObserver = EventObserver(mainActivityViewModel::updateEvent)
+            activityEventObserver = EventObserver(mainActivityViewModel::updateEvent)
             uiStateObserver = UiStateObserver(mainActivityViewModel::updateUiState)
         }
         observeEvent(editCookieFragmentViewModel)
@@ -141,7 +142,7 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
 
     private fun observeUserCategory() {
         viewLifecycleScope.launch {
-            editCookieFragmentViewModel.userCategoryList.collect {
+            editCookieFragmentViewModel.userCategoryList.takeWhile { it.isNotEmpty() }.collect {
                 matchUserCategoryListBySelectedCategory(it)
                 userCategoryListAdapter.updateList(it)
             }
@@ -159,7 +160,6 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
     }
 
     override fun init() {
-        editCookieFragmentViewModel.getUserCategoryList()
         val editCookie = getEditCookie()
         if (editCookie != null) {
             setupSpinnerListener(editCookie)
@@ -167,6 +167,7 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
         } else {
             setupSpinnerListener(editCookieFragmentViewModel.editCookie.value)
         }
+        editCookieFragmentViewModel.getUserCategoryList()
     }
 
     private fun getEditCookie(): EditCookie? {

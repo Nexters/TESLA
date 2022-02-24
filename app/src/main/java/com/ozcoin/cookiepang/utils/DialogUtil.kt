@@ -1,7 +1,9 @@
 package com.ozcoin.cookiepang.utils
 
+import com.ozcoin.cookiepang.common.URL_OFTEN_ASK_QUESTIONS
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.dialog.DialogContents
+import com.ozcoin.cookiepang.domain.dialog.DialogLink
 
 object DialogUtil {
 
@@ -109,6 +111,16 @@ object DialogUtil {
             title = "이 쿠키는 숨겨졌어요..!",
             contents = "숨겨진 쿠키는 소유자가 공개할 때까지\n볼 수 없어요. 다른 쿠키를 구경해볼까요?",
             confirm = "확인하기"
+        )
+    }
+
+    fun getWalletApproveRequiredContents(): DialogContents {
+        return DialogContents(
+            title = "지갑 권한 허가가 필요합니다.",
+            contents = "쿠키 거래를 위해서 최초 1회\n지갑 권한 허가가 필요해요.",
+            confirm = "권한 허가하기",
+            cancel = "취소하기",
+            dialogLink = DialogLink("지갑 권한 허가란?", URL_OFTEN_ASK_QUESTIONS)
         )
     }
 

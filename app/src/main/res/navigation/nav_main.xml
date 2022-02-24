@@ -307,6 +307,10 @@
                 app:popExitAnim="@anim/slide_out_right"
                 app:destination="@id/my_home_dest" />
 
+            <action
+                android:id="@+id/action_setting"
+                app:destination="@id/setting_dest" />
+
         </fragment>
 
         <fragment
@@ -331,6 +335,10 @@
                 app:popExitAnim="@anim/slide_out_right"
                 app:popUpTo="@id/editCookie_dest"
                 app:popUpToInclusive="true" />
+
+            <action
+                android:id="@+id/action_setting"
+                app:destination="@id/setting_dest" />
 
         </fragment>
 

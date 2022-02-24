@@ -125,7 +125,7 @@
 
             <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
                 style="@style/TextAppearance.body_01_medium"
-                android:text="자주 묻는 질문"
+                android:text="지갑 권한 허용하기란?"
                 android:onClick="@{() -> viewModel.clickOftenAskQuestion()}"
                 android:layout_marginTop="16dp"
                 android:paddingTop="11dp"

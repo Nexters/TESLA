@@ -137,6 +137,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding>() {
                 popEnter = R.anim.slide_in_up
                 popExit = R.anim.slide_out_down
             }
+            launchSingleTop = true
         }
 
         val args = event.editCookie?.let { editCookie ->

@@ -32,12 +32,6 @@ class SettingFragmentViewModel @Inject constructor(
     private val klipContractTxRepository: KlipContractTxRepository
 ) : BaseViewModel(), LifecycleEventObserver {
 
-    init {
-        viewModelScope.launch {
-            loadUserInfo()
-        }
-    }
-
     val titleClickListener = TitleClickListener(
         EventObserver {
             viewModelScope.launch { _eventFlow.emit(it) }
@@ -52,12 +46,17 @@ class SettingFragmentViewModel @Inject constructor(
     lateinit var activityEventObserver: EventObserver
     lateinit var uiStateObserver: UiStateObserver
 
-    private suspend fun loadUserInfo() {
-        val loginUser = userRepository.getLoginUser()?.apply {
-            numOfHammer = contractRepository.getNumOfHammerBalance(userId).toString()
-            numOfKlaytn = contractRepository.getNumOfKlaytnBalance(userId).toString()
+    fun loadUserInfo() {
+        uiStateObserver.update(UiState.OnLoading)
+
+        viewModelScope.launch {
+            val loginUser = userRepository.getLoginUser()?.apply {
+                numOfHammer = contractRepository.getNumOfHammerBalance(userId).toString()
+                numOfKlaytn = contractRepository.getNumOfKlaytnBalance(userId).toString()
+            }
+            uiStateObserver.update(UiState.OnSuccess)
+            _loginUser.emit(loginUser)
         }
-        _loginUser.emit(loginUser)
     }
 
     private fun approveWallet() {

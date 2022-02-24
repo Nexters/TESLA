@@ -160,7 +160,16 @@ class CookieDetailViewModel @Inject constructor(
     }
 
     private fun showApproveWalletDialog() {
-        TODO("")
+        activityEventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getWalletApproveRequiredContents(),
+                callback = {
+                    if (it) {
+                        navigateTo(CookieDetailFragmentDirections.actionSetting())
+                    }
+                }
+            )
+        )
     }
 
     private fun showNotEnoughHammerDialog() {
