@@ -1,5 +1,7 @@
 package com.ozcoin.cookiepang.ui.onboarding
 
+import android.view.View
+import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
@@ -19,16 +21,16 @@ class OnBoarding01Fragment : BaseFragment<FragmentOnBoarding01Binding>() {
         with(binding) {
             showSkipBtn = true
             viewModel = onBoarding01FragmentViewModel
+
+            includeTitleLayout.ivBackBtn.visibility = View.GONE
         }
     }
 
     override fun initListener() {
-        binding.includeTitleLayout.ivBackBtn.setOnClickListener {
-            onBoarding01FragmentViewModel.clickBack()
-        }
         binding.includeTitleLayout.tvSkipBtn.setOnClickListener {
-            onBoarding01FragmentViewModel.navigateToMain()
+            onBoarding01FragmentViewModel.navigateToCompUserReg()
         }
+        addBackKeyListener()
     }
 
     override fun initObserve() {
@@ -36,5 +38,24 @@ class OnBoarding01Fragment : BaseFragment<FragmentOnBoarding01Binding>() {
     }
 
     override fun init() {
+    }
+
+    private lateinit var onBackKeyPressedCallback: OnBackPressedCallback
+
+    private fun addBackKeyListener() {
+        onBackKeyPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        }
+        requireActivity().onBackPressedDispatcher.addCallback(this, onBackKeyPressedCallback)
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        removeBackKeyListener()
+    }
+
+    private fun removeBackKeyListener() {
+        onBackKeyPressedCallback.remove()
     }
 }

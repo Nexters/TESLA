@@ -103,7 +103,7 @@ class SelectCategoryFragmentViewModelBehavior : BehaviorSpec() {
                         coEvery {
                             userRepository.regUser(registrationUser)
                         } coAnswers {
-                            false
+                            mockk()
                         }
 
                         Then("회원 가입 실패") {
@@ -133,7 +133,7 @@ class SelectCategoryFragmentViewModelBehavior : BehaviorSpec() {
                         coEvery {
                             userRepository.regUser(registrationUser)
                         } coAnswers {
-                            true
+                            mockk()
                         }
 
                         Then("다음 화면으로 진행") {

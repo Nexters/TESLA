@@ -5,13 +5,16 @@ import androidx.fragment.app.viewModels
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentRegistUserInfoBinding
+import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.ui.login.LoginViewModel
+import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class RegistUserInfoFragment : BaseFragment<FragmentRegistUserInfoBinding>() {
 
     private val loginViewModel by activityViewModels<LoginViewModel>()
+    private val mainActivityViewModel by activityViewModels<MainActivityViewModel>()
     private val registUserInfoFragmentViewModel by viewModels<RegistUserInfoFragmentViewModel>()
 
     override fun getLayoutRes(): Int {
@@ -33,6 +36,7 @@ class RegistUserInfoFragment : BaseFragment<FragmentRegistUserInfoBinding>() {
 
     override fun initObserve() {
         observeEvent(registUserInfoFragmentViewModel)
+        registUserInfoFragmentViewModel.uiStateObserver = UiStateObserver(mainActivityViewModel::updateUiState)
     }
 
     override fun init() {

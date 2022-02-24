@@ -23,24 +23,24 @@ class User : BaseObservable() {
         }
 
     @get:Bindable
-    var dateOfBirth: String = ""
+    var location: String = ""
         set(value) {
             field = value
-            notifyPropertyChanged(BR.dateOfBirth)
+            notifyPropertyChanged(BR.location)
         }
 
     @get:Bindable
-    var mbti: String = ""
+    var height: String = ""
         set(value) {
             field = value
-            notifyPropertyChanged(BR.mbti)
+            notifyPropertyChanged(BR.height)
         }
 
     @get:Bindable
-    var hobby: String = ""
+    var job: String = ""
         set(value) {
             field = value
-            notifyPropertyChanged(BR.hobby)
+            notifyPropertyChanged(BR.job)
         }
 
     @get:Bindable
@@ -99,6 +99,7 @@ class User : BaseObservable() {
             notifyPropertyChanged(BR.backgroundUrl)
         }
 
+    var finishOnboard: Boolean = false
     var updateThumbnailImg: Bitmap? = null
     var updateProfileBackgroundImg: Bitmap? = null
 }

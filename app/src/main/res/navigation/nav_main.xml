@@ -94,34 +94,12 @@
             tools:layout="@layout/fragment_select_category">
 
             <action
-                android:id="@+id/action_completeUserReg"
-                app:destination="@id/completeUserReg_dest"
-                app:enterAnim="@anim/slide_in_right"
-                app:exitAnim="@anim/slide_out_left"
-                app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right"
-                app:popUpTo="@id/nav_login"
-                app:popUpToInclusive="true" />
-
-        </fragment>
-
-        <fragment
-            android:id="@+id/completeUserReg_dest"
-            android:name="com.ozcoin.cookiepang.ui.registuser.CompleteUserRegFragment"
-            android:label="CompleteUserRegFragment"
-            tools:layout="@layout/fragment_complete_user_reg">
-
-            <action
                 android:id="@+id/action_onBoarding01"
                 app:destination="@id/nav_on_boarding"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right" />
-
-            <action
-                android:id="@+id/action_main"
-                app:destination="@id/nav_main"
+                app:popExitAnim="@anim/slide_out_right"
                 app:popUpTo="@id/nav_login"
                 app:popUpToInclusive="true" />
 
@@ -148,8 +126,12 @@
                 app:popExitAnim="@anim/slide_out_right" />
 
             <action
-                android:id="@+id/action_main"
-                app:destination="@id/nav_main"
+                android:id="@+id/action_comp_user_reg"
+                app:destination="@id/nav_comp_user_reg"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"
                 app:popUpTo="@id/nav_on_boarding"
                 app:popUpToInclusive="true" />
 
@@ -170,8 +152,12 @@
                 app:popExitAnim="@anim/slide_out_right" />
 
             <action
-                android:id="@+id/action_main"
-                app:destination="@id/nav_main"
+                android:id="@+id/action_comp_user_reg"
+                app:destination="@id/nav_comp_user_reg"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"
                 app:popUpTo="@id/nav_on_boarding"
                 app:popUpToInclusive="true" />
 
@@ -188,9 +174,33 @@
             tools:layout="@layout/fragment_on_boarding_03">
 
             <action
+                android:id="@+id/action_comp_user_reg"
+                app:destination="@id/nav_comp_user_reg"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"
+                app:popUpTo="@id/nav_on_boarding"
+                app:popUpToInclusive="true" />
+
+        </fragment>
+
+    </navigation>
+
+    <navigation
+        android:id="@+id/nav_comp_user_reg"
+        app:startDestination="@id/completeUserReg_dest">
+
+        <fragment
+            android:id="@+id/completeUserReg_dest"
+            android:name="com.ozcoin.cookiepang.ui.registuser.CompleteUserRegFragment"
+            android:label="CompleteUserRegFragment"
+            tools:layout="@layout/fragment_complete_user_reg">
+
+            <action
                 android:id="@+id/action_main"
                 app:destination="@id/nav_main"
-                app:popUpTo="@id/nav_on_boarding"
+                app:popUpTo="@id/nav_splash"
                 app:popUpToInclusive="true" />
 
         </fragment>
@@ -217,19 +227,19 @@
 
             <action
                 android:id="@+id/action_cookieDetail"
-                app:launchSingleTop="true"
                 app:destination="@id/cookieDetail_dest"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
+                app:launchSingleTop="true"
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
             <action
                 android:id="@+id/action_my_home"
                 app:destination="@id/my_home_dest"
-                app:launchSingleTop="true"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
+                app:launchSingleTop="true"
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
@@ -249,10 +259,10 @@
 
             <action
                 android:id="@+id/action_cookieDetail"
-                app:launchSingleTop="true"
                 app:destination="@id/cookieDetail_dest"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
+                app:launchSingleTop="true"
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right" />
 
@@ -300,12 +310,12 @@
 
             <action
                 android:id="@+id/action_my_home"
-                app:launchSingleTop="true"
+                app:destination="@id/my_home_dest"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
+                app:launchSingleTop="true"
                 app:popEnterAnim="@anim/slide_in_left"
-                app:popExitAnim="@anim/slide_out_right"
-                app:destination="@id/my_home_dest" />
+                app:popExitAnim="@anim/slide_out_right" />
 
             <action
                 android:id="@+id/action_setting"
@@ -328,9 +338,9 @@
             <action
                 android:id="@+id/action_cookieDetail"
                 app:destination="@id/cookieDetail_dest"
-                app:launchSingleTop="true"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
+                app:launchSingleTop="true"
                 app:popEnterAnim="@anim/slide_in_left"
                 app:popExitAnim="@anim/slide_out_right"
                 app:popUpTo="@id/editCookie_dest"

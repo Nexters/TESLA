@@ -6,7 +6,7 @@ interface UserRepository {
 
     suspend fun getUser(userId: String): DataResult<User>
 
-    suspend fun regUser(user: User): Boolean
+    suspend fun regUser(user: User): DataResult<User>
 
     suspend fun getLoginUser(): User?
 

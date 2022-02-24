@@ -4,16 +4,18 @@ import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
 import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.UserRepository
+import com.ozcoin.cookiepang.utils.DataResult
+import com.ozcoin.cookiepang.utils.DialogUtil
 import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.EventFlow
 import com.ozcoin.cookiepang.utils.MutableEventFlow
 import com.ozcoin.cookiepang.utils.TextInputUtil
+import com.ozcoin.cookiepang.utils.observer.EventObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,6 +32,7 @@ class RegistIDFragmentViewModel @Inject constructor(
         get() = _profileIDMaxLengthCaption.asStateFlow()
 
     lateinit var user: User
+    lateinit var activityEventObserver: EventObserver
 
     private fun navigateToRegistInfo() {
         navigateTo(RegistIDFragmentDirections.actionRegistUserInfo())
@@ -45,16 +48,26 @@ class RegistIDFragmentViewModel @Inject constructor(
         }
     }
 
-    private suspend fun isAvailableProfileId(): Boolean {
-        return userRepository.regUser(user)
+    private fun showNotAvailableProfileIdDialog() {
+        activityEventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getNotAvailableProfileIdContents(),
+                callback = {
+                    if (it) {
+                        viewModelScope.launch {
+                            _registIdEventFlow.emit(RegistIDEvent.ProfileIdNotAvailable)
+                        }
+                    }
+                }
+            )
+        )
     }
 
-    private suspend fun checkAvailableProfileId(): Boolean {
+    private fun isAvailableProfileId(): Boolean {
         var result = false
         if (user.profileID.isNotBlank()) {
-            result = isAvailableProfileId()
-        } else {
-            Timber.d("profileId is empty")
+            val regex = "[0-9|a-zA-Zㄱ-ㅎㅏ-ㅣ가-힝^_-]*".toRegex()
+            result = user.profileID.matches(regex)
         }
 
         return result
@@ -62,11 +75,17 @@ class RegistIDFragmentViewModel @Inject constructor(
 
     private fun registId() {
         viewModelScope.launch {
-            if (checkAvailableProfileId()) {
-                navigateToRegistInfo()
+            if (isAvailableProfileId()) {
+                val result = userRepository.regUser(user)
+                when (result) {
+                    is DataResult.OnSuccess -> navigateToRegistInfo()
+                    is DataResult.OnFail -> {
+                        if (result.errorCode == 409)
+                            _eventFlow.emit(Event.ShowToast("이미 가입된 유저 입니다."))
+                    }
+                }
             } else {
-                _registIdEventFlow.emit(RegistIDEvent.ProfileIdNotAvailable)
-                _eventFlow.emit(Event.ShowToast("사용할 수 없습니다."))
+                showNotAvailableProfileIdDialog()
             }
         }
     }

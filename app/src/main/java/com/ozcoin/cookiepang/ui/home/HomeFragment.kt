@@ -3,9 +3,11 @@ package com.ozcoin.cookiepang.ui.home
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.ozcoin.cookiepang.MyApplication
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.adapter.FeedListAdapter
 import com.ozcoin.cookiepang.adapter.UserCategoryListAdapter
@@ -217,23 +219,43 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
+    private fun isMoveToMyHomeFromOnBoarding(): Boolean {
+        val result = (requireActivity().application as? MyApplication)?.onBoardingPageSelectedMyHome ?: false
+        (requireActivity().application as? MyApplication)?.onBoardingPageSelectedMyHome = false
+        return result
+    }
+
+    private fun navigateToMyHome() {
+        Timber.d("navigateToMyHome()")
+        val navOption = NavOptions.Builder().apply {
+            setLaunchSingleTop(true)
+            setPopUpTo(R.id.home_dest, false)
+        }
+        findNavController().navigate(R.id.my_home_dest, null, navOption.build())
+    }
+
     override fun init() {
-        viewLifecycleScope.launch {
-            if (itHaveToResetUserCategory()) {
-                binding.rvFeed.smoothScrollToPosition(0)
-                homeFragmentViewModel.getUserCategoryList()
-            } else {
-                if (isViewDataLoaded()) {
-                    Timber.d("is view data loaded")
-                    if (homeFragmentViewModel.userCategoryList.value.isEmpty()) {
-                        Timber.d("viewModel data not exist, restore list")
-                        restoreListState()
-                    } else {
-                        Timber.d("viewModel data exist")
-                    }
-                } else {
-                    Timber.d("is not view data loaded, so get list data")
+        if (isMoveToMyHomeFromOnBoarding()) {
+            Timber.d("온보딩 화면에서 프로필로 가기 선택")
+            navigateToMyHome()
+        } else {
+            viewLifecycleScope.launch {
+                if (itHaveToResetUserCategory()) {
+                    binding.rvFeed.smoothScrollToPosition(0)
                     homeFragmentViewModel.getUserCategoryList()
+                } else {
+                    if (isViewDataLoaded()) {
+                        Timber.d("is view data loaded")
+                        if (homeFragmentViewModel.userCategoryList.value.isEmpty()) {
+                            Timber.d("viewModel data not exist, restore list")
+                            restoreListState()
+                        } else {
+                            Timber.d("viewModel data exist")
+                        }
+                    } else {
+                        Timber.d("is not view data loaded, so get list data")
+                        homeFragmentViewModel.getUserCategoryList()
+                    }
                 }
             }
         }

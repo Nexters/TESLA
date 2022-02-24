@@ -1,7 +1,7 @@
 package com.ozcoin.cookiepang.domain.cookie
 
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
-import com.ozcoin.cookiepang.ui.onboarding.OnBoardingCookie
+import com.ozcoin.cookiepang.domain.onboarding.OnBoardingCookie
 import com.ozcoin.cookiepang.utils.DataResult
 
 interface CookieRepository {

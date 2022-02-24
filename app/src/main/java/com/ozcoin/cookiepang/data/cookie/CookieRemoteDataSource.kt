@@ -1,9 +1,9 @@
 package com.ozcoin.cookiepang.data.cookie
 
 import com.ozcoin.cookiepang.data.request.ApiService
+import com.ozcoin.cookiepang.domain.onboarding.OnBoardingCookie
 import com.ozcoin.cookiepang.domain.user.toDataUserId
 import com.ozcoin.cookiepang.extensions.safeApiCall
-import com.ozcoin.cookiepang.ui.onboarding.OnBoardingCookie
 import javax.inject.Inject
 
 class CookieRemoteDataSource @Inject constructor(

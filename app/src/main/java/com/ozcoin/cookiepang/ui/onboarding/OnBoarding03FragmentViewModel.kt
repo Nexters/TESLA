@@ -7,11 +7,11 @@ import javax.inject.Inject
 @HiltViewModel
 class OnBoarding03FragmentViewModel @Inject constructor() : BaseViewModel() {
 
-    private fun navigateToMain() {
-        navigateTo(OnBoarding03FragmentDirections.actionMain())
+    private fun navigateToCompUserReg() {
+        navigateTo(OnBoarding03FragmentDirections.actionCompUserReg())
     }
 
     fun clickConfirm() {
-        navigateToMain()
+        navigateToCompUserReg()
     }
 }

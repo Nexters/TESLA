@@ -1,6 +1,6 @@
 package com.ozcoin.cookiepang.data.cookie
 
-import com.ozcoin.cookiepang.ui.onboarding.OnBoardingCookie
+import com.ozcoin.cookiepang.domain.onboarding.OnBoardingCookie
 import kotlinx.serialization.Serializable
 
 @Serializable

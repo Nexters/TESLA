@@ -8,7 +8,7 @@ import kotlinx.serialization.Serializable
 @Keep
 @Serializable
 data class UserEntity(
-    val id: Int,
+    val id: Int? = null,
     val walletAddress: String,
     val nickname: String,
     val introduction: String,
@@ -18,25 +18,26 @@ data class UserEntity(
     val finishOnboard: Boolean? = null
 ) {
     companion object {
-        fun empty() = UserEntity(-1, "", "", "")
+        fun empty() = UserEntity(null, "", "", "")
     }
 }
 
 fun UserEntity.toDomain(): User {
     val user = User()
     user.let {
-        it.userId = id.toString()
+        it.userId = kotlin.runCatching { id.toString() }.getOrDefault("")
         it.walletAddress = walletAddress
         it.profileID = nickname
         it.introduction = introduction
         it.profileUrl = profileUrl
         it.backgroundUrl = backgroundUrl
+        it.finishOnboard = finishOnboard ?: false
     }
     return user
 }
 
 fun User.toData(): UserEntity = UserEntity(
-    id = userId.toDataUserId(),
+    id = if (userId.isBlank()) null else userId.toDataUserId(),
     walletAddress = this.walletAddress,
     nickname = profileID,
     introduction = introduction,

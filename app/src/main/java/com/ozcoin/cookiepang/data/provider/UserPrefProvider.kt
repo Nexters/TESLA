@@ -27,7 +27,7 @@ class UserPrefProvider @Inject constructor(
     suspend fun setUserEntity(userEntity: UserEntity) {
         context.userPref.edit {
             it[userWalletAddressKey] = userEntity.walletAddress
-            it[userIdKey] = userEntity.id
+            it[userIdKey] = userEntity.id ?: -1
         }
     }
 

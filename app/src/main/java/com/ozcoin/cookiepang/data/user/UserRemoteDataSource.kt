@@ -20,8 +20,8 @@ class UserRemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) {
 
-    suspend fun registrationUser(userEntity: UserEntity): NetworkResult<UserEntity> {
-        return safeApiCall { apiService.registrationUser(userEntity) }
+    suspend fun registrationUser(user: User): NetworkResult<UserEntity> {
+        return safeApiCall { apiService.registrationUser(user.toData()) }
     }
 
     suspend fun getUser(userId: Int): NetworkResult<UserEntity> {

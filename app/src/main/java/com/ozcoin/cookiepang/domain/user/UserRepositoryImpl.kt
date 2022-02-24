@@ -4,7 +4,6 @@ import com.ozcoin.cookiepang.data.request.NetworkResult
 import com.ozcoin.cookiepang.data.user.UserEntity
 import com.ozcoin.cookiepang.data.user.UserLocalDataSource
 import com.ozcoin.cookiepang.data.user.UserRemoteDataSource
-import com.ozcoin.cookiepang.data.user.toData
 import com.ozcoin.cookiepang.data.user.toDomain
 import com.ozcoin.cookiepang.extensions.getDataResult
 import com.ozcoin.cookiepang.utils.DataResult
@@ -28,15 +27,15 @@ class UserRepositoryImpl @Inject constructor(
             }
         }
 
-    override suspend fun regUser(user: User): Boolean =
+    override suspend fun regUser(user: User): DataResult<User> =
         withContext(Dispatchers.IO) {
-            var regUserResult = false
-            getDataResult(userRemoteDataSource.registrationUser(user.toData())) { res ->
-                regUserResult = true
+            getDataResult(userRemoteDataSource.registrationUser(user)) { res ->
                 userLocalDataSource.saveUserEntity(res)
-                loginUser = res.toDomain()
+                val user = res.toDomain()
+                loginUser = user
+                user
             }
-            regUserResult
+            DataResult.OnSuccess(User())
         }
 
     override suspend fun getLoginUser(): User? = withContext(Dispatchers.IO) {
@@ -44,7 +43,7 @@ class UserRepositoryImpl @Inject constructor(
             Timber.d("is LoginUser null")
             val userEntity = userLocalDataSource.getUserEntity().first()?.let {
                 Timber.d("getUserEntity() result: $it")
-                val result = userRemoteDataSource.getUser(it.id)
+                val result = userRemoteDataSource.getUser(it.id ?: -1)
                 if (result is NetworkResult.Success) result.response else null
             }
             userEntity?.let {

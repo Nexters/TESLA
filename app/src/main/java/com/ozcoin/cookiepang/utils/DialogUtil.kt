@@ -140,4 +140,12 @@ object DialogUtil {
             cancel = "취소 하기"
         )
     }
+
+    fun getNotAvailableProfileIdContents(): DialogContents {
+        return DialogContents(
+            title = "닉네임을 다시 입력해주세요",
+            contents = "‘-_’를 제외한 특수문자는 입력할 수 없어요.",
+            confirm = "닫기"
+        )
+    }
 }

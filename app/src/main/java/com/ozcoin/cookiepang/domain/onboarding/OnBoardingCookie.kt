@@ -1,4 +1,4 @@
-package com.ozcoin.cookiepang.ui.onboarding
+package com.ozcoin.cookiepang.domain.onboarding
 
 data class OnBoardingCookie(
     val question: String,

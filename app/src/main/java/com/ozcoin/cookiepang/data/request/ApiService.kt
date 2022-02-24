@@ -19,6 +19,7 @@ import com.ozcoin.cookiepang.data.response.UserIdResponse
 import com.ozcoin.cookiepang.data.timeline.TimeLineEntity
 import com.ozcoin.cookiepang.data.user.LoginRequestParam
 import com.ozcoin.cookiepang.data.user.UserEntity
+import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRequestBody
 import okhttp3.MultipartBody
 import retrofit2.Response
 import retrofit2.http.Body
@@ -108,7 +109,7 @@ interface ApiService {
     @POST("/users/{userId}/categories")
     suspend fun setInterestInCategoryList(
         @Path("userId") userId: Int,
-        @Body categoryIdList: List<Int>
+        @Body userCategoryRequestBody: UserCategoryRequestBody
     ): Response<Unit>
 
     @GET("/categories")
