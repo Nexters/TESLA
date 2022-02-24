@@ -11,6 +11,11 @@ class CategoryRemoteDataSource @Inject constructor(
 
     suspend fun getAllCategoryList() = safeApiCall { apiService.getAllCategoryList() }
 
+    suspend fun getCategoryList(userId: String) =
+        safeApiCall {
+            apiService.getCategoryList(userId)
+        }
+
     suspend fun setInterestInCategoryList(userId: Int, list: List<CategoryEntity>) =
         safeApiCall {
             apiService.setInterestInCategoryList(userId, UserCategoryRequestBody(list.map { it.id }))

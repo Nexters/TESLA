@@ -6,8 +6,8 @@ import com.ozcoin.cookiepang.data.category.toDomain
 import com.ozcoin.cookiepang.data.request.NetworkResult
 import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.toDataUserId
+import com.ozcoin.cookiepang.extensions.getDataResult
 import com.ozcoin.cookiepang.utils.DataResult
-import com.ozcoin.cookiepang.utils.DummyUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
@@ -18,7 +18,9 @@ class UserCategoryRepositoryImpl @Inject constructor(
 
     override suspend fun getUserCategory(userId: String): DataResult<List<UserCategory>> =
         withContext(Dispatchers.IO) {
-            DummyUtil.getUserCategoryList()
+            getDataResult(categoryRemoteDataSource.getCategoryList(userId)) { res ->
+                res.map { it.toDomain() }
+            }
         }
 
     override suspend fun setUserInterestIn(user: User, list: List<UserCategory>): Boolean =

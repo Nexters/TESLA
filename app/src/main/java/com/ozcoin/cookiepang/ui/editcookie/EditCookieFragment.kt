@@ -24,7 +24,6 @@ import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
@@ -142,7 +141,7 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
 
     private fun observeUserCategory() {
         viewLifecycleScope.launch {
-            editCookieFragmentViewModel.userCategoryList.takeWhile { it.isNotEmpty() }.collect {
+            editCookieFragmentViewModel.userCategoryList.collect {
                 matchUserCategoryListBySelectedCategory(it)
                 userCategoryListAdapter.updateList(it)
             }

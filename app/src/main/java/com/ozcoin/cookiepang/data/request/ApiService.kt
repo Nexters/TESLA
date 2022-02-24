@@ -106,6 +106,11 @@ interface ApiService {
         category-controller
      */
 
+    @GET("/users/{userId}/categories")
+    suspend fun getCategoryList(
+        @Path("userId") userId: String
+    ): Response<List<CategoryEntity>>
+
     @POST("/users/{userId}/categories")
     suspend fun setInterestInCategoryList(
         @Path("userId") userId: Int,
