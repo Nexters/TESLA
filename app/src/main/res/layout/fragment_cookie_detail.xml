@@ -243,7 +243,7 @@
                         android:layout_width="0dp"
                         android:layout_marginTop="23dp"
                         android:text="이 쿠키는 숨겨졌어요."
-                        android:onClick="@{() -> viewModel.clickCookieContentsBtn(cookieDetail.mine)}"
+                        android:onClick="@{() -> viewModel.clickCookieContentsBtn()}"
                         android:visibility="@{cookieDetail.mine &amp;&amp; cookieDetail.hidden ? View.VISIBLE : View.GONE}"
                         android:enabled="false"
                         tools:visibility="gone"

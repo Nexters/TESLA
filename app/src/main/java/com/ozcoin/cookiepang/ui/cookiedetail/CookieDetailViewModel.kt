@@ -142,8 +142,17 @@ class CookieDetailViewModel @Inject constructor(
         TODO("")
     }
 
-    private fun notEnoughEnergy() {
-        TODO("")
+    private fun showNotEnoughHammerDialog() {
+        activityEventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getNotEnoughHammerContents(),
+                callback = {
+                    if (it) {
+                        TODO("클레이튼 충전 진행해야함")
+                    }
+                }
+            )
+        )
     }
 
     private fun executePurchaseACookie() {
@@ -152,11 +161,11 @@ class CookieDetailViewModel @Inject constructor(
             val cookieDetail = cookieDetail.value
             if (loginUser != null && cookieDetail != null) {
                 if (contractRepository.isWalletApproved(loginUser.userId)) {
-                    if (cookieDetail.hammerPrice <= contractRepository.getNumOfHammerBalance(loginUser.userId)) {
+                    if (contractRepository.getNumOfHammerBalance(loginUser.userId) >= cookieDetail.hammerPrice) {
                         showPurchaseCookieDialog()
                     } else {
                         Timber.d("보유 해머 부족")
-                        notEnoughEnergy()
+                        showNotEnoughHammerDialog()
                     }
                 } else {
                     Timber.d("지갑 권한 미허용")
@@ -261,11 +270,13 @@ class CookieDetailViewModel @Inject constructor(
         }
     }
 
-    fun clickCookieContentsBtn(isMine: Boolean) {
-        if (isMine) {
-            navigateToEditCookie()
-        } else {
-            showPurchaseCookieDialog()
+    fun clickCookieContentsBtn() {
+        cookieDetail.value?.let {
+            if (it.isMine) {
+                navigateToEditCookie()
+            } else {
+                executePurchaseACookie()
+            }
         }
     }
 
