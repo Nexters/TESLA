@@ -30,6 +30,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.math.BigInteger
 import javax.inject.Inject
 
 @HiltViewModel
@@ -203,7 +204,7 @@ class EditCookieFragmentViewModel @Inject constructor(
                 val userId = userRepository.getLoginUser()?.userId ?: "-1"
                 if (contractRepository.isWalletApproved(userId)) {
                     Timber.d("지갑 권한 허용된 상태")
-                    if (contractRepository.getMakeCookieTaxPrice() >= contractRepository.getNumOfHammerBalance(userId)) {
+                    if (BigInteger(contractRepository.getMakeCookieTaxPrice().toString()) >= contractRepository.getNumOfHammerBalance(userId)) {
                         Timber.d("쿠키 만들기 수수료 이상 해머 보유 중")
                         showMakeACookiePreAlertDialog()
                     } else {

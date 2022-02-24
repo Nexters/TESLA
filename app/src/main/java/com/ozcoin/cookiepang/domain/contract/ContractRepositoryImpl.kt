@@ -5,6 +5,7 @@ import com.ozcoin.cookiepang.extensions.getDataResult
 import com.ozcoin.cookiepang.utils.CoinUnitUtil
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.math.BigInteger
 import javax.inject.Inject
 
 class ContractRepositoryImpl @Inject constructor(
@@ -20,18 +21,18 @@ class ContractRepositoryImpl @Inject constructor(
             result
         }
 
-    override suspend fun getNumOfHammerBalance(userId: String): Int =
+    override suspend fun getNumOfHammerBalance(userId: String): BigInteger =
         withContext(Dispatchers.IO) {
-            var result = 0
+            var result = BigInteger("0")
             getDataResult(contractRemoteDataSource.getNumOfHammer(userId)) {
                 result = CoinUnitUtil.convertToKlaytnUnit(it.balance)
             }
             result
         }
 
-    override suspend fun getNumOfKlaytnBalance(userId: String): Int =
+    override suspend fun getNumOfKlaytnBalance(userId: String): BigInteger =
         withContext(Dispatchers.IO) {
-            var result = 0
+            var result = BigInteger("0")
             getDataResult(contractRemoteDataSource.getNumOfKlay(userId)) {
                 result = CoinUnitUtil.convertToKlaytnUnit(it.balance)
             }

@@ -1,5 +1,6 @@
 package com.ozcoin.cookiepang
 
+import com.ozcoin.cookiepang.domain.contract.ContractRepository
 import com.ozcoin.cookiepang.domain.cookie.CookieRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
@@ -33,9 +34,10 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
     val cookieDetailRepository = mockk<CookieDetailRepository>()
     val userRepository = mockk<UserRepository>()
     val klipContractTxRepository = mockk<KlipContractTxRepository>()
+    val contractRepository = mockk<ContractRepository>()
     val cookieDetailViewModel = spyk(
         CookieDetailViewModel(
-            userRepository, cookieRepository, cookieDetailRepository, klipContractTxRepository
+            userRepository, cookieRepository, contractRepository, cookieDetailRepository, klipContractTxRepository
         )
     )
 
@@ -104,7 +106,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
             cookieDetailViewModel.cookieDetail.value?.isMine shouldBe true
 
             Then("판매 정보 수정으로 이동") {
-                cookieDetailViewModel.clickCookieContentsBtn(cookieDetailViewModel.cookieDetail.value?.isMine!!)
+                cookieDetailViewModel.clickCookieContentsBtn()
                 event.shouldBeInstanceOf<Event.Nav.ToEditCookie>()
             }
         }
@@ -116,7 +118,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
             cookieDetailViewModel.cookieDetail.value?.isMine shouldBe false
 
             Then("구매 확인 다이얼로그 표시") {
-                cookieDetailViewModel.clickCookieContentsBtn(cookieDetailViewModel.cookieDetail.value?.isMine!!)
+                cookieDetailViewModel.clickCookieContentsBtn()
                 event.shouldBeInstanceOf<Event.ShowDialog>()
             }
         }

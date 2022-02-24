@@ -58,14 +58,14 @@ class User : BaseObservable() {
         }
 
     @get:Bindable
-    var numOfKlaytn = 0
+    var numOfKlaytn = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.numOfKlaytn)
         }
 
     @get:Bindable
-    var numOfHammer = 0
+    var numOfHammer = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.numOfHammer)

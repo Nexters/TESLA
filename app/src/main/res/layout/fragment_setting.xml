@@ -53,7 +53,7 @@
 
                 <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
                     style="@style/TextAppearance.body_01_bold"
-                    android:text="@{String.valueOf(viewModel.loginUser.numOfKlaytn)}"
+                    android:text="@{viewModel.loginUser.numOfKlaytn}"
                     tools:text="1231231232"
                     android:gravity="end"
                     android:layout_weight="1"
@@ -89,7 +89,7 @@
 
                 <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
                     style="@style/TextAppearance.body_01_bold"
-                    android:text="@{String.valueOf(viewModel.loginUser.numOfHammer)}"
+                    android:text="@{viewModel.loginUser.numOfHammer}"
                     tools:text="1231231232"
                     android:gravity="end"
                     android:layout_weight="1"

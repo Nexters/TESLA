@@ -1,16 +1,15 @@
 package com.ozcoin.cookiepang.utils
 
+import java.math.BigInteger
+
 object CoinUnitUtil {
 
-    fun convertToKlaytnUnit(balance: Double): Int {
-        return (balance / getUnit()).toInt()
+    fun convertToKlaytnUnit(balance: BigInteger): BigInteger {
+        return balance.divide(getUnit())
     }
 
-    private fun getUnit(): Long {
-        var unit = 10L
-        repeat(18) {
-            unit *= unit
-        }
-        return unit
+    private fun getUnit(): BigInteger {
+        val unit = "1000000000000000000"
+        return BigInteger(unit)
     }
 }

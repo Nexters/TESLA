@@ -5,7 +5,7 @@ import com.ozcoin.cookiepang.data.category.CategoryEntity
 import com.ozcoin.cookiepang.data.category.toDomain
 import com.ozcoin.cookiepang.data.cookie.CookieStatusType
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
-import com.ozcoin.cookiepang.domain.feed.CookieCardStyle
+import com.ozcoin.cookiepang.domain.usercategory.toCookieCardStyle
 import kotlinx.serialization.Serializable
 
 @Keep
@@ -36,7 +36,7 @@ fun CookieDetailEntity.toDomain(): CookieDetail {
         userCategory = category.toDomain(),
         viewCount = viewCount,
         question = question,
-        cookieCardStyle = CookieCardStyle.YELLOW,
+        cookieCardStyle = category.toDomain().categoryColorStyle.toCookieCardStyle(),
         answer = answer,
         hammerPrice = price,
         collectorThumbnailUrl = collectorProfileUrl ?: "",

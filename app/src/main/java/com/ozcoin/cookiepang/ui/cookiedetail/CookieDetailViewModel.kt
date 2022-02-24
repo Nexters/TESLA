@@ -26,7 +26,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import timber.log.Timber
+import java.math.BigInteger
 import javax.inject.Inject
+import kotlin.system.measureTimeMillis
 
 @HiltViewModel
 class CookieDetailViewModel @Inject constructor(
@@ -65,11 +67,15 @@ class CookieDetailViewModel @Inject constructor(
             uiStateObserver.update(UiState.OnLoading)
 
             viewModelScope.launch {
-                val result = userRepository.getLoginUser()
-                    ?.let { cookieDetailRepository.getCookieDetail(it.userId, cookieId) }
+                val result: DataResult<CookieDetail>?
+                val loadingTime = measureTimeMillis {
+                    result = userRepository.getLoginUser()
+                        ?.let { cookieDetailRepository.getCookieDetail(it.userId, cookieId) }
+                }
+
                 if (result is DataResult.OnSuccess) {
                     Timber.d("getCookieDetail($cookieId) is success")
-                    delay(TRANSITION_ANIM_DURATION)
+                    delay(TRANSITION_ANIM_DURATION - loadingTime)
                     uiStateObserver.update(UiState.OnSuccess)
                     _cookieDetail.emit(result.response.apply { this.cookieId = cookieId.toInt() })
                 } else {
@@ -161,7 +167,7 @@ class CookieDetailViewModel @Inject constructor(
             val cookieDetail = cookieDetail.value
             if (loginUser != null && cookieDetail != null) {
                 if (contractRepository.isWalletApproved(loginUser.userId)) {
-                    if (contractRepository.getNumOfHammerBalance(loginUser.userId) >= cookieDetail.hammerPrice) {
+                    if (contractRepository.getNumOfHammerBalance(loginUser.userId) >= BigInteger(cookieDetail.hammerPrice.toString())) {
                         showPurchaseCookieDialog()
                     } else {
                         Timber.d("보유 해머 부족")

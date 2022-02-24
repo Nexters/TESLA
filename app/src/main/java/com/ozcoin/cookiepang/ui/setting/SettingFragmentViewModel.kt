@@ -54,8 +54,8 @@ class SettingFragmentViewModel @Inject constructor(
 
     private suspend fun loadUserInfo() {
         val loginUser = userRepository.getLoginUser()?.apply {
-            numOfHammer = contractRepository.getNumOfHammerBalance(userId)
-            numOfKlaytn = contractRepository.getNumOfKlaytnBalance(userId)
+            numOfHammer = contractRepository.getNumOfHammerBalance(userId).toString()
+            numOfKlaytn = contractRepository.getNumOfKlaytnBalance(userId).toString()
         }
         _loginUser.emit(loginUser)
     }

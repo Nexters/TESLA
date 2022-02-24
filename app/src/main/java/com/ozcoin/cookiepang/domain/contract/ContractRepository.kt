@@ -1,12 +1,14 @@
 package com.ozcoin.cookiepang.domain.contract
 
+import java.math.BigInteger
+
 interface ContractRepository {
 
     suspend fun getMakeCookieTaxPrice(): Int
 
-    suspend fun getNumOfHammerBalance(userId: String): Int
+    suspend fun getNumOfHammerBalance(userId: String): BigInteger
 
-    suspend fun getNumOfKlaytnBalance(userId: String): Int
+    suspend fun getNumOfKlaytnBalance(userId: String): BigInteger
 
     suspend fun isWalletApproved(userId: String): Boolean
 
