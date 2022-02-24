@@ -160,21 +160,39 @@ class EditCookieFragmentViewModel @Inject constructor(
         )
     }
 
+    private fun showMakeACookieFailDialog() {
+        eventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getMakeCookieFailContents(),
+                callback = {
+                    if (it) {
+                        makeACookie()
+                    }
+                }
+            )
+        )
+    }
+
+    private fun makeACookie() {
+        uiStateObserver.update(UiState.OnLoading)
+
+        viewModelScope.launch {
+            if (klipContractTxRepository.requestMakeACookie(editCookie.value)) {
+                klipPendingType = KLIP_PENDING_TYPE_MAKE
+            } else {
+                uiStateObserver.update(UiState.OnFail)
+                showMakeACookieFailDialog()
+            }
+        }
+    }
+
     private fun showMakeACookiePreAlertDialog() {
         eventObserver.update(
             Event.ShowDialog(
                 DialogUtil.getMakeCookiePreAlertContents(),
                 callback = {
                     if (it) {
-                        uiStateObserver.update(UiState.OnLoading)
-
-                        viewModelScope.launch {
-                            if (klipContractTxRepository.requestMakeACookie(editCookie.value)) {
-                                klipPendingType = KLIP_PENDING_TYPE_MAKE
-                            } else {
-                                uiStateObserver.update(UiState.OnFail)
-                            }
-                        }
+                        makeACookie()
                     }
                 }
             )

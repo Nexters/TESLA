@@ -26,7 +26,7 @@ object DialogUtil {
         return DialogContents(
             title = "쿠키가 구매가 실패했습니다.",
             contents = "쿠키 구매를 실패했어요.\n다시 시도하시겠어요?",
-            confirm = "확인하러 가기",
+            confirm = "다시 시도하기",
             cancel = "취소하기"
         )
     }

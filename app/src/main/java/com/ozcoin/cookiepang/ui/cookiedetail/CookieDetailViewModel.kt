@@ -114,10 +114,12 @@ class CookieDetailViewModel @Inject constructor(
                     klipPendingType = KLIP_PENDING_TYPE_BUY
                 } else {
                     uiStateObserver.update(UiState.OnFail)
+                    showPurchaseCookieFailDialog()
                 }
             } else {
                 Timber.d("cookieDetail or loginUser is null")
                 uiStateObserver.update(UiState.OnFail)
+                showPurchaseCookieFailDialog()
             }
         }
     }
@@ -128,6 +130,19 @@ class CookieDetailViewModel @Inject constructor(
                 DialogUtil.getPurchaseCookieSuccessContents(),
                 callback = {
                     if (it) refreshCookieDetail() else Timber.d("PurchaseCookieSuccessDialog cancelled")
+                }
+            )
+        )
+    }
+
+    private fun showPurchaseCookieFailDialog() {
+        activityEventObserver.update(
+            Event.ShowDialog(
+                DialogUtil.getPurchaseCookieFailContents(),
+                callback = {
+                    if (it) {
+                        purchaseCookie()
+                    }
                 }
             )
         )
