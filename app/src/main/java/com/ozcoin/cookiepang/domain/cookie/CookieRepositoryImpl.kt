@@ -4,17 +4,32 @@ import com.ozcoin.cookiepang.data.cookie.CookieRemoteDataSource
 import com.ozcoin.cookiepang.data.cookie.toDomain
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.user.toDataUserId
-import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.extensions.getDataResult
+import com.ozcoin.cookiepang.ui.onboarding.OnBoardingCookie
 import com.ozcoin.cookiepang.utils.DataResult
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class CookieRepositoryImpl @Inject constructor(
-    private val categoryRepository: UserCategoryRepository,
     private val cookieRemoteDataSource: CookieRemoteDataSource
 ) : CookieRepository {
+    override suspend fun makeOnBoardingCookie(
+        userId: String,
+        onBoardingCookieList: List<OnBoardingCookie>
+    ): Boolean =
+        withContext(Dispatchers.IO) {
+            var result = false
+            getDataResult(
+                cookieRemoteDataSource.makeOnBoardingCookie(
+                    userId,
+                    onBoardingCookieList
+                )
+            ) {
+                result = true
+            }
+            result
+        }
 
     override suspend fun purchaseCookie(
         purchaserUserId: String,

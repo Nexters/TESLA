@@ -4,6 +4,7 @@ import com.ozcoin.cookiepang.data.ask.AskEntity
 import com.ozcoin.cookiepang.data.ask.AskUpdateRequestBody
 import com.ozcoin.cookiepang.data.category.CategoryEntity
 import com.ozcoin.cookiepang.data.cookie.CookieEntity
+import com.ozcoin.cookiepang.data.cookie.CookieOnBoardingRequestBody
 import com.ozcoin.cookiepang.data.cookie.CookieResponse
 import com.ozcoin.cookiepang.data.cookie.MakeACookieRequestParam
 import com.ozcoin.cookiepang.data.cookiedetail.CookieDetailEntity
@@ -81,6 +82,11 @@ interface ApiService {
         @Query("page") page: Int = 0,
         @Query("size") size: Int = 3
     ): Response<PageListResponse<CookieEntity>>
+
+    @POST("/cookies/default")
+    suspend fun makeOnBoardingCookie(
+        @Body cookieOnBoardingRequestBody: CookieOnBoardingRequestBody
+    ): Response<List<CookieResponse>>
 
     /*
         ask-controller

@@ -3,6 +3,7 @@ package com.ozcoin.cookiepang.data.cookie
 import com.ozcoin.cookiepang.data.request.ApiService
 import com.ozcoin.cookiepang.domain.user.toDataUserId
 import com.ozcoin.cookiepang.extensions.safeApiCall
+import com.ozcoin.cookiepang.ui.onboarding.OnBoardingCookie
 import javax.inject.Inject
 
 class CookieRemoteDataSource @Inject constructor(
@@ -11,6 +12,15 @@ class CookieRemoteDataSource @Inject constructor(
     suspend fun makeACookie(makeACookieRequestParam: MakeACookieRequestParam) = safeApiCall {
         apiService.makeACookie(makeACookieRequestParam)
     }
+
+    suspend fun makeOnBoardingCookie(userId: String, onBoardingCookieList: List<OnBoardingCookie>) =
+        safeApiCall {
+            val body = CookieOnBoardingRequestBody(
+                userId.toDataUserId(),
+                onBoardingCookieList.map { it.toData() }.toList()
+            )
+            apiService.makeOnBoardingCookie(body)
+        }
 
     suspend fun purchaseCookie(cookieId: String, price: Int, purchaserUserId: Int) = safeApiCall {
         apiService.updateCookieInfo(
