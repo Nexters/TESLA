@@ -45,6 +45,8 @@ object DummyUtil {
                 cookieCardStyle = getCookieCardStyle(),
                 viewCount = it * (random.nextInt(291) + 1),
                 hammerPrice = it * (random.nextInt(8) + 1),
+                cookieId = it,
+                feedUserId = it.toString()
             )
             list.add(feed)
         }
@@ -90,7 +92,12 @@ object DummyUtil {
                         "2022-10-32 20:00"
                     )
                 ),
-                isHidden = isHidden
+                isHidden = isHidden,
+                nftTokenId = 10,
+                isOnSale = true,
+                collectorUserId = "11",
+                creatorUserId = "12",
+                cookieId = 10
             )
         )
     }
@@ -114,7 +121,7 @@ object DummyUtil {
 
         repeat(4) {
             val alarm = Alarm(
-                "Ask", "Questions($it)", "21:01"
+                it, "Ask", "Questions($it)", "21:01"
             )
             list.add(alarm)
         }
@@ -150,7 +157,7 @@ object DummyUtil {
 
         repeat(22) {
             val question = Question(
-                it.toString(),
+                it,
                 "(#$it)이거어슨 무슨 질문을 하기 위한 질문 ? ",
                 UserCategory.typeAll(),
                 it % 3 == 0
@@ -170,7 +177,9 @@ object DummyUtil {
                 isHidden = it % 2 == 0,
                 cookieBoxCoverImgUrl = "",
                 cookieBoxImgUrl = "",
-                cookieImgUrl = ""
+                cookieImgUrl = "",
+                cookieCardStyle = CookieCardStyle.BLUE,
+                ownedUserId = ""
             )
             list.add(cookie)
         }
@@ -187,7 +196,9 @@ object DummyUtil {
                 isHidden = it % 5 == 0,
                 cookieBoxCoverImgUrl = "",
                 cookieBoxImgUrl = "",
-                cookieImgUrl = ""
+                cookieImgUrl = "",
+                cookieCardStyle = CookieCardStyle.BLUE,
+                ownedUserId = ""
             )
             list.add(cookie)
         }

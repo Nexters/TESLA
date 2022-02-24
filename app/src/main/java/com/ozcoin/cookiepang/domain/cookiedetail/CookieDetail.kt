@@ -13,22 +13,29 @@ data class CookieDetail(
     val cookieCardStyle: CookieCardStyle,
     val answer: String?,
     val hammerPrice: Int,
+    val collectorUserId: String,
     val collectorThumbnailUrl: String,
     val collectorName: String,
+    val creatorUserId: String,
     val creatorName: String,
     val creatorThumbnailUrl: String,
     val contractAddress: String,
     val tokenAddress: String,
     val cookieHistory: List<CookieHistory>,
-    val isHidden: Boolean
+    var isHidden: Boolean,
+    var isOnSale: Boolean,
+    val nftTokenId: Int,
+    var cookieId: Int
 )
 
 fun CookieDetail.toEditCookie(): EditCookie {
-    return EditCookie().apply {
-        isEditPricingInfo = true
-        question = question
-        answer = answer
-        hammerCost = hammerPrice.toString()
-        selectedCategory = userCategory
+    val editCookie = EditCookie()
+    editCookie.let {
+        it.isEditPricingInfo = true
+        it.question = question
+        it.answer = answer ?: ""
+        it.hammerCost = hammerPrice.toString()
+        it.selectedCategory = userCategory
     }
+    return editCookie
 }

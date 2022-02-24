@@ -28,6 +28,7 @@ object CookieCardBinding {
             CookieCardStyle.BLUE -> R.drawable.bg_feed_contents_answer_blue
             CookieCardStyle.PINK -> R.drawable.bg_feed_contents_answer_pink
             CookieCardStyle.YELLOW -> R.drawable.bg_feed_contents_answer_yellow
+            CookieCardStyle.PURPLE -> R.drawable.bg_feed_contents_answer_pink
         }
 
         val drawable = ContextCompat.getDrawable(view.context, cookieCardResId)
@@ -38,7 +39,8 @@ object CookieCardBinding {
         val cookieCardResId = when (cookieCardStyle) {
             CookieCardStyle.BLUE -> R.drawable.ic_feed_hidden_cookie_blue
             CookieCardStyle.PINK -> R.drawable.ic_feed_hidden_cookie_pink
-            CookieCardStyle.YELLOW -> R.drawable.ic_feed_hidden_cookie_yellow
+            CookieCardStyle.YELLOW -> R.drawable.ic_feed_hidden_cookie_lime
+            CookieCardStyle.PURPLE -> R.drawable.ic_feed_hidden_cookie_pink
         }
 
         if (view is ImageView) {
@@ -53,7 +55,34 @@ object CookieCardBinding {
 
     @JvmStatic
     @BindingAdapter(value = ["setCookieBoxImg", "setErrorImg"], requireAll = false)
-    fun setCookieBoxImg(imageView: ImageView, cookieBoxImgUrl: String?, errorImgDrawable: Drawable?) {
+    fun setCookieBoxImg(
+        imageView: ImageView,
+        cookieCardStyle: CookieCardStyle?,
+        errorImgDrawable: Drawable?
+    ) {
+        val cookieCardResId = when (cookieCardStyle) {
+            CookieCardStyle.BLUE -> R.drawable.ic_cookie_box_blue
+            CookieCardStyle.PINK -> R.drawable.ic_cookie_box_pink
+            CookieCardStyle.YELLOW -> R.drawable.ic_cookie_box_lime
+            CookieCardStyle.PURPLE -> R.drawable.ic_cookie_box_purple
+            else -> {
+                R.drawable.ic_cookie_box_blue
+            }
+        }
+
+        Glide.with(imageView.context)
+            .load(cookieCardResId)
+            .error(errorImgDrawable)
+            .into(imageView)
+    }
+
+    @JvmStatic
+    @BindingAdapter(value = ["setCookieBoxImg", "setErrorImg"], requireAll = false)
+    fun setCookieBoxImg(
+        imageView: ImageView,
+        cookieBoxImgUrl: String?,
+        errorImgDrawable: Drawable?
+    ) {
         Glide.with(imageView.context)
             .load(cookieBoxImgUrl)
             .error(errorImgDrawable)
@@ -62,7 +91,34 @@ object CookieCardBinding {
 
     @JvmStatic
     @BindingAdapter(value = ["setCookieBoxCoverImg", "setErrorImg"], requireAll = false)
-    fun setCookieBoxCoverImg(imageView: ImageView, cookieBoxCoverImgUrl: String?, errorImgDrawable: Drawable?) {
+    fun setCookieBoxCoverImg(
+        imageView: ImageView,
+        cookieCardStyle: CookieCardStyle?,
+        errorImgDrawable: Drawable?
+    ) {
+        val cookieCardResId = when (cookieCardStyle) {
+            CookieCardStyle.BLUE -> R.drawable.ic_cookie_box_cover_blue
+            CookieCardStyle.PINK -> R.drawable.ic_cookie_box_cover_pink
+            CookieCardStyle.YELLOW -> R.drawable.ic_cookie_box_cover_lime
+            CookieCardStyle.PURPLE -> R.drawable.ic_cookie_box_cover_purple
+            else -> {
+                R.drawable.ic_cookie_box_cover_blue
+            }
+        }
+
+        Glide.with(imageView.context)
+            .load(cookieCardResId)
+            .error(errorImgDrawable)
+            .into(imageView)
+    }
+
+    @JvmStatic
+    @BindingAdapter(value = ["setCookieBoxCoverImg", "setErrorImg"], requireAll = false)
+    fun setCookieBoxCoverImg(
+        imageView: ImageView,
+        cookieBoxCoverImgUrl: String?,
+        errorImgDrawable: Drawable?
+    ) {
         Glide.with(imageView.context)
             .load(cookieBoxCoverImgUrl)
             .error(errorImgDrawable)

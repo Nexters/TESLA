@@ -3,9 +3,11 @@ package com.ozcoin.cookiepang.ui.home
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.SimpleItemAnimator
+import com.ozcoin.cookiepang.MyApplication
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.adapter.FeedListAdapter
 import com.ozcoin.cookiepang.adapter.UserCategoryListAdapter
@@ -23,6 +25,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -77,7 +80,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             )
             feedListAdapter = FeedListAdapter().apply {
                 onItemClick = {
-                    homeFragmentViewModel.navigateToCookieDetail(it.id)
+                    homeFragmentViewModel.navigateToCookieDetail(it.cookieId.toString())
+                }
+                onUserProfileClick = {
+                    homeFragmentViewModel.navigateToUserProfile(it.feedUserId)
                 }
             }
             adapter = feedListAdapter
@@ -116,7 +122,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         setViewDataUserCategoryList(true)
     }
 
-    private fun isViewDataLoaded(): Boolean {
+    private suspend fun isViewDataLoaded(): Boolean = withContext(Dispatchers.Default) {
         val feedList = mainActivityViewModel.savedStateHandle.get<List<Feed>>(
             KEY_VIEW_DATA_USER_CATEGORY_LIST
         )
@@ -124,7 +130,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             KEY_VIEW_DATA_USER_CATEGORY_LIST
         )
 
-        return feedList != null && feedList.isNotEmpty() &&
+        feedList != null && feedList.isNotEmpty() &&
             userCategoryList != null && userCategoryList.isNotEmpty()
     }
 
@@ -185,7 +191,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     override fun initListener() {
-        homeFragmentViewModel.uiStateObserver = UiStateObserver(mainActivityViewModel::updateUiState)
+        homeFragmentViewModel.uiStateObserver =
+            UiStateObserver(mainActivityViewModel::updateUiState)
     }
 
     override fun initObserve() {
@@ -212,22 +219,44 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
     }
 
+    private fun isMoveToMyHomeFromOnBoarding(): Boolean {
+        val result = (requireActivity().application as? MyApplication)?.onBoardingPageSelectedMyHome ?: false
+        (requireActivity().application as? MyApplication)?.onBoardingPageSelectedMyHome = false
+        return result
+    }
+
+    private fun navigateToMyHome() {
+        Timber.d("navigateToMyHome()")
+        val navOption = NavOptions.Builder().apply {
+            setLaunchSingleTop(true)
+            setPopUpTo(R.id.home_dest, false)
+        }
+        findNavController().navigate(R.id.my_home_dest, null, navOption.build())
+    }
+
     override fun init() {
-        if (itHaveToResetUserCategory()) {
-            binding.rvFeed.smoothScrollToPosition(0)
-            homeFragmentViewModel.getUserCategoryList()
+        if (isMoveToMyHomeFromOnBoarding()) {
+            Timber.d("온보딩 화면에서 프로필로 가기 선택")
+            navigateToMyHome()
         } else {
-            if (isViewDataLoaded()) {
-                Timber.d("is view data loaded")
-                if (homeFragmentViewModel.userCategoryList.value.isEmpty()) {
-                    Timber.d("viewModel data not exist, restore list")
-                    restoreListState()
+            viewLifecycleScope.launch {
+                if (itHaveToResetUserCategory()) {
+                    binding.rvFeed.smoothScrollToPosition(0)
+                    homeFragmentViewModel.getUserCategoryList()
                 } else {
-                    Timber.d("viewModel data exist")
+                    if (isViewDataLoaded()) {
+                        Timber.d("is view data loaded")
+                        if (homeFragmentViewModel.userCategoryList.value.isEmpty()) {
+                            Timber.d("viewModel data not exist, restore list")
+                            restoreListState()
+                        } else {
+                            Timber.d("viewModel data exist")
+                        }
+                    } else {
+                        Timber.d("is not view data loaded, so get list data")
+                        homeFragmentViewModel.getUserCategoryList()
+                    }
                 }
-            } else {
-                Timber.d("is not view data loaded, so get list data")
-                homeFragmentViewModel.getUserCategoryList()
             }
         }
     }
@@ -246,7 +275,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     override fun onResume() {
         super.onResume()
         viewLifecycleScope.launch(Dispatchers.Default) {
-            delay(100)
+            delay(100L)
             mainActivityViewModel.showBtmNavView()
         }
     }

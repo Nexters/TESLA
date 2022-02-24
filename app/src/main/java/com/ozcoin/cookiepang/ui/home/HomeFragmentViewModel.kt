@@ -13,6 +13,7 @@ import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -44,9 +45,7 @@ class HomeFragmentViewModel @Inject constructor(
     lateinit var uiStateObserver: UiStateObserver
 
     fun getUserCategoryList(retryCnt: Int = 3) {
-        uiStateObserver.update(UiState.OnLoading)
-
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.IO) {
             val user = userRepository.getLoginUser()
             if (user != null) {
                 val result = userCategoryRepository.getUserCategory(user.userId)
@@ -55,23 +54,17 @@ class HomeFragmentViewModel @Inject constructor(
 
                     val list = addAllTypeToUserCategoryList(result.response)
                     _userCategoryList.emit(list)
-                    uiStateObserver.update(UiState.OnSuccess)
                     getFeedList(UserCategory.typeAll())
                 } else {
                     Timber.d("getUserCategoryList onFail(retryCnt: $retryCnt)")
 
-                    if (retryCnt == 0) {
-                        uiStateObserver.update(UiState.OnFail)
-                    } else {
+                    if (retryCnt > 0) {
                         getUserCategoryList(retryCnt - 1)
                     }
                 }
             } else {
                 Timber.d("User is null(retryCnt: $retryCnt)")
-
-                if (retryCnt == 0) {
-                    uiStateObserver.update(UiState.OnFail)
-                } else {
+                if (retryCnt > 0) {
                     getUserCategoryList(retryCnt - 1)
                 }
             }
@@ -100,7 +93,8 @@ class HomeFragmentViewModel @Inject constructor(
         viewModelScope.launch {
             uiStateObserver.update(UiState.OnLoading)
 
-            val result = feedRepository.getFeedList(userCategory)
+            val result = userRepository.getLoginUser()
+                ?.let { feedRepository.getFeedList(it.userId, userCategory) }
             if (result is DataResult.OnSuccess) {
                 Timber.d("getFeedList onSuccess")
 
@@ -120,5 +114,9 @@ class HomeFragmentViewModel @Inject constructor(
 
     fun navigateToCookieDetail(cookieId: String) {
         navigateTo(HomeFragmentDirections.actionCookieDetail(cookieId))
+    }
+
+    fun navigateToUserProfile(userId: String) {
+        navigateTo(HomeFragmentDirections.actionMyHome(userId))
     }
 }

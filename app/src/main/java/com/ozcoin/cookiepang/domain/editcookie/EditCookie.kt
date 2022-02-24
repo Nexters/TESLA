@@ -2,24 +2,30 @@ package com.ozcoin.cookiepang.domain.editcookie
 
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.Keep
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.ozcoin.cookiepang.BR
+import com.ozcoin.cookiepang.domain.question.Question
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 
+@Keep
 class EditCookie constructor() : BaseObservable(), Parcelable {
 
     constructor(parcel: Parcel) : this() {
         parcel.run {
             isEditPricingInfo = readInt() == 1
+            cookieId = readInt()
             question = readString() ?: ""
             answer = readString() ?: ""
             hammerCost = readString() ?: ""
+            receivedQuestion = readParcelable(EditCookie::class.java.classLoader)
             selectedCategory = readParcelable(EditCookie::class.java.classLoader)
         }
     }
-
+    var receivedQuestion: Question? = null
     var isEditPricingInfo = false
+    var cookieId: Int = -1
 
     @get:Bindable
     var question: String = ""
@@ -47,10 +53,12 @@ class EditCookie constructor() : BaseObservable(), Parcelable {
             writeInt(
                 if (isEditPricingInfo) 1 else 0
             )
+            writeInt(cookieId)
             writeString(question)
             writeString(answer)
             writeString(hammerCost)
             writeParcelable(selectedCategory, flags)
+            writeParcelable(receivedQuestion, flags)
         }
     }
 

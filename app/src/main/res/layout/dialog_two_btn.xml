@@ -48,6 +48,22 @@
             android:layout_height="wrap_content"/>
 
         <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
+            android:id="@+id/tv_contents_link"
+            style="@style/TextAppearance.body_02_regular"
+            android:textColor="@color/gray_90_t1"
+            android:layout_marginTop="9dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_contents"
+            android:gravity="center"
+            android:text="@{dialogContents.dialogLink.contents}"
+            android:visibility="@{dialogContents.dialogLink != null ? View.VISIBLE : View.GONE}"
+            tools:visibility="visible"
+            tools:text="링크확인하기"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
             android:id="@+id/tv_confirm_btn"
             style="@style/TextAppearance.button_large_brand_normal"
             android:layout_width="0dp"
@@ -56,7 +72,7 @@
             tools:text="확인하러 가기"
             android:text="@{dialogContents.confirm}"
             android:visibility="@{dialogContents.confirm != null ? View.VISIBLE : View.GONE}"
-            app:layout_constraintTop_toBottomOf="@+id/tv_contents"
+            app:layout_constraintTop_toBottomOf="@+id/tv_contents_link"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toRightOf="@+id/tv_cancel_btn"
             app:layout_constraintRight_toRightOf="parent" />
@@ -69,7 +85,7 @@
             tools:text="취소하기"
             android:text="@{dialogContents.cancel}"
             android:visibility="@{dialogContents.cancel != null ? View.VISIBLE : View.GONE}"
-            app:layout_constraintTop_toBottomOf="@+id/tv_contents"
+            app:layout_constraintTop_toBottomOf="@+id/tv_contents_link"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toLeftOf="@+id/tv_confirm_btn" />

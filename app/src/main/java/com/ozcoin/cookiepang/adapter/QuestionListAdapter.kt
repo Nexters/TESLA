@@ -29,7 +29,7 @@ class QuestionListAdapter(
         holder.bind(isMine, list[position], acceptClick, ignoreClick)
     }
 
-    override fun getItemCount(): Int = 11
+    override fun getItemCount(): Int = list.size
 
     fun updateList(newList: List<Question>) {
         Timber.d("update QuestionList with(${newList.size})")

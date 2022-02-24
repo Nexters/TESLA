@@ -6,7 +6,9 @@ import androidx.fragment.app.viewModels
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentRegistIdBinding
+import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.ui.login.LoginViewModel
+import com.ozcoin.cookiepang.utils.observer.EventObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -15,6 +17,7 @@ import kotlinx.coroutines.launch
 class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
 
     private val loginViewModel by activityViewModels<LoginViewModel>()
+    private val mainActivityViewModel by activityViewModels<MainActivityViewModel>()
     private val registIDFragmentViewModel by viewModels<RegistIDFragmentViewModel>()
 
     override fun getLayoutRes(): Int {
@@ -57,5 +60,6 @@ class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
 
     override fun init() {
         registIDFragmentViewModel.user = loginViewModel.user
+        registIDFragmentViewModel.activityEventObserver = EventObserver(mainActivityViewModel::updateEvent)
     }
 }

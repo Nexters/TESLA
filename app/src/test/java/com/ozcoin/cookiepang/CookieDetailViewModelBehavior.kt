@@ -1,7 +1,11 @@
 package com.ozcoin.cookiepang
 
+import com.ozcoin.cookiepang.domain.contract.ContractRepository
+import com.ozcoin.cookiepang.domain.cookie.CookieRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
+import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepository
+import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.ui.cookiedetail.CookieDetailViewModel
 import com.ozcoin.cookiepang.utils.DummyUtil
@@ -26,10 +30,14 @@ import kotlinx.coroutines.test.TestCoroutineDispatcher
 @ExperimentalCoroutinesApi
 class CookieDetailViewModelBehavior : BehaviorSpec({
 
+    val cookieRepository = mockk<CookieRepository>()
     val cookieDetailRepository = mockk<CookieDetailRepository>()
+    val userRepository = mockk<UserRepository>()
+    val klipContractTxRepository = mockk<KlipContractTxRepository>()
+    val contractRepository = mockk<ContractRepository>()
     val cookieDetailViewModel = spyk(
         CookieDetailViewModel(
-            cookieDetailRepository
+            userRepository, cookieRepository, contractRepository, cookieDetailRepository, klipContractTxRepository
         )
     )
 
@@ -39,8 +47,9 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
     var event: Event? = null
     var uiState: UiState? = null
     cookieDetailViewModel.uiStateObserver = UiStateObserver { uiState = it }
-    cookieDetailViewModel.eventObserver = EventObserver { event = it }
+    cookieDetailViewModel.activityEventObserver = EventObserver { event = it }
 
+    var userId = ""
     var cookieId = ""
 
     beforeTest {
@@ -64,7 +73,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
             cookieId.shouldNotBeEmpty()
 
             coEvery {
-                cookieDetailRepository.getCookieDetail(cookieId)
+                cookieDetailRepository.getCookieDetail(userId, cookieId)
             } coAnswers {
                 DummyUtil.getCookieDetail(isMine = false, isHidden = true)
             }
@@ -80,7 +89,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
     Given("쿠키 상세 정보 로드되어 사용자가 구매/수정 버튼 클릭") {
 
         coEvery {
-            cookieDetailRepository.getCookieDetail(cookieId)
+            cookieDetailRepository.getCookieDetail(userId, cookieId)
         } coAnswers {
             DummyUtil.getCookieDetail(isMine = false, isHidden = true)
         }
@@ -97,7 +106,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
             cookieDetailViewModel.cookieDetail.value?.isMine shouldBe true
 
             Then("판매 정보 수정으로 이동") {
-                cookieDetailViewModel.clickCookieContentsBtn(cookieDetailViewModel.cookieDetail.value?.isMine!!)
+                cookieDetailViewModel.clickCookieContentsBtn()
                 event.shouldBeInstanceOf<Event.Nav.ToEditCookie>()
             }
         }
@@ -109,7 +118,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
             cookieDetailViewModel.cookieDetail.value?.isMine shouldBe false
 
             Then("구매 확인 다이얼로그 표시") {
-                cookieDetailViewModel.clickCookieContentsBtn(cookieDetailViewModel.cookieDetail.value?.isMine!!)
+                cookieDetailViewModel.clickCookieContentsBtn()
                 event.shouldBeInstanceOf<Event.ShowDialog>()
             }
         }

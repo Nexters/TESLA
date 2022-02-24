@@ -4,6 +4,8 @@ import com.ozcoin.cookiepang.domain.alarm.AlarmsRepository
 import com.ozcoin.cookiepang.domain.alarm.AlarmsRepositoryImpl
 import com.ozcoin.cookiepang.domain.ask.AskRepository
 import com.ozcoin.cookiepang.domain.ask.AskRepositoryImpl
+import com.ozcoin.cookiepang.domain.contract.ContractRepository
+import com.ozcoin.cookiepang.domain.contract.ContractRepositoryImpl
 import com.ozcoin.cookiepang.domain.cookie.CookieRepository
 import com.ozcoin.cookiepang.domain.cookie.CookieRepositoryImpl
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
@@ -14,6 +16,8 @@ import com.ozcoin.cookiepang.domain.feed.FeedRepository
 import com.ozcoin.cookiepang.domain.feed.FeedRepositoryImpl
 import com.ozcoin.cookiepang.domain.klip.KlipAuthRepository
 import com.ozcoin.cookiepang.domain.klip.KlipAuthRepositoryImpl
+import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepository
+import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepositoryImpl
 import com.ozcoin.cookiepang.domain.question.QuestionRepository
 import com.ozcoin.cookiepang.domain.question.QuestionRepositoryImpl
 import com.ozcoin.cookiepang.domain.thememode.ThemeModeRepository
@@ -45,6 +49,9 @@ abstract class RepositoryModule {
     abstract fun bindKlipAuthRepository(impl: KlipAuthRepositoryImpl): KlipAuthRepository
 
     @Binds
+    abstract fun bindKlipContractTxRepository(impl: KlipContractTxRepositoryImpl): KlipContractTxRepository
+
+    @Binds
     abstract fun bindUserCategoryRepository(impl: UserCategoryRepositoryImpl): UserCategoryRepository
 
     @Binds
@@ -70,4 +77,7 @@ abstract class RepositoryModule {
 
     @Binds
     abstract fun bindAskRepository(impl: AskRepositoryImpl): AskRepository
+
+    @Binds
+    abstract fun bindContractRepository(impl: ContractRepositoryImpl): ContractRepository
 }

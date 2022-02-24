@@ -17,9 +17,9 @@
 
         <ImageView
             android:id="@+id/iv_cookie_box"
-            android:src="@drawable/ic_purple_cookie_box"
-            setCookieBoxImg="@{cookie.cookieBoxImgUrl}"
-            setErrorImg="@{@drawable/ic_purple_cookie_box}"
+            android:src="@drawable/ic_cookie_box_blue"
+            setCookieBoxImg="@{cookie.cookieCardStyle != null ? cookie.cookieCardStyle : cookie.cookieBoxImgUrl}"
+            setErrorImg="@{@drawable/ic_cookie_box_blue}"
             android:scaleType="fitXY"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintLeft_toLeftOf="parent"
@@ -34,8 +34,7 @@
             tools:src="@drawable/ic_fortune_cookie"
             android:translationZ="1dp"
             android:scaleType="fitXY"
-            setCookieImg="@{cookie.cookieImgUrl}"
-            setErrorImg="@{@drawable/ic_fortune_cookie}"
+            android:visibility="gone"
             app:layout_constraintHeight_percent="0.5"
             app:layout_constraintWidth_percent="0.5"
             app:layout_constraintLeft_toLeftOf="@+id/iv_cookie_box"
@@ -47,11 +46,11 @@
 
         <ImageView
             android:id="@+id/iv_cookie_box_cover"
-            android:src="@drawable/ic_purple_cookie_box_cover"
+            android:src="@drawable/ic_cookie_box_cover_blue"
             android:translationZ="2dp"
             tools:visibility="gone"
-            setCookieBoxCoverImg="@{cookie.cookieBoxCoverImgUrl}"
-            setErrorImg="@{@drawable/ic_purple_cookie_box_cover}"
+            setCookieBoxCoverImg="@{cookie.cookieCardStyle != null ? cookie.cookieCardStyle : cookie.cookieBoxCoverImgUrl}"
+            setErrorImg="@{@drawable/ic_cookie_box_cover_blue}"
             android:visibility="@{cookie.hidden ? View.VISIBLE : View.GONE}"
             android:scaleType="fitXY"
             app:layout_constraintLeft_toLeftOf="@+id/iv_cookie_box"

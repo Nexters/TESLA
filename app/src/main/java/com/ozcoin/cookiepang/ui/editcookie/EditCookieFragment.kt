@@ -35,11 +35,6 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
     private lateinit var userCategoryListAdapter: UserCategoryListAdapter
     private lateinit var spinnerClickListener: SpinnerClickListener
 
-    private val editCookie by lazy {
-        val args by navArgs<EditCookieFragmentArgs>()
-        args.editCookie ?: EditCookie()
-    }
-
     private lateinit var onBackPressedCallback: OnBackPressedCallback
 
     override fun getLayoutRes(): Int {
@@ -49,7 +44,6 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
     override fun initView() {
         with(binding) {
             viewModel = editCookieFragmentViewModel
-            editCookie = this@EditCookieFragment.editCookie
         }
         setupUserCategoryList()
     }
@@ -66,7 +60,7 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
 
                 onItemClick = {
                     if (it != null) {
-                        editCookie.selectedCategory = it
+                        editCookieFragmentViewModel.editCookie.value.selectedCategory = it
                     }
                 }
             }
@@ -75,7 +69,7 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
 
             addOnItemTouchListener(object : RecyclerView.OnItemTouchListener {
                 override fun onInterceptTouchEvent(rv: RecyclerView, e: MotionEvent): Boolean {
-                    return editCookie.isEditPricingInfo
+                    return editCookieFragmentViewModel.editCookie.value.isEditPricingInfo
                 }
 
                 override fun onTouchEvent(rv: RecyclerView, e: MotionEvent) {
@@ -88,19 +82,18 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
     }
 
     override fun initListener() {
-        setupSpinnerListener()
         setupMaxLengthCaptionListener()
         addBackKeyListener()
     }
 
-    private fun setupSpinnerListener() {
+    private fun setupSpinnerListener(editCookie: EditCookie) {
         val num = kotlin.runCatching { editCookie.hammerCost.toInt() }.getOrDefault(0)
         spinnerClickListener = SpinnerClickListener(num, viewLifecycleScope)
         binding.spinnerListener = spinnerClickListener
 
         viewLifecycleScope.launch {
             spinnerClickListener.numValue.collect {
-                editCookie.hammerCost = it
+                editCookieFragmentViewModel.editCookie.value.hammerCost = it
             }
         }
     }
@@ -129,7 +122,8 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
 
     override fun initObserve() {
         with(editCookieFragmentViewModel) {
-            eventObserver = EventObserver(mainActivityViewModel::updateEvent)
+            lifecycle.addObserver(this)
+            activityEventObserver = EventObserver(mainActivityViewModel::updateEvent)
             uiStateObserver = UiStateObserver(mainActivityViewModel::updateUiState)
         }
         observeEvent(editCookieFragmentViewModel)
@@ -156,7 +150,7 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
 
     private fun matchUserCategoryListBySelectedCategory(list: List<UserCategory>): List<UserCategory> {
         list.find { userCategory ->
-            editCookie.selectedCategory?.categoryName == userCategory.categoryName
+            editCookieFragmentViewModel.editCookie.value.selectedCategory?.categoryName == userCategory.categoryName
         }?.run {
             isSelected = true
         }
@@ -165,7 +159,19 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
     }
 
     override fun init() {
+        val editCookie = getEditCookie()
+        if (editCookie != null) {
+            setupSpinnerListener(editCookie)
+            editCookieFragmentViewModel.setEditCookie(editCookie)
+        } else {
+            setupSpinnerListener(editCookieFragmentViewModel.editCookie.value)
+        }
         editCookieFragmentViewModel.getUserCategoryList()
+    }
+
+    private fun getEditCookie(): EditCookie? {
+        val args by navArgs<EditCookieFragmentArgs>()
+        return args.editCookie
     }
 
     private fun handleEditCookieEvent(event: EditCookieEvent) {

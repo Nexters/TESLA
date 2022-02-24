@@ -7,4 +7,6 @@ interface QuestionRepository {
     suspend fun getQuestionList(userId: String): DataResult<List<Question>>
 
     suspend fun ignoreQuestion(question: Question): Boolean
+
+    suspend fun acceptQuestion(question: Question): Boolean
 }

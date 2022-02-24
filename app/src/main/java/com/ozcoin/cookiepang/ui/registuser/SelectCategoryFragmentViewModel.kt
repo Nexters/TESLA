@@ -25,12 +25,11 @@ class SelectCategoryFragmentViewModel @Inject constructor(
     var registrationUser: User? = null
 
     private fun checkUserSelectedCategories(): Boolean {
-//        return selectedCategories != null && selectedCategories!!.size >= 3
-        return selectedCategories != null
+        return selectedCategories != null && selectedCategories!!.size >= 3
     }
 
-    private fun navigateToCompleteUserReg() {
-        navigateTo(SelectCategoryFragmentDirections.actionCompleteUserReg())
+    private fun navigateToOnBoarding() {
+        navigateTo(SelectCategoryFragmentDirections.actionOnBoarding01())
     }
 
     private suspend fun isUserRegistration(): Boolean {
@@ -71,8 +70,9 @@ class SelectCategoryFragmentViewModel @Inject constructor(
     private suspend fun setUserInterestIn(user: User): Boolean {
         var result = false
         if (checkUserSelectedCategories()) {
-            result = selectedCategories?.let { userCategoryRepository.setUserInterestIn(user, it) }
-                ?: false
+            result = selectedCategories?.let {
+                userCategoryRepository.setUserInterestIn(user, it)
+            } ?: false
         }
 
         return result
@@ -85,7 +85,7 @@ class SelectCategoryFragmentViewModel @Inject constructor(
             if (isUserRegistration()) {
                 if (setUserInterestIn(registrationUser!!)) {
                     uiStateObserver.update(UiState.OnSuccess)
-                    navigateToCompleteUserReg()
+                    navigateToOnBoarding()
                 } else {
                     uiStateObserver.update(UiState.OnFail)
                 }

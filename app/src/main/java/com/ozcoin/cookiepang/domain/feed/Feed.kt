@@ -7,6 +7,7 @@ import kotlinx.parcelize.Parcelize
 data class Feed(
     val isHidden: Boolean,
     val userThumbnailUrl: String,
+    val feedUserId: String,
     val userProfileId: String,
     val createdTimeStamp: String,
     val question: String,
@@ -14,5 +15,5 @@ data class Feed(
     val cookieCardStyle: CookieCardStyle,
     val viewCount: Int,
     val hammerPrice: Int,
-    val id: String = "($isHidden)$userProfileId/$question/$createdTimeStamp",
+    val cookieId: Int
 ) : Parcelable

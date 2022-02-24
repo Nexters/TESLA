@@ -27,7 +27,7 @@ class OnBoarding02Fragment : BaseFragment<FragmentOnBoarding02Binding>() {
             onBoarding02FragmentViewModel.clickBack()
         }
         binding.includeTitleLayout.tvSkipBtn.setOnClickListener {
-            onBoarding02FragmentViewModel.navigateToMain()
+            onBoarding02FragmentViewModel.navigateToCompUserReg()
         }
     }
 

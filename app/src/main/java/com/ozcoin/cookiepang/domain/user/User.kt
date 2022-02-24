@@ -1,5 +1,6 @@
 package com.ozcoin.cookiepang.domain.user
 
+import android.graphics.Bitmap
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import com.ozcoin.cookiepang.BR
@@ -22,24 +23,24 @@ class User : BaseObservable() {
         }
 
     @get:Bindable
-    var dateOfBirth: String = ""
+    var location: String = ""
         set(value) {
             field = value
-            notifyPropertyChanged(BR.dateOfBirth)
+            notifyPropertyChanged(BR.location)
         }
 
     @get:Bindable
-    var mbti: String = ""
+    var height: String = ""
         set(value) {
             field = value
-            notifyPropertyChanged(BR.mbti)
+            notifyPropertyChanged(BR.height)
         }
 
     @get:Bindable
-    var hobby: String = ""
+    var job: String = ""
         set(value) {
             field = value
-            notifyPropertyChanged(BR.hobby)
+            notifyPropertyChanged(BR.job)
         }
 
     @get:Bindable
@@ -57,14 +58,14 @@ class User : BaseObservable() {
         }
 
     @get:Bindable
-    var numOfKlaytn = 0
+    var numOfKlaytn = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.numOfKlaytn)
         }
 
     @get:Bindable
-    var numOfHammer = 0
+    var numOfHammer = ""
         set(value) {
             field = value
             notifyPropertyChanged(BR.numOfHammer)
@@ -76,4 +77,33 @@ class User : BaseObservable() {
             field = value
             notifyPropertyChanged(BR.walletApproved)
         }
+
+    @get:Bindable
+    var introduction = ""
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.introduction)
+        }
+
+    @get:Bindable
+    var profileUrl: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.profileUrl)
+        }
+
+    @get:Bindable
+    var backgroundUrl: String? = null
+        set(value) {
+            field = value
+            notifyPropertyChanged(BR.backgroundUrl)
+        }
+
+    var finishOnboard: Boolean = false
+    var updateThumbnailImg: Bitmap? = null
+    var updateProfileBackgroundImg: Bitmap? = null
+}
+
+fun String.toDataUserId(): Int {
+    return kotlin.runCatching { this.toInt() }.getOrDefault(-1)
 }

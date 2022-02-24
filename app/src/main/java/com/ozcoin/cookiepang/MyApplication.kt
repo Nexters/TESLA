@@ -12,6 +12,8 @@ class MyApplication : Application() {
 
     @Inject lateinit var themeModeRepository: ThemeModeRepository
 
+    var onBoardingPageSelectedMyHome: Boolean? = null
+
     override fun onCreate() {
         super.onCreate()
 

@@ -14,16 +14,17 @@ abstract class FeedViewHolder(
         const val VIEW_TYPE_OPENED = 8811
     }
 
-    abstract fun bind(feed: Feed, onClick: (Feed) -> Unit)
+    abstract fun bind(feed: Feed, onClick: (Feed) -> Unit, onUserProfileClick: (Feed) -> Unit)
 }
 
 class FeedOpenedViewHolder(
     private val binding: ItemFeedOpenedBinding
 ) : FeedViewHolder(binding) {
-    override fun bind(feed: Feed, onClick: (Feed) -> Unit) {
+    override fun bind(feed: Feed, onClick: (Feed) -> Unit, onUserProfileClick: (Feed) -> Unit) {
         with(binding) {
             this.feed = feed
-            root.setOnClickListener { onClick(feed) }
+            clTopContainer.setOnClickListener { onClick(feed) }
+            ivUserThumbnail.setOnClickListener { onUserProfileClick(feed) }
         }
     }
 }
@@ -31,10 +32,11 @@ class FeedOpenedViewHolder(
 class FeedHiddenViewHolder(
     private val binding: ItemFeedHiddenBinding
 ) : FeedViewHolder(binding) {
-    override fun bind(feed: Feed, onClick: (Feed) -> Unit) {
+    override fun bind(feed: Feed, onClick: (Feed) -> Unit, onUserProfileClick: (Feed) -> Unit) {
         with(binding) {
             this.feed = feed
-            root.setOnClickListener { onClick(feed) }
+            clTopContainer.setOnClickListener { onClick(feed) }
+            ivUserThumbnail.setOnClickListener { onUserProfileClick(feed) }
         }
     }
 }

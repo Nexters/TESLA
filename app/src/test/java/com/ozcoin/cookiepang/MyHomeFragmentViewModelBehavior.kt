@@ -32,7 +32,7 @@ class MyHomeFragmentViewModelBehavior : BehaviorSpec() {
         val questionRepository = mockk<QuestionRepository>()
         val viewModel = spyk(
             MyHomeFragmentViewModel(
-                userRepository, userInfoRepository, cookieRepository, questionRepository
+                userRepository, cookieRepository, questionRepository
             )
         )
 
@@ -141,7 +141,7 @@ class MyHomeFragmentViewModelBehavior : BehaviorSpec() {
                         resumeDispatcher()
 
                         uiState.shouldBeInstanceOf<UiState.OnSuccess>()
-                        viewModel.userInfo.first() shouldBe (userInfo as DataResult.OnSuccess).response
+                        viewModel.user.first() shouldBe (userInfo as DataResult.OnSuccess).response
                     }
                 }
             }
@@ -154,7 +154,7 @@ class MyHomeFragmentViewModelBehavior : BehaviorSpec() {
                 coEvery {
                     userInfoRepository.getUserInfo(userId)
                 } coAnswers {
-                    DataResult.OnFail
+                    DataResult.OnFail()
                 }
 
                 Then("이전 화면으로 이동") {

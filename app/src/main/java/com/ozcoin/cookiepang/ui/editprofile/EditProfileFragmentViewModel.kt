@@ -3,10 +3,8 @@ package com.ozcoin.cookiepang.ui.editprofile
 import android.graphics.Bitmap
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
+import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.UserRepository
-import com.ozcoin.cookiepang.domain.userinfo.UserInfo
-import com.ozcoin.cookiepang.domain.userinfo.UserInfoRepository
-import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.DialogUtil
 import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.EventFlow
@@ -27,8 +25,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditProfileFragmentViewModel @Inject constructor(
-    private val userRepository: UserRepository,
-    private val userInfoRepository: UserInfoRepository
+    private val userRepository: UserRepository
 ) : BaseViewModel() {
 
     private val _editProfileEventFlow = MutableEventFlow<EditProfileEvent>()
@@ -39,9 +36,9 @@ class EditProfileFragmentViewModel @Inject constructor(
     val introduceMaxLengthCaption: StateFlow<String?>
         get() = _introduceMaxLengthCaption.asStateFlow()
 
-    private val _userInfo = MutableStateFlow<UserInfo?>(null)
-    val userInfo: StateFlow<UserInfo?>
-        get() = _userInfo
+    private val _user = MutableStateFlow<User?>(null)
+    val user: StateFlow<User?>
+        get() = _user
 
     val titleClickListener = TitleClickListener(
         EventObserver {
@@ -53,21 +50,11 @@ class EditProfileFragmentViewModel @Inject constructor(
     lateinit var uiStateObserver: UiStateObserver
 
     fun loadLoginUserInfo() {
-        uiStateObserver.update(UiState.OnLoading)
-
         viewModelScope.launch {
             val loginUser = userRepository.getLoginUser()
             if (loginUser != null) {
-                val result = userInfoRepository.getUserInfo(loginUser.userId)
-                if (result is DataResult.OnSuccess) {
-                    _userInfo.emit(result.response)
-                    uiStateObserver.update(UiState.OnSuccess)
-                } else {
-                    uiStateObserver.update(UiState.OnFail)
-                    navigateUp()
-                }
+                _user.emit(loginUser)
             } else {
-                uiStateObserver.update(UiState.OnFail)
                 navigateUp()
             }
         }
@@ -87,7 +74,7 @@ class EditProfileFragmentViewModel @Inject constructor(
     private fun showChangeImgDialog(isThumbnail: Boolean) {
         eventObserver.update(
             Event.ShowDialog(
-                DialogUtil.getChangeImg(),
+                DialogUtil.getChangeImgContents(),
                 callback = {
                     if (it) openGallery(isThumbnail) else openCamera(isThumbnail)
                 }
@@ -109,13 +96,13 @@ class EditProfileFragmentViewModel @Inject constructor(
 
     fun updateUserThumbnail(bitmap: Bitmap?) {
         viewModelScope.launch {
-            _userInfo.first()?.updateThumbnailImg = bitmap
+            _user.first()?.updateThumbnailImg = bitmap
         }
     }
 
     fun updateUserBackgroundImg(bitmap: Bitmap?) {
         viewModelScope.launch {
-            _userInfo.first()?.updateProfileBackgroundImg = bitmap
+            _user.first()?.updateProfileBackgroundImg = bitmap
         }
     }
 
@@ -131,8 +118,8 @@ class EditProfileFragmentViewModel @Inject constructor(
         uiStateObserver.update(UiState.OnLoading)
 
         viewModelScope.launch {
-            userInfo.value?.let {
-                if (userInfoRepository.updateUserInfo(it)) {
+            user.value?.let {
+                if (userRepository.updateUser(it)) {
                     navigateUp()
                     uiStateObserver.update(UiState.OnSuccess)
                 } else {
@@ -144,5 +131,13 @@ class EditProfileFragmentViewModel @Inject constructor(
 
     fun clickSaveUserInfo() {
         updateUserInfo()
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        user.value?.let {
+            it.updateProfileBackgroundImg = null
+            it.updateThumbnailImg = null
+        }
     }
 }

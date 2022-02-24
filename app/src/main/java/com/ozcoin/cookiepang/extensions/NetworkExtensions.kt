@@ -4,7 +4,7 @@ import com.ozcoin.cookiepang.data.request.NetworkResult
 import com.ozcoin.cookiepang.utils.DataResult
 import retrofit2.Response
 
-suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>): NetworkResult<T> {
+inline fun <reified T : Any> safeApiCall(call: () -> Response<T>): NetworkResult<T> {
     var exception: Throwable? = null
     val response = runCatching {
         call.invoke()
@@ -15,21 +15,30 @@ suspend fun <T : Any> safeApiCall(call: suspend () -> Response<T>): NetworkResul
 
     return if (response != null) {
         if (response.isSuccessful) {
-            NetworkResult.Success(response = response.body()!!)
+            if (T::class.java.isAssignableFrom(Unit::class.java)) {
+                NetworkResult.Success(Unit as T)
+            } else {
+                NetworkResult.Success(response.body()!!)
+            }
         } else {
-            NetworkResult.Fail(response.code(), response.errorBody()?.toString() ?: "")
+            NetworkResult.Fail(response.code(), errorMessage = response.errorBody().toString())
         }
     } else {
-        NetworkResult.Fail(0, exception?.message!!)
+        NetworkResult.Fail(0, exception)
     }
 }
 
-suspend fun <T : Any> getDataResult(response: suspend () -> NetworkResult<T>): DataResult<T> {
-    val res = response.invoke()
-    val result = if (res is NetworkResult.Success) {
-        DataResult.OnSuccess(res.response)
-    } else {
-        DataResult.OnFail
+suspend fun <T : Any, E : Any> getDataResult(
+    response: NetworkResult<T>,
+    success: suspend (T) -> E
+): DataResult<E> {
+    val result = when (response) {
+        is NetworkResult.Success -> {
+            DataResult.OnSuccess(success(response.response))
+        }
+        is NetworkResult.Fail -> {
+            DataResult.OnFail(response.statusCode, response.throwable, response.errorMessage)
+        }
     }
     return result
 }

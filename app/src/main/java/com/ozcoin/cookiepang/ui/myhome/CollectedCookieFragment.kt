@@ -20,6 +20,11 @@ class CollectedCookieFragment : BaseFragment<FragmentCollectedCookieBinding>() {
         return R.layout.fragment_collected_cookie
     }
 
+    override fun onStart() {
+        super.onStart()
+        binding.root.background = null
+    }
+
     override fun initView() {
         setupCollectedCookieList()
     }
@@ -28,7 +33,7 @@ class CollectedCookieFragment : BaseFragment<FragmentCollectedCookieBinding>() {
         with(binding.rvCollectedCookie) {
             cookieListAdapter.apply {
                 onItemClick = {
-                    myHomeFragmentViewModel.navigateToCookieDetail(it.cookieId)
+                    myHomeFragmentViewModel.navigateToCookieDetail(it)
                 }
             }
 

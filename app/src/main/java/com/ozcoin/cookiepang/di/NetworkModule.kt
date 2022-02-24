@@ -20,7 +20,7 @@ import javax.inject.Singleton
 @Module
 object NetworkModule {
 
-    private const val baseUrl = "http://api.cookiepang.site"
+    private const val baseUrl = "https://api.cookiepang.site"
 
     private val okHttpClient: OkHttpClient
         get() {

@@ -38,7 +38,7 @@ class AlarmFragmentViewModel @Inject constructor(
 
     private suspend fun loadAlarmsList() {
         userRepository.getLoginUser()?.let {
-            val result = alarmsRepository.getAlarmsList("dfd")
+            val result = alarmsRepository.getAlarmsList(it.userId)
             if (result is DataResult.OnSuccess)
                 _alarmsList.emit(result.response)
         }

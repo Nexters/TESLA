@@ -70,11 +70,11 @@ class HomeFragmentViewModelBehavior : BehaviorSpec() {
                 coEvery {
                     userCategoryRepository.getUserCategory(user.userId)
                 } coAnswers {
-                    DataResult.OnFail
+                    DataResult.OnFail()
                 } coAndThen {
-                    DataResult.OnFail
+                    DataResult.OnFail()
                 } coAndThen {
-                    DataResult.OnFail
+                    DataResult.OnFail()
                 }
 
                 Then("재시도 한다") {
@@ -94,7 +94,7 @@ class HomeFragmentViewModelBehavior : BehaviorSpec() {
             When("로드에 성공하면") {
 
                 coEvery {
-                    feedRepository.getFeedList(UserCategory.typeAll())
+                    feedRepository.getFeedList(user.userId, UserCategory.typeAll())
                 } coAnswers {
                     DummyUtil.getFeedList()
                 }

@@ -1,12 +1,20 @@
 package com.ozcoin.cookiepang.domain.user
 
+import com.ozcoin.cookiepang.utils.DataResult
+
 interface UserRepository {
 
-    suspend fun regUser(user: User): Boolean
+    suspend fun getUser(userId: String): DataResult<User>
+
+    suspend fun regUser(user: User): DataResult<User>
 
     suspend fun getLoginUser(): User?
 
+    suspend fun updateUser(user: User): Boolean
+
+    suspend fun isUserRegistration(walletAddress: String): Boolean
+
     suspend fun checkDuplicateProfileID(profileID: String): Boolean
 
-    fun logOut()
+    suspend fun logOut()
 }

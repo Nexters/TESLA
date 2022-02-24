@@ -35,7 +35,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Select Your Interesting\nItems At Least 3."
+            android:text="관심있는 주제를\n3개 이상 선택해주세요"
             app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
             app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
             app:layout_constraintTop_toBottomOf="@+id/include_title_layout" />
@@ -47,6 +47,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
             app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
             android:text="Questions are provided similar to your interest."
+            android:visibility="gone"
             android:textColor="@color/gray_60_t2"
             android:layout_marginTop="8dp"
             android:layout_width="0dp"
@@ -74,7 +75,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="40dp"
             android:onClick="@{() -> viewModel.clickNext()}"
-            android:text="Next"
+            android:text="선택 완료하기"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

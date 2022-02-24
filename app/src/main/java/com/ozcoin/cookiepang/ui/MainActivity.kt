@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AnimationUtils
+import androidx.activity.OnBackPressedCallback
 import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavDirections
@@ -136,6 +137,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding>() {
                 popEnter = R.anim.slide_in_up
                 popExit = R.anim.slide_out_down
             }
+            launchSingleTop = true
         }
 
         val args = event.editCookie?.let { editCookie ->
@@ -230,13 +232,30 @@ open class MainActivity : BaseActivity<ActivityMainBinding>() {
 
             rootView.addView(progressBar)
             progressBar?.bringToFront()
+
+            addBackKeyListener()
         }
     }
 
     private fun hideProgress() {
         if (isProgressShow()) {
             removeProgressBarView()
+            removeBackKeyListener()
         }
+    }
+
+    private var onBackPressedCallback: OnBackPressedCallback? = null
+
+    private fun addBackKeyListener() {
+        onBackPressedCallback = object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+            }
+        }
+        onBackPressedCallback?.let { onBackPressedDispatcher.addCallback(this, it) }
+    }
+
+    private fun removeBackKeyListener() {
+        onBackPressedCallback?.remove()
     }
 
     private fun removeProgressBarView() {

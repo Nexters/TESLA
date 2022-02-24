@@ -40,7 +40,7 @@ class SelectCategoryListAdapter : RecyclerView.Adapter<SelectCategoryViewHolder>
     fun updateList(newList: List<UserCategory>) {
         list.clear()
         list.addAll(newList)
-        notifyItemRangeInserted(0, newList.size - 1)
+        notifyItemRangeInserted(0, newList.size)
     }
 
     private fun getSelectedCategory(): List<UserCategory> {

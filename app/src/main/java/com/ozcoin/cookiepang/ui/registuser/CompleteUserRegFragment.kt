@@ -1,7 +1,7 @@
 package com.ozcoin.cookiepang.ui.registuser
 
 import androidx.activity.OnBackPressedCallback
-import androidx.activity.addCallback
+import com.ozcoin.cookiepang.MyApplication
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentCompleteUserRegBinding
@@ -22,16 +22,14 @@ class CompleteUserRegFragment @Inject constructor() : BaseFragment<FragmentCompl
     }
 
     override fun initListener() {
-        binding.tvCheckHowToUseBtn.setOnClickListener {
-            navigateToOnBoarding()
-        }
         addBackKeyListener()
+        binding.tvMoveToHomeBtn.setOnClickListener { navigateToMain() }
+        binding.tvMoveToMyProfileBtn.setOnClickListener { navigateToMyHome() }
     }
 
     private fun addBackKeyListener() {
         onBackKeyPressedCallback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                navigateToMain()
             }
         }
         requireActivity().onBackPressedDispatcher.addCallback(this, onBackKeyPressedCallback)
@@ -46,9 +44,10 @@ class CompleteUserRegFragment @Inject constructor() : BaseFragment<FragmentCompl
         onBackKeyPressedCallback.remove()
     }
 
-    private fun navigateToOnBoarding() {
+    private fun navigateToMyHome() {
+        (requireActivity().application as? MyApplication)?.onBoardingPageSelectedMyHome = true
         handleEvent(
-            Event.Nav.To(CompleteUserRegFragmentDirections.actionOnBoarding01())
+            Event.Nav.To(CompleteUserRegFragmentDirections.actionMain())
         )
     }
 

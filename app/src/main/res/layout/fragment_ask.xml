@@ -71,7 +71,7 @@
             android:layout_height="48dp"
             android:layout_marginTop="6dp"
             android:hint="Input a Question"
-            android:imeOptions="actionNext"
+            android:imeOptions="actionDone"
             android:inputType="text"
             android:maxLength="25"
             android:text="@={viewModel.ask.question}"

@@ -7,9 +7,8 @@ import com.ozcoin.cookiepang.domain.cookie.CookieRepository
 import com.ozcoin.cookiepang.domain.question.Question
 import com.ozcoin.cookiepang.domain.question.QuestionRepository
 import com.ozcoin.cookiepang.domain.question.toEditCookie
+import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.UserRepository
-import com.ozcoin.cookiepang.domain.userinfo.UserInfo
-import com.ozcoin.cookiepang.domain.userinfo.UserInfoRepository
 import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.TitleClickListener
@@ -17,18 +16,19 @@ import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class MyHomeFragmentViewModel @Inject constructor(
     private val userRepository: UserRepository,
-    private val userInfoRepository: UserInfoRepository,
     private val cookieRepository: CookieRepository,
     private val questionRepository: QuestionRepository
 ) : BaseViewModel() {
@@ -45,9 +45,13 @@ class MyHomeFragmentViewModel @Inject constructor(
     val questionList: StateFlow<List<Question>>
         get() = _questionList
 
-    private val _userInfo = MutableStateFlow<UserInfo?>(null)
-    val userInfo: StateFlow<UserInfo?>
-        get() = _userInfo
+    private val _user = MutableStateFlow<User?>(null)
+    val user: StateFlow<User?>
+        get() = _user
+
+    private val _isMyPage = MutableStateFlow(true)
+    val isMyPage: StateFlow<Boolean>
+        get() = _isMyPage
 
     val titleClickListener = TitleClickListener(
         EventObserver {
@@ -58,41 +62,46 @@ class MyHomeFragmentViewModel @Inject constructor(
     lateinit var eventObserver: EventObserver
     lateinit var uiStateObserver: UiStateObserver
 
+    private suspend fun loadUserInfo(user: User) =
+        withContext(Dispatchers.IO) {
+            val collectedCookie = async { loadCollectedCookie(user.userId) }
+            val createdCookie = async { loadCreatedCookie(user.userId) }
+            val question = async { loadQuestions(user.userId) }
+
+            collectedCookie.await()
+            createdCookie.await()
+            question.await()
+        }
+
     fun loadUserInfo(userId: String?) {
-        if (!userId.isNullOrBlank()) {
-            uiStateObserver.update(UiState.OnLoading)
-
-            viewModelScope.launch {
-                val result = userInfoRepository.getUserInfo(userId)
-                if (result is DataResult.OnSuccess) {
-                    _userInfo.emit(result.response)
-
-                    val collectedCookie = async { loadCollectedCookie(userId) }
-                    val createdCookie = async { loadCreatedCookie(userId) }
-                    val question = async { loadQuestions(userId) }
-
-                    collectedCookie.await()
-                    createdCookie.await()
-                    question.await()
-
-                    uiStateObserver.update(UiState.OnSuccess)
-                } else {
-                    uiStateObserver.update(UiState.OnFail)
-                    navigateUp()
+        viewModelScope.launch {
+            var isMyPage = false
+            val user = if (userId.isNullOrBlank()) {
+                isMyPage = true
+                userRepository.getLoginUser()
+            } else {
+                userRepository.getUser(userId).let {
+                    if (it is DataResult.OnSuccess) {
+                        val getUser = it.response
+                        val loginUser = userRepository.getLoginUser()
+                        if (getUser.userId == loginUser?.userId) {
+                            isMyPage = true
+                            loginUser
+                        } else {
+                            getUser
+                        }
+                    } else {
+                        null
+                    }
                 }
             }
-        } else {
-            Timber.d("userId is null or blank")
-
-            viewModelScope.launch {
-                val loginUser = userRepository.getLoginUser()
-                if (loginUser != null && loginUser.userId.isNotEmpty()) {
-                    Timber.d("loginUserId exist, so loadUserinfo by LoginUser")
-                    loadUserInfo(loginUser.userId)
-                } else {
-                    Timber.d("loginUserId not exist, so navigateUp")
-                    navigateUp()
-                }
+            if (user != null) {
+                _isMyPage.emit(isMyPage)
+                _user.emit(user)
+                loadUserInfo(user)
+            } else {
+                Timber.d("user is null, navigateUp()")
+                navigateUp()
             }
         }
     }
@@ -102,6 +111,7 @@ class MyHomeFragmentViewModel @Inject constructor(
             if (it is DataResult.OnSuccess)
                 _collectedCookieList.emit(it.response)
         }
+        Timber.d("loadCollectedCookie finish")
     }
 
     private suspend fun loadCreatedCookie(userId: String) {
@@ -109,6 +119,7 @@ class MyHomeFragmentViewModel @Inject constructor(
             if (it is DataResult.OnSuccess)
                 _createdCookieList.emit(it.response)
         }
+        Timber.d("loadCreatedCookie finish")
     }
 
     private suspend fun loadQuestions(userId: String) {
@@ -116,6 +127,7 @@ class MyHomeFragmentViewModel @Inject constructor(
             if (it is DataResult.OnSuccess)
                 _questionList.emit(it.response)
         }
+        Timber.d("loadQuestions finish")
     }
 
     fun acceptQuestion(question: Question) {
@@ -128,14 +140,20 @@ class MyHomeFragmentViewModel @Inject constructor(
         viewModelScope.launch {
             if (questionRepository.ignoreQuestion(question)) {
                 Timber.d("ignoreQuestion success, so reload questions")
-                _userInfo.first()?.userId?.let { loadQuestions(it) } ?: Timber.d("userInfo is not valid")
+                _user.first()?.userId?.let {
+                    loadQuestions(it)
+                } ?: Timber.d("userInfo is not valid")
             }
             uiStateObserver.update(UiState.OnSuccess)
         }
     }
 
-    fun navigateToCookieDetail(cookieId: String) {
-        navigateTo(MyHomeFragmentDirections.actionCookieDetail(cookieId))
+    fun navigateToCookieDetail(cookie: Cookie) {
+        if (cookie.isHidden && cookie.ownedUserId != user.value?.userId) {
+            Timber.d("남의 숨겨진 쿠키는 못봐요 ~ ")
+        } else {
+            navigateTo(MyHomeFragmentDirections.actionCookieDetail(cookie.cookieId))
+        }
     }
 
     private fun navigateToEditProfile() {
@@ -143,7 +161,7 @@ class MyHomeFragmentViewModel @Inject constructor(
     }
 
     private fun navigateToAsk() {
-        _userInfo.value?.userId?.let { navigateTo(MyHomeFragmentDirections.actionAsk(it)) }
+        _user.value?.userId?.let { navigateTo(MyHomeFragmentDirections.actionAsk(it)) }
     }
 
     fun clickAskMe() {

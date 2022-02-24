@@ -31,7 +31,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="30dp"
-            android:text="Create a NFT\nwith my answers."
+            android:text="당신의 아이덴티티로\nNFT를 만들어보세요"
             app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
             app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
             app:layout_constraintTop_toBottomOf="@+id/include_title_layout" />
@@ -42,7 +42,7 @@
             app:layout_constraintTop_toBottomOf="@+id/tv_create_with_answers_title"
             app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
             app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
-            android:text="You can make your questions and answers\nabout yourself into cookies so you can buy and\nsell them with others."
+            android:text="질문과 답변으로 당신만의 NFT 쿠키를 만들어 보세요.\n만든 쿠키를 직접 판매 할 수 있습니다."
             android:textColor="@color/gray_60_t2"
             android:layout_marginTop="8dp"
             android:layout_width="0dp"
@@ -51,14 +51,15 @@
         <ImageView
             android:id="@+id/iv_guide_img"
             android:src="@drawable/ic_on_boarding_guide_01"
-            android:layout_marginTop="138dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="140dp"
             app:layout_constraintVertical_bias="0"
             app:layout_constraintTop_toBottomOf="@+id/tv_title_description"
-            app:layout_constraintBottom_toTopOf="@+id/tv_next_btn"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
-            android:layout_width="220dp"
-            android:layout_height="220dp" />
+            android:layout_width="0dp"
+            android:layout_height="0dp" />
 
         <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
             android:id="@+id/tv_next_btn"
@@ -68,7 +69,7 @@
             android:layout_marginRight="20dp"
             android:layout_marginBottom="40dp"
             android:onClick="@{() -> viewModel.clickNext()}"
-            android:text="Next"
+            android:text="다음"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent" />

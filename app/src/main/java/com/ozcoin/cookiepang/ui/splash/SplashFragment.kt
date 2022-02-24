@@ -23,7 +23,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
         lifecycleScope.launch {
             withContext(Dispatchers.Default) {
-                delay(1500)
+                delay(1500L)
             }
 
             if (loginViewModel.isUserLogin()) {

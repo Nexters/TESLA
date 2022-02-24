@@ -36,6 +36,9 @@ object UserCategoryBinding {
             UserCategoryColorStyle.PURPLE -> {
                 R.drawable.selector_btn_category_stroke_purple
             }
+            UserCategoryColorStyle.LIME -> {
+                R.drawable.selector_btn_category_stroke_lime
+            }
         }
 
         val background = ContextCompat.getDrawable(checkBox.context, resId)

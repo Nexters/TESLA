@@ -27,7 +27,7 @@ class UserPrefProvider @Inject constructor(
     suspend fun setUserEntity(userEntity: UserEntity) {
         context.userPref.edit {
             it[userWalletAddressKey] = userEntity.walletAddress
-            it[userIdKey] = userEntity.id
+            it[userIdKey] = userEntity.id ?: -1
         }
     }
 
@@ -41,7 +41,7 @@ class UserPrefProvider @Inject constructor(
         }.map {
             val walletAddress = it[userWalletAddressKey]
             val userId = it[userIdKey]
-            if (userId != null) {
+            if (userId != null && userId != -1) {
                 UserEntity(
                     id = userId,
                     walletAddress = walletAddress ?: "",

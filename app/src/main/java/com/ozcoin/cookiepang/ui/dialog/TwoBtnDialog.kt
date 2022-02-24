@@ -1,9 +1,11 @@
 package com.ozcoin.cookiepang.ui.dialog
 
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Point
 import android.graphics.drawable.ColorDrawable
+import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +14,7 @@ import android.view.WindowManager
 import androidx.fragment.app.DialogFragment
 import com.ozcoin.cookiepang.databinding.DialogTwoBtnBinding
 import com.ozcoin.cookiepang.domain.dialog.DialogContents
+import timber.log.Timber
 
 class TwoBtnDialog(
     private val dialogContents: DialogContents,
@@ -60,6 +63,15 @@ class TwoBtnDialog(
         binding.tvCancelBtn.setOnClickListener {
             callback(false)
             dismiss()
+        }
+        binding.tvContentsLink.setOnClickListener {
+            if (dialogContents.dialogLink != null) {
+                kotlin.runCatching {
+                    startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(dialogContents.dialogLink.link)))
+                }.onFailure {
+                    Timber.e(it)
+                }
+            }
         }
     }
 

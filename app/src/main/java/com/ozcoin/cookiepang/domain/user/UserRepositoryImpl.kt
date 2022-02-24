@@ -1,11 +1,16 @@
 package com.ozcoin.cookiepang.domain.user
 
 import com.ozcoin.cookiepang.data.request.NetworkResult
+import com.ozcoin.cookiepang.data.user.UserEntity
 import com.ozcoin.cookiepang.data.user.UserLocalDataSource
 import com.ozcoin.cookiepang.data.user.UserRemoteDataSource
-import com.ozcoin.cookiepang.data.user.toData
 import com.ozcoin.cookiepang.data.user.toDomain
+import com.ozcoin.cookiepang.extensions.getDataResult
+import com.ozcoin.cookiepang.utils.DataResult
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.withContext
+import timber.log.Timber
 import javax.inject.Inject
 
 class UserRepositoryImpl @Inject constructor(
@@ -15,35 +20,72 @@ class UserRepositoryImpl @Inject constructor(
 
     private var loginUser: User? = null
 
-    override suspend fun regUser(user: User): Boolean {
-        var regUserResult = false
-        val result = userRemoteDataSource.registrationUser(user.toData())
-        if (result is NetworkResult.Success) {
-            userLocalDataSource.saveUserEntity(result.response)
-            loginUser = result.response.toDomain()
-            regUserResult = true
+    override suspend fun getUser(userId: String): DataResult<User> =
+        withContext(Dispatchers.IO) {
+            getDataResult(userRemoteDataSource.getUser(userId.toDataUserId())) {
+                it.toDomain()
+            }
         }
 
-        return regUserResult
-    }
+    override suspend fun regUser(user: User): DataResult<User> =
+        withContext(Dispatchers.IO) {
+            getDataResult(userRemoteDataSource.registrationUser(user)) { res ->
+                userLocalDataSource.saveUserEntity(res)
+                val user = res.toDomain()
+                loginUser = user
+                user
+            }
+            DataResult.OnSuccess(User())
+        }
 
-    override suspend fun getLoginUser(): User? {
+    override suspend fun getLoginUser(): User? = withContext(Dispatchers.IO) {
         if (loginUser == null) {
+            Timber.d("is LoginUser null")
             val userEntity = userLocalDataSource.getUserEntity().first()?.let {
-                val result = userRemoteDataSource.getUser(it.id)
+                Timber.d("getUserEntity() result: $it")
+                val result = userRemoteDataSource.getUser(it.id ?: -1)
                 if (result is NetworkResult.Success) result.response else null
             }
-            userEntity?.let { loginUser = it.toDomain() }
+            userEntity?.let {
+                userLocalDataSource.saveUserEntity(it)
+                loginUser = it.toDomain()
+            }
+        }
+        loginUser
+    }
+
+    override suspend fun updateUser(user: User): Boolean =
+        withContext(Dispatchers.IO) {
+            var updateUserResult = false
+            user.updateProfileBackgroundImg = null
+            user.updateThumbnailImg = null
+            getDataResult(userRemoteDataSource.updateUserEntity(user)) {
+                loginUser = it.toDomain()
+                updateUserResult = true
+            }
+            updateUserResult
         }
 
-        return loginUser
-    }
+    override suspend fun isUserRegistration(walletAddress: String): Boolean =
+        withContext(Dispatchers.IO) {
+            var userRegistrationResult = false
+            getDataResult(userRemoteDataSource.isUserRegistration(walletAddress)) { res ->
+                getDataResult(userRemoteDataSource.getUser(res.userId)) { user ->
+                    userLocalDataSource.saveUserEntity(user)
+                    loginUser = user.toDomain()
+                    userRegistrationResult = true
+                }
+            }
+
+            userRegistrationResult
+        }
 
     override suspend fun checkDuplicateProfileID(profileID: String): Boolean {
         return true
     }
 
-    override fun logOut() {
+    override suspend fun logOut() {
+        userLocalDataSource.saveUserEntity(UserEntity.empty())
         loginUser = null
     }
 }

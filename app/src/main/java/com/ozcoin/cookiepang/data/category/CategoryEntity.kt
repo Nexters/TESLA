@@ -1,9 +1,11 @@
 package com.ozcoin.cookiepang.data.category
 
+import androidx.annotation.Keep
 import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryColorStyle
 import kotlinx.serialization.Serializable
 
+@Keep
 @Serializable
 data class CategoryEntity(
     val id: Int,
