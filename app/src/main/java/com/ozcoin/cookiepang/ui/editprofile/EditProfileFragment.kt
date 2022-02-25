@@ -36,7 +36,7 @@ class EditProfileFragment : BaseFragment<FragmentEditProfileBinding>() {
 
     override fun initView() {
         with(binding) {
-            pageName = "Edit Profile"
+            pageName = "프로필 변경"
             viewModel = editProfileFragmentViewModel
         }
     }

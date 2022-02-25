@@ -32,7 +32,7 @@ class AskFragment : BaseFragment<FragmentAskBinding>() {
 
     override fun initView() {
         with(binding) {
-            pageName = "Ask"
+            pageName = "질문 요청하기"
             viewModel = askFragmentViewModel
         }
         setupUserCategoryList()
