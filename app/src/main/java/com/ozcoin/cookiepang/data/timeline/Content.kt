@@ -1,5 +1,6 @@
 package com.ozcoin.cookiepang.data.timeline
 
+import androidx.annotation.Keep
 import com.ozcoin.cookiepang.data.category.CategoryEntity
 import com.ozcoin.cookiepang.data.category.toDomain
 import com.ozcoin.cookiepang.domain.feed.Feed
@@ -7,6 +8,7 @@ import com.ozcoin.cookiepang.domain.usercategory.toCookieCardStyle
 import com.ozcoin.cookiepang.utils.DateUtil
 import kotlinx.serialization.Serializable
 
+@Keep
 @Serializable
 data class Content(
     val cookieId: Int,

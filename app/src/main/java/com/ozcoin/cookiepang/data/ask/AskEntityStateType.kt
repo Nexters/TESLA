@@ -1,8 +1,10 @@
 package com.ozcoin.cookiepang.data.ask
 
+import androidx.annotation.Keep
 import com.ozcoin.cookiepang.domain.ask.AskStatusType
 import kotlinx.serialization.Serializable
 
+@Keep
 @Serializable
 enum class AskEntityStateType {
     PENDING, IGNORED, ACCEPTED, DELETED

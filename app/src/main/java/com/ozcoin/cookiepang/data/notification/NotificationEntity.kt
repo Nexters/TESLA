@@ -1,8 +1,10 @@
 package com.ozcoin.cookiepang.data.notification
 
+import androidx.annotation.Keep
 import com.ozcoin.cookiepang.domain.alarm.Alarm
 import kotlinx.serialization.Serializable
 
+@Keep
 @Serializable
 data class NotificationEntity(
     val id: Int?,
