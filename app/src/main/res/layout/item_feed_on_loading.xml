@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <import type="com.ozcoin.cookiepang.domain.feed.CookieCardStyle" />
+
+        <variable
+            name="feed"
+            type="com.ozcoin.cookiepang.domain.feed.Feed" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl_top_container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingStart="@dimen/space_contents_left"
+        android:paddingTop="@dimen/space_contents_top"
+        android:paddingEnd="@dimen/space_contents_right"
+        android:paddingBottom="@dimen/space_contents_bottom">
+
+        <ProgressBar
+            android:id="@+id/pb_progress"
+            android:layout_margin="5dp"
+            android:indeterminate="true"
+            android:indeterminateTint="@color/sub_01"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</layout>

@@ -6,6 +6,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.SimpleItemAnimator
 import com.ozcoin.cookiepang.MyApplication
 import com.ozcoin.cookiepang.R
@@ -58,8 +59,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
                 onItemClick = {
                     if (it != null) {
-                        homeFragmentViewModel.getFeedList(it)
-                        binding.rvFeed.smoothScrollToPosition(0)
+                        homeFragmentViewModel.setSelectedUserCategory(it)
                     } else {
                         mainActivityViewModel.hideBtmNavView()
                         homeFragmentViewModel.navigateToSelectCategory()
@@ -72,6 +72,10 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun setUpFeedList() {
         with(binding.rvFeed) {
+            homeFragmentViewModel.feedRefreshFinish = {
+                if (it) smoothScrollToPosition(0)
+            }
+
             addItemDecoration(
                 SingleLineItemDecoration(
                     1.toDp(),
@@ -88,6 +92,22 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             }
             adapter = feedListAdapter
         }
+        setupEndlessFeedList()
+    }
+
+    private fun setupEndlessFeedList() {
+        val layoutManager = binding.rvFeed.layoutManager as? LinearLayoutManager
+        binding.rvFeed.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                val totalItemCnt = homeFragmentViewModel.feedList.value.size
+                val completeVisibleListItemPos = layoutManager?.findLastCompletelyVisibleItemPosition()
+
+                if (completeVisibleListItemPos == totalItemCnt - 3)
+                    homeFragmentViewModel.loadMoreFeed()
+            }
+        })
     }
 
     private fun restoreListState() {
@@ -202,12 +222,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
 
     private fun setupRefreshListener() {
         binding.srlFeed.setOnRefreshListener {
-//            TODO()
-
-            viewLifecycleScope.launch(Dispatchers.Default) {
-                delay(2000L)
-                binding.srlFeed.isRefreshing = false
-            }
+            homeFragmentViewModel.refreshFeedList()
+            binding.srlFeed.isRefreshing = false
         }
     }
 
@@ -238,7 +254,8 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
     }
 
     private fun isMoveToMyHomeFromOnBoarding(): Boolean {
-        val result = (requireActivity().application as? MyApplication)?.onBoardingPageSelectedMyHome ?: false
+        val result =
+            (requireActivity().application as? MyApplication)?.onBoardingPageSelectedMyHome ?: false
         (requireActivity().application as? MyApplication)?.onBoardingPageSelectedMyHome = false
         return result
     }
@@ -260,7 +277,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
             viewLifecycleScope.launch {
                 if (itHaveToResetUserCategory()) {
                     binding.rvFeed.smoothScrollToPosition(0)
-                    homeFragmentViewModel.getUserCategoryList()
+                    homeFragmentViewModel.loadUserCategoryList()
                 } else {
                     if (isViewDataLoaded()) {
                         Timber.d("is view data loaded")
@@ -272,7 +289,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                         }
                     } else {
                         Timber.d("is not view data loaded, so get list data")
-                        homeFragmentViewModel.getUserCategoryList()
+                        homeFragmentViewModel.loadUserCategoryList()
                     }
                 }
             }

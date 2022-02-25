@@ -19,7 +19,7 @@ fun CategoryEntity.toDomain(): UserCategory {
         categoryColorStyle = kotlin.runCatching {
             UserCategoryColorStyle.valueOf(color)
         }.getOrDefault(UserCategoryColorStyle.NONE),
-        categoryId = this.id,
+        categoryId = id,
         isSelected = false
     )
 }

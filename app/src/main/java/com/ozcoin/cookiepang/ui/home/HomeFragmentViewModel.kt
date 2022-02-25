@@ -43,8 +43,11 @@ class HomeFragmentViewModel @Inject constructor(
     )
 
     lateinit var uiStateObserver: UiStateObserver
+    var feedRefreshFinish: ((Boolean) -> Unit)? = null
 
-    fun getUserCategoryList(retryCnt: Int = 3) {
+    private var selectedUserCategory = UserCategory.typeAll()
+
+    fun loadUserCategoryList(retryCnt: Int = 3) {
         viewModelScope.launch(Dispatchers.IO) {
             val user = userRepository.getLoginUser()
             if (user != null) {
@@ -54,21 +57,27 @@ class HomeFragmentViewModel @Inject constructor(
 
                     val list = addAllTypeToUserCategoryList(result.response)
                     _userCategoryList.emit(list)
-                    getFeedList(UserCategory.typeAll())
+                    selectedUserCategory = UserCategory.typeAll()
+                    loadFeedList()
                 } else {
                     Timber.d("getUserCategoryList onFail(retryCnt: $retryCnt)")
 
                     if (retryCnt > 0) {
-                        getUserCategoryList(retryCnt - 1)
+                        loadUserCategoryList(retryCnt - 1)
                     }
                 }
             } else {
                 Timber.d("User is null(retryCnt: $retryCnt)")
                 if (retryCnt > 0) {
-                    getUserCategoryList(retryCnt - 1)
+                    loadUserCategoryList(retryCnt - 1)
                 }
             }
         }
+    }
+
+    fun setSelectedUserCategory(userCategory: UserCategory) {
+        selectedUserCategory = userCategory
+        loadFeedList()
     }
 
     fun restoreUserCategoryList(list: List<UserCategory>) {
@@ -89,20 +98,51 @@ class HomeFragmentViewModel @Inject constructor(
         }.toList()
     }
 
-    fun getFeedList(userCategory: UserCategory) {
-        viewModelScope.launch {
-            uiStateObserver.update(UiState.OnLoading)
+    fun refreshFeedList() {
+        loadFeedList()
+    }
 
-            val result = userRepository.getLoginUser()
-                ?.let { feedRepository.getFeedList(it.userId, userCategory) }
+    fun loadMoreFeed() {
+        viewModelScope.launch {
+            val user = userRepository.getLoginUser()
+            if (user != null) {
+                val result = feedRepository.loadMore(user.userId, selectedUserCategory)
+                if (result is DataResult.OnSuccess) {
+                    val list = feedList.value.toMutableList()
+                    list.removeLast()
+                    list.addAll(result.response)
+                    if (!feedRepository.isLastPage())
+                        list.add(Feed.typeOnLoading())
+
+                    _feedList.emit(list)
+                }
+            }
+        }
+    }
+
+    private fun loadFeedList(showLoading: Boolean = true) {
+        viewModelScope.launch {
+            if (showLoading)
+                uiStateObserver.update(UiState.OnLoading)
+
+            val result = userRepository.getLoginUser()?.let {
+                feedRepository.getFeedList(it.userId, selectedUserCategory)
+            }
             if (result is DataResult.OnSuccess) {
                 Timber.d("getFeedList onSuccess")
+                val list = result.response.toMutableList()
+                if (!feedRepository.isLastPage())
+                    list.add(Feed.typeOnLoading())
 
-                _feedList.emit(result.response)
-                uiStateObserver.update(UiState.OnSuccess)
+                _feedList.emit(list)
+                if (showLoading)
+                    uiStateObserver.update(UiState.OnSuccess)
+                feedRefreshFinish?.invoke(true)
             } else {
                 Timber.d("getFeedList onFail")
-                uiStateObserver.update(UiState.OnFail)
+                if (showLoading)
+                    uiStateObserver.update(UiState.OnFail)
+                feedRefreshFinish?.invoke(false)
             }
         }
     }

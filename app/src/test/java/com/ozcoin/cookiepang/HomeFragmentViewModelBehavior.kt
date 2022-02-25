@@ -80,12 +80,12 @@ class HomeFragmentViewModelBehavior : BehaviorSpec() {
                 Then("재시도 한다") {
                     testDispatcher?.runBlockingTest {
                         pauseDispatcher()
-                        viewModel.getUserCategoryList()
+                        viewModel.loadUserCategoryList()
                         uiState shouldBe UiState.OnLoading
 
                         resumeDispatcher()
 
-                        verify { viewModel.getUserCategoryList() }
+                        verify { viewModel.loadUserCategoryList() }
                         uiState shouldBe UiState.OnFail
                     }
                 }
@@ -116,7 +116,7 @@ class HomeFragmentViewModelBehavior : BehaviorSpec() {
                     testDispatcher?.runBlockingTest {
 
                         pauseDispatcher()
-                        viewModel.getUserCategoryList()
+                        viewModel.loadUserCategoryList()
 
                         uiState shouldBe UiState.OnLoading
 

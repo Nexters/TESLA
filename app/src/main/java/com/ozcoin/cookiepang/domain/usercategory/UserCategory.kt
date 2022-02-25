@@ -12,7 +12,7 @@ data class UserCategory(
 ) : Parcelable {
     companion object {
         fun typeAll(): UserCategory {
-            return UserCategory("모두 보기", true, UserCategoryColorStyle.BLUE)
+            return UserCategory("모두 보기", true, UserCategoryColorStyle.BLUE, categoryId = Int.MIN_VALUE)
         }
     }
 }

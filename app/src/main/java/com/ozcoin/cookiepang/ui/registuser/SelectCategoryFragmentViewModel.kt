@@ -55,16 +55,20 @@ class SelectCategoryFragmentViewModel @Inject constructor(
         list: List<UserCategory>
     ): List<UserCategory> {
         val result = userCategoryRepository.getUserCategory(user.userId)
+        val selectedCategory = mutableListOf<UserCategory>()
         if (result is DataResult.OnSuccess) {
             val userList = result.response
-            list.forEach { all ->
-                val find = userList.find { it.categoryName == all.categoryName }
-                if (find != null)
-                    all.isSelected = true
+            list.forEach { category ->
+                val find = userList.find { it.categoryName == category.categoryName }
+                if (find != null) {
+                    category.isSelected = true
+                    selectedCategory.add(category)
+                }
             }
         }
 
-        return list.also { selectedCategories = it }
+        selectedCategories = selectedCategory.toList()
+        return list
     }
 
     private suspend fun setUserInterestIn(user: User): Boolean {

@@ -16,4 +16,28 @@ data class Feed(
     val viewCount: Int,
     val hammerPrice: Int,
     val cookieId: Int
-) : Parcelable
+) : Parcelable {
+    companion object {
+        private const val ON_LOADING_ID = Int.MIN_VALUE
+
+        fun isLastPage(feed: Feed): Boolean {
+            return feed.cookieId != ON_LOADING_ID
+        }
+
+        fun typeOnLoading(): Feed {
+            return Feed(
+                true,
+                "",
+                "",
+                "",
+                "",
+                "",
+                "",
+                CookieCardStyle.BLUE,
+                0,
+                0,
+                cookieId = ON_LOADING_ID
+            )
+        }
+    }
+}
