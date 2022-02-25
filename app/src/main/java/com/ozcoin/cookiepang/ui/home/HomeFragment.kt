@@ -188,17 +188,35 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
         }
         setUpUserCategoryList()
         setUpFeedList()
+        setupRefreshView()
+    }
+
+    private fun setupRefreshView() {
+        binding.srlFeed.setColorSchemeResources(R.color.sub_01)
+        binding.srlFeed.setProgressBackgroundColorSchemeResource(R.color.gray_20_bg2_sur1)
     }
 
     override fun initListener() {
-        homeFragmentViewModel.uiStateObserver =
-            UiStateObserver(mainActivityViewModel::updateUiState)
+        setupRefreshListener()
+    }
+
+    private fun setupRefreshListener() {
+        binding.srlFeed.setOnRefreshListener {
+//            TODO()
+
+            viewLifecycleScope.launch(Dispatchers.Default) {
+                delay(2000L)
+                binding.srlFeed.isRefreshing = false
+            }
+        }
     }
 
     override fun initObserve() {
         observeEvent(homeFragmentViewModel)
         observeUserCategoryList()
         observeFeedList()
+        homeFragmentViewModel.uiStateObserver =
+            UiStateObserver(mainActivityViewModel::updateUiState)
     }
 
     private fun observeUserCategoryList() {

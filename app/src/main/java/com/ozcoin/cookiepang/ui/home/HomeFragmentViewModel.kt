@@ -102,7 +102,6 @@ class HomeFragmentViewModel @Inject constructor(
                 uiStateObserver.update(UiState.OnSuccess)
             } else {
                 Timber.d("getFeedList onFail")
-
                 uiStateObserver.update(UiState.OnFail)
             }
         }
