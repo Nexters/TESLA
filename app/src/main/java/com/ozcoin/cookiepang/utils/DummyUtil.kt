@@ -66,15 +66,16 @@ object DummyUtil {
                 userCategory = UserCategory("Free Chat", true),
                 viewCount = 423,
                 question = "나에게 가장 수치스러운 것은?",
+                cookieCardStyle = getCookieCardStyle(),
                 answer = "아몰랑 없어 ㅎ3ㅎ\n" + ".　｡・｡∧_∧｡・｡\n" + "｡ﾟ 　( ﾟ´Д｀)　 ﾟ｡\n" + "　 　o( U U\n" + "　　　 'ｰ'ｰ'\n",
                 hammerPrice = 24,
-                cookieCardStyle = getCookieCardStyle(),
+                collectorUserId = "11",
                 collectorThumbnailUrl = "",
                 collectorName = "강동구 호랑이3333333",
-                creatorThumbnailUrl = "",
+                creatorUserId = "12",
                 creatorName = "상일동 치타",
+                creatorThumbnailUrl = "",
                 contractAddress = "0xesf232424124214124214",
-                tokenAddress = "0xesf232424124214124214",
                 cookieHistory = listOf(
                     CookieHistory(
                         CookieHistoryType.PURCHASE,
@@ -93,10 +94,8 @@ object DummyUtil {
                     )
                 ),
                 isHidden = isHidden,
-                nftTokenId = 10,
                 isOnSale = true,
-                collectorUserId = "11",
-                creatorUserId = "12",
+                nftTokenId = 10,
                 cookieId = 10
             )
         )

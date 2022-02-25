@@ -9,7 +9,7 @@ import com.ozcoin.cookiepang.extensions.safeApiCall
 import com.ozcoin.cookiepang.utils.BitmapRequestBody
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
-import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -37,22 +37,22 @@ class UserRemoteDataSource @Inject constructor(
             val profilePicture = user.updateThumbnailImg?.let {
                 MultipartBody.Part.createFormData(
                     "image",
-                    "profilePicture",
+                    "profilePicture.png",
                     BitmapRequestBody(it)
                 )
             } ?: kotlin.run {
-                val content = RequestBody.create("text/plain".toMediaTypeOrNull(), "")
+                val content = "".toRequestBody("text/plain".toMediaTypeOrNull())
                 MultipartBody.Part.createFormData("profilePicture", "", content)
             }
 
             val backgroundPicture = user.updateProfileBackgroundImg?.let {
                 MultipartBody.Part.createFormData(
                     "image",
-                    "backgroundPicture",
+                    "backgroundPicture.png",
                     BitmapRequestBody(it)
                 )
             } ?: kotlin.run {
-                val content = RequestBody.create("text/plain".toMediaTypeOrNull(), "")
+                val content = "".toRequestBody("text/plain".toMediaTypeOrNull())
                 MultipartBody.Part.createFormData("backgroundPicture", "", content)
             }
 

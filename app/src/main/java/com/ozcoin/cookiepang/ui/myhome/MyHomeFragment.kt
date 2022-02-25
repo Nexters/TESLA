@@ -58,7 +58,7 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
         myHomeFragmentViewModel.loadUserInfo(getUserId())
     }
 
-    private fun getUserId(): String? {
+    private fun getUserId(): String {
         val args by navArgs<MyHomeFragmentArgs>()
         return args.userId.also {
             Timber.d("request UserId : $it")

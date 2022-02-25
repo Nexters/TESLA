@@ -26,6 +26,7 @@
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
             app:cardCornerRadius="100dp"
+            app:cardBackgroundColor="@android:color/transparent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintLeft_toLeftOf="parent"
             bind:layout_constraintTop_toTopOf="parent" >

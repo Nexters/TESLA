@@ -58,6 +58,7 @@
             app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
             app:cardElevation="0dp"
             app:cardCornerRadius="400dp"
+            app:cardBackgroundColor="@android:color/transparent"
             android:layout_marginTop="16dp"
             android:layout_width="100dp"
             android:layout_height="100dp" >

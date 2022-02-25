@@ -57,8 +57,6 @@ class UserRepositoryImpl @Inject constructor(
     override suspend fun updateUser(user: User): Boolean =
         withContext(Dispatchers.IO) {
             var updateUserResult = false
-            user.updateProfileBackgroundImg = null
-            user.updateThumbnailImg = null
             getDataResult(userRemoteDataSource.updateUserEntity(user)) {
                 loginUser = it.toDomain()
                 updateUserResult = true

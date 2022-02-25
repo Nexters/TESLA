@@ -360,7 +360,12 @@
 
             <argument
                 android:name="userId"
-                android:defaultValue='""'
+                android:defaultValue=""
+                app:argType="string" />
+
+            <argument
+                android:name="userProfileId"
+                android:defaultValue=""
                 app:argType="string" />
 
         </fragment>

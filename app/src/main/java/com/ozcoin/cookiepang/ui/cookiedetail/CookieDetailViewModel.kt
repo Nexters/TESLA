@@ -61,7 +61,7 @@ class CookieDetailViewModel @Inject constructor(
     private lateinit var cookieId: String
     private var klipPendingType = -1
 
-    fun getCookieDetail(cookieId: String) {
+    fun loadCookieDetail(cookieId: String) {
         if (cookieId.isNotEmpty()) {
             this.cookieId = cookieId
             uiStateObserver.update(UiState.OnLoading)
@@ -278,7 +278,7 @@ class CookieDetailViewModel @Inject constructor(
     }
 
     private fun refreshCookieDetail() {
-        getCookieDetail(cookieId)
+        loadCookieDetail(cookieId)
     }
 
     private fun showDeleteCookieDialog() {

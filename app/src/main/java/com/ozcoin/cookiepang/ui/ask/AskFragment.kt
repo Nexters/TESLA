@@ -84,11 +84,8 @@ class AskFragment : BaseFragment<FragmentAskBinding>() {
     }
 
     override fun init() {
-        askFragmentViewModel.getUserCategoryList(getUserId())
-    }
-
-    private fun getUserId(): String {
         val args by navArgs<AskFragmentArgs>()
-        return args.userId
+        binding.profileId = "@${args.userProfileId}"
+        askFragmentViewModel.getUserCategoryList(args.userId)
     }
 }

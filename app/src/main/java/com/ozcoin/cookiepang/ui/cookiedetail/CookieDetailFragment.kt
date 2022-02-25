@@ -76,7 +76,7 @@ class CookieDetailFragment : BaseFragment<FragmentCookieDetailBinding>() {
 
     private fun getCookieDetail() {
         val cookieId = getCookieId()
-        cookieDetailViewModel.getCookieDetail(cookieId)
+        cookieDetailViewModel.loadCookieDetail(cookieId)
     }
 
     private fun updateCookieDetail(cookieDetail: CookieDetail) {

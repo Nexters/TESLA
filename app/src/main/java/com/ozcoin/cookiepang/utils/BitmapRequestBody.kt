@@ -10,10 +10,10 @@ class BitmapRequestBody(
     private val bitmap: Bitmap
 ) : RequestBody() {
     override fun contentType(): MediaType {
-        return "image/jpeg".toMediaType()
+        return "image/*".toMediaType()
     }
 
     override fun writeTo(sink: BufferedSink) {
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, sink.outputStream())
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, sink.outputStream())
     }
 }
