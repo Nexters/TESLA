@@ -20,7 +20,6 @@ class CookieRepositoryImpl @Inject constructor(
     ): Boolean =
         withContext(Dispatchers.IO) {
 //            var result = false
-            var result = true
 //            getDataResult(
 //                cookieRemoteDataSource.makeOnBoardingCookie(
 //                    userId,
@@ -29,7 +28,8 @@ class CookieRepositoryImpl @Inject constructor(
 //            ) {
 //                result = true
 //            }
-            result
+//            result
+            true
         }
 
     override suspend fun purchaseCookie(
