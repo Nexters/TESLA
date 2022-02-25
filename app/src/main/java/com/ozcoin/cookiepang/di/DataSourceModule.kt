@@ -37,8 +37,11 @@ object DataSourceModule {
     }
 
     @Provides
-    fun provideUserRemote(apiService: ApiService): UserRemoteDataSource {
-        return UserRemoteDataSource(apiService)
+    fun provideUserRemote(
+        @ApplicationContext context: Context,
+        apiService: ApiService
+    ): UserRemoteDataSource {
+        return UserRemoteDataSource(context, apiService)
     }
 
     @Provides

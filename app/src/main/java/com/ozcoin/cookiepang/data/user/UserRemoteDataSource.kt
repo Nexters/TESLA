@@ -1,5 +1,6 @@
 package com.ozcoin.cookiepang.data.user
 
+import android.content.Context
 import android.graphics.Bitmap
 import com.ozcoin.cookiepang.data.request.ApiService
 import com.ozcoin.cookiepang.data.request.NetworkResult
@@ -7,8 +8,11 @@ import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.toDataUserId
 import com.ozcoin.cookiepang.extensions.safeApiCall
 import com.ozcoin.cookiepang.utils.BitmapRequestBody
+import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
+import okhttp3.RequestBody
+import okhttp3.RequestBody.Companion.asRequestBody
 import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
@@ -17,6 +21,7 @@ import java.io.FileOutputStream
 import javax.inject.Inject
 
 class UserRemoteDataSource @Inject constructor(
+    @ApplicationContext private val appContext: Context,
     private val apiService: ApiService
 ) {
 
@@ -45,6 +50,12 @@ class UserRemoteDataSource @Inject constructor(
                 MultipartBody.Part.createFormData("profilePicture", "", content)
             }
 
+//            val profile = convertBitmapToFile("profilePicture.png", user.updateThumbnailImg)
+//            val profilePicture = getMultiPart(profile)
+
+//            val background = convertBitmapToFile("backgroundPicture.png", user.updateThumbnailImg)
+//            val backgroundPicture = getMultiPart(background)
+
             val backgroundPicture = user.updateProfileBackgroundImg?.let {
                 MultipartBody.Part.createFormData(
                     "image",
@@ -64,17 +75,22 @@ class UserRemoteDataSource @Inject constructor(
             )
         }
 
+    private fun getMultiPart(file: File): MultipartBody.Part {
+        val reqFile: RequestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
+        return MultipartBody.Part.createFormData("image", file.name, reqFile)
+    }
+
     private fun convertBitmapToFile(name: String, bitmap: Bitmap?): File {
         val file: File
 
         if (bitmap != null) {
-            file = File(name)
+            file = File(appContext.cacheDir, name)
 
             kotlin.runCatching {
                 file.createNewFile()
 
                 val bitmapData = ByteArrayOutputStream().use {
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, it)
+                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
                     it.toByteArray()
                 }
 
@@ -91,5 +107,22 @@ class UserRemoteDataSource @Inject constructor(
         }
 
         return file
+    }
+
+    private fun convertBitmapToFile(fileName: String, bitmap: Bitmap) {
+        // create a file to write bitmap data
+        val f = File(appContext.cacheDir, fileName)
+        kotlin.runCatching {
+            f.createNewFile()
+            val bitmapData = ByteArrayOutputStream().use {
+                bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
+                it.toByteArray()
+            }
+
+            FileOutputStream(f).use {
+                it.write(bitmapData)
+                it.flush()
+            }
+        }
     }
 }
