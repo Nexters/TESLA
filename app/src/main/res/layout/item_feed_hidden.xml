@@ -131,10 +131,9 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 setCookieCardStyle="@{feed.cookieCardStyle}"
                 isHidden="@{feed.hidden}"
-                android:scaleType="fitXY"
                 tools:src="@drawable/ic_feed_hidden_cookie_blue"
-                android:layout_width="160dp"
-                android:layout_height="112dp" />
+                android:layout_width="0dp"
+                android:layout_height="130dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

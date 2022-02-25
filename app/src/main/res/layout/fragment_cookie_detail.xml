@@ -135,7 +135,7 @@
                         app:layout_constraintTop_toTopOf="@+id/iv_ic_comment"
                         android:gravity="center"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="180dp" >
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/cl_contents_answer_layout"
@@ -144,10 +144,10 @@
                             setCookieCardStyle="@{cookieDetail.cookieCardStyle}"
                             isHidden="@{false}"
                             android:visibility="@{cookieDetail.mine ? View.VISIBLE : View.GONE}"
-                            tools:visibility="visible"
+                            tools:visibility="gone"
                             android:background="@drawable/bg_feed_contents_answer_pink"
                             android:layout_width="match_parent"
-                            android:layout_height="176dp" >
+                            android:layout_height="match_parent" >
 
                             <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
                                 android:id="@+id/tv_a_mark"
@@ -183,12 +183,11 @@
                             android:id="@+id/iv_ic_cookie_hidden"
                             setCookieCardStyle="@{cookieDetail.cookieCardStyle}"
                             isHidden="@{true}"
-                            tools:visibility="gone"
+                            tools:visibility="visible"
                             android:visibility="@{cookieDetail.mine ? View.GONE : View.VISIBLE}"
                             tools:src="@drawable/ic_feed_hidden_cookie_blue"
-                            android:scaleType="fitXY"
-                            android:layout_width="288dp"
-                            android:layout_height="176dp" />
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
