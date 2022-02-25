@@ -11,6 +11,7 @@ import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import java.util.Locale
 import javax.inject.Inject
 
@@ -25,6 +26,10 @@ class LoginFragmentViewModel @Inject constructor(
 
     private fun navigateToRegistID() {
         navigateTo(LoginFragmentDirections.actionRegistID())
+    }
+
+    fun navigateToRegistUserInfo() {
+        navigateTo(LoginFragmentDirections.actionRegistUserInfo())
     }
 
     fun clickLogin() {
@@ -43,8 +48,17 @@ class LoginFragmentViewModel @Inject constructor(
 
                     viewModelScope.launch {
                         if (userRepository.isUserRegistration(address)) {
+                            val loginUser = userRepository.getLoginUser()
                             uiStateObserver.update(UiState.OnSuccess)
-                            navigateTo(LoginFragmentDirections.actionMain())
+                            if (loginUser != null) {
+                                if (loginUser.finishOnboard) {
+                                    navigateTo(LoginFragmentDirections.actionMain())
+                                } else {
+                                    navigateToRegistUserInfo()
+                                }
+                            } else {
+                                Timber.d("login user is null")
+                            }
                         } else {
                             uiStateObserver.update(UiState.OnSuccess)
                             navigateToRegistID()

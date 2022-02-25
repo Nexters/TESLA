@@ -12,7 +12,9 @@ class MyApplication : Application() {
 
     @Inject lateinit var themeModeRepository: ThemeModeRepository
 
-    var onBoardingPageSelectedMyHome: Boolean? = null
+    var onBoardingPageSelectedMyHome: Boolean = false
+    var userDidNotFinishOnBoarding: Boolean = false
+    var requestUserCategoryReset: Boolean = false
 
     override fun onCreate() {
         super.onCreate()

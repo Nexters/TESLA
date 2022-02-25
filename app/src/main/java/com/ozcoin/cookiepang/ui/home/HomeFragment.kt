@@ -61,6 +61,7 @@ class HomeFragment : BaseFragment<FragmentHomeBinding>() {
                     if (it != null) {
                         homeFragmentViewModel.setSelectedUserCategory(it)
                     } else {
+                        (requireActivity().application as? MyApplication)?.requestUserCategoryReset = true
                         mainActivityViewModel.hideBtmNavView()
                         homeFragmentViewModel.navigateToSelectCategory()
                     }

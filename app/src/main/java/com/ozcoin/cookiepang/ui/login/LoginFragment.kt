@@ -2,6 +2,7 @@ package com.ozcoin.cookiepang.ui.login
 
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.ozcoin.cookiepang.MyApplication
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentLoginBinding
@@ -37,5 +38,13 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
 
     override fun init() {
         loginFragmentViewModel.regUserAddress = loginViewModel::setUserAddress
+        if (isUserDidNotFinishOnBoarding())
+            loginFragmentViewModel.navigateToRegistUserInfo()
+    }
+
+    private fun isUserDidNotFinishOnBoarding(): Boolean {
+        val result = (requireActivity().application as? MyApplication)?.userDidNotFinishOnBoarding ?: false
+        (requireActivity().application as? MyApplication)?.userDidNotFinishOnBoarding = false
+        return result
     }
 }

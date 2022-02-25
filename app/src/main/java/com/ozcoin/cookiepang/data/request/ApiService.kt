@@ -166,7 +166,9 @@ interface ApiService {
     @GET("/users/{userId}/asks")
     suspend fun getAskList(
         @Path("userId") userId: Int,
-        @Query("target") target: String
+        @Query("target") target: String,
+        @Query("page") page: Int = 0,
+        @Query("size") size: Int = 3
     ): Response<PageListResponse<AskEntity>>
 
     /*

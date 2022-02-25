@@ -1,5 +1,6 @@
 package com.ozcoin.cookiepang.ui.registuser
 
+import android.view.View
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.ozcoin.cookiepang.R
@@ -25,6 +26,7 @@ class RegistUserInfoFragment : BaseFragment<FragmentRegistUserInfoBinding>() {
         with(binding) {
             user = loginViewModel.user
             viewModel = registUserInfoFragmentViewModel
+            includeTitleLayout.ivBackBtn.visibility = View.GONE
         }
     }
 

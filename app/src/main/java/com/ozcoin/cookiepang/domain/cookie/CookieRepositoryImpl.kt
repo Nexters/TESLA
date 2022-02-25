@@ -19,17 +19,16 @@ class CookieRepositoryImpl @Inject constructor(
         onBoardingCookieList: List<OnBoardingCookie>
     ): Boolean =
         withContext(Dispatchers.IO) {
-//            var result = false
-//            getDataResult(
-//                cookieRemoteDataSource.makeOnBoardingCookie(
-//                    userId,
-//                    onBoardingCookieList
-//                )
-//            ) {
-//                result = true
-//            }
-//            result
-            true
+            var result = false
+            getDataResult(
+                cookieRemoteDataSource.makeOnBoardingCookie(
+                    userId,
+                    onBoardingCookieList
+                )
+            ) {
+                result = true
+            }
+            result
         }
 
     override suspend fun purchaseCookie(

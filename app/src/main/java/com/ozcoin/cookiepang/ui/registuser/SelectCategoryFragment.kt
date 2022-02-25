@@ -3,6 +3,7 @@ package com.ozcoin.cookiepang.ui.registuser
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import com.ozcoin.cookiepang.MyApplication
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.adapter.SelectCategoryListAdapter
 import com.ozcoin.cookiepang.base.BaseFragment
@@ -59,7 +60,8 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
 
     override fun initObserve() {
         observeEvent(selectCategoryFragmentViewModel)
-        selectCategoryFragmentViewModel.uiStateObserver = UiStateObserver(mainActivityViewModel::updateUiState)
+        selectCategoryFragmentViewModel.uiStateObserver =
+            UiStateObserver(mainActivityViewModel::updateUiState)
     }
 
     override fun initListener() {
@@ -70,8 +72,15 @@ class SelectCategoryFragment : BaseFragment<FragmentSelectCategoryBinding>() {
 
     override fun init() {
         selectCategoryFragmentViewModel.registrationUser = loginViewModel.user
+        selectCategoryFragmentViewModel.setRequestUserCategoryReset(getIsUserCategoryRestRequest())
         viewLifecycleScope.launch {
             selectCategoryListAdapter.updateList(selectCategoryFragmentViewModel.getCategoryList())
         }
+    }
+
+    private fun getIsUserCategoryRestRequest(): Boolean {
+        val result = (requireActivity().application as? MyApplication)?.requestUserCategoryReset ?: false
+        (requireActivity().application as? MyApplication)?.requestUserCategoryReset = false
+        return result
     }
 }

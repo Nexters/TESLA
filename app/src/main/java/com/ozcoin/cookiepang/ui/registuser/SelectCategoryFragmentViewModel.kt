@@ -36,6 +36,12 @@ class SelectCategoryFragmentViewModel @Inject constructor(
         return userRepository.getLoginUser() == null
     }
 
+    private var isUserCategoryResetRequest: Boolean = false
+
+    fun setRequestUserCategoryReset(reset: Boolean) {
+        isUserCategoryResetRequest = reset
+    }
+
     suspend fun getCategoryList(): List<UserCategory> {
         val result = userCategoryRepository.getAllUserCategory()
         val categories = if (result is DataResult.OnSuccess) {
@@ -86,7 +92,7 @@ class SelectCategoryFragmentViewModel @Inject constructor(
         uiStateObserver.update(UiState.OnLoading)
 
         viewModelScope.launch {
-            if (isUserRegistration()) {
+            if (isUserCategoryResetRequest) {
                 if (setUserInterestIn(registrationUser!!)) {
                     uiStateObserver.update(UiState.OnSuccess)
                     navigateToOnBoarding()

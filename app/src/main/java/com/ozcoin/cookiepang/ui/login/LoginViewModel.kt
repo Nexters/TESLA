@@ -12,12 +12,19 @@ class LoginViewModel @Inject constructor(
     private val userRepository: UserRepository
 ) : BaseViewModel() {
 
-    val user = User()
+    var user = User()
+        private set
 
     suspend fun isUserLogin(): Boolean {
-        return (userRepository.getLoginUser() != null).also {
+        val loginUser = userRepository.getLoginUser()
+        return (loginUser != null).also {
+            kotlin.runCatching { user = loginUser!! }
             Timber.d("isUserLogin($it)")
         }
+    }
+
+    suspend fun isFinishOnBoarding(): Boolean {
+        return userRepository.getLoginUser()?.finishOnboard ?: false
     }
 
     fun setUserAddress(userAddress: String) {

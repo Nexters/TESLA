@@ -78,10 +78,15 @@ class RegistIDFragmentViewModel @Inject constructor(
             if (isAvailableProfileId()) {
                 val result = userRepository.regUser(user)
                 when (result) {
-                    is DataResult.OnSuccess -> navigateToRegistInfo()
+                    is DataResult.OnSuccess -> {
+                        user = result.response
+                        navigateToRegistInfo()
+                    }
                     is DataResult.OnFail -> {
                         if (result.errorCode == 409)
-                            _eventFlow.emit(Event.ShowToast("이미 가입된 유저 입니다."))
+                            _eventFlow.emit(Event.ShowToast("이미 가입된 닉네임 입니다"))
+                        else
+                            _eventFlow.emit(Event.ShowToast("이미 가입된 유저 입니다\n앱을 다시 시작해주세요"))
                     }
                 }
             } else {
