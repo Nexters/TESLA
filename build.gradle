@@ -4,6 +4,7 @@ buildscript {
     ext {
         googleServicesVersion = "4.3.10"
         androidxCoreVersion = "1.7.0"
+        swiperefreshlayoutVersion = "1.1.0"
         materialVersion = "1.5.0"
         kotlinVersion = '1.6.10'
         appCompatVersion = "1.4.1"
