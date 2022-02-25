@@ -32,7 +32,7 @@ class CookieDetailRepositoryImpl @Inject constructor(
             hideCookieResult.also { Timber.d("hideCookie($it)") }
         }
 
-    override suspend fun removeCookie(cookieDetail: CookieDetail): Boolean =
+    override suspend fun removeCookie(txHash: String, cookieDetail: CookieDetail): Boolean =
         withContext(Dispatchers.IO) {
             var removeCookieResult = false
             getDataResult(cookieDetailRemoteDataSource.removeCookie(cookieDetail)) {

@@ -9,6 +9,7 @@ import com.ozcoin.cookiepang.databinding.FragmentRegistIdBinding
 import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.ui.login.LoginViewModel
 import com.ozcoin.cookiepang.utils.observer.EventObserver
+import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -44,6 +45,8 @@ class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
     override fun initObserve() {
         observeEvent(registIDFragmentViewModel)
         observeRegistIdEvent()
+        registIDFragmentViewModel.activityEventObserver = EventObserver(mainActivityViewModel::updateEvent)
+        registIDFragmentViewModel.uiStateObserver = UiStateObserver(mainActivityViewModel::updateUiState)
     }
 
     private fun observeRegistIdEvent() {
@@ -60,6 +63,6 @@ class RegistIDFragment : BaseFragment<FragmentRegistIdBinding>() {
 
     override fun init() {
         registIDFragmentViewModel.user = loginViewModel.user
-        registIDFragmentViewModel.activityEventObserver = EventObserver(mainActivityViewModel::updateEvent)
+        registIDFragmentViewModel.setUser = loginViewModel::setUser
     }
 }

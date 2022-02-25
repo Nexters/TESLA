@@ -14,6 +14,8 @@ class EditCookie constructor() : BaseObservable(), Parcelable {
 
     constructor(parcel: Parcel) : this() {
         parcel.run {
+            categoryId = readInt()
+            nftTokenId = readInt()
             isEditPricingInfo = readInt() == 1
             cookieId = readInt()
             question = readString() ?: ""
@@ -26,6 +28,7 @@ class EditCookie constructor() : BaseObservable(), Parcelable {
     var receivedQuestion: Question? = null
     var isEditPricingInfo = false
     var cookieId: Int = -1
+    var nftTokenId: Int = -1
 
     @get:Bindable
     var question: String = ""
@@ -43,6 +46,7 @@ class EditCookie constructor() : BaseObservable(), Parcelable {
 
     var hammerCost: String = ""
     var selectedCategory: UserCategory? = null
+    var categoryId: Int = -1
 
     override fun describeContents(): Int {
         return 0
@@ -53,6 +57,8 @@ class EditCookie constructor() : BaseObservable(), Parcelable {
             writeInt(
                 if (isEditPricingInfo) 1 else 0
             )
+            writeInt(categoryId)
+            writeInt(nftTokenId)
             writeInt(cookieId)
             writeString(question)
             writeString(answer)

@@ -30,11 +30,14 @@ data class CookieDetail(
 fun CookieDetail.toEditCookie(): EditCookie {
     val editCookie = EditCookie()
     editCookie.let {
+        it.nftTokenId = nftTokenId
+        it.cookieId = cookieId
         it.isEditPricingInfo = true
         it.question = question
         it.answer = answer ?: ""
         it.hammerCost = hammerPrice.toString()
         it.selectedCategory = userCategory
+        it.categoryId = userCategory.categoryId
     }
     return editCookie
 }

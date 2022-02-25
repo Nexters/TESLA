@@ -28,6 +28,7 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
             }
 
             if (loginViewModel.isUserLogin()) {
+//                navigateToMain()
                 if (loginViewModel.isFinishOnBoarding()) {
                     navigateToMain()
                 } else {

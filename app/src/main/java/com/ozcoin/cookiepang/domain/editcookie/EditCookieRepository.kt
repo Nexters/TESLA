@@ -4,5 +4,5 @@ interface EditCookieRepository {
 
     suspend fun makeACookie(userId: String, txHash: String, editCookie: EditCookie): String
 
-    suspend fun editCookieInfo(userId: String, editCookie: EditCookie): Boolean
+    suspend fun editCookieInfo(userId: String, txHash: String, editCookie: EditCookie): Boolean
 }

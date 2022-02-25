@@ -9,7 +9,8 @@ data class Ask(
     val receiverUserId: String,
     var question: String,
     val status: AskStatusType? = null,
-    var selectedCategory: UserCategory? = null
+    var selectedCategory: UserCategory? = null,
+    var categoryId: Int = -1
 )
 
 fun Ask.toQuestion(): Question {
@@ -17,6 +18,6 @@ fun Ask.toQuestion(): Question {
         questionId = askId ?: -1,
         question = question,
         needToRespond = status == AskStatusType.PENDING,
-        category = selectedCategory ?: UserCategory.typeAll()
+        categoryId = selectedCategory?.categoryId ?: categoryId
     )
 }

@@ -8,7 +8,7 @@ interface CookieDetailRepository {
 
     suspend fun hideCookie(userId: String, cookieDetail: CookieDetail): Boolean
 
-    suspend fun removeCookie(cookieDetail: CookieDetail): Boolean
+    suspend fun removeCookie(txHash: String, cookieDetail: CookieDetail): Boolean
 
     suspend fun getCookieDetail(userId: String, cookieId: String): DataResult<CookieDetail>
 }

@@ -93,16 +93,16 @@ class SelectCategoryFragmentViewModel @Inject constructor(
 
         viewModelScope.launch {
             if (isUserCategoryResetRequest) {
-                if (setUserInterestIn(registrationUser!!)) {
+                if (setUserInterestIn(userRepository.getLoginUser()!!)) {
                     uiStateObserver.update(UiState.OnSuccess)
-                    navigateToOnBoarding()
+                    navigateUp(SelectCategoryFragment.KEY_RESET_USER_CATEGORY, true)
                 } else {
                     uiStateObserver.update(UiState.OnFail)
                 }
             } else {
-                if (setUserInterestIn(userRepository.getLoginUser()!!)) {
+                if (setUserInterestIn(registrationUser!!)) {
                     uiStateObserver.update(UiState.OnSuccess)
-                    navigateUp(SelectCategoryFragment.KEY_RESET_USER_CATEGORY, true)
+                    navigateToOnBoarding()
                 } else {
                     uiStateObserver.update(UiState.OnFail)
                 }

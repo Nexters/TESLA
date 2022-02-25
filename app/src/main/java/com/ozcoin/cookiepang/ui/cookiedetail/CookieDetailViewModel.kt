@@ -295,7 +295,6 @@ class CookieDetailViewModel @Inject constructor(
 
     private fun navigateToEditCookie() {
         cookieDetail.value?.toEditCookie()?.let {
-            it.cookieId = cookieId.toInt()
             activityEventObserver.update(Event.Nav.ToEditCookie(it))
         }
     }
@@ -341,13 +340,13 @@ class CookieDetailViewModel @Inject constructor(
                 if (result && tx_hash != null && cookieDetail.value != null) {
                     when (klipPendingType) {
                         KLIP_PENDING_TYPE_BUY -> {
-                            handleResultBuyACookie()
+                            handleResultBuyACookie(tx_hash)
                         }
                         KLIP_PENDING_TYPE_REMOVE -> {
-                            handleResultRemoveACookie()
+                            handleResultRemoveACookie(tx_hash)
                         }
                         KLIP_PENDING_TYPE_SALE_ON -> {
-                            handleResultOnSaleACookie()
+                            handleResultOnSaleACookie(tx_hash)
                         }
                     }
                     klipPendingType = -1
@@ -359,10 +358,10 @@ class CookieDetailViewModel @Inject constructor(
         }
     }
 
-    private fun handleResultBuyACookie() {
+    private fun handleResultBuyACookie(tx_hash: String) {
         viewModelScope.launch {
             val purchaserUserId = userRepository.getLoginUser()?.userId ?: ""
-            if (cookieRepository.purchaseCookie(purchaserUserId, cookieDetail.value!!)) {
+            if (cookieRepository.purchaseCookie(purchaserUserId, tx_hash, cookieDetail.value!!)) {
                 uiStateObserver.update(UiState.OnSuccess)
                 showPurchaseCookieSuccessDialog()
             } else {
@@ -371,9 +370,9 @@ class CookieDetailViewModel @Inject constructor(
         }
     }
 
-    private fun handleResultRemoveACookie() {
+    private fun handleResultRemoveACookie(tx_hash: String) {
         viewModelScope.launch {
-            if (cookieDetailRepository.removeCookie(cookieDetail.value!!)) {
+            if (cookieDetailRepository.removeCookie(tx_hash, cookieDetail.value!!)) {
                 uiStateObserver.update(UiState.OnSuccess)
                 navigateUp()
             } else {
@@ -382,7 +381,7 @@ class CookieDetailViewModel @Inject constructor(
         }
     }
 
-    private fun handleResultOnSaleACookie() {
+    private fun handleResultOnSaleACookie(tx_hash: String) {
         requestOpenCookie()
     }
 }

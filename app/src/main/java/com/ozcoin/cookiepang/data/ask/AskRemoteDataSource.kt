@@ -32,7 +32,7 @@ class AskRemoteDataSource @Inject constructor(
                 AskUpdateRequestBody(
                     question.question,
                     askStatusType.toData(),
-                    question.category.categoryId
+                    question.categoryId
                 )
             )
         }

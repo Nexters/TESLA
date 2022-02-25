@@ -33,12 +33,13 @@ class CookieRepositoryImpl @Inject constructor(
 
     override suspend fun purchaseCookie(
         purchaserUserId: String,
+        txHash: String,
         cookieDetail: CookieDetail
     ): Boolean = withContext(Dispatchers.IO) {
         var purchaseCookieResult = false
         val response = cookieRemoteDataSource.purchaseCookie(
             cookieDetail.cookieId.toString(),
-            cookieDetail.hammerPrice,
+            txHash,
             purchaserUserId.toDataUserId()
         )
         getDataResult(response) {

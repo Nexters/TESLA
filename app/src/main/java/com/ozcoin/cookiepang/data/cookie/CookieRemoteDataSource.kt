@@ -22,19 +22,21 @@ class CookieRemoteDataSource @Inject constructor(
             apiService.makeOnBoardingCookie(body)
         }
 
-    suspend fun purchaseCookie(cookieId: String, price: Int, purchaserUserId: Int) = safeApiCall {
+    suspend fun purchaseCookie(cookieId: String, txHash: String, purchaserUserId: Int) = safeApiCall {
         apiService.updateCookieInfo(
             cookieId,
             UpdateCookieInfoRequestParam(
+                txHash = txHash,
                 purchaserUserId = purchaserUserId
             ).toQueryMap()
         )
     }
 
-    suspend fun updateCookieInfo(cookieId: String, price: Int, userId: Int) = safeApiCall {
+    suspend fun updateCookieInfo(cookieId: String, price: Int, txHash: String) = safeApiCall {
         apiService.updateCookieInfo(
             cookieId,
             UpdateCookieInfoRequestParam(
+                txHash = txHash,
                 price = price
             ).toQueryMap()
         )

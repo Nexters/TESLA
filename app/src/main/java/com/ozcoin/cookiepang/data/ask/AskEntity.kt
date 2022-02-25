@@ -23,7 +23,8 @@ fun AskEntity.toDomain(): Ask {
         receiverUserId = receiverId.toString(),
         question = title,
         status = status?.toDomain(),
-        selectedCategory = null
+        selectedCategory = null,
+        categoryId = categoryId
     )
 }
 
@@ -33,6 +34,15 @@ fun Ask.toData(): AskEntity {
         senderId = senderUserId.toDataUserId(),
         receiverId = receiverUserId.toDataUserId(),
         status = status?.toData(),
-        categoryId = selectedCategory?.categoryId ?: 0
+        categoryId = selectedCategory?.categoryId ?: categoryId
+    )
+}
+
+fun AskEntity.toSendRequestBody(): AskSendRequestBody {
+    return AskSendRequestBody(
+        categoryId = categoryId,
+        receiverUserId = receiverId,
+        senderUserId = senderId,
+        title = title
     )
 }

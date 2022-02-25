@@ -11,6 +11,7 @@ import com.ozcoin.cookiepang.utils.EventFlow
 import com.ozcoin.cookiepang.utils.MutableEventFlow
 import com.ozcoin.cookiepang.utils.TextInputUtil
 import com.ozcoin.cookiepang.utils.observer.EventObserver
+import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -33,14 +34,16 @@ class RegistIDFragmentViewModel @Inject constructor(
 
     lateinit var user: User
     lateinit var activityEventObserver: EventObserver
+    lateinit var uiStateObserver: UiStateObserver
+    var setUser: ((User) -> Unit)? = null
 
     private fun navigateToRegistInfo() {
         navigateTo(RegistIDFragmentDirections.actionRegistUserInfo())
     }
 
     fun emitProfileIDLength(length: Int) {
-        val caption = if (length >= 10)
-            TextInputUtil.getMaxLengthFormattedString(length, 15)
+        val caption = if (length >= 5)
+            TextInputUtil.getMaxLengthFormattedString(length, 10)
         else
             null
         viewModelScope.launch {
@@ -79,7 +82,7 @@ class RegistIDFragmentViewModel @Inject constructor(
                 val result = userRepository.regUser(user)
                 when (result) {
                     is DataResult.OnSuccess -> {
-                        user = result.response
+                        setUser?.invoke(result.response)
                         navigateToRegistInfo()
                     }
                     is DataResult.OnFail -> {

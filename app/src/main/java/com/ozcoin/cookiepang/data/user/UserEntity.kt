@@ -11,7 +11,7 @@ data class UserEntity(
     val id: Int? = null,
     val walletAddress: String,
     val nickname: String,
-    val introduction: String,
+    val introduction: String?,
     val profileUrl: String? = null,
     val backgroundUrl: String? = null,
     val status: String? = null,
@@ -28,7 +28,7 @@ fun UserEntity.toDomain(): User {
         it.userId = kotlin.runCatching { id.toString() }.getOrDefault("")
         it.walletAddress = walletAddress
         it.profileID = nickname
-        it.introduction = introduction
+        it.introduction = introduction ?: ""
         it.profileUrl = profileUrl
         it.backgroundUrl = backgroundUrl
         it.finishOnboard = finishOnboard ?: false

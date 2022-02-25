@@ -26,6 +26,8 @@ import com.ozcoin.cookiepang.utils.asEventFlow
 import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Deferred
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -108,26 +110,35 @@ class EditCookieFragmentViewModel @Inject constructor(
 
     fun setEditCookie(editCookie: EditCookie) {
         viewModelScope.launch {
+            loadCategoryJob?.await()
+            val selectedCategory = userCategoryList.value.find {
+                it.categoryId == editCookie.categoryId
+            }
+            editCookie.selectedCategory = selectedCategory
             _editCookie.emit(editCookie)
         }
     }
 
-    fun getUserCategoryList() {
+    private var loadCategoryJob: Deferred<Unit>? = null
+
+    fun loadUserCategoryList() {
         uiStateObserver.update(UiState.OnLoading)
 
         viewModelScope.launch {
-            val result: DataResult<List<UserCategory>>
-            val loadingTime = measureTimeMillis {
-                result = userCategoryRepository.getAllUserCategory()
-            }
-            if (result is DataResult.OnSuccess) {
-                Timber.d("getUserCategoryList onSuccess")
-                delay(TRANSITION_ANIM_DURATION - loadingTime)
-                uiStateObserver.update(UiState.OnSuccess)
-                _userCategoryList.emit(result.response)
-            } else {
-                Timber.d("getUserCategoryList onFail")
-                uiStateObserver.update(UiState.OnFail)
+            loadCategoryJob = async {
+                val result: DataResult<List<UserCategory>>
+                val loadingTime = measureTimeMillis {
+                    result = userCategoryRepository.getAllUserCategory()
+                }
+                if (result is DataResult.OnSuccess) {
+                    Timber.d("getUserCategoryList onSuccess")
+                    delay(TRANSITION_ANIM_DURATION - loadingTime)
+                    uiStateObserver.update(UiState.OnSuccess)
+                    _userCategoryList.emit(result.response)
+                } else {
+                    Timber.d("getUserCategoryList onFail")
+                    uiStateObserver.update(UiState.OnFail)
+                }
             }
         }
     }
@@ -236,9 +247,13 @@ class EditCookieFragmentViewModel @Inject constructor(
 
             viewModelScope.launch {
                 val userId = userRepository.getLoginUser()?.userId ?: "-1"
-                if (!contractRepository.isWalletApproved(userId)) {
+                if (contractRepository.isWalletApproved(userId)) {
                     Timber.d("지갑 권한 허용된 상태")
-                    if (BigInteger(contractRepository.getMakeCookieTaxPrice().toString()) >= contractRepository.getNumOfHammerBalance(userId)) {
+                    val taxPrice = BigInteger(contractRepository.getMakeCookieTaxPrice().toString())
+                    Timber.d("쿠키 세금 ㅠㅠ : $taxPrice")
+                    val hammerBalance = contractRepository.getNumOfHammerBalance(userId)
+                    Timber.d("ㄴㅐ 보유 해머 : $hammerBalance")
+                    if (taxPrice <= hammerBalance) {
                         Timber.d("쿠키 만들기 수수료 이상 해머 보유 중")
                         uiStateObserver.update(UiState.OnSuccess)
                         showMakeACookiePreAlertDialog()
@@ -286,7 +301,12 @@ class EditCookieFragmentViewModel @Inject constructor(
             uiStateObserver.update(UiState.OnLoading)
 
             viewModelScope.launch {
-                if (klipContractTxRepository.requestMakeACookie(editCookie)) {
+                val price = kotlin.runCatching { editCookie.hammerCost.toInt() }.getOrDefault(0)
+                if (klipContractTxRepository.requestChangeCookiePrice(
+                        editCookie.nftTokenId,
+                        price
+                    )
+                ) {
                     klipPendingType = KLIP_PENDING_TYPE_EDIT
                 } else {
                     uiStateObserver.update(UiState.OnFail)
@@ -353,7 +373,7 @@ class EditCookieFragmentViewModel @Inject constructor(
     private fun handleEditCookiePriceResult(tx_hash: String) {
         viewModelScope.launch {
             val loginUserId = userRepository.getLoginUser()?.userId ?: ""
-            if (editCookieRepository.editCookieInfo(loginUserId, editCookie.value)) {
+            if (editCookieRepository.editCookieInfo(loginUserId, tx_hash, editCookie.value)) {
                 navigateUp()
                 uiStateObserver.update(UiState.OnSuccess)
             } else {

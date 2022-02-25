@@ -43,7 +43,7 @@ class ContractRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             var result = false
             getDataResult(contractRemoteDataSource.isWalletApproved(userId)) {
-                result = true
+                result = it.answer
             }
             result
         }
@@ -52,7 +52,7 @@ class ContractRepositoryImpl @Inject constructor(
         withContext(Dispatchers.IO) {
             var result = false
             getDataResult(contractRemoteDataSource.isOnSaleCookie(nftTokenId)) {
-                result = true
+                result = it.answer
             }
             result
         }
@@ -74,7 +74,7 @@ class ContractRepositoryImpl @Inject constructor(
     override suspend fun getHammerContractAddress(): String =
         withContext(Dispatchers.IO) {
             var result = ""
-            getDataResult(contractRemoteDataSource.getCookieContractAddress()) {
+            getDataResult(contractRemoteDataSource.getHammerContractAddress()) {
                 result = it.address
             }
             result

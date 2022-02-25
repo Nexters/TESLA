@@ -27,6 +27,10 @@ class LoginViewModel @Inject constructor(
         return userRepository.getLoginUser()?.finishOnboard ?: false
     }
 
+    fun setUser(user: User) {
+        this.user = user
+    }
+
     fun setUserAddress(userAddress: String) {
         user.walletAddress = userAddress
     }

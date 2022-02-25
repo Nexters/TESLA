@@ -15,6 +15,9 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navOptions
 import androidx.navigation.ui.setupWithNavController
+import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.analytics.ktx.analytics
+import com.google.firebase.ktx.Firebase
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseActivity
 import com.ozcoin.cookiepang.databinding.ActivityMainBinding
@@ -32,6 +35,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private val loginViewModel by viewModels<LoginViewModel>()
     private val mainActivityViewModel by viewModels<MainActivityViewModel>()
+    private lateinit var firebaseAnalytics: FirebaseAnalytics
 
     override fun getLayoutRes(): Int {
         return R.layout.activity_main
@@ -106,6 +110,7 @@ open class MainActivity : BaseActivity<ActivityMainBinding>() {
     }
 
     override fun init() {
+        firebaseAnalytics = Firebase.analytics
     }
 
     private fun handleFabAnim(event: Event.FabAnim) {

@@ -159,6 +159,7 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
     }
 
     override fun init() {
+        editCookieFragmentViewModel.loadUserCategoryList()
         val editCookie = getEditCookie()
         if (editCookie != null) {
             setupSpinnerListener(editCookie)
@@ -166,7 +167,6 @@ class EditCookieFragment : BaseFragment<FragmentEditCookieBinding>() {
         } else {
             setupSpinnerListener(editCookieFragmentViewModel.editCookie.value)
         }
-        editCookieFragmentViewModel.getUserCategoryList()
     }
 
     private fun getEditCookie(): EditCookie? {

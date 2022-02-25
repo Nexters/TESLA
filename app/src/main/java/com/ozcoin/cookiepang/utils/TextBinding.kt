@@ -12,8 +12,8 @@ object TextBinding {
         if (cookieHistoryType != null) {
             val string = when (cookieHistoryType) {
                 CookieHistoryType.CREATE -> "생성"
-                CookieHistoryType.MODIFY -> "구매"
-                CookieHistoryType.PURCHASE -> "수정"
+                CookieHistoryType.MODIFY -> "수정"
+                CookieHistoryType.PURCHASE -> "구매"
             }
             textView.text = string
         }

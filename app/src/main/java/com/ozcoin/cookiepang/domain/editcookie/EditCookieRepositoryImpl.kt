@@ -30,13 +30,17 @@ class EditCookieRepositoryImpl @Inject constructor(
         makeACookieResult
     }
 
-    override suspend fun editCookieInfo(userId: String, editCookie: EditCookie): Boolean =
+    override suspend fun editCookieInfo(
+        userId: String,
+        txHash: String,
+        editCookie: EditCookie
+    ): Boolean =
         withContext(Dispatchers.IO) {
             var editCookieInfoResult = false
             val response = cookieRemoteDataSource.updateCookieInfo(
                 editCookie.cookieId.toString(),
                 editCookie.hammerCost.toInt(),
-                userId.toDataUserId()
+                txHash
             )
             getDataResult(response) {
                 editCookieInfoResult = true
