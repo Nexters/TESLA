@@ -73,10 +73,10 @@ class MyHomeFragmentViewModel @Inject constructor(
             question.await()
         }
 
-    fun loadUserInfo(userId: String?) {
+    fun loadUserInfo(userId: String) {
         viewModelScope.launch {
             var isMyPage = false
-            val user = if (userId.isNullOrBlank()) {
+            val user = if (userId.isBlank()) {
                 isMyPage = true
                 userRepository.getLoginUser()
             } else {
@@ -161,7 +161,7 @@ class MyHomeFragmentViewModel @Inject constructor(
     }
 
     private fun navigateToAsk() {
-        _user.value?.userId?.let { navigateTo(MyHomeFragmentDirections.actionAsk(it)) }
+        _user.value?.let { navigateTo(MyHomeFragmentDirections.actionAsk(it.userId, it.profileID)) }
     }
 
     fun clickAskMe() {

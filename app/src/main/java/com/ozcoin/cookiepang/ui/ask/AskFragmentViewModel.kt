@@ -43,8 +43,9 @@ class AskFragmentViewModel @Inject constructor(
 
     lateinit var uiStateObserver: UiStateObserver
 
-    var ask: Ask? = null
-        private set
+    private val _ask = MutableStateFlow<Ask?>(null)
+    val ask: StateFlow<Ask?>
+        get() = _ask
 
     fun emitQuestionLength(length: Int) {
         val caption = if (length >= 20)
@@ -63,10 +64,12 @@ class AskFragmentViewModel @Inject constructor(
             if (result is DataResult.OnSuccess) {
                 _userCategoryList.emit(result.response)
                 val senderUserId = userRepository.getLoginUser()?.userId ?: ""
-                ask = Ask(
-                    senderUserId = senderUserId,
-                    receiverUserId = receiverUserId,
-                    question = ""
+                _ask.emit(
+                    Ask(
+                        senderUserId = senderUserId,
+                        receiverUserId = receiverUserId,
+                        question = ""
+                    )
                 )
             }
         }
@@ -76,7 +79,7 @@ class AskFragmentViewModel @Inject constructor(
         uiStateObserver.update(UiState.OnLoading)
 
         viewModelScope.launch {
-            ask?.let {
+            ask.value?.let {
                 if (askRepository.askToUser(it)) {
                     uiStateObserver.update(UiState.OnSuccess)
                     navigateUp()
@@ -87,10 +90,10 @@ class AskFragmentViewModel @Inject constructor(
     }
 
     fun selectCategory(userCategory: UserCategory) {
-        ask?.selectedCategory = userCategory
+        ask.value?.selectedCategory = userCategory
     }
 
-    fun clickMakeACookie() {
+    fun clickSendAsk() {
         sendAsk()
     }
 }

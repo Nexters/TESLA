@@ -20,7 +20,6 @@ data class CookieDetail(
     val creatorName: String,
     val creatorThumbnailUrl: String,
     val contractAddress: String,
-    val tokenAddress: String,
     val cookieHistory: List<CookieHistory>,
     var isHidden: Boolean,
     var isOnSale: Boolean,

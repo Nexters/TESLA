@@ -58,7 +58,7 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
         myHomeFragmentViewModel.loadUserInfo(getUserId())
     }
 
-    private fun getUserId(): String? {
+    private fun getUserId(): String {
         val args by navArgs<MyHomeFragmentArgs>()
         return args.userId.also {
             Timber.d("request UserId : $it")
@@ -121,15 +121,15 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
             when (position) {
                 0 -> {
                     binding.count = ""
-                    binding.tabName = "Collected"
+                    binding.tabName = "소유한 쿠키"
                 }
                 1 -> {
                     binding.count = ""
-                    binding.tabName = "Created"
+                    binding.tabName = "제작한 쿠키"
                 }
                 2 -> {
                     binding.count = ""
-                    binding.tabName = "Questions"
+                    binding.tabName = "받은 요청"
                 }
                 else -> {}
             }

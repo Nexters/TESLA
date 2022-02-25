@@ -53,11 +53,15 @@ object DateUtil {
 
         val date = kotlin.runCatching { serverFormat.parse(createdAt) }.getOrNull()
 
+        val format = SimpleDateFormat("yyyy년 MM월 dd일").apply {
+            timeZone = TimeZone.getDefault()
+        }
+
         if (date != null) {
             val curTime = System.currentTimeMillis()
             val regTime: Long = date.time
             var diffTime = (curTime - regTime) / 1000
-            var msg: String? = null
+            val msg: String
             if (diffTime < TimeMaximum.SEC) {
                 // sec
                 msg = "${diffTime}초 전"
@@ -68,16 +72,12 @@ object DateUtil {
             } else if (TimeMaximum.MIN.let { diffTime /= it; diffTime } < TimeMaximum.HOUR) {
                 // hour
                 msg = "${diffTime}시간 전"
-            } else if (TimeMaximum.HOUR.let { diffTime /= it; diffTime } < TimeMaximum.DAY) {
-                // day
+            } else if (TimeMaximum.HOUR.let { diffTime /= it; diffTime } < 8) {
+                // 7 days
                 msg = "${diffTime}일 전"
-            } else if (TimeMaximum.DAY.let { diffTime /= it; diffTime } < TimeMaximum.MONTH) {
-                // day
-                msg = "${diffTime}달 전"
             } else {
-                msg = "${diffTime}년 전"
+                msg = kotlin.runCatching { format.format(date) }.getOrDefault(createdAt)
             }
-
             return msg
         } else {
             return createdAt

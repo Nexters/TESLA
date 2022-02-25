@@ -21,7 +21,7 @@ class AlarmFragment : BaseFragment<FragmentAlarmBinding>() {
 
     override fun initView() {
         with(binding) {
-            pageName = "Alarm"
+            pageName = "알람"
             titleClickListener = alarmFragmentViewModel.titleClickListener
         }
         setupAlarmsList()

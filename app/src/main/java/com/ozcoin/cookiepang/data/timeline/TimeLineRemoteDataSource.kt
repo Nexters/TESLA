@@ -11,12 +11,12 @@ class TimeLineRemoteDataSource @Inject constructor(
     private val apiService: ApiService
 ) {
 
-    suspend fun getAllTimeLine(userId: String) =
-        safeApiCall { apiService.getAllCookieList(userId.toDataUserId(), 0, 100) }
+    suspend fun getAllTimeLine(userId: String, page: Int) =
+        safeApiCall { apiService.getAllCookieList(userId.toDataUserId(), page, 10) }
 
-    suspend fun getTimeLine(userId: String, userCategory: UserCategory) =
+    suspend fun getTimeLine(userId: String, userCategory: UserCategory, page: Int) =
         safeApiCall {
             val category = userCategory.toData()
-            apiService.getCookieList(userId.toDataUserId(), categoryId = category.id.toString(), 0, 100)
+            apiService.getCookieList(userId.toDataUserId(), categoryId = category.id.toString(), page, 10)
         }
 }

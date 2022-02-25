@@ -85,6 +85,6 @@ class UserCategoryListAdapter(
             }
         }
 
-        notifyItemRangeInserted(0, newList.size + tempItemLen)
+        notifyDataSetChanged()
     }
 }

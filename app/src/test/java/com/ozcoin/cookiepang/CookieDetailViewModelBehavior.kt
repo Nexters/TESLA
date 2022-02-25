@@ -63,7 +63,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
             cookieId.shouldBeEmpty()
 
             Then("이전 화면으로 이동한다") {
-                cookieDetailViewModel.getCookieDetail(cookieId)
+                cookieDetailViewModel.loadCookieDetail(cookieId)
                 cookieDetailViewModel.eventFlow.first().shouldBeInstanceOf<Event.Nav.Up>()
             }
         }
@@ -79,7 +79,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
             }
 
             Then("쿠키 상세 정보 쿼리 요청") {
-                cookieDetailViewModel.getCookieDetail(cookieId)
+                cookieDetailViewModel.loadCookieDetail(cookieId)
                 uiState shouldBe UiState.OnSuccess
                 cookieDetailViewModel.cookieDetail.first().shouldBeInstanceOf<CookieDetail>()
             }
@@ -94,7 +94,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
             DummyUtil.getCookieDetail(isMine = false, isHidden = true)
         }
 
-        cookieDetailViewModel.getCookieDetail(cookieId)
+        cookieDetailViewModel.loadCookieDetail(cookieId)
         cookieDetailViewModel.cookieDetail.value shouldNotBe null
         uiState shouldBe UiState.OnSuccess
 

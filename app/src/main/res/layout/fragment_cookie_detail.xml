@@ -54,7 +54,7 @@
                     android:background="@drawable/selector_btn_category_stroke_blue"
                     android:layout_marginTop="20dp"
                     android:text="@{cookieDetail.userCategory.categoryName}"
-                    tools:text="Free Chat"
+                    tools:text="자유"
                     android:checked="true"
                     android:layout_width="wrap_content"
                     app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
@@ -135,7 +135,7 @@
                         app:layout_constraintTop_toTopOf="@+id/iv_ic_comment"
                         android:gravity="center"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content" >
+                        android:layout_height="180dp" >
 
                         <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/cl_contents_answer_layout"
@@ -144,10 +144,10 @@
                             setCookieCardStyle="@{cookieDetail.cookieCardStyle}"
                             isHidden="@{false}"
                             android:visibility="@{cookieDetail.mine ? View.VISIBLE : View.GONE}"
-                            tools:visibility="visible"
+                            tools:visibility="gone"
                             android:background="@drawable/bg_feed_contents_answer_pink"
                             android:layout_width="match_parent"
-                            android:layout_height="176dp" >
+                            android:layout_height="match_parent" >
 
                             <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
                                 android:id="@+id/tv_a_mark"
@@ -183,12 +183,11 @@
                             android:id="@+id/iv_ic_cookie_hidden"
                             setCookieCardStyle="@{cookieDetail.cookieCardStyle}"
                             isHidden="@{true}"
-                            tools:visibility="gone"
+                            tools:visibility="visible"
                             android:visibility="@{cookieDetail.mine ? View.GONE : View.VISIBLE}"
                             tools:src="@drawable/ic_feed_hidden_cookie_blue"
-                            android:scaleType="fitXY"
-                            android:layout_width="288dp"
-                            android:layout_height="176dp" />
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent" />
 
                     </androidx.appcompat.widget.LinearLayoutCompat>
 
@@ -200,7 +199,7 @@
                         android:layout_marginTop="20dp"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/ll_contents_container"
-                        android:text="Hammer"
+                        android:text="망치"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -234,7 +233,7 @@
                         app:layout_constraintTop_toTopOf="@+id/tv_hammer_cnt"
                         app:layout_constraintBottom_toBottomOf="@+id/tv_hammer_cnt"
                         app:layout_constraintRight_toRightOf="parent"
-                        android:text="Items"
+                        android:text="톤"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
@@ -258,8 +257,8 @@
                         style="@style/TextAppearance.button_large_brand_normal"
                         android:layout_width="0dp"
                         android:layout_marginTop="23dp"
-                        android:text='@{cookieDetail.mine ? "Edit Pricing Info" : "Purchase"}'
-                        tools:text="Purchase"
+                        android:text='@{cookieDetail.mine ? "가격 정보 수정하기" : "쿠키 구매하기"}'
+                        tools:text="쿠키 구매하기"
                         android:visibility="@{cookieDetail.mine &amp;&amp; cookieDetail.hidden ? View.GONE : View.VISIBLE}"
                         android:onClick="@{() -> viewModel.clickCookieContentsBtn()}"
                         app:layout_constraintTop_toBottomOf="@+id/tv_hammer"
@@ -274,24 +273,32 @@
                     android:id="@+id/tv_collector"
                     style="@style/TextAppearance.body_02_bold"
                     android:textColor="@color/gray_90_t1"
-                    android:text="Collector"
+                    android:text="쿠키 소유자"
                     android:layout_marginTop="20dp"
                     app:layout_constraintTop_toBottomOf="@+id/cl_cookie_layout"
                     app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:id="@+id/iv_collector_user_thumbnail"
-                    loadCircleImg="@{cookieDetail.collectorThumbnailUrl}"
-                    setErrorImg="@{@drawable/ic_circle_user_profile_default}"
-                    tools:background="@drawable/ic_circle_user_profile_default"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_collector_user_thumbnail"
                     android:onClick="@{() -> viewModel.clickCollectorProfile()}"
                     app:layout_constraintTop_toBottomOf="@+id/tv_collector"
                     app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
+                    app:cardCornerRadius="100dp"
+                    app:cardBackgroundColor="@android:color/transparent"
                     android:layout_marginTop="8dp"
                     android:layout_width="32dp"
-                    android:layout_height="32dp" />
+                    android:layout_height="32dp" >
+
+                    <ImageView
+                        loadCircleImg="@{cookieDetail.collectorThumbnailUrl}"
+                        setErrorImg="@{@drawable/ic_circle_user_profile_default}"
+                        tools:background="@drawable/ic_circle_user_profile_default"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </androidx.cardview.widget.CardView>
 
                 <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
                     android:id="@+id/tv_collector_name"
@@ -299,9 +306,9 @@
                     android:textColor="@color/gray_90_t1"
                     tools:text="강동구 호랑이 3333333333"
                     android:text="@{cookieDetail.collectorName}"
-                    app:layout_constraintTop_toTopOf="@+id/iv_collector_user_thumbnail"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_collector_user_thumbnail"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_collector_user_thumbnail"
+                    app:layout_constraintTop_toTopOf="@+id/cv_collector_user_thumbnail"
+                    app:layout_constraintBottom_toBottomOf="@+id/cv_collector_user_thumbnail"
+                    app:layout_constraintLeft_toRightOf="@+id/cv_collector_user_thumbnail"
                     app:layout_constraintRight_toRightOf="@+id/gl_contents_middle"
                     android:layout_marginEnd="10dp"
                     android:layout_marginStart="6dp"
@@ -321,24 +328,32 @@
                     android:id="@+id/tv_creator"
                     style="@style/TextAppearance.body_02_bold"
                     android:textColor="@color/gray_90_t1"
-                    android:text="Creator"
+                    android:text="쿠키 제작자"
                     android:layout_marginTop="20dp"
                     app:layout_constraintTop_toBottomOf="@+id/cl_cookie_layout"
                     app:layout_constraintLeft_toLeftOf="@+id/gl_contents_middle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
-                <ImageView
-                    android:id="@+id/iv_creator_user_thumbnail"
-                    loadCircleImg="@{cookieDetail.creatorThumbnailUrl}"
-                    setErrorImg="@{@drawable/ic_circle_user_profile_default}"
-                    tools:background="@drawable/ic_circle_user_profile_default"
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cv_creator_user_thumbnail"
                     android:onClick="@{() -> viewModel.clickCreatorProfile()}"
                     app:layout_constraintTop_toBottomOf="@+id/tv_creator"
                     app:layout_constraintLeft_toLeftOf="@+id/gl_contents_middle"
+                    app:cardCornerRadius="100dp"
+                    app:cardBackgroundColor="@android:color/transparent"
                     android:layout_marginTop="8dp"
                     android:layout_width="32dp"
-                    android:layout_height="32dp" />
+                    android:layout_height="32dp" >
+
+                    <ImageView
+                        loadCircleImg="@{cookieDetail.creatorThumbnailUrl}"
+                        setErrorImg="@{@drawable/ic_circle_user_profile_default}"
+                        tools:background="@drawable/ic_circle_user_profile_default"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent" />
+
+                </androidx.cardview.widget.CardView>
 
                 <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
                     android:id="@+id/tv_creator_name"
@@ -346,9 +361,9 @@
                     android:textColor="@color/gray_90_t1"
                     tools:text="상일동 치타"
                     android:text="@{cookieDetail.creatorName}"
-                    app:layout_constraintTop_toTopOf="@+id/iv_collector_user_thumbnail"
-                    app:layout_constraintBottom_toBottomOf="@+id/iv_collector_user_thumbnail"
-                    app:layout_constraintLeft_toRightOf="@+id/iv_creator_user_thumbnail"
+                    app:layout_constraintTop_toTopOf="@+id/cv_collector_user_thumbnail"
+                    app:layout_constraintBottom_toBottomOf="@+id/cv_collector_user_thumbnail"
+                    app:layout_constraintLeft_toRightOf="@+id/cv_creator_user_thumbnail"
                     app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
                     android:layout_marginStart="6dp"
                     android:lines="1"
@@ -360,9 +375,9 @@
                     android:id="@+id/tv_cookie_info"
                     style="@style/TextAppearance.body_02_bold"
                     android:textColor="@color/gray_90_t1"
-                    android:text="Cookie Info"
+                    android:text="쿠키 정보"
                     android:layout_marginTop="20dp"
-                    app:layout_constraintTop_toBottomOf="@+id/iv_collector_user_thumbnail"
+                    app:layout_constraintTop_toBottomOf="@+id/cv_collector_user_thumbnail"
                     app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
@@ -385,6 +400,7 @@
                     tools:text="0xed5ac544c5c54444cc544544"
                     android:text="@{cookieDetail.contractAddress}"
                     android:lines="1"
+                    android:gravity="end"
                     android:ellipsize="middle"
                     android:layout_marginTop="8dp"
                     app:layout_constraintTop_toBottomOf="@+id/tv_cookie_info"
@@ -405,12 +421,13 @@
                     android:layout_height="wrap_content" />
 
                 <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
-                    android:id="@+id/tv_token_address_name"
+                    android:id="@+id/tv_token_id_name"
                     style="@style/TextAppearance.body_02_regular"
                     android:textColor="@color/gray_60_t2"
                     tools:text="0xed5ac544c5c54444cc544544"
-                    android:text="@{cookieDetail.tokenAddress}"
+                    android:text="@{String.valueOf(cookieDetail.nftTokenId)}"
                     android:lines="1"
+                    android:gravity="end"
                     android:ellipsize="middle"
                     android:layout_marginTop="4dp"
                     app:layout_constraintTop_toBottomOf="@+id/tv_contract_address"
@@ -423,7 +440,7 @@
                     android:id="@+id/tv_cookie_history"
                     style="@style/TextAppearance.body_02_bold"
                     android:textColor="@color/gray_90_t1"
-                    android:text="History"
+                    android:text="히스토리"
                     android:layout_marginTop="20dp"
                     app:layout_constraintTop_toBottomOf="@+id/tv_token_address"
                     app:layout_constraintBottom_toTopOf="@+id/rv_cookie_history"
@@ -452,11 +469,11 @@
                     app:layout_constraintTop_toBottomOf="@+id/rv_cookie_history"
                     app:layout_constraintLeft_toLeftOf="@+id/gl_contents_left"
                     app:layout_constraintRight_toRightOf="@+id/gl_contents_right"
-                    android:text='@{cookieDetail.hidden ? "공개하기" : "숨기기"}'
+                    android:text='@{cookieDetail.hidden ? "쿠키 공개하기" : "쿠키 숨기기"}'
                     android:visibility="@{cookieDetail.mine ? View.VISIBLE : View.GONE}"
                     tools:visibility="gone"
                     android:onClick="@{() -> viewModel.clickHideOpenBtn(cookieDetail.hidden)}"
-                    tools:text="숨기기"
+                    tools:text="쿠키 숨기기"
                     android:layout_width="0dp" />
 
                 <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
@@ -470,7 +487,7 @@
                     android:visibility="@{cookieDetail.mine ? View.VISIBLE : View.GONE}"
                     tools:visibility="gone"
                     android:onClick="@{() -> viewModel.clickDeleteCookie()}"
-                    android:text="삭제하기"
+                    android:text="쿠키 삭제하기"
                     android:layout_width="0dp" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>

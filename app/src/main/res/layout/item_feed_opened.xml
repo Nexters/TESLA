@@ -21,17 +21,25 @@
         android:paddingEnd="@dimen/space_contents_right"
         android:paddingBottom="@dimen/space_contents_bottom">
 
-        <ImageView
+        <androidx.cardview.widget.CardView
             android:id="@+id/iv_user_thumbnail"
-            loadCircleImg="@{feed.userThumbnailUrl}"
-            setErrorImg="@{@drawable/ic_circle_user_profile_default}"
             android:layout_width="40dp"
             android:layout_height="0dp"
             android:layout_marginTop="10dp"
+            app:cardCornerRadius="100dp"
+            app:cardBackgroundColor="@android:color/transparent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintLeft_toLeftOf="parent"
-            bind:layout_constraintTop_toTopOf="parent"
-            tools:background="@drawable/ic_circle_user_profile_default" />
+            bind:layout_constraintTop_toTopOf="parent" >
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                loadCircleImg="@{feed.userThumbnailUrl}"
+                setErrorImg="@{@drawable/ic_circle_user_profile_default}"
+                tools:background="@drawable/ic_circle_user_profile_default" />
+
+        </androidx.cardview.widget.CardView>
 
         <com.ozcoin.cookiepang.ui.custom.LineHeightTextView
             android:id="@+id/tv_user_name"
