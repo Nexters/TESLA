@@ -10,8 +10,8 @@ import kotlinx.serialization.Serializable
 data class AskEntity(
     val id: Int? = null,
     val title: String,
-    val receiverUserId: Int,
-    val senderUserId: Int,
+    val receiverId: Int,
+    val senderId: Int,
     val categoryId: Int,
     val status: AskEntityStateType? = null
 )
@@ -19,8 +19,8 @@ data class AskEntity(
 fun AskEntity.toDomain(): Ask {
     return Ask(
         askId = id,
-        senderUserId = senderUserId.toString(),
-        receiverUserId = receiverUserId.toString(),
+        senderUserId = senderId.toString(),
+        receiverUserId = receiverId.toString(),
         question = title,
         status = status?.toDomain(),
         selectedCategory = null
@@ -30,8 +30,8 @@ fun AskEntity.toDomain(): Ask {
 fun Ask.toData(): AskEntity {
     return AskEntity(
         title = question,
-        senderUserId = senderUserId.toDataUserId(),
-        receiverUserId = receiverUserId.toDataUserId(),
+        senderId = senderUserId.toDataUserId(),
+        receiverId = receiverUserId.toDataUserId(),
         status = status?.toData(),
         categoryId = selectedCategory?.categoryId ?: 0
     )

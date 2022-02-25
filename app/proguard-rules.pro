@@ -19,3 +19,57 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# 사용하지 않는 메소드 유지
+-dontshrink
+-dontoptimize
+
+# 나중에 문제 발생 시 확인하기 위한 Mapping 파일
+-printmapping map.txt
+-printseeds seed.txt
+-printusage usage.txt
+-printconfiguration config.txt
+
+# Exception 처리
+-keepattributes Exceptions
+
+# 소스 파일 변수 명 바꾸는 옵션
+-renamesourcefileattribute SourceFile
+-dontskipnonpubliclibraryclasses
+-dontskipnonpubliclibraryclassmembers
+
+-keepparameternames
+-keepattributes Exceptions,InnerClasses,Signature,Deprecated,SourceFile,LineNumberTable,*Annotation*,EnclosingMethod,MethodParameters
+
+# Annotation
+-dontwarn **.annotation.**
+
+-dontwarn com.ozcoin.cookiepang.**
+
+-keep class kotlin.** { *; }
+-keep class kotlin.Metadata { *; }
+-dontwarn kotlin.**
+
+-keep class **.R
+-keep class **.R$* {
+    <fields>;
+}
+
+-keep class com.dreamsecurity.dreamauth.** {
+    public protected *;
+}
+
+
+# Glide Proguard Options
+# https://github.com/bumptech/glide#proguard
+-keep public class * implements com.bumptech.glide.module.GlideModule
+-keep class * extends com.bumptech.glide.module.AppGlideModule {
+ <init>(...);
+}
+-keep public enum com.bumptech.glide.load.ImageHeaderParser$** {
+  **[] $VALUES;
+  public *;
+}
+-keep class com.bumptech.glide.load.data.ParcelFileDescriptorRewinder$InternalRewinder {
+  *** rewind();
+}

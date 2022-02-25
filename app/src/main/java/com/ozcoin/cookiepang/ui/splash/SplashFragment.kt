@@ -2,6 +2,7 @@ package com.ozcoin.cookiepang.ui.splash
 
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
+import com.ozcoin.cookiepang.MyApplication
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentSplashBinding
@@ -27,7 +28,11 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
             }
 
             if (loginViewModel.isUserLogin()) {
-                navigateToMain()
+                if (loginViewModel.isFinishOnBoarding()) {
+                    navigateToMain()
+                } else {
+                    navigateToOnBoarding()
+                }
             } else {
                 navigateToLogin()
             }
@@ -37,6 +42,13 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     private fun navigateToMain() {
         handleEvent(
             Event.Nav.To(SplashFragmentDirections.actionMain())
+        )
+    }
+
+    private fun navigateToOnBoarding() {
+        (requireActivity().application as? MyApplication)?.userDidNotFinishOnBoarding = true
+        handleEvent(
+            Event.Nav.To(SplashFragmentDirections.actionLogin())
         )
     }
 

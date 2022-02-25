@@ -19,16 +19,15 @@ class CookieRepositoryImpl @Inject constructor(
         onBoardingCookieList: List<OnBoardingCookie>
     ): Boolean =
         withContext(Dispatchers.IO) {
-//            var result = false
-            var result = true
-//            getDataResult(
-//                cookieRemoteDataSource.makeOnBoardingCookie(
-//                    userId,
-//                    onBoardingCookieList
-//                )
-//            ) {
-//                result = true
-//            }
+            var result = false
+            getDataResult(
+                cookieRemoteDataSource.makeOnBoardingCookie(
+                    userId,
+                    onBoardingCookieList
+                )
+            ) {
+                result = true
+            }
             result
         }
 

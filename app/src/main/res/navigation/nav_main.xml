@@ -49,8 +49,15 @@
                 app:popUpTo="@id/nav_login"
                 app:popUpToInclusive="true" />
 
-        </fragment>
+            <action
+                android:id="@+id/action_regist_user_info"
+                app:destination="@id/registUserInfo_dest"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right" />
 
+        </fragment>
 
         <fragment
             android:id="@+id/registID_dest"
@@ -64,6 +71,8 @@
             <action
                 android:id="@+id/action_regist_user_info"
                 app:destination="@id/registUserInfo_dest"
+                app:popUpTo="@id/nav_login"
+                app:popUpToInclusive="true"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"

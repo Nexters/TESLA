@@ -99,7 +99,7 @@ object DateUtil {
     fun convertToAlarmTimeStamp(createdAt: String): String {
         val createdAt = createdAt.split(".")[0]
         val date = kotlin.runCatching { serverFormat.parse(createdAt) }.getOrNull()
-        val format = SimpleDateFormat("HH:mm")
+        val format = SimpleDateFormat("HH : mm")
         format.timeZone = TimeZone.getDefault()
         return if (date != null) {
             format.format(date)

@@ -35,7 +35,6 @@ class UserRepositoryImpl @Inject constructor(
                 loginUser = user
                 user
             }
-            DataResult.OnSuccess(User())
         }
 
     override suspend fun getLoginUser(): User? = withContext(Dispatchers.IO) {
