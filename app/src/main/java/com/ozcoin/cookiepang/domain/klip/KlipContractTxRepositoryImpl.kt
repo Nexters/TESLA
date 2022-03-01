@@ -87,7 +87,7 @@ class KlipContractTxRepositoryImpl @Inject constructor(
             val abi = getContractFunc(CONTRACT_TYPE_COOKIE, "saleCookie")
             val params = ArrayList<Any>().apply {
                 add(nftTokenId.toString())
-                add(true.toString())
+                add(true)
             }
 
             klipContractTxDataSource.prepareRequest(to, from, value, abi, params) {
