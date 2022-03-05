@@ -3,7 +3,7 @@ package com.ozcoin.cookiepang
 import com.ozcoin.cookiepang.data.response.BalanceResponse
 import com.ozcoin.cookiepang.utils.CoinUnitUtil
 import io.kotest.core.spec.style.FeatureSpec
-import io.kotest.matchers.types.shouldBeInstanceOf
+import io.kotest.matchers.shouldBe
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -18,10 +18,11 @@ class CoinUnitUtilFeature : FeatureSpec() {
 
             println(string.balance)
 
-            scenario("클레튼 단위로 변환") {
-                println(CoinUnitUtil.convertToKlaytnUnit(string.balance))
+            scenario("클레튼 단위로 변환(10^18)") {
+                val balance = CoinUnitUtil.convertToKlaytnUnit(string.balance)
+                println(balance)
 
-                true.shouldBeInstanceOf<Boolean>()
+                balance.toString().shouldBe("1000000000000")
             }
         }
     }
