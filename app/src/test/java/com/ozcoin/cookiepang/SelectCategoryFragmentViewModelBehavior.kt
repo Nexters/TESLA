@@ -2,7 +2,6 @@ package com.ozcoin.cookiepang
 
 import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.UserRepository
-import com.ozcoin.cookiepang.domain.usercategory.UserCategory
 import com.ozcoin.cookiepang.domain.usercategory.UserCategoryRepository
 import com.ozcoin.cookiepang.ui.registuser.SelectCategoryFragmentViewModel
 import com.ozcoin.cookiepang.utils.DummyUtil
@@ -10,6 +9,7 @@ import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import io.kotest.core.spec.style.BehaviorSpec
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import io.mockk.coEvery
 import io.mockk.mockk
@@ -22,7 +22,6 @@ import kotlinx.coroutines.test.runBlockingTest
 @ExperimentalCoroutinesApi
 class SelectCategoryFragmentViewModelBehavior : BehaviorSpec() {
     init {
-
         val userCategoryRepository = mockk<UserCategoryRepository>()
         val userRepository = mockk<UserRepository>()
         val selectCategoryFragmentViewModel = spyk(
@@ -34,16 +33,8 @@ class SelectCategoryFragmentViewModelBehavior : BehaviorSpec() {
         var testDispatcher: TestCoroutineDispatcher? = null
         val coroutineTestRule: CoroutineTestRule by CoroutineTestRuleImpl()
 
-        var loginUser: User? = null
-
         beforeTest {
             testDispatcher = coroutineTestRule.beforeTest()
-
-            coEvery {
-                userRepository.getLoginUser()
-            } coAnswers {
-                loginUser
-            }
         }
 
         afterTest {
@@ -57,83 +48,45 @@ class SelectCategoryFragmentViewModelBehavior : BehaviorSpec() {
 
         val registrationUser = User()
         var uiState: UiState? = null
-        selectCategoryFragmentViewModel.uiStateObserver = UiStateObserver {
-            uiState = it
-        }
+        selectCategoryFragmentViewModel.uiStateObserver = UiStateObserver { uiState = it }
 
-        Given("회원가입 하려는 유저 정보 존재") {
+        Given("다음 버튼 눌렀을 때") {
 
-            selectCategoryFragmentViewModel.registrationUser = registrationUser
+            When("사용자의 관심 카테고리 리셋 요청이 존재하지 않고") {
 
-            When("카테고리 3개 미만 선택") {
+                selectCategoryFragmentViewModel.registrationUser = registrationUser
+                selectCategoryFragmentViewModel.setRequestUserCategoryReset(false)
 
-                selectCategoryFragmentViewModel.selectedCategories = emptyList()
+                And("선택된 카테고리가 3개 미만이라면") {
 
-                Then("회원 가입 실패") {
-                    testDispatcher?.runBlockingTest {
-                        pauseDispatcher()
-                        selectCategoryFragmentViewModel.clickNext()
+                    selectCategoryFragmentViewModel.selectedCategories = emptyList()
 
-                        uiState.shouldBeInstanceOf<UiState.OnLoading>()
+                    Then("관심 카테고리 등록에 실패한다.") {
+                        testDispatcher?.runBlockingTest {
+                            pauseDispatcher()
+                            selectCategoryFragmentViewModel.clickNext()
+                            uiState.shouldBeInstanceOf<UiState.OnLoading>()
 
-                        resumeDispatcher()
-                        uiState.shouldBeInstanceOf<UiState.OnFail>()
+                            resumeDispatcher()
+                            uiState.shouldBeInstanceOf<UiState.OnFail>()
+                        }
                     }
                 }
-            }
 
-            When("카테고리 3개 이상 선택") {
+                And("선택된 카테고리가 3개 이상이고") {
 
-                val selectedCategories = DummyUtil.getUserCategoryList().response
-                selectCategoryFragmentViewModel.selectedCategories = selectedCategories
+                    val selectedCategories = DummyUtil.getUserCategoryList().response
+                    selectCategoryFragmentViewModel.selectedCategories = selectedCategories
 
-                And("카테고리 등록 성공") {
-
-                    coEvery {
-                        userCategoryRepository.setUserInterestIn(
-                            registrationUser,
-                            selectedCategories
-                        )
-                    } coAnswers {
-                        true
-                    }
-
-                    And("유저 등록 실패") {
+                    And("관심 카테고리 등록에 성공한다면") {
 
                         coEvery {
-                            userRepository.regUser(registrationUser)
+                            userCategoryRepository.setUserInterestIn(
+                                registrationUser,
+                                selectedCategories
+                            )
                         } coAnswers {
-                            mockk()
-                        }
-
-                        Then("회원 가입 실패") {
-                            testDispatcher?.runBlockingTest {
-                                pauseDispatcher()
-                                selectCategoryFragmentViewModel.clickNext()
-
-                                uiState.shouldBeInstanceOf<UiState.OnLoading>()
-
-                                resumeDispatcher()
-                                uiState.shouldBeInstanceOf<UiState.OnFail>()
-                            }
-                        }
-                    }
-
-                    coEvery {
-                        userCategoryRepository.setUserInterestIn(
-                            registrationUser,
-                            selectedCategories
-                        )
-                    } coAnswers {
-                        true
-                    }
-
-                    And("유저 등록 성공") {
-
-                        coEvery {
-                            userRepository.regUser(registrationUser)
-                        } coAnswers {
-                            mockk()
+                            true
                         }
 
                         Then("다음 화면으로 진행") {
@@ -150,24 +103,52 @@ class SelectCategoryFragmentViewModelBehavior : BehaviorSpec() {
                             }
                         }
                     }
-                }
 
-                And("카테고리 등록 실패") {
+                    And("관심 카테고리 등록에 실패한다면") {
+
+                        coEvery {
+                            userCategoryRepository.setUserInterestIn(
+                                registrationUser,
+                                selectedCategories
+                            )
+                        } coAnswers {
+                            false
+                        }
+
+                        Then("관심 카테고리 등록에 실패한다.") {
+                            testDispatcher?.runBlockingTest {
+                                pauseDispatcher()
+                                selectCategoryFragmentViewModel.clickNext()
+
+                                uiState.shouldBeInstanceOf<UiState.OnLoading>()
+
+                                resumeDispatcher()
+                                uiState.shouldBeInstanceOf<UiState.OnFail>()
+                            }
+                        }
+                    }
+                }
+            }
+
+            When("사용자의 관심 카테고리 리셋 요청이 존재하고") {
+                val loginUser = DummyUtil.getLoginUser()
+
+                selectCategoryFragmentViewModel.setRequestUserCategoryReset(true)
+
+                And("선택된 카테고리가 3개 미만이라면") {
 
                     coEvery {
-                        userCategoryRepository.setUserInterestIn(
-                            registrationUser,
-                            selectedCategories
-                        )
+                        userRepository.getLoginUser()
                     } coAnswers {
-                        false
+                        loginUser
                     }
 
-                    Then("회원 가입 실패") {
+                    selectCategoryFragmentViewModel.selectedCategories = emptyList()
+
+                    Then("관심 카테고리 등록에 실패한다.") {
                         testDispatcher?.runBlockingTest {
                             pauseDispatcher()
                             selectCategoryFragmentViewModel.clickNext()
-
                             uiState.shouldBeInstanceOf<UiState.OnLoading>()
 
                             resumeDispatcher()
@@ -175,58 +156,70 @@ class SelectCategoryFragmentViewModelBehavior : BehaviorSpec() {
                         }
                     }
                 }
-            }
-        }
 
-        Given("등록한 유저 정보 존재") {
+                And("선택된 카테고리가 3개 이상이고") {
+                    val selectedCategories = DummyUtil.getUserCategoryList().response
+                    selectCategoryFragmentViewModel.selectedCategories = selectedCategories
 
-            loginUser = User()
+                    And("관심 카테고리 등록에 성공한다면") {
 
-            When("카테고리 3개 미만 선택") {
-                val selectedCategories = emptyList<UserCategory>()
-                selectCategoryFragmentViewModel.selectedCategories = selectedCategories
+                        coEvery {
+                            userRepository.getLoginUser()
+                        } coAnswers {
+                            loginUser
+                        }
 
-                coEvery {
-                    userCategoryRepository.setUserInterestIn(loginUser!!, selectedCategories)
-                } coAnswers {
-                    false
-                }
+                        coEvery {
+                            userCategoryRepository.setUserInterestIn(
+                                loginUser,
+                                selectedCategories
+                            )
+                        } coAnswers {
+                            true
+                        }
 
-                Then("관심 카테고리 등록 실패") {
-                    testDispatcher?.runBlockingTest {
-                        pauseDispatcher()
-                        selectCategoryFragmentViewModel.clickNext()
+                        Then("결과 성공으로 이전 화면으로 이동한다.") {
+                            testDispatcher?.runBlockingTest {
+                                pauseDispatcher()
+                                selectCategoryFragmentViewModel.clickNext()
 
-                        uiState.shouldBeInstanceOf<UiState.OnLoading>()
+                                uiState.shouldBeInstanceOf<UiState.OnLoading>()
 
-                        resumeDispatcher()
-                        uiState.shouldBeInstanceOf<UiState.OnFail>()
+                                resumeDispatcher()
+                                uiState.shouldBeInstanceOf<UiState.OnSuccess>()
+                                (selectCategoryFragmentViewModel.eventFlow.first() as Event.Nav.Up).value shouldBe true
+                            }
+                        }
                     }
-                }
-            }
 
-            When("카테고리 3개 이상 선택") {
+                    And("관심 카테고리 등록에 실패한다면") {
 
-                val selectedCategories = DummyUtil.getUserCategoryList().response
-                selectCategoryFragmentViewModel.selectedCategories = selectedCategories
+                        coEvery {
+                            userRepository.getLoginUser()
+                        } coAnswers {
+                            loginUser
+                        }
 
-                coEvery {
-                    userCategoryRepository.setUserInterestIn(loginUser!!, selectedCategories)
-                } coAnswers {
-                    true
-                }
+                        coEvery {
+                            userCategoryRepository.setUserInterestIn(
+                                loginUser,
+                                selectedCategories
+                            )
+                        } coAnswers {
+                            false
+                        }
 
-                Then("관심 카테고리 등록 성공하여 이전 화면으로 이동") {
-                    testDispatcher?.runBlockingTest {
-                        pauseDispatcher()
-                        selectCategoryFragmentViewModel.clickNext()
+                        Then("관심 카테고리 등록에 실패한다.") {
+                            testDispatcher?.runBlockingTest {
+                                pauseDispatcher()
+                                selectCategoryFragmentViewModel.clickNext()
 
-                        uiState.shouldBeInstanceOf<UiState.OnLoading>()
+                                uiState.shouldBeInstanceOf<UiState.OnLoading>()
 
-                        resumeDispatcher()
-                        uiState.shouldBeInstanceOf<UiState.OnSuccess>()
-                        selectCategoryFragmentViewModel.eventFlow.first()
-                            .shouldBeInstanceOf<Event.Nav.Up>()
+                                resumeDispatcher()
+                                uiState.shouldBeInstanceOf<UiState.OnFail>()
+                            }
+                        }
                     }
                 }
             }
