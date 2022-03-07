@@ -1,9 +1,7 @@
 package com.ozcoin.cookiepang
 
 import com.ozcoin.cookiepang.domain.user.UserRepository
-import com.ozcoin.cookiepang.domain.userinfo.UserInfoRepository
 import com.ozcoin.cookiepang.ui.editprofile.EditProfileFragmentViewModel
-import com.ozcoin.cookiepang.utils.DataResult
 import com.ozcoin.cookiepang.utils.DummyUtil
 import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.UiState
@@ -22,7 +20,6 @@ import kotlinx.coroutines.test.runBlockingTest
 @ExperimentalCoroutinesApi
 class EditProfileViewModelBehavior : BehaviorSpec() {
     init {
-        val userInfoRepository = mockk<UserInfoRepository>()
         val userRepository = mockk<UserRepository>()
         val viewModel = spyk(
             EditProfileFragmentViewModel(
@@ -41,7 +38,7 @@ class EditProfileViewModelBehavior : BehaviorSpec() {
             coroutineTestRule.afterTest(testDispatcher!!)
             MockUtil.clearMocks(
                 listOf(
-                    userInfoRepository, userRepository, viewModel
+                    userRepository, viewModel
                 )
             )
         }
@@ -60,23 +57,14 @@ class EditProfileViewModelBehavior : BehaviorSpec() {
                 }
 
                 Then("이전 화면으로 이동") {
-                    testDispatcher?.runBlockingTest {
-                        pauseDispatcher()
-                        viewModel.loadLoginUserInfo()
-                        uiState.shouldBeInstanceOf<UiState.OnLoading>()
-
-                        resumeDispatcher()
-
-                        uiState.shouldBeInstanceOf<UiState.OnFail>()
-                        viewModel.eventFlow.first().shouldBeInstanceOf<Event.Nav.Up>()
-                    }
+                    viewModel.loadLoginUserInfo()
+                    viewModel.eventFlow.first().shouldBeInstanceOf<Event.Nav.Up>()
                 }
             }
 
             When("정상 문자열이면") {
 
                 val loginUser = DummyUtil.getLoginUser()
-                val userInfo = DummyUtil.getUserInfo(false)
 
                 coEvery {
                     userRepository.getLoginUser()
@@ -84,39 +72,20 @@ class EditProfileViewModelBehavior : BehaviorSpec() {
                     loginUser
                 }
 
-                coEvery {
-                    userInfoRepository.getUserInfo(loginUser.userId)
-                } coAnswers {
-                    userInfo
-                }
-
                 Then("유저 정보 로드") {
-                    testDispatcher?.runBlockingTest {
-                        pauseDispatcher()
-                        viewModel.loadLoginUserInfo()
-                        uiState.shouldBeInstanceOf<UiState.OnLoading>()
-
-                        resumeDispatcher()
-
-                        uiState.shouldBeInstanceOf<UiState.OnSuccess>()
-                        viewModel.user.first() shouldBe (userInfo as DataResult.OnSuccess).response
-                    }
+                    viewModel.loadLoginUserInfo()
+                    viewModel.user.first() shouldBe loginUser
                 }
             }
         }
 
         Given("업데이트하려는 유저 정보 존재") {
-            val userInfo = (DummyUtil.getUserInfo(true) as DataResult.OnSuccess).response
+            val updateUserInfo = DummyUtil.getLoginUser()
 
             When("저장 버튼 클릭하면") {
 
-                coEvery { viewModel.user.value } coAnswers { mockk() }
-
-                coEvery {
-                    userInfoRepository.updateUserInfo(userInfo)
-                } coAnswers {
-                    true
-                }
+                coEvery { viewModel.user.value } coAnswers { updateUserInfo }
+                coEvery { userRepository.updateUser(updateUserInfo) } coAnswers { true }
 
                 Then("유저 정보 업데이트 성공 후 이전 화면 이동") {
                     testDispatcher?.runBlockingTest {
