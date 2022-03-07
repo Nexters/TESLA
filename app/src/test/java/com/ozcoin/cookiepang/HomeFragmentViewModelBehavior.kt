@@ -14,13 +14,14 @@ import io.kotest.core.spec.style.BehaviorSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
 import io.mockk.coEvery
+import io.mockk.coVerify
+import io.mockk.every
 import io.mockk.mockk
 import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestCoroutineDispatcher
-import kotlinx.coroutines.test.runBlockingTest
 
 @ExperimentalCoroutinesApi
 class HomeFragmentViewModelBehavior : BehaviorSpec() {
@@ -73,29 +74,20 @@ class HomeFragmentViewModelBehavior : BehaviorSpec() {
                     DataResult.OnFail()
                 } coAndThen {
                     DataResult.OnFail()
+                } coAndThen {
+                    DataResult.OnFail()
                 }
 
-                Then("재시도 한다") {
-                    testDispatcher?.runBlockingTest {
-                        pauseDispatcher()
-                        viewModel.loadUserCategoryList()
-                        uiState shouldBe UiState.OnLoading
-
-                        resumeDispatcher()
-
-                        verify { viewModel.loadUserCategoryList() }
-                        uiState shouldBe UiState.OnFail
-                    }
+                Then("재시도 한다(retryCount = 3, 총 4번 시도)") {
+                    viewModel.loadUserCategoryList()
+                    verify { viewModel.loadUserCategoryList(3) }
+                    verify { viewModel.loadUserCategoryList(2) }
+                    verify { viewModel.loadUserCategoryList(1) }
+                    verify { viewModel.loadUserCategoryList(0) }
                 }
             }
 
             When("로드에 성공하면") {
-
-                coEvery {
-                    feedRepository.getFeedList(user.userId, UserCategory.typeAll())
-                } coAnswers {
-                    DummyUtil.getFeedList()
-                }
 
                 coEvery {
                     userCategoryRepository.getUserCategory(user.userId)
@@ -103,31 +95,24 @@ class HomeFragmentViewModelBehavior : BehaviorSpec() {
                     DummyUtil.getUserCategoryList()
                 }
 
+                coEvery {
+                    feedRepository.getFeedList(user.userId, UserCategory.typeAll())
+                } coAnswers {
+                    DummyUtil.getFeedList()
+                }
+
+                every { feedRepository.isLastPage() } returns false
+
                 Then("All 카테고리로 피드 리스트를 가져온다") {
+                    viewModel.loadUserCategoryList()
 
-//                    viewModel.userCategoryList.takeWhile {
-//                        it.isNotEmpty()
-//                    }.take(1).let {
-//                        viewModel.getFeedList(UserCategory.typeAll())
-//                    }
+                    val list = viewModel.userCategoryList.first()
+                    list.size shouldNotBe 0
 
-                    testDispatcher?.runBlockingTest {
+                    coVerify { feedRepository.getFeedList(user.userId, UserCategory.typeAll()) }
 
-                        pauseDispatcher()
-                        viewModel.loadUserCategoryList()
-
-                        uiState shouldBe UiState.OnLoading
-
-                        resumeDispatcher()
-
-                        val list = viewModel.userCategoryList.first()
-                        list.size shouldNotBe 0
-
-//                        verify { viewModel.getFeedList(UserCategory.typeAll()) }
-
-                        uiState shouldBe UiState.OnSuccess
-                        viewModel.feedList.first().size shouldNotBe 0
-                    }
+                    uiState shouldBe UiState.OnSuccess
+                    viewModel.feedList.first().size shouldNotBe 0
                 }
             }
         }
