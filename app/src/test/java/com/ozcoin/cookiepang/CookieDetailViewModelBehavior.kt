@@ -38,7 +38,11 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
     val contractRepository = mockk<ContractRepository>()
     val cookieDetailViewModel = spyk(
         CookieDetailViewModel(
-            userRepository, cookieRepository, contractRepository, cookieDetailRepository, klipContractTxRepository
+            userRepository,
+            cookieRepository,
+            contractRepository,
+            cookieDetailRepository,
+            klipContractTxRepository
         )
     )
 
@@ -57,6 +61,20 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
         testDispatcher = coroutineTestRule.beforeTest()
     }
 
+    afterTest {
+        coroutineTestRule.afterTest(testDispatcher!!)
+        MockUtil.clearMocks(
+            listOf(
+                userRepository,
+                cookieRepository,
+                contractRepository,
+                cookieDetailRepository,
+                klipContractTxRepository,
+                cookieDetailViewModel
+            )
+        )
+    }
+
     Given("쿠키 아이디를 전달 받음") {
 
         When("쿠키 아이디가 비정상 문자열") {
@@ -68,6 +86,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
                 cookieDetailViewModel.eventFlow.first().shouldBeInstanceOf<Event.Nav.Up>()
             }
         }
+
         When("쿠키 아이디가 정상 문자열") {
 
             cookieId = "10"
@@ -106,7 +125,12 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
             coEvery {
                 cookieDetailViewModel.cookieDetail.value
             } coAnswers {
-                (DummyUtil.getCookieDetail(isMine = true, isHidden = true) as DataResult.OnSuccess).response
+                (
+                    DummyUtil.getCookieDetail(
+                        isMine = true,
+                        isHidden = true
+                    ) as DataResult.OnSuccess
+                    ).response
             }
 
             Then("판매 정보 수정으로 이동") {
@@ -120,7 +144,12 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
             coEvery {
                 cookieDetailViewModel.cookieDetail.value
             } coAnswers {
-                (DummyUtil.getCookieDetail(isMine = false, isHidden = true) as DataResult.OnSuccess).response
+                (
+                    DummyUtil.getCookieDetail(
+                        isMine = false,
+                        isHidden = true
+                    ) as DataResult.OnSuccess
+                    ).response
             }
 
             coEvery {
@@ -132,7 +161,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
             coEvery {
                 contractRepository.isWalletApproved(user.userId)
             } coAnswers {
-                false
+                true
             }
 
             coEvery {
@@ -148,10 +177,5 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
                 coVerify { contractRepository.getNumOfHammerBalance(user.userId) }
             }
         }
-    }
-
-    afterTest {
-        MockUtil.clearMocks(listOf(cookieDetailRepository))
-        coroutineTestRule.afterTest(testDispatcher!!)
     }
 })
