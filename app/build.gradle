@@ -17,31 +17,6 @@ jacoco {
     reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
 }
 
-task coverageReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
-    group = "Reporting"
-    description = "Generate Jacoco coverage reports"
-
-    def coverageSourceDirs = ['src/main/java']
-
-    classDirectories.from = fileTree(
-            dir: "${buildDir}/intermediates/classes/debug",
-            excludes: ['**/R.class',
-                       '**/R$*.class',
-                       '**/BuildConfig.*',
-                       '**/Manifest*.*',
-                       'com/android/**/*.class']
-    )
-
-    sourceDirectories.from = files(coverageSourceDirs)
-    executionData.from = files("${buildDir}/jacoco/testDebugUnitTest.exec")
-
-    reports {
-        xml.required = false
-        csv.required = false
-        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
-    }
-}
-
 android {
     compileSdk 31
 
@@ -103,6 +78,31 @@ android {
         args '-R', '+x', '.git/hooks/'
         dependsOn copyGitHooks
     }
+
+    task coverageReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+        group = "Reporting"
+        description = "Generate Jacoco coverage reports"
+
+        def coverageSourceDirs = ['src/main/java']
+
+        classDirectories.from = fileTree(
+                dir: "${buildDir}/tmp/kotlin-classes/debug",
+                excludes: ['**/R.class',
+                           '**/R$*.class',
+                           '**/BuildConfig.*',
+                           '**/Manifest*.*',
+                           'com/android/**/*.class']
+        )
+
+        sourceDirectories.from = files(coverageSourceDirs)
+        executionData.from = files("${buildDir}/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+
+        reports {
+            xml.required = true
+            csv.required = true
+            html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+        }
+    }
 }
 
 dependencies {
@@ -141,6 +141,7 @@ dependencies {
 
     testImplementation "io.kotest:kotest-runner-junit5-jvm:$rootProject.kotestVersion"
     testImplementation "io.kotest:kotest-assertions-core:$rootProject.kotestVersion"
+//    testImplementation "io.kotest.extensions:kotest-extensions-robolectric:0.5.0"
 
     testImplementation "io.mockk:mockk:$rootProject.mockkVersion"
     testImplementation "io.mockk:mockk-agent-jvm:$rootProject.mockkVersion"
