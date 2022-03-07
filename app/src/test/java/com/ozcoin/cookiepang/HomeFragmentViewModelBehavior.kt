@@ -19,8 +19,6 @@ import io.mockk.spyk
 import io.mockk.verify
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.take
-import kotlinx.coroutines.flow.takeWhile
 import kotlinx.coroutines.test.TestCoroutineDispatcher
 import kotlinx.coroutines.test.runBlockingTest
 
@@ -107,11 +105,11 @@ class HomeFragmentViewModelBehavior : BehaviorSpec() {
 
                 Then("All 카테고리로 피드 리스트를 가져온다") {
 
-                    viewModel.userCategoryList.takeWhile {
-                        it.isNotEmpty()
-                    }.take(1).let {
-                        viewModel.getFeedList(UserCategory.typeAll())
-                    }
+//                    viewModel.userCategoryList.takeWhile {
+//                        it.isNotEmpty()
+//                    }.take(1).let {
+//                        viewModel.getFeedList(UserCategory.typeAll())
+//                    }
 
                     testDispatcher?.runBlockingTest {
 
@@ -125,7 +123,7 @@ class HomeFragmentViewModelBehavior : BehaviorSpec() {
                         val list = viewModel.userCategoryList.first()
                         list.size shouldNotBe 0
 
-                        verify { viewModel.getFeedList(UserCategory.typeAll()) }
+//                        verify { viewModel.getFeedList(UserCategory.typeAll()) }
 
                         uiState shouldBe UiState.OnSuccess
                         viewModel.feedList.first().size shouldNotBe 0

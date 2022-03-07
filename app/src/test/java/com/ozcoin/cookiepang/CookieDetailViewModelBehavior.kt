@@ -26,6 +26,7 @@ import io.mockk.spyk
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.TestCoroutineDispatcher
+import kotlinx.coroutines.test.runBlockingTest
 
 @ExperimentalCoroutinesApi
 class CookieDetailViewModelBehavior : BehaviorSpec({
@@ -49,7 +50,7 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
     cookieDetailViewModel.uiStateObserver = UiStateObserver { uiState = it }
     cookieDetailViewModel.activityEventObserver = EventObserver { event = it }
 
-    var userId = ""
+    val user = DummyUtil.getLoginUser()
     var cookieId = ""
 
     beforeTest {
@@ -69,29 +70,50 @@ class CookieDetailViewModelBehavior : BehaviorSpec({
         }
         When("쿠키 아이디가 정상 문자열") {
 
-            cookieId = "cookieId"
+            cookieId = "10"
             cookieId.shouldNotBeEmpty()
 
             coEvery {
-                cookieDetailRepository.getCookieDetail(userId, cookieId)
+                cookieDetailRepository.getCookieDetail(user.userId, cookieId)
             } coAnswers {
                 DummyUtil.getCookieDetail(isMine = false, isHidden = true)
             }
 
+            coEvery {
+                userRepository.getLoginUser()
+            } coAnswers {
+                user
+            }
+
             Then("쿠키 상세 정보 쿼리 요청") {
-                cookieDetailViewModel.loadCookieDetail(cookieId)
-                uiState shouldBe UiState.OnSuccess
-                cookieDetailViewModel.cookieDetail.first().shouldBeInstanceOf<CookieDetail>()
+                testDispatcher?.runBlockingTest {
+                    pauseDispatcher()
+                    cookieDetailViewModel.loadCookieDetail(cookieId)
+                    uiState shouldBe UiState.OnLoading
+
+                    resumeDispatcher()
+                    uiState shouldBe UiState.OnSuccess
+                    cookieDetailViewModel.cookieDetail.first().shouldBeInstanceOf<CookieDetail>()
+                }
             }
         }
     }
 
     Given("쿠키 상세 정보 로드되어 사용자가 구매/수정 버튼 클릭") {
 
+        cookieId = "10"
+        cookieId.shouldNotBeEmpty()
+
         coEvery {
-            cookieDetailRepository.getCookieDetail(userId, cookieId)
+            cookieDetailRepository.getCookieDetail(user.userId, cookieId)
         } coAnswers {
             DummyUtil.getCookieDetail(isMine = false, isHidden = true)
+        }
+
+        coEvery {
+            userRepository.getLoginUser()
+        } coAnswers {
+            user
         }
 
         cookieDetailViewModel.loadCookieDetail(cookieId)
