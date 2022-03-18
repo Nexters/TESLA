@@ -17,29 +17,6 @@ jacoco {
     reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
 }
 
-task coverageReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
-    group = "Reporting"
-    description = "Generate Jacoco coverage reports"
-
-    def coverageSourceDirs = ['src/main/java']
-
-    classDirectories.from = fileTree(
-            dir: "${buildDir}/intermediates/classes/debug",
-            excludes: ['**/R.class',
-                       '**/R$*.class',
-                       '**/BuildConfig.*',
-                       '**/Manifest*.*',
-                       'com/android/**/*.class']
-    )
-
-    sourceDirectories.from = files(coverageSourceDirs)
-    executionData.from = files("${buildDir}/jacoco/testDebugUnitTest.exec")
-
-    reports {
-        xml.required = false
-        csv.required = false
-        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
-    }
 }
 
 android {
@@ -102,6 +79,31 @@ android {
         commandLine 'chmod'
         args '-R', '+x', '.git/hooks/'
         dependsOn copyGitHooks
+    }
+
+    task coverageReport(type: JacocoReport, dependsOn: 'testDebugUnitTest') {
+        group = "Reporting"
+        description = "Generate Jacoco coverage reports"
+
+        def coverageSourceDirs = ['src/main/java']
+
+        classDirectories.from = fileTree(
+                dir: "${buildDir}/tmp/kotlin-classes/debug",
+                excludes: ['**/R.class',
+                           '**/R$*.class',
+                           '**/BuildConfig.*',
+                           '**/Manifest*.*',
+                           'com/android/**/*.class']
+        )
+
+        sourceDirectories.from = files(coverageSourceDirs)
+        executionData.from = files("${buildDir}/outputs/unit_test_code_coverage/debugUnitTest/testDebugUnitTest.exec")
+
+        reports {
+            xml.required = true
+            csv.required = true
+            html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
+        }
     }
 }
 
