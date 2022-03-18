@@ -17,8 +17,6 @@ jacoco {
     reportsDirectory = layout.buildDirectory.dir('customJacocoReportDir')
 }
 
-}
-
 android {
     compileSdk 31
 
