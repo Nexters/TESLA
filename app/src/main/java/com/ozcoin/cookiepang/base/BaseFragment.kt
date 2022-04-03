@@ -38,19 +38,28 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     protected abstract fun init()
 
-    protected lateinit var binding: T
+    protected val binding: T
+        get() = _binding!!
+
+    private var _binding: T? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val localInflater = inflater.cloneInContext(ContextThemeWrapper(requireActivity(), R.style.Base_Theme_CookiePang))
-        binding = DataBindingUtil.inflate(localInflater, getLayoutRes(), container, false)
-        binding.lifecycleOwner = viewLifecycleOwner
+        val localInflater = inflater.cloneInContext(
+            ContextThemeWrapper(
+                requireActivity(),
+                R.style.Base_Theme_CookiePang
+            )
+        )
+        _binding = DataBindingUtil.inflate(localInflater, getLayoutRes(), container, false)
+        _binding?.lifecycleOwner = viewLifecycleOwner
 
-        binding.root.background = ContextCompat.getDrawable(inflater.context, R.drawable.bg_gradient_basic_black)
-        return binding.root
+        _binding?.root?.background =
+            ContextCompat.getDrawable(inflater.context, R.drawable.bg_gradient_basic_black)
+        return _binding?.root
     }
 
     val viewLifecycleScope: CoroutineScope
@@ -63,6 +72,11 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         initListener()
         initObserve()
         init()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 
     protected fun observeEvent(viewModel: BaseViewModel) {
@@ -151,7 +165,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     private fun handleNavUp(event: Event.Nav.Up) {
         Timber.d("navigate Up")
         if (event.key != null)
-            findNavController().previousBackStackEntry?.savedStateHandle?.set(event.key, event.value)
+            findNavController().previousBackStackEntry?.savedStateHandle?.set(
+                event.key,
+                event.value
+            )
 
         findNavController().navigateUp()
     }
