@@ -1,16 +1,14 @@
 package com.ozcoin.cookiepang.ui.cookiedetail
 
 import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.viewModelScope
 import com.ozcoin.cookiepang.base.BaseViewModel
-import com.ozcoin.cookiepang.common.TRANSITION_ANIM_DURATION
 import com.ozcoin.cookiepang.domain.contract.ContractRepository
 import com.ozcoin.cookiepang.domain.cookie.CookieRepository
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetailRepository
-import com.ozcoin.cookiepang.domain.cookiedetail.toEditCookie
 import com.ozcoin.cookiepang.domain.klip.KlipContractTxRepository
 import com.ozcoin.cookiepang.domain.user.UserRepository
 import com.ozcoin.cookiepang.utils.DataResult
@@ -19,25 +17,34 @@ import com.ozcoin.cookiepang.utils.Event
 import com.ozcoin.cookiepang.utils.TitleClickListener
 import com.ozcoin.cookiepang.utils.UiState
 import com.ozcoin.cookiepang.utils.observer.EventObserver
-import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.filter
+import kotlinx.coroutines.flow.filterIsInstance
+import kotlinx.coroutines.flow.flatMapConcat
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.flatMapMerge
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.math.BigInteger
 import javax.inject.Inject
-import kotlin.system.measureTimeMillis
 
 @HiltViewModel
 class CookieDetailViewModel @Inject constructor(
+    private val savedStateHandle: SavedStateHandle,
     private val userRepository: UserRepository,
     private val cookieRepository: CookieRepository,
     private val contractRepository: ContractRepository,
     private val cookieDetailRepository: CookieDetailRepository,
     private val klipContractTxRepository: KlipContractTxRepository
-) : BaseViewModel(), LifecycleEventObserver {
+) : BaseViewModel() {
 
     companion object {
         private const val KLIP_PENDING_TYPE_SALE_ON = 910
@@ -45,63 +52,93 @@ class CookieDetailViewModel @Inject constructor(
         private const val KLIP_PENDING_TYPE_REMOVE = 912
     }
 
-    private val _cookieDetail = MutableStateFlow<CookieDetail?>(null)
-    val cookieDetail: StateFlow<CookieDetail?>
-        get() = _cookieDetail
-
     val titleClickListener = TitleClickListener(
         EventObserver {
             viewModelScope.launch { _eventFlow.emit(it) }
         }
     )
 
-    lateinit var activityEventObserver: EventObserver
-    lateinit var uiStateObserver: UiStateObserver
-
-    private lateinit var cookieId: String
     private var klipPendingType = -1
 
-    fun loadCookieDetail(cookieId: String) {
-        if (cookieId.isNotEmpty()) {
-            this.cookieId = cookieId
-            uiStateObserver.update(UiState.OnLoading)
+    val state: StateFlow<CookieDetailUiState>
+    val action: (CookieDetailUiAction) -> Unit
 
-            viewModelScope.launch {
-                val result: DataResult<CookieDetail>?
-                val loadingTime = measureTimeMillis {
-                    result = userRepository.getLoginUser()
-                        ?.let { cookieDetailRepository.getCookieDetail(it.userId, cookieId) }
-                }
+    init {
+        val actionSharedFlow = MutableSharedFlow<CookieDetailUiAction>()
 
-                if (result is DataResult.OnSuccess) {
-                    Timber.d("getCookieDetail($cookieId) is success")
-                    delay(TRANSITION_ANIM_DURATION - loadingTime)
-                    uiStateObserver.update(UiState.OnSuccess)
-                    _cookieDetail.emit(result.response.apply { this.cookieId = cookieId.toInt() })
-                } else {
-                    Timber.d("getCookieDetail($cookieId) is fail")
-                    uiStateObserver.update(UiState.OnFail)
-                    if (result is DataResult.OnFail && result.errorCode == 403) {
-                        showIsHiddenCookie()
-                    } else {
-                        navigateUp()
-                    }
-                }
-            }
-        } else {
-            navigateUp()
+        val loadCookieDetail = actionSharedFlow
+            .filterIsInstance<CookieDetailUiAction.LoadCookieDetail>()
+            .distinctUntilChanged()
+            .onStart { emit(CookieDetailUiAction.LoadCookieDetail("")) }
+
+        val hideCookie = actionSharedFlow
+            .filterIsInstance<CookieDetailUiAction.HideCookie>()
+            .distinctUntilChanged()
+
+        state = flatUiAction(loadCookieDetail, hideCookie)
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(5000L),
+                initialValue = CookieDetailUiState()
+            )
+
+        action = {
+            viewModelScope.launch { actionSharedFlow.emit(it) }
         }
     }
 
-    private fun showIsHiddenCookie() {
-        activityEventObserver.update(
-            Event.ShowDialog(
-                DialogUtil.getIsHiddenCookieContents(),
-                callback = {
-                    if (it) navigateUp()
-                }
+    private fun flatUiAction(
+        loadCookieDetail: Flow<CookieDetailUiAction.LoadCookieDetail>,
+        hideCookie: Flow<CookieDetailUiAction.HideCookie>
+    ): Flow<CookieDetailUiState> {
+        val loadCookieDetailFlow = loadCookieDetail
+            .flatMapLatest { loadCookieDetail(it.cookieId) }
+
+        val hideCookieFlow = hideCookie
+            .flatMapConcat { hideCookie(it.cookieDetail) }
+
+        val refreshCookieDetailFlow = hideCookieFlow
+            .filter { it.loadState is UiState.OnSuccess && it.cookieDetail != null }
+            .distinctUntilChanged()
+            .flatMapConcat { loadCookieDetail(it.cookieDetail!!.cookieId.toString()) }
+
+        return loadCookieDetailFlow
+            .flatMapMerge { hideCookieFlow }
+            .flatMapMerge { refreshCookieDetailFlow }
+    }
+
+    private fun loadCookieDetail(cookieId: String) = flow {
+        emit(CookieDetailUiState(loadState = UiState.OnLoading))
+
+        var loadState: UiState = UiState.OnFail
+        val result = getCookieDetail(cookieId)
+        var isHiddenByOtherUser = false
+        val cookieDetail = if (result is DataResult.OnSuccess) {
+            loadState = UiState.OnSuccess
+            result.response
+        } else {
+            if (result is DataResult.OnFail && result.errorCode == 403) {
+                isHiddenByOtherUser = true
+            }
+            null
+        }
+
+        emit(
+            CookieDetailUiState(
+                loadState = loadState,
+                isHiddenCookieByOtherUser = isHiddenByOtherUser,
+                cookieDetail = cookieDetail
             )
         )
+    }
+
+    private suspend fun getCookieDetail(cookieId: String): DataResult<CookieDetail>? {
+        return if (cookieId.isNotEmpty()) {
+            userRepository.getLoginUser()
+                ?.let { cookieDetailRepository.getCookieDetail(it.userId, cookieId) }
+        } else {
+            null
+        }
     }
 
     private fun purchaseCookie() {
@@ -191,7 +228,10 @@ class CookieDetailViewModel @Inject constructor(
             val cookieDetail = cookieDetail.value
             if (loginUser != null && cookieDetail != null) {
                 if (contractRepository.isWalletApproved(loginUser.userId)) {
-                    if (contractRepository.getNumOfHammerBalance(loginUser.userId) >= BigInteger(cookieDetail.hammerPrice.toString())) {
+                    if (contractRepository.getNumOfHammerBalance(loginUser.userId) >= BigInteger(
+                            cookieDetail.hammerPrice.toString()
+                        )
+                    ) {
                         showPurchaseCookieDialog()
                     } else {
                         Timber.d("보유 해머 부족")
@@ -205,21 +245,37 @@ class CookieDetailViewModel @Inject constructor(
         }
     }
 
-    private fun hideCookie() {
-        cookieDetail.value?.let {
-            uiStateObserver.update(UiState.OnLoading)
-
-            viewModelScope.launch {
-                val result = cookieDetailRepository.hideCookie(
-                    userRepository.getLoginUser()?.userId ?: "", it
+    private fun hideCookie(cookieDetail: CookieDetail?) = flow {
+        if (cookieDetail != null) {
+            emit(
+                CookieDetailUiState(
+                    loadState = UiState.OnLoading,
+                    cookieDetail = cookieDetail
                 )
-                if (result) {
-                    uiStateObserver.update(UiState.OnSuccess)
-                    refreshCookieDetail()
-                } else {
-                    uiStateObserver.update(UiState.OnFail)
-                }
+            )
+
+            val result = cookieDetailRepository.hideCookie(
+                userRepository.getLoginUser()?.userId ?: "", cookieDetail
+            )
+            val loadState = if (result) {
+                UiState.OnSuccess
+            } else {
+                UiState.OnFail
             }
+
+            emit(
+                CookieDetailUiState(
+                    loadState = loadState,
+                    cookieDetail = cookieDetail
+                )
+            )
+        } else {
+            emit(
+                CookieDetailUiState(
+                    loadState = UiState.OnFail,
+                    cookieDetail = cookieDetail
+                )
+            )
         }
     }
 
@@ -243,6 +299,9 @@ class CookieDetailViewModel @Inject constructor(
                 }
             }
         }
+    }
+
+    private fun openCookie() = flow {
     }
 
     private fun requestOpenCookie() {
@@ -277,11 +336,11 @@ class CookieDetailViewModel @Inject constructor(
         }
     }
 
-    private fun refreshCookieDetail() {
-        loadCookieDetail(cookieId)
-    }
+    private fun refreshCookieDetail() =
 
-    private fun showDeleteCookieDialog() {
+        private
+
+    fun showDeleteCookieDialog() {
         activityEventObserver.update(
             Event.ShowDialog(
                 DialogUtil.getDeleteCookieContents(),
@@ -310,7 +369,9 @@ class CookieDetailViewModel @Inject constructor(
     }
 
     fun clickHideOpenBtn(isHidden: Boolean) {
-        if (isHidden) openCookie() else hideCookie()
+        state.value.cookieDetail?.let {
+            if (isHidden) openCookie() else hideCookie(it)
+        }
     }
 
     fun clickDeleteCookie() {

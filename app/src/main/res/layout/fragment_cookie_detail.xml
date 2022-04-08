@@ -20,6 +20,10 @@
             name="isShareAvailable"
             type="Boolean" />
 
+        <variable
+            name="titleClickListener"
+            type="com.ozcoin.cookiepang.utils.TitleClickListener" />
+
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -30,7 +34,7 @@
             android:id="@+id/include_title_layout"
             layout="@layout/layout_title_back"
             bind:isShareAvailable="@{isShareAvailable}"
-            bind:titleClickListener="@{viewModel.titleClickListener}" />
+            bind:titleClickListener="@{titleClickListener}" />
 
         <androidx.core.widget.NestedScrollView
             android:fillViewport="true"
@@ -472,7 +476,6 @@
                     android:text='@{cookieDetail.hidden ? "쿠키 공개하기" : "쿠키 숨기기"}'
                     android:visibility="@{cookieDetail.mine ? View.VISIBLE : View.GONE}"
                     tools:visibility="gone"
-                    android:onClick="@{() -> viewModel.clickHideOpenBtn(cookieDetail.hidden)}"
                     tools:text="쿠키 숨기기"
                     android:layout_width="0dp" />
 
