@@ -2,14 +2,14 @@ package com.ozcoin.cookiepang.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import com.ozcoin.cookiepang.adapter.viewholder.CookieHistoryViewHolder
 import com.ozcoin.cookiepang.databinding.ItemCookieHistoryBinding
 import com.ozcoin.cookiepang.domain.cookiehistory.CookieHistory
 
-class CookieHistoryListAdapter : RecyclerView.Adapter<CookieHistoryViewHolder>() {
-
-    private val list = mutableListOf<CookieHistory>()
+class CookieHistoryListAdapter :
+    ListAdapter<CookieHistory, CookieHistoryViewHolder>(COOKIE_HISTORY_COMPARATOR) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CookieHistoryViewHolder {
         val binding =
@@ -18,14 +18,21 @@ class CookieHistoryListAdapter : RecyclerView.Adapter<CookieHistoryViewHolder>()
     }
 
     override fun onBindViewHolder(holder: CookieHistoryViewHolder, position: Int) {
-        holder.bind(list[position])
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int = list.size
+    companion object {
+        private val COOKIE_HISTORY_COMPARATOR = object : DiffUtil.ItemCallback<CookieHistory>() {
+            override fun areItemsTheSame(oldItem: CookieHistory, newItem: CookieHistory): Boolean {
+                return oldItem.contents == newItem.contents
+            }
 
-    fun updateList(newList: List<CookieHistory>) {
-        list.clear()
-        list.addAll(newList)
-        notifyItemRangeChanged(0, list.size)
+            override fun areContentsTheSame(
+                oldItem: CookieHistory,
+                newItem: CookieHistory
+            ): Boolean {
+                return oldItem == newItem
+            }
+        }
     }
 }
