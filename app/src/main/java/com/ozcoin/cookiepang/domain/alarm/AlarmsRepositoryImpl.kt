@@ -26,9 +26,11 @@ class AlarmsRepositoryImpl @Inject constructor(
         return noticeList
             .groupBy { DateUtil.convertToAlarmsTimeStamp(it.time) }
             .map {
-                val alarms = it.value.map { alarm ->
-                    alarm.copy(time = DateUtil.convertToAlarmTimeStamp(alarm.time))
-                }.sortedByDescending { alarm -> alarm.time }
+                val alarms = it.value
+                    .sortedByDescending { alarm -> alarm.time }
+                    .map { alarm ->
+                        alarm.copy(time = DateUtil.convertToAppTimeStamp(alarm.time))
+                    }
                 Alarms(it.key, alarms)
             }
             .sortedByDescending { it.date }
