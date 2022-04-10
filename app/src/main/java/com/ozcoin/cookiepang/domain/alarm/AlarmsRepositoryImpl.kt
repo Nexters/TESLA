@@ -23,29 +23,14 @@ class AlarmsRepositoryImpl @Inject constructor(
         }
 
     private fun convertNotificationListToAlarmsList(noticeList: List<Alarm>): List<Alarms> {
-        val alarmsList = mutableListOf<Alarms>()
-
-        if (noticeList.isNotEmpty()) {
-            val dateMap = HashMap<String, Boolean>()
-            for (n in noticeList) {
-                val alarmList = mutableListOf<Alarm>()
-
-                val date = DateUtil.convertToAlarmsTimeStamp(n.time)
-                if (dateMap[date] != null)
-                    continue
-
-                dateMap[date] = true
-
-                for (a in noticeList) {
-                    if (DateUtil.convertToAlarmsTimeStamp(a.time) == date) {
-                        val alarm = Alarm(a.alarmId, a.title, a.contents, DateUtil.convertToAlarmTimeStamp(a.time))
-                        alarmList.add(alarm)
-                    }
-                }
-                val alarms = Alarms(date, alarmList)
-                alarmsList.add(alarms)
+        return noticeList
+            .groupBy { DateUtil.convertToAlarmsTimeStamp(it.time) }
+            .map {
+                val alarms = it.value.map { alarm ->
+                    alarm.copy(time = DateUtil.convertToAlarmTimeStamp(alarm.time))
+                }.sortedByDescending { alarm -> alarm.time }
+                Alarms(it.key, alarms)
             }
-        }
-        return alarmsList
+            .sortedByDescending { it.date }
     }
 }
