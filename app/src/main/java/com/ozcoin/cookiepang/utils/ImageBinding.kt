@@ -44,6 +44,7 @@ object ImageBinding {
         if (errorImgDrawable != null)
             Glide.with(imageView.context)
                 .load(url)
+                .centerCrop()
                 .error(errorImgDrawable)
                 .into(imageView)
     }
