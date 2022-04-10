@@ -7,13 +7,11 @@ import com.ozcoin.cookiepang.data.request.NetworkResult
 import com.ozcoin.cookiepang.domain.user.User
 import com.ozcoin.cookiepang.domain.user.toDataUserId
 import com.ozcoin.cookiepang.extensions.safeApiCall
-import com.ozcoin.cookiepang.utils.BitmapRequestBody
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.MultipartBody
 import okhttp3.RequestBody
 import okhttp3.RequestBody.Companion.asRequestBody
-import okhttp3.RequestBody.Companion.toRequestBody
 import timber.log.Timber
 import java.io.ByteArrayOutputStream
 import java.io.File
@@ -39,56 +37,36 @@ class UserRemoteDataSource @Inject constructor(
 
     suspend fun updateUserEntity(user: User) =
         safeApiCall {
-            val profilePicture = user.updateThumbnailImg?.let {
-                MultipartBody.Part.createFormData(
-                    "image",
-                    "profilePicture.png",
-                    BitmapRequestBody(it)
-                )
-            } ?: kotlin.run {
-                val content = "".toRequestBody("text/plain".toMediaTypeOrNull())
-                MultipartBody.Part.createFormData("profilePicture", "", content)
-            }
-
-//            val profile = convertBitmapToFile("profilePicture.png", user.updateThumbnailImg)
-//            val profilePicture = getMultiPart(profile)
-
-//            val background = convertBitmapToFile("backgroundPicture.png", user.updateThumbnailImg)
-//            val backgroundPicture = getMultiPart(background)
-
-            val backgroundPicture = user.updateProfileBackgroundImg?.let {
-                MultipartBody.Part.createFormData(
-                    "image",
-                    "backgroundPicture.png",
-                    BitmapRequestBody(it)
-                )
-            } ?: kotlin.run {
-                val content = "".toRequestBody("text/plain".toMediaTypeOrNull())
-                MultipartBody.Part.createFormData("backgroundPicture", "", content)
-            }
+            val introduction = MultipartBody.Part.createFormData("introduction", user.introduction)
+            val profilePicture = getImageMultiPart(
+                "profilePicture",
+                convertBitmapToFile("profilePicture", user.updateThumbnailImg)
+            )
+            val backgroundPicture = getImageMultiPart(
+                "backgroundPicture",
+                convertBitmapToFile("backgroundPicture", user.updateProfileBackgroundImg)
+            )
 
             apiService.updateUser(
                 user.userId.toDataUserId(),
-                user.introduction,
+                introduction,
                 profilePicture,
                 backgroundPicture
             )
         }
 
-    private fun getMultiPart(file: File): MultipartBody.Part {
+    private fun getImageMultiPart(name: String, file: File): MultipartBody.Part {
         val reqFile: RequestBody = file.asRequestBody("image/*".toMediaTypeOrNull())
-        return MultipartBody.Part.createFormData("image", file.name, reqFile)
+        return MultipartBody.Part.createFormData(name, file.name, reqFile)
     }
 
     private fun convertBitmapToFile(name: String, bitmap: Bitmap?): File {
-        val file: File
+        val file: File = File(appContext.cacheDir, name)
 
-        if (bitmap != null) {
-            file = File(appContext.cacheDir, name)
+        kotlin.runCatching {
+            if (!file.exists()) file.createNewFile()
 
-            kotlin.runCatching {
-                file.createNewFile()
-
+            if (bitmap != null) {
                 val bitmapData = ByteArrayOutputStream().use {
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
                     it.toByteArray()
@@ -97,32 +75,12 @@ class UserRemoteDataSource @Inject constructor(
                 FileOutputStream(file).use {
                     it.write(bitmapData)
                     it.flush()
-                    it.close()
                 }
-            }.onFailure {
-                Timber.e(it)
             }
-        } else {
-            file = File("")
+        }.onFailure {
+            Timber.e(it)
         }
 
         return file
-    }
-
-    private fun convertBitmapToFile(fileName: String, bitmap: Bitmap) {
-        // create a file to write bitmap data
-        val f = File(appContext.cacheDir, fileName)
-        kotlin.runCatching {
-            f.createNewFile()
-            val bitmapData = ByteArrayOutputStream().use {
-                bitmap.compress(Bitmap.CompressFormat.PNG, 100, it)
-                it.toByteArray()
-            }
-
-            FileOutputStream(f).use {
-                it.write(bitmapData)
-                it.flush()
-            }
-        }
     }
 }

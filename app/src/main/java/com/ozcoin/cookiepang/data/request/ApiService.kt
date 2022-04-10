@@ -52,7 +52,7 @@ interface ApiService {
     @PUT("/users/{userId}")
     suspend fun updateUser(
         @Path("userId") userId: Int,
-        @Query("introduction") introduction: String,
+        @Part introduction: MultipartBody.Part,
         @Part profilePicture: MultipartBody.Part,
         @Part backgroundPicture: MultipartBody.Part
     ): Response<UserEntity>
