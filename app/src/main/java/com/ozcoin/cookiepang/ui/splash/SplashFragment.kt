@@ -1,7 +1,8 @@
 package com.ozcoin.cookiepang.ui.splash
 
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import com.ozcoin.cookiepang.MyApplication
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
@@ -19,23 +20,22 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
 
     private val loginViewModel by activityViewModels<LoginViewModel>()
 
-    override fun onStart() {
-        super.onStart()
-
-        lifecycleScope.launch {
-            withContext(Dispatchers.Default) {
-                delay(1500L)
-            }
-
-            if (loginViewModel.isUserLogin()) {
-//                navigateToMain()
-                if (loginViewModel.isFinishOnBoarding()) {
-                    navigateToMain()
-                } else {
-                    navigateToOnBoarding()
+    override fun init() {
+        viewLifecycleScope.launch {
+            viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                withContext(Dispatchers.Default) {
+                    delay(1500L)
                 }
-            } else {
-                navigateToLogin()
+
+                if (loginViewModel.isUserLogin()) {
+                    if (loginViewModel.isFinishOnBoarding()) {
+                        navigateToMain()
+                    } else {
+                        navigateToOnBoarding()
+                    }
+                } else {
+                    navigateToLogin()
+                }
             }
         }
     }
@@ -70,8 +70,5 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     }
 
     override fun initObserve() {
-    }
-
-    override fun init() {
     }
 }
