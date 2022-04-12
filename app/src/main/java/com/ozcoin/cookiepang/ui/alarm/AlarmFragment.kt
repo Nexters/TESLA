@@ -1,10 +1,12 @@
 package com.ozcoin.cookiepang.ui.alarm
 
 import androidx.fragment.app.viewModels
+import androidx.navigation.findNavController
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.adapter.AlarmsListAdapter
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentAlarmBinding
+import com.ozcoin.cookiepang.domain.alarm.AlarmType
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -30,7 +32,11 @@ class AlarmFragment : BaseFragment<FragmentAlarmBinding>() {
     private fun setupAlarmsList() {
         with(binding.rvAlarms) {
             alarmsListAdapter = AlarmsListAdapter().apply {
-                onItemClick = {
+                onItemClick = { alarm ->
+                    when (alarm.type) {
+                        AlarmType.SALE -> findNavController().navigate(AlarmFragmentDirections.actionCookieDetail(alarm.cookieId))
+                        AlarmType.ASK -> findNavController().navigate(AlarmFragmentDirections.actionMyHome(isAskRequested = true))
+                    }
                 }
             }
             adapter = alarmsListAdapter

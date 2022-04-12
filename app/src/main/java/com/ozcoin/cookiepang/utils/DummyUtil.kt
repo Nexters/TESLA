@@ -1,6 +1,7 @@
 package com.ozcoin.cookiepang.utils
 
 import com.ozcoin.cookiepang.domain.alarm.Alarm
+import com.ozcoin.cookiepang.domain.alarm.AlarmType
 import com.ozcoin.cookiepang.domain.alarm.Alarms
 import com.ozcoin.cookiepang.domain.cookie.Cookie
 import com.ozcoin.cookiepang.domain.cookiedetail.CookieDetail
@@ -120,7 +121,7 @@ object DummyUtil {
 
         repeat(4) {
             val alarm = Alarm(
-                it, "Ask", "Questions($it)", "21:01"
+                AlarmType.ASK, it, "Ask", "Questions($it)", "21:01", null, ""
             )
             list.add(alarm)
         }

@@ -22,7 +22,10 @@ fun NotificationEntity.toDomain(): Alarm {
     return Alarm(
         alarmId = id ?: 0,
         title = title,
+        type = type.toDomain(),
         contents = content,
-        time = createdAt
+        time = createdAt,
+        askId = askId,
+        cookieId = kotlin.runCatching { cookieId?.toString() ?: "" }.getOrDefault("")
     )
 }

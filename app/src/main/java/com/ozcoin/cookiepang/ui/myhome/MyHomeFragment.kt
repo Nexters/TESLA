@@ -13,8 +13,11 @@ import com.ozcoin.cookiepang.ui.MainActivityViewModel
 import com.ozcoin.cookiepang.utils.observer.EventObserver
 import com.ozcoin.cookiepang.utils.observer.UiStateObserver
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 @AndroidEntryPoint
@@ -56,6 +59,20 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
 
     override fun init() {
         myHomeFragmentViewModel.loadUserInfo(getUserId())
+        checkIsAskRequested()
+    }
+
+    /**
+     * delay 적용하지 않고 tab 이동 시 다른 페이지가 렌더링되는 이슈 존재
+     * (fragment 에서 list notify 를 main 스레드해서 그런가 ??)
+     */
+    private fun checkIsAskRequested() {
+        viewLifecycleScope.launch {
+            withContext(Dispatchers.Default) {
+                delay(100L)
+            }
+            if (isAskRequested()) moveToAskTab()
+        }
     }
 
     private fun getUserId(): String {
@@ -63,6 +80,17 @@ class MyHomeFragment : BaseFragment<FragmentMyHomeBinding>() {
         return args.userId.also {
             Timber.d("request UserId : $it")
         }
+    }
+
+    private fun isAskRequested(): Boolean {
+        val args by navArgs<MyHomeFragmentArgs>()
+        return args.isAskRequested.also {
+            Timber.d("isAskRequested : $it")
+        }
+    }
+
+    private fun moveToAskTab() {
+        binding.vpPager.setCurrentItem(2, true)
     }
 
     override fun initObserve() {

@@ -266,6 +266,11 @@
                 android:defaultValue=""
                 app:argType="string" />
 
+            <argument
+                android:name="isAskRequested"
+                android:defaultValue="false"
+                app:argType="boolean" />
+
             <action
                 android:id="@+id/action_cookieDetail"
                 app:destination="@id/cookieDetail_dest"
@@ -383,7 +388,22 @@
             android:id="@+id/alarm_dest"
             android:name="com.ozcoin.cookiepang.ui.alarm.AlarmFragment"
             android:label="AlarmFragment"
-            tools:layout="@layout/fragment_alarm" />
+            tools:layout="@layout/fragment_alarm" >
+            <action
+                android:id="@+id/action_cookieDetail"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"
+                app:destination="@id/cookieDetail_dest" />
+            <action
+                android:id="@+id/action_my_home"
+                app:destination="@id/my_home_dest"
+                app:enterAnim="@anim/slide_in_right"
+                app:exitAnim="@anim/slide_out_left"
+                app:popEnterAnim="@anim/slide_in_left"
+                app:popExitAnim="@anim/slide_out_right"/>
+        </fragment>
 
 
         <fragment
