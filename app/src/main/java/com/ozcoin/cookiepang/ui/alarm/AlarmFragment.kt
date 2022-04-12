@@ -34,8 +34,16 @@ class AlarmFragment : BaseFragment<FragmentAlarmBinding>() {
             alarmsListAdapter = AlarmsListAdapter().apply {
                 onItemClick = { alarm ->
                     when (alarm.type) {
-                        AlarmType.SALE -> findNavController().navigate(AlarmFragmentDirections.actionCookieDetail(alarm.cookieId))
-                        AlarmType.ASK -> findNavController().navigate(AlarmFragmentDirections.actionMyHome(isAskRequested = true))
+                        AlarmType.SALE -> findNavController().navigate(
+                            AlarmFragmentDirections.actionCookieDetail(
+                                alarm.cookieId
+                            )
+                        )
+                        AlarmType.ASK -> findNavController().navigate(
+                            AlarmFragmentDirections.actionMyHome(
+                                isAskRequested = true
+                            )
+                        )
                     }
                 }
             }
