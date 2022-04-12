@@ -7,7 +7,6 @@ import kotlinx.coroutines.withContext
 import timber.log.Timber
 
 object FmsUtil {
-
     suspend fun getFcmToken(): String {
         var fcmToken = ""
 
@@ -19,7 +18,6 @@ object FmsUtil {
     }
 
     private suspend fun requestFcmToken(): String = withContext(Dispatchers.IO) {
-        Timber.d("requestFcmToken(${Thread.currentThread().name})")
         val res = CompletableDeferred<String>()
 
         FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->

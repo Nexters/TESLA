@@ -13,6 +13,9 @@ class MyFms : FirebaseMessagingService() {
 
     override fun onMessageReceived(p0: RemoteMessage) {
         super.onMessageReceived(p0)
-        Timber.d("onMessageReceived(), message : ${p0.notification?.body}")
+        Timber.d("onMessageReceived(), notification : title(${p0.notification?.title}), body(${p0.notification?.body})")
+        p0.data.entries.forEach {
+            Timber.d("onMessageReceived(), data: key(${it.key}), value(${it.value})")
+        }
     }
 }
