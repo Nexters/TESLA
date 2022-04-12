@@ -7,6 +7,7 @@ import com.ozcoin.cookiepang.MyApplication
 import com.ozcoin.cookiepang.R
 import com.ozcoin.cookiepang.base.BaseFragment
 import com.ozcoin.cookiepang.databinding.FragmentSplashBinding
+import com.ozcoin.cookiepang.fms.FmsUtil
 import com.ozcoin.cookiepang.ui.login.LoginViewModel
 import com.ozcoin.cookiepang.utils.Event
 import dagger.hilt.android.AndroidEntryPoint
@@ -23,6 +24,8 @@ class SplashFragment : BaseFragment<FragmentSplashBinding>() {
     override fun init() {
         viewLifecycleScope.launch {
             viewLifecycleOwner.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                FmsUtil.getToken()
+
                 withContext(Dispatchers.Default) {
                     delay(1500L)
                 }
