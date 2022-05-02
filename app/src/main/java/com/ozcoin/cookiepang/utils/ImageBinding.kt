@@ -5,6 +5,8 @@ import android.widget.ImageView
 import androidx.databinding.BindingAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.ozcoin.cookiepang.R
+import com.ozcoin.cookiepang.domain.alarm.AlarmType
 
 object ImageBinding {
 
@@ -22,7 +24,11 @@ object ImageBinding {
             setCircleImg(imageView, url, errorImgDrawable)
     }
 
-    private fun setCircleImg(imageView: ImageView, drawable: Drawable?, errorImgDrawable: Drawable) {
+    private fun setCircleImg(
+        imageView: ImageView,
+        drawable: Drawable?,
+        errorImgDrawable: Drawable
+    ) {
         Glide.with(imageView.context)
             .load(drawable)
             .apply(RequestOptions().circleCrop().centerCrop())
@@ -47,5 +53,19 @@ object ImageBinding {
                 .centerCrop()
                 .error(errorImgDrawable)
                 .into(imageView)
+    }
+
+    @JvmStatic
+    @BindingAdapter("loadAlarmIconByType")
+    fun loadAlarmIconByType(imageView: ImageView, alarmType: AlarmType?) {
+        if (alarmType != null) {
+            val imgRes = when (alarmType) {
+                AlarmType.ASK -> R.drawable.ic_ask_alarm
+                AlarmType.SALE -> R.drawable.ic_sale_alarm
+            }
+            Glide.with(imageView.context)
+                .load(imgRes)
+                .into(imageView)
+        }
     }
 }
