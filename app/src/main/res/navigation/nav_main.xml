@@ -50,8 +50,8 @@
                 app:popUpToInclusive="true" />
 
             <action
-                android:id="@+id/action_regist_user_info"
-                app:destination="@id/registUserInfo_dest"
+                android:id="@+id/action_select_category"
+                app:destination="@id/selectCategory_dest"
                 app:enterAnim="@anim/slide_in_right"
                 app:exitAnim="@anim/slide_out_left"
                 app:popEnterAnim="@anim/slide_in_left"
@@ -69,8 +69,8 @@
             tools:layout="@layout/fragment_regist_id">
 
             <action
-                android:id="@+id/action_regist_user_info"
-                app:destination="@id/registUserInfo_dest"
+                android:id="@+id/action_select_category"
+                app:destination="@id/selectCategory_dest"
                 app:popUpTo="@id/nav_login"
                 app:popUpToInclusive="true"
                 app:enterAnim="@anim/slide_in_right"
