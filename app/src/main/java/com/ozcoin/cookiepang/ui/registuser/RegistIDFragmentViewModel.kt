@@ -37,8 +37,8 @@ class RegistIDFragmentViewModel @Inject constructor(
     lateinit var uiStateObserver: UiStateObserver
     var setUser: ((User) -> Unit)? = null
 
-    private fun navigateToRegistInfo() {
-        navigateTo(RegistIDFragmentDirections.actionRegistUserInfo())
+    private fun navigateToSelectCategory() {
+        navigateTo(RegistIDFragmentDirections.actionSelectCategory())
     }
 
     fun emitProfileIDLength(length: Int) {
@@ -83,7 +83,7 @@ class RegistIDFragmentViewModel @Inject constructor(
                 when (result) {
                     is DataResult.OnSuccess -> {
                         setUser?.invoke(result.response)
-                        navigateToRegistInfo()
+                        navigateToSelectCategory()
                     }
                     is DataResult.OnFail -> {
                         if (result.errorCode == 409)

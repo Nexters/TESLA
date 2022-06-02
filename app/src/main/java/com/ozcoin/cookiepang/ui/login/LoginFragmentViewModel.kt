@@ -28,8 +28,8 @@ class LoginFragmentViewModel @Inject constructor(
         navigateTo(LoginFragmentDirections.actionRegistID())
     }
 
-    fun navigateToRegistUserInfo() {
-        navigateTo(LoginFragmentDirections.actionRegistUserInfo())
+    fun navigateToSelectCategory() {
+        navigateTo(LoginFragmentDirections.actionSelectCategory())
     }
 
     fun clickLogin() {
@@ -54,7 +54,7 @@ class LoginFragmentViewModel @Inject constructor(
                                 if (loginUser.finishOnboard) {
                                     navigateTo(LoginFragmentDirections.actionMain())
                                 } else {
-                                    navigateToRegistUserInfo()
+                                    navigateToSelectCategory()
                                 }
                             } else {
                                 Timber.d("login user is null")

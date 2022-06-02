@@ -39,7 +39,7 @@ class LoginFragment : BaseFragment<FragmentLoginBinding>() {
     override fun init() {
         loginFragmentViewModel.regUserAddress = loginViewModel::setUserAddress
         if (isUserDidNotFinishOnBoarding())
-            loginFragmentViewModel.navigateToRegistUserInfo()
+            loginFragmentViewModel.navigateToSelectCategory()
     }
 
     private fun isUserDidNotFinishOnBoarding(): Boolean {
